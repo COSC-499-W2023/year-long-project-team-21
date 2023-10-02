@@ -6,16 +6,15 @@ Username: Keizo410
 
 ## My Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Project plan (setting milestones and distributing tasks)
+- Environment setup
+- Starting framework practice
 
 ## Completed Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- I completed the project plan (mainly setting milestones and dividing tasks for the team) 
+- I set up one of the framework environment (react native)
 
 ## Types of Tasks Worked On
 
-![image](**link to screenshot from iPeer**)
+![individaul log week 4](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/c8ec9384-d1b6-4fe6-a4e7-095240a54632)
