@@ -6,16 +6,15 @@ Username: rogeonee
 
 ## My Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Took part in project plan discussions
+- Set up development environment with React Native
+- Started to learn React Native for front end
 
 ## Completed Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Took part in project plan discussions
+- Set up development environment with React Native
 
 ## Types of Tasks Worked On
 
-![image](**link to screenshot from iPeer**)
+![image](https://imgtr.ee/images/2023/10/01/3ee431d563262510adde11607074cb8c.png)
