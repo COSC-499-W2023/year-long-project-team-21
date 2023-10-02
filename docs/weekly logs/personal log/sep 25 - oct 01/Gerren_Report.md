@@ -6,16 +6,16 @@ Username: CookiedOutMonster
 
 ## My Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Collaberated with team members, finished project plan. 
+- Wrote MVP and User Scenario. 
+- Did research on the tech stack including emailing professor for server allocation. 
 
 ## Completed Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Collaberated with team members, finished project plan. 
+- Wrote MVP and User Scenario. 
+- Did research on the tech stack including emailing professor for server allocation. 
 
 ## Types of Tasks Worked On
 
-![image](**link to screenshot from iPeer**)
+![image](https://imgtr.ee/images/2023/10/01/ea21d0fc24d1dcc74f06039753bff8cc.png)
