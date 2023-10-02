@@ -39,8 +39,8 @@ Can add image of project board here. Add some tasks related to researching/learn
 
 ## Individual Reports
 
-1. [Nicholas](Personal Log/Nicholas_Report.md)
-2. [Sten](Personal Log/Sten_Report.md)
-3. [Gerren](Personal Log/Gerren_Report.md)
-4. [Egor](Personal Log/Egor_Report.md)
-5. [Keizo](Personal Log/Keizo_Report.md)
+1. [Nicholas](../personal%20log/sep%2025%20-%20oct%2001/Nicholas_Report.md)
+2. [Sten](../personal%20log/sep%2025%20-%20oct%2001/Sten_Report.md)
+3. [Gerren](../personal%20log/sep%2025%20-%20oct%2001/Gerren_Report.md)
+4. [Keizo](../personal%20log/sep%2025%20-%20oct%2001/Keizo_Report.md)
+5. [Egor](../personal%20log/sep%2025%20-%20oct%2001/Egor_Report.md)
