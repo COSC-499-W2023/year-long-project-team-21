@@ -6,16 +6,16 @@ Username: n3c777
 
 ## My Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- selected project milestones
+- tech stack decisions made
+- work distribution decision
 
 ## Completed Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- selected project milestones
+- tech stack decisions made
+- work distribution decision
 
 ## Types of Tasks Worked On
 
-![image](**link to screenshot from iPeer**)
+![image](https://imgtr.ee/images/2023/10/02/a99cf2e0e2861d39e10db8da35cb5b75.png)
