@@ -35,7 +35,7 @@ No test report this week because we finished the project plan and have no code w
 
 ### Project Board
 
-Can add image of project board here. Add some tasks related to researching/learning parts of tech stack or components of the project plan that were worked on.
+![image](https://imgtr.ee/images/2023/10/01/5690d1316e0ddcdac13de3534345a9a3.png)
 
 ## Individual Reports
 
