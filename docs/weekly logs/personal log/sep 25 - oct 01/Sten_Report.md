@@ -4,18 +4,16 @@
 
 Username: Rev-Rok
 
-## My Features For This Week
+### My Features For This Week:
 
-- Feature 1
-- Feature 2
-- Feature 3
+* Participate in team meetings
+* Help scope MVP and additional features
+* Setup React Native environment
 
-## Completed Features For This Week
+### Completed Features For This Week:
 
-- Feature 1
-- Feature 2
-- Feature 3
+* Scope of project plan
 
-## Types of Tasks Worked On
+### Types of Tasks Worked On:
 
-![image](**link to screenshot from iPeer**)
+![image](https://imgtr.ee/images/2023/10/02/adc6c553dc665088c51c454ac1083d1c.png)
