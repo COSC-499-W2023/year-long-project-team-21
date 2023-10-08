@@ -2,7 +2,8 @@
 
 ## Overview
 
-// Add overview
+For this week, we decided to focus on our app's UI and database design. We had a meeting about the first draft of the UI design and gave feedback for further improvement. 
+We also started to set up an environment for react native and Django while we started to debate if we should use Firebase to skip writing our own API for backend communication.
 
 ## Quick reminder for usernames
 
@@ -14,21 +15,23 @@
 
 ## Completed tasks for this week
 
-// Add tasks
-
+- 1st UI component design draft
+  
 ## Tasks in progress
 
-// Add tasks
-
+- Database design document
+- Polished UI component design draft
+- Development environment setup
+- Individual practice for frameworks by making a calculator app 
+- Infrastructure Design (decision)
+  
 ### Test Report
 
 No test report this week because we finished the project plan and have no code written yet.
 
 ### Project Board
 
-// Add project board
-
-![image](image)
+![kanban board for team log week 5](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/96c335af-fe5a-4deb-91a4-db136278d037)
 
 ## Individual Reports
 
