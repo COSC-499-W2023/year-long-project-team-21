@@ -6,16 +6,15 @@ Username: rogeonee
 
 ## My Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Attend and participate in team meetings regarding app UI
+- Set up development environment
+- Learn React Native and Django
 
 ## Completed Features For This Week
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Attended and participated in team meetings regarding app UI
+- Set up development environment
 
 ## Types of Tasks Worked On
 
-// Add screenshot
+![screen wk5](https://imgtr.ee/images/2023/10/09/01a23e5121307406e48aa0a47ac4a951.png)
