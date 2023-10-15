@@ -3,5 +3,4 @@ __pycache__/
 *.pyc
 *.log
 .tmp/
-.dockerignore
 *.sqlite3
