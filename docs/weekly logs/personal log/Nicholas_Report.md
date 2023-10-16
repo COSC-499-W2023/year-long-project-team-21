@@ -1,20 +1,19 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-10/02 to 10/08
+10/09 to 10/15
 
 Username: n3c777
 
 ## My Features For This Week
 
-- Create calculator app with chosen tools
+- Learn chosen tools, mainly react
 - Creating UI design
 
 ## Completed Features For This Week
 
-- Set up React Native
-- Created a simple UI layout prototype (1st draft)
-- Created a full wire frame UI design with figma that is interactable (2nd Draft)
+-created 3rd Draft of UI design
+-working on setting up back end and front end
 
 ## Types of Tasks Worked On
 
-![individual log week 5](https://imgtr.ee/images/2023/10/08/c920f00719639f67d91c8a3c76caeca5.png)
+![individual log week 6](https://imgtr.ee/images/2023/10/16/b93838a7fdebc4c95159c6e9c1d6185b.png)
