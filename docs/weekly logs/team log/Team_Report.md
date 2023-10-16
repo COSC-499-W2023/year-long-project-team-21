@@ -24,6 +24,10 @@ We also started to set up an environment for react native and Django while we st
 - Development environment setup
 - Individual practice for frameworks by making a calculator app 
 - Infrastructure Design (decision)
+
+## Burn Up Chart
+![スクリーンショット 2023-10-15 213144](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/8d79d313-6fe9-4b97-9683-b238ef55ddff)
+
   
 ### Test Report
 
