@@ -1,4 +1,4 @@
-# Team 21 - 10/02 to 10/08
+# Team 21 - 10/09 to 10/15
 
 ## Overview
 
@@ -35,8 +35,8 @@ No test report this week because we finished the project plan and have no code w
 
 ## Individual Reports
 
-1. [Nicholas](../personal%20log/oct%2002%20-%20oct%2008/Nicholas_Report.md)
-2. [Sten](../personal%20log/oct%2002%20-%20oct%2008/Sten_Report.md)
-3. [Gerren](../personal%20log/oct%2002%20-%20oct%2008/Gerren_Report.md)
-4. [Keizo](../personal%20log/oct%2002%20-%20oct%2008/Keizo_Report.md)
-5. [Egor](../personal%20log/oct%2002%20-%20oct%2008/Egor_Report.md)
+1. [Nicholas](../personal%20log/Nicholas_Report.md)
+2. [Sten](../personal%20log/Sten_Report.md)
+3. [Gerren](../personal%20log/Gerren_Report.md)
+4. [Keizo](../personal%20log/Keizo_Report.md)
+5. [Egor](../personal%20log/Egor_Report.md)
