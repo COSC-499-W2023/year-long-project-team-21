@@ -1,20 +1,19 @@
 # Gerren Hunter Personal Weekly Log
 
-10/02 to 10/08
+10/08 to 10/15
 
 Username: CookiedOutMonster
 
 ## My Features For This Week
 
 - Scheduled and led meetings 
-- Created and documented tasks 
-- Gave Nicholas feedback on the figma design.
+- Worked on the development enviornment
 
 ## Completed Features For This Week
 
 - Scheduled and led meetings 
-- Created and documented tasks 
-- Gave Nicholas feedback on the figma design.
+- Dockerized a postgre and django backend.
+- Documented how to get it running. 
 
 ## Types of Tasks Worked On
 
