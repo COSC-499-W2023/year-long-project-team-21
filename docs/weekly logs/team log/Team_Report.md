@@ -1,4 +1,4 @@
-# Team 21 - 10/02 to 10/08
+# Team 21 - 10/09 to 10/15
 
 ## Overview
 
@@ -24,6 +24,10 @@ We also started to set up an environment for react native and Django while we st
 - Development environment setup
 - Individual practice for frameworks by making a calculator app 
 - Infrastructure Design (decision)
+
+## Burn Up Chart
+![スクリーンショット 2023-10-15 213144](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/8d79d313-6fe9-4b97-9683-b238ef55ddff)
+
   
 ### Test Report
 
@@ -35,8 +39,8 @@ No test report this week because we finished the project plan and have no code w
 
 ## Individual Reports
 
-1. [Nicholas](../personal%20log/oct%2002%20-%20oct%2008/Nicholas_Report.md)
-2. [Sten](../personal%20log/oct%2002%20-%20oct%2008/Sten_Report.md)
-3. [Gerren](../personal%20log/oct%2002%20-%20oct%2008/Gerren_Report.md)
-4. [Keizo](../personal%20log/oct%2002%20-%20oct%2008/Keizo_Report.md)
-5. [Egor](../personal%20log/oct%2002%20-%20oct%2008/Egor_Report.md)
+1. [Nicholas](../personal%20log/Nicholas_Report.md)
+2. [Sten](../personal%20log/Sten_Report.md)
+3. [Gerren](../personal%20log/Gerren_Report.md)
+4. [Keizo](../personal%20log/Keizo_Report.md)
+5. [Egor](../personal%20log/Egor_Report.md)
