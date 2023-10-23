@@ -1,19 +1,22 @@
 # Sten Korver Personal Weekly Log
 
-10/02 to 10/08
+10/09 to 10/22 (2 weeks)
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
-* Participate in Monday team meeting
+* Participate team meetings
+* Create ER diagram for database design
+* Feedback for figma UI design
+* Setup Django and Postgres environment in Docker container
+* Research into REST framework
 
 ### Completed Features For This Week:
 
-* None 
-
-* I was away from Wednesday to Sunday in Vancouver.
+* Database ER diagram
+* Feedback for figma UI design
 
 ### Types of Tasks Worked On:
 
-![image](https://imgtr.ee/images/2023/10/08/c66efe3e99c364127ff330089d749aa8.png)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/1341128d-aab8-4c0e-bce7-31cd958c1e2d)
