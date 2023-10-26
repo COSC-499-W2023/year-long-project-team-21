@@ -45,7 +45,6 @@ class TestUserAuth(TestSetUpCreateAccount):
 
         # Extract the token from the response.
         response_token = json.loads(response.content.decode("utf-8"))["token"]
-
         # Query the database for the user ID using the username.
         user_id = User.objects.get(username=self.test_user).id
 
@@ -54,3 +53,14 @@ class TestUserAuth(TestSetUpCreateAccount):
 
         # Assert that the token in the response matches the token in the database.
         self.assertEqual(response_token, str(token))
+
+    def test_user_authentication_with_invalid_credentials(self):
+        # Authenticate using the incorrect credentials
+        response = self.client.post(
+            self.__login_url,
+            {"username": "invalid", "password": "invalid1"},
+            format="json",
+        )
+
+        # Assert that the response status code is 400 Bad Request.
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
