@@ -5,34 +5,32 @@ from .test_setup import TestSetUpCreateAccount
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
-
+"""
+Test cases for views related to user authentication.
+"""
 class TestUserAuth(TestSetUpCreateAccount):
-    """
-    Test cases for views related to user authentication.
-    """
 
     # URL endpoint for token generation/authentication.
     __login_url = reverse("token")
 
+    """
+    Test if posting to the authentication endpoint without a request body
+    results in a 400 Bad Request response.
+    """
     def test_user_authentication_no_body(self):
-        """
-        Test if posting to the authentication endpoint without a request body
-        results in a 400 Bad Request response.
-        """
         response = self.client.post(self.__login_url)
 
         # Assert that the response status code is 400 Bad Request.
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    """
+    Test if posting to the authentication endpoint with valid user
+    credentials returns a 200 OK response and a valid token.
+
+    This test also verifies if the token returned in the response
+    matches the token stored in the database for the authenticated user.
+    """
     def test_user_authentication_with_valid_account(self):
-        """
-        Test if posting to the authentication endpoint with valid user
-        credentials returns a 200 OK response and a valid token.
-
-        This test also verifies if the token returned in the response
-        matches the token stored in the database for the authenticated user.
-        """
-
         # Authenticate using the stored test account credentials.
         response = self.client.post(
             self.__login_url,
