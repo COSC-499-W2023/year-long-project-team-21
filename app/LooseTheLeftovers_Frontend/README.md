@@ -72,6 +72,13 @@ You've successfully run and modified your React Native App. :partying_face:
 
 If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
 
+# Testing 
+
+run on command line following: 
+
+npm install jest
+npm install --save-dev @testing-library/react-native @types/jest @types/react-native
+
 # Learn More
 
 To learn more about React Native, take a look at the following resources:
