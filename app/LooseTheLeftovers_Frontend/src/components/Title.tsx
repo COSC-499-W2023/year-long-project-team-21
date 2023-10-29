@@ -1,27 +1,26 @@
-import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
-interface TitleProps{
-    title: string;
+import React from 'react';
+import {View, StyleSheet, Text, Image} from 'react-native';
+interface TitleProps {
+  title: string;
 }
 
 const Title: React.FC<TitleProps> = ({title}) => {
-    return (
-        <View style = {styles.TitleContainer}>
-            <Text style = {styles.TitleText}>{title}</Text>
-        </View>
-    )
-}
+  return (
+    <View>
+      <Text style={styles.textTitle}>{title}</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    TitleContainer:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        
-    },
-    TitleText:{
-        fontSize: 25,
-    }
-})
+  textTitle: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    paddingRight: 20,
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+});
 
-export default Title
+export default Title;
