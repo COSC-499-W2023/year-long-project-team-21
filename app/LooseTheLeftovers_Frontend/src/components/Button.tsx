@@ -1,10 +1,10 @@
-import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 interface ButtonProps {
   onPress: () => void;
   title: string;
 }
 
-const Button: React.FC<ButtonProps> = ({onPress, title}) => {
+const Button: React.FC<ButtonProps> = ({ onPress, title }) => {
   return (
     <>
       <View style={styles.space} />

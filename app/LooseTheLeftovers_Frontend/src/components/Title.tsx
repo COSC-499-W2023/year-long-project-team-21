@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 interface TitleProps {
   title: string;
 }
 
-const Title: React.FC<TitleProps> = ({title}) => {
+const Title: React.FC<TitleProps> = ({ title }) => {
   return (
     <View style={styles.TitleContainer}>
       <Text style={styles.TitleText}>{title}</Text>
