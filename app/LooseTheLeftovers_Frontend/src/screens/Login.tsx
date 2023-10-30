@@ -1,6 +1,6 @@
 import { View, Text, TextInput, StyleSheet, Alert, SafeAreaView} from "react-native"
 import React, {ChangeEvent, useState} from "react";
-// import axios from 'axios';
+import axios from 'axios';
 import Button from "../components/Button"
 import Header from "../components/Header";
 import Title from "../components/Title";
@@ -17,32 +17,26 @@ const Login = () => {
       if (text1 === '' || text2 === '') {
           Alert.alert('Error', 'Please fill in the credentials.');
       } else {
-          try {
-              console.log("Before request");
+        try {
+          console.log("Before request");
 
-              const response = await fetch("127.0.0.1:8000/users/token", {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                      username: text1,
-                      password: text2,
-                  }),
-              });
-  
-              const data = await response.json();
-              console.log("After request");
-  
-              console.log(response);
-              console.log(data.token);
-              // Check response successful
-              if (response.ok && data.token) {
-                  Alert.alert('Login Successful', `Token: ${data.token}`);
-              } else {
-                  Alert.alert('Error', 'Failed to login or retrieve token.');
-              }
-          } catch (error) {
+          const response = await axios.post("http://127.0.0.1:8000/users/token", {
+              username: text1,
+              password: text2
+          });
+
+          console.log("After request");
+
+          const { data } = response;
+          console.log(data.token);
+
+          // Check response successful
+          if (response.status === 200 && data.token) {
+              Alert.alert('Login Successful', `Token: ${data.token}`);
+          } else {
+              Alert.alert('Error', 'Failed to login or retrieve token.');
+          }
+        } catch (error) {
               console.log("Error during fetch:", error);
               Alert.alert('Error', 'An error occurred while trying to retrieve data.');
           }
