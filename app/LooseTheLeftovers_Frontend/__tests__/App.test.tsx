@@ -1,20 +1,20 @@
-/**
- * @format
- */
+// __tests__/App-test.js
 
-import 'react-native';
 import React from 'react';
-import App from '../App';
-import { NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {render} from '@testing-library/react-native';
+import App from '../App'; // Adjust the path to where your App component is located
 
-// Note: import explicitly to use the types shiped with jest.
-import {it} from '@jest/globals';
+// Mocking Navigation
+jest.mock('@react-navigation/native', () => {
+  return {
+    ...jest.requireActual('@react-navigation/native'),
+    useNavigation: jest.fn(),
+  };
+});
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-
-it('renders correctly', () => {
-  // renderer.create(<App />);
-  <MockedNavigator component={App}/>
+describe('<App />', () => {
+  it('renders without crashing', () => {
+    const {getByText} = render(<App />);
+    expect(getByText('Login')).toBeTruthy();
+  });
 });

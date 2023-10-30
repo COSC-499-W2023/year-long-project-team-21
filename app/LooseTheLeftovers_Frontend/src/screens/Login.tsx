@@ -61,10 +61,10 @@ const Login = () => {
 
     return (
       <SafeAreaView style = {styles.LoginContainer}>
-      <Header image=""/>
-      <InputField placeholder="Username" onChangeText = {input => handleUsername(input)} value = {text1}/>
-      <InputField placeholder="Password" onChangeText = {input => handlePassword(input)} value = {text2}/>
-      <Button title = "Login" onPress={()=>handleButtonOnPress()}/>
+        <Header image=""/>
+        <InputField placeholder="Username" onChangeText = {input => handleUsername(input)} value = {text1}/>
+        <InputField placeholder="Password" onChangeText = {input => handlePassword(input)} value = {text2}/>
+        <Button title = "Login" onPress={()=>handleButtonOnPress()}/>
       </SafeAreaView>
     )
 }
