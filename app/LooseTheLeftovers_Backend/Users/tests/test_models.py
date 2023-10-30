@@ -5,6 +5,9 @@ from rest_framework.authtoken.models import Token
 
 class TestModels(TestSetUpCreateAccount):
     def test_token_creation(self):
+        """
+        Test if created user has authentication token
+        """
         # get user id from test_user
         user_id = CustomUser.objects.get(username=self.test_user).id
         # query authtoken_token to see if token exists for user
