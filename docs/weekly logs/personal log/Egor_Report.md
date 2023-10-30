@@ -1,24 +1,27 @@
 # Egor Bezriadin Personal Weekly Log
 
-10/09 to 10/15
+10/23 to 10/29
 
 Username: rogeonee
 
 ## My Features For This Week
 
-1. **Research:** Secure REST API messaging framework for Django.
-2. **Setup:** Organize the development environment for the frontend (React Native).
-
+1. Code request part of frontend Login page
+2. Code a test for the same part
+3. Research on secure storage of JWT Token
+4. Research on Jest testing framework
 
 ## Completed Features For This Week
 
-- Narrowed down options during research for the messaging framework in Django.
+1. Completed token request for Login page
+2. Completed a test for the same part
+3. Completed a practice calculator app (https://github.com/rogeonee/react-calculator) with React
 
 ## Tasks In Progress
 
-- **Practice Project:** Building a calculator app using React Native.
-- **Learning:** Continued diving into Django and React Native frameworks.
+- Research on secure storage of JWT Token
+- Research on Jest testing framework
 
 ## Types of Tasks Worked On
 
-![screen wk 6](https://imgtr.ee/images/2023/10/16/2533aba48d43c713f3f6309a76ea8e23.png)
+![screen wk 8](https://imgtr.ee/images/2023/10/30/4f40861ec99c68022a14b5d51162722f.png)
