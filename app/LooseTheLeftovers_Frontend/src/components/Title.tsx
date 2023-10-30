@@ -7,7 +7,7 @@ interface TitleProps {
 const Title: React.FC<TitleProps> = ({ title }) => {
   return (
     <View style={styles.TitleContainer}>
-      <Text style={styles.TitleText}>{title}</Text>
+      <Text>{title}</Text>
     </View>
   );
 };
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  TitleText: {
+  titleText: {
     fontSize: 25,
   },
 });

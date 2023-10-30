@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Alert,
-  TextInput,
-  SafeAreaView,
-} from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 interface InputFieldProps {
   placeholder: string;
   onChangeText: (input: string) => void;
@@ -17,7 +9,6 @@ interface InputFieldProps {
 const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
-  value,
 }) => {
   const [text, setText] = useState('');
 
