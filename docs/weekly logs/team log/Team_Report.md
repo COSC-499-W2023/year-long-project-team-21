@@ -2,8 +2,7 @@
 
 ## Overview
 
-For this week, we decided to focus on our app's UI and database design. We had a meeting about the first draft of the UI design and gave feedback for further improvement. 
-We also started to set up an environment for react native and Django while we started to debate if we should use Firebase to skip writing our own API for backend communication.
+This week we started developing the JWT authentication between the front end and the backend and solidiy our database and figma design. We decided to continue to use a custom API. We also worked on some architecture work as well. We are still in the process of administering Pull requests for our features and expect to have everything finished and merged tomorrow for our presentation on Tuesday.
 
 ## Quick reminder for usernames
 
@@ -15,27 +14,33 @@ We also started to set up an environment for react native and Django while we st
 
 ## Completed tasks for this week
 
-- 1st UI component design draft
+- Database design document
+- Figma design document 
   
 ## Tasks in progress
 
-- Database design document
-- Polished UI component design draft
-- Development environment setup
-- Individual practice for frameworks by making a calculator app 
-- Infrastructure Design (decision)
+- Backend Authentication
+- Division of tables into Django apps with User model implentation.
+- Creation of login page with components
+- Creation of instructions page using reusable components
+- API request to backend to get authentication token. On proper retrieval of token, app will navigate to instruction page.
 
 ## Burn Up Chart
-![スクリーンショット 2023-10-15 213144](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/8d79d313-6fe9-4b97-9683-b238ef55ddff)
+![burnup_chart](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/2200318a-3203-4352-a187-f65bdf413442)
 
-  
 ### Test Report
 
-No test report this week because we finished the project plan and have no code written yet.
+Once we implement our pipeline, this will be much more streamlined. 
+
+#### Test for modules (backend)
+![module_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/7abb3098-0165-47c8-8782-174597ae37e8)
+
+#### Test for authentication (backend) 
+![views_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/4e7ade34-e362-4a90-b5e4-7788ce4c9fd2)
 
 ### Project Board
 
-![kanban board for team log week 5](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/96c335af-fe5a-4deb-91a4-db136278d037)
+![project](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/8fe42c12-964f-491b-894b-2e66ed098568)
 
 ## Individual Reports
 
