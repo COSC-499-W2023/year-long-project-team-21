@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 interface HeaderProps {
   image: string;
 }
 
-const Header: React.FC<HeaderProps> = ({image}) => {
+const Header: React.FC<HeaderProps> = ({ image }) => {
   return (
     <View style={styles.header}>
-      <Image source={{uri: image}} style={styles.headerImage} />
+      <Image source={{ uri: image }} style={styles.headerImage} />
     </View>
   );
 };
