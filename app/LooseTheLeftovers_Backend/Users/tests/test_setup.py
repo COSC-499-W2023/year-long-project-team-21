@@ -5,7 +5,9 @@ from Users.models import CustomUser
 class TestSetUpCreateAccount(APITestCase):
     def setUp(self):
         # create temp user
-        self.test_user = CustomUser.objects.create_user(username="test", password="test123", postal_code="V0E1V4")
+        self.test_user = CustomUser.objects.create_user(
+            username="test", password="test123", postal_code="V0E1V4"
+        )
         # save temp user credentials in db
         self.test_account = {
             "username": "test",
