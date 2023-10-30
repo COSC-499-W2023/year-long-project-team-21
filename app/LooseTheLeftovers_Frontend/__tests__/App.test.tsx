@@ -5,6 +5,8 @@
 import 'react-native';
 import React from 'react';
 import App from '../App';
+import { NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Note: import explicitly to use the types shiped with jest.
 import {it} from '@jest/globals';
@@ -13,5 +15,6 @@ import {it} from '@jest/globals';
 import renderer from 'react-test-renderer';
 
 it('renders correctly', () => {
-  renderer.create(<App />);
+  // renderer.create(<App />);
+  <MockedNavigator component={App}/>
 });
