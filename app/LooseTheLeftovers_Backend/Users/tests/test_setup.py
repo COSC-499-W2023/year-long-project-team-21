@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 from Users.models import CustomUser
 
 
-class TestSetUp(APITestCase):
+class TestSetUpCreateAccount(APITestCase):
     def setUp(self):
         # create temp user
         self.test_user = CustomUser.objects.create_user(username="test", password="test123", postal_code="V0E1V4")
