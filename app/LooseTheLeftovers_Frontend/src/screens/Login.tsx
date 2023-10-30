@@ -8,8 +8,8 @@ import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
 
 const Login = () => {
-  const [username, setusername] = useState('');
-  const [password, setpassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   //Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
@@ -42,11 +42,11 @@ const Login = () => {
 
   //Set input text from the text box so that we can handle the credential (username)
   const handleUsername = (input: string) => {
-    setusername(input);
+    setUsername(input);
   };
   //Set input text from the text box so that we can handle the credential (password)
   const handlePassword = (input: string) => {
-    setpassword(input);
+    setPassword(input);
   };
 
   return (
