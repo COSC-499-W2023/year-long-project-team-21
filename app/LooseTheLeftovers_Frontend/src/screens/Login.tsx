@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Alert, SafeAreaView} from "react-native"
+import { StyleSheet, Alert, SafeAreaView} from "react-native"
 import React, {ChangeEvent, useState} from "react";
 import axios from 'axios';
 import Button from "../components/Button"
@@ -8,27 +8,22 @@ import InputField from "../components/InputField";
 
 const Login = () => {
 
-    const [text1, setText1] = useState('');
-    const [text2, setText2] = useState('');
+    const [username, setusername] = useState('');
+    const [password, setpassword] = useState('');
 
     //Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
     const handleButtonOnPress = async () => {
       // later we can preprocess the input type for now, we assume it is string
-      if (text1 === '' || text2 === '') {
+      if (username === '' || password === '') {
           Alert.alert('Error', 'Please fill in the credentials.');
       } else {
         try {
-          console.log("Before request");
-
           const response = await axios.post("http://127.0.0.1:8000/users/token", {
-              username: text1,
-              password: text2
+              username: username,
+              password: password
           });
 
-          console.log("After request");
-
           const { data } = response;
-          console.log(data.token);
 
           // Check response successful
           if (response.status === 200 && data.token) {
@@ -37,7 +32,6 @@ const Login = () => {
               Alert.alert('Error', 'Failed to login or retrieve token.');
           }
         } catch (error) {
-              console.log("Error during fetch:", error);
               Alert.alert('Error', 'An error occurred while trying to retrieve data.');
           }
       }
@@ -45,19 +39,19 @@ const Login = () => {
 
     //Set input text from the text box so that we can handle the credential (username)
     const handleUsername = (input: string) => {
-          setText1(input)
+          setusername(input)
           
     }
     //Set input text from the text box so that we can handle the credential (password)
     const handlePassword = (input:string) => {
-          setText2(input)
+          setpassword(input)
     }
 
     return (
       <SafeAreaView style = {styles.LoginContainer}>
         <Header image=""/>
-        <InputField placeholder="Username" onChangeText = {input => handleUsername(input)} value = {text1}/>
-        <InputField placeholder="Password" onChangeText = {input => handlePassword(input)} value = {text2}/>
+        <InputField placeholder="Username" onChangeText = {input => handleUsername(input)} value = {username}/>
+        <InputField placeholder="Password" onChangeText = {input => handlePassword(input)} value = {password}/>
         <Button title = "Login" onPress={()=>handleButtonOnPress()}/>
       </SafeAreaView>
     )
