@@ -1,22 +1,23 @@
 # Sten Korver Personal Weekly Log
 
-10/09 to 10/22 (2 weeks)
+10/23 to 10/29
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Create ER diagram for database design
-* Feedback for figma UI design
-* Setup Django and Postgres environment in Docker container
-* Research into REST framework
+* Write tests for database setup
+* Setup Django database for App
+    * Create Django models for each table
+    * Create subclass of Django User class to customize table (named CustomUser)
+ 
 
 ### Completed Features For This Week:
 
-* Database ER diagram
-* Feedback for figma UI design
+* Create tests for CustomUser for creating new users
+* Create CustomUser subclass and write code to pass tests
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/1341128d-aab8-4c0e-bce7-31cd958c1e2d)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/26a5f104-d3bd-47fe-b601-14cf2a854b40)
