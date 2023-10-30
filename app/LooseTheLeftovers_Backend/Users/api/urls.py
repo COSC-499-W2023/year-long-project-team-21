@@ -5,5 +5,4 @@ from Users.api.views import HelloWorld
 
 urlpatterns = [
     path("token", obtain_auth_token, name="token"),
-    path("hello-world/", HelloWorld, name="hello_world"),
 ]
