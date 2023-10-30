@@ -1,25 +1,25 @@
 import React from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 interface TitleProps {
   title: string;
 }
 
-const Title: React.FC<TitleProps> = ({title}) => {
+const Title: React.FC<TitleProps> = ({ title }) => {
   return (
-    <View>
-      <Text style={styles.textTitle}>{title}</Text>
+    <View style={styles.TitleContainer}>
+      <Text style={styles.TitleText}>{title}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  textTitle: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    paddingRight: 20,
+  TitleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  TitleText: {
     fontSize: 25,
-    fontWeight: 'bold',
-    color: 'black',
   },
 });
 

@@ -6,12 +6,12 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
-import React, {ChangeEvent, useState} from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
-const Login = ({navigation}: {navigation: any}) => {
+const Login = ({ navigation }: { navigation: any }) => {
   const [text1, setText1] = useState('');
   const [text2, setText2] = useState('');
 
@@ -22,8 +22,6 @@ const Login = ({navigation}: {navigation: any}) => {
       Alert.alert('please fill in the credentials');
     } else {
       //initiate sending request here?
-
-      //navigate to instruction.tsx
       navigation.navigate('Instruction');
     }
   };
