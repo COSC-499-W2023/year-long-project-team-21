@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
+import styles from '../styles/loginStyle';
 
 const Login = () => {
   const [username, setusername] = useState('');
@@ -66,11 +67,4 @@ const Login = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  LoginContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 export default Login;
