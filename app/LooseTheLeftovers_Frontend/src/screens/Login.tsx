@@ -1,9 +1,8 @@
-import { StyleSheet, Alert, SafeAreaView } from 'react-native';
-import React, { ChangeEvent, useState } from 'react';
+import { Alert, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
 import Header from '../components/Header';
-import Title from '../components/Title';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
 
