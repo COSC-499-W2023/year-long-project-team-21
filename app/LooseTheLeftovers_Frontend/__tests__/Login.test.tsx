@@ -2,9 +2,15 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import Login from '../src/screens/Login';
 
+const navigation = {
+  navigate: jest.fn(), // Mocking the navigate function
+};
+
 describe('Login component', () => {
   it('renders correctly', () => {
-    const { getByPlaceholderText, getByText } = render(<Login />);
+    const { getByPlaceholderText, getByText } = render(
+      <Login navigation={navigation} />,
+    );
 
     // Check if the username and password input fields are rendered
     expect(getByPlaceholderText('Username')).toBeTruthy();
@@ -15,7 +21,7 @@ describe('Login component', () => {
   });
 
   it('handles input changes', () => {
-    const { getByPlaceholderText } = render(<Login />);
+    const { getByPlaceholderText } = render(<Login navigation={navigation} />);
 
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
@@ -28,7 +34,9 @@ describe('Login component', () => {
   });
 
   it('handles button press', async () => {
-    const { getByPlaceholderText, getByText } = render(<Login />);
+    const { getByPlaceholderText, getByText } = render(
+      <Login navigation={navigation} />,
+    );
 
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');

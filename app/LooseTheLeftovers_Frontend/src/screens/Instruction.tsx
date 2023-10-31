@@ -13,10 +13,17 @@ function Instruction() {
         </Text>
         <Text style={[{ top: 140 }]}>
           <View>
-            <Title title=" The + button allows you to create " />
+            <Title title=" The + button allows you to create" />
           </View>
+        </Text>
+        <Text style={[{ top: 140 }]}>
           <View>
-            <Title title="You can see how long other people's posts an advertisment to share your food" />
+            <Title title="an advertisment to share your food" />
+          </View>
+        </Text>
+        <Text style={[{ top: 170 }]}>
+          <View>
+            <Title title="You can see how long other people's posts" />
           </View>
         </Text>
         <Text style={[{ top: 170 }]}>
@@ -30,7 +37,14 @@ function Instruction() {
         <View>
           <Text style={[{ top: 200 }]}>
             <View>
-              <Title title="You can view your account to see your current posts to edit or delete them " />
+              <Title title="You can view your account to see your " />
+            </View>
+          </Text>
+        </View>
+        <View>
+          <Text style={[{ top: 200 }]}>
+            <View>
+              <Title title="current posts to edit or delete them " />
             </View>
           </Text>
         </View>
