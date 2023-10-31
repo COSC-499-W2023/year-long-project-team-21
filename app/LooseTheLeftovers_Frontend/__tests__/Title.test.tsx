@@ -1,4 +1,5 @@
 import Title from '../src/components/Title';
+
 import { render } from '@testing-library/react-native';
 
 describe('Title component', () => {
@@ -14,3 +15,4 @@ describe('Title component', () => {
     expect(titleElement).toBeDefined();
   });
 });
+
