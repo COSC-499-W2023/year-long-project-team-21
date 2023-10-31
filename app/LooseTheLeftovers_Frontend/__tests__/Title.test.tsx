@@ -1,5 +1,5 @@
 import Title from '../src/components/Title';
-import { fireEvent, render } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 
 describe('Title component', () => {
   test('test Title component: render properly with provided tile', () => {
