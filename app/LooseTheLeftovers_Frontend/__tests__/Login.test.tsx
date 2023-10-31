@@ -61,7 +61,7 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://127.0.0.1:8000/users/token",
+        "http://10.0.2.2:8000/users/token",
         {
           username: 'testuser',
           password: 'testpassword'
@@ -96,7 +96,7 @@ describe('Login component', () => {
 
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://127.0.0.1:8000/users/token",
+        "http://10.0.2.2:8000/users/token",
         {
           username: 'testuser',
           password: 'testpassword'
@@ -134,7 +134,7 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://127.0.0.1:8000/users/token",
+        "http://10.0.2.2:8000/users/token",
         {
           username: 'wrongtestuser',
           password: 'wrongtestpassword'
