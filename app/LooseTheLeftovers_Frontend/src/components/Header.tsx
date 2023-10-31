@@ -1,9 +1,28 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+
+import { View, Image } from 'react-native';
+import styles from '../styles/headerStyles';
+
+/**
+ * HeaderProps interface for the Header component.
+ *
+ * @interface
+ * @property {string} image - URL of the image to be displayed in the header.
+ */
 interface HeaderProps {
   image: string;
 }
 
+/**
+ * Header component that displays an image.
+ *
+ * @component
+ * @param {HeaderProps} props - The props for the Header component.
+ * @param {string} props.image - URL of the image to be displayed in the header.
+ *
+ * @example
+ * <Header image="https://example.com/my-image.jpg" />
+ */
 const Header: React.FC<HeaderProps> = ({ image }) => {
   return (
     <View style={styles.header}>
@@ -15,25 +34,5 @@ const Header: React.FC<HeaderProps> = ({ image }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'lightblue',
-    padding: 10,
-    justifyContent: 'center',
-  },
-  headerImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
 
 export default Header;

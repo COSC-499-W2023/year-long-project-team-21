@@ -1,3 +1,4 @@
+
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -6,7 +7,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  titleText: {
-    fontSize: 25,
-  },
 });
+
+export default styles;
