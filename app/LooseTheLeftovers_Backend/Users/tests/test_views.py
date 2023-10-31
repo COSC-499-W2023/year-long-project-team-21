@@ -39,6 +39,7 @@ class TestUserAuth(TestSetUpCreateAccount):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Extract the token from the response.
         response_token = json.loads(response.content.decode("utf-8"))["token"]
+        print(response_token)
         # Query the database for the user ID using the username.
         user_id = CustomUser.objects.get(username=self.test_user).id
         # Retrieve the authentication token for the user from the database.

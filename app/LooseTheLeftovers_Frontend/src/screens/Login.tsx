@@ -29,7 +29,7 @@ const Login = () => {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/users/token', {
+        const response = await axios.post('http://10.0.2.2:8000/users/token', {
           username: username,
           password: password,
         });
@@ -47,6 +47,7 @@ const Login = () => {
           'Error',
           'An error occurred while trying to retrieve data.',
         );
+        console.log(error)
       }
     }
   };
