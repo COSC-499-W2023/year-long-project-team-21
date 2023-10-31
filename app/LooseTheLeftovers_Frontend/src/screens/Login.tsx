@@ -6,6 +6,18 @@ import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
 
+/**
+ * Login component.
+ *
+ * A component for capturing and authenticating user credentials against a backend.
+ *
+ * @component
+ * @returns {React.Node} The rendered component.
+ *
+ * @example
+ * // Usage
+ * <Login />
+ */
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
