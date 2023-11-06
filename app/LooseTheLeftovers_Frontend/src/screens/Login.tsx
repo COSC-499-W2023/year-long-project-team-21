@@ -72,6 +72,7 @@ const Login = () => {
         placeholder="Password"
         onChangeText={input => handlePassword(input)}
         value={password}
+        secureTextEntry={true}
       />
       <Button title="Login" onPress={() => handleButtonOnPress()} />
     </SafeAreaView>

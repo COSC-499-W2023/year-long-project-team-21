@@ -4,6 +4,7 @@ interface InputFieldProps {
   placeholder: string;
   onChangeText: (input: string) => void;
   value: string | number;
+  secureTextEntry?: boolean;
 }
 import styles from '../styles/inputFieldStyles';
 
@@ -23,6 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
   value,
+  secureTextEntry = false,
 }) => {
   const [text, setText] = useState('');
 
@@ -46,6 +48,7 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}
+        secureTextEntry={secureTextEntry}
       />
     </>
   );
