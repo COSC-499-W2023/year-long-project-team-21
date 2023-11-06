@@ -1,23 +1,22 @@
 # Sten Korver Personal Weekly Log
 
-10/23 to 10/29
+10/30 to 11/05
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Write tests for database setup
-* Setup Django database for App
-    * Create Django models for each table
-    * Create subclass of Django User class to customize table (named CustomUser)
+* Give mini presentation
+* Write tests for database models/tables
+* Create Django models for database
  
 
 ### Completed Features For This Week:
 
-* Create tests for CustomUser for creating new users
-* Create CustomUser subclass and write code to pass tests
+* Mini presentation
+* More tests for database models
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/26a5f104-d3bd-47fe-b601-14cf2a854b40)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/3a4f9ad1-a12c-457f-a438-9fde9476cb57)
