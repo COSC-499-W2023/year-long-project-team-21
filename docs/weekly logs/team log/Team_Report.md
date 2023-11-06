@@ -2,7 +2,7 @@
 
 ## Overview
 
-This week we started developing the JWT authentication between the front end and the backend and solidiy our database and figma design. We decided to continue to use a custom API. We also worked on some architecture work as well. We are still in the process of administering Pull requests for our features and expect to have everything finished and merged tomorrow for our presentation on Tuesday.
+After completeting the JWT authentication for our weekly presentation we decided that our next course of action was getting our UI similar to the mockup design. We decided for this sprint to try and divide the work based on writing components that we can reuse throughout the app.  We decided to go down this route as we wanted to ensure we are only writing code once and give each member some practice and some feedback using React. This sprint is rather small and will have a meeting soon to discuss how this all went. On the backend side, we are working on processing a POST request to users/ that will create and register a new user. 
 
 ## Quick reminder for usernames
 
@@ -14,16 +14,13 @@ This week we started developing the JWT authentication between the front end and
 
 ## Completed tasks for this week
 
-- Database design document
-- Figma design document 
+- Presentation
+- Components for front end including tests and documentation. 
   
 ## Tasks in progress
 
-- Backend Authentication
-- Division of tables into Django apps with User model implentation.
-- Creation of login page with components
-- Creation of instructions page using reusable components
-- API request to backend to get authentication token. On proper retrieval of token, app will navigate to instruction page.
+- Backend registartion
+- Business logic to process register and login pages.
 
 ## Burn Up Chart
 ![burnup_chart](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/2200318a-3203-4352-a187-f65bdf413442)
