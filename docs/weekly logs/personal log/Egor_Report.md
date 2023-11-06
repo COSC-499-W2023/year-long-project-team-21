@@ -1,27 +1,26 @@
 # Egor Bezriadin Personal Weekly Log
 
-10/23 to 10/29
+10/30 to 11/05
 
 Username: rogeonee
 
 ## My Features For This Week
 
-1. Code request part of frontend Login page
-2. Code a test for the same part
-3. Research on secure storage of JWT Token
-4. Research on Jest testing framework
+1. Implement secure storage of JWT token
+2. InputField component
+3. Icon component
+4. Live demo preparation
 
 ## Completed Features For This Week
 
-1. Completed token request for Login page
-2. Completed a test for the same part
-3. Completed a practice calculator app (https://github.com/rogeonee/react-calculator) with React
+1. InputField component
+2. Live demo on presentation
 
 ## Tasks In Progress
 
-- Research on secure storage of JWT Token
-- Research on Jest testing framework
+- Secure storage for JWT
+- Icon component
 
 ## Types of Tasks Worked On
 
-![screen wk 8](https://imgtr.ee/images/2023/10/30/4f40861ec99c68022a14b5d51162722f.png)
+![week 9](https://imgtr.ee/images/2023/11/06/05b1f6d81523b198a3b3b361b14fc0af.png)
