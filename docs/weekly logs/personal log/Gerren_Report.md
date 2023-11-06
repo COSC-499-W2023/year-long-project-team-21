@@ -1,27 +1,19 @@
 # Gerren Hunter Personal Weekly Log
 
-10/22 to 10/29
+10/29 to 11/05
 
 Username: CookiedOutMonster
 
 ## My Features For This Week
 
-- Scheduled and led meetings 
-- Backend architecture design
-- Researched REST api techniques
-- Impleneted JWT authentication w/ tests
-- Helped other people with their code
-- Code review
+- Scheduled meetings
+- Worked on api, code reviewed, and architecutre. 
 
 ## Completed Features For This Week
 
-- Scheduled and led meetings 
-- Backend architecture design
-- Researched REST api techniques
-- Impleneted JWT authentication w/ tests
-- Just waiting for pull requests to come in 
+- Scheduled meetings
+- Worked on api, code reviewed, and architecutre. 
 
 ## Types of Tasks Worked On
 
-![report person](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/2d1b4038-68dc-4135-a621-fc4620c7b8a3)
-
+![week9](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/e39c50c6-04d4-4edc-a346-4a8d970e9041)
