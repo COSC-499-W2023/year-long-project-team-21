@@ -2,7 +2,7 @@
 
 ## Overview
 
-After completeting the JWT authentication for our weekly presentation we decided that our next course of action was getting our UI similar to the mockup design. We decided for this sprint to try and divide the work based on writing components that we can reuse throughout the app.  We decided to go down this route as we wanted to ensure we are only writing code once and give each member some practice and some feedback using React. This sprint is rather small and will have a meeting soon to discuss how this all went. On the backend side, we are working on processing a POST request to users/ that will create and register a new user. 
+After completeting the JWT authentication for our weekly presentation we decided that our next course of action was getting our UI similar to the mockup design. We decided for this sprint to try and divide the work based on writing components that we can reuse throughout the app.  We decided to go down this route as we wanted to ensure we are only writing code once and give each member some practice and some feedback using React. This sprint is rather small and will have a meeting soon to discuss how this all went. On the backend side, we are working on processing a POST request to users/ that will create and register a new user. We also made some light changes to the Figma design based on presentation feedback. We are also assessing how to setup a pipeline. 
 
 ## Quick reminder for usernames
 
@@ -15,12 +15,14 @@ After completeting the JWT authentication for our weekly presentation we decided
 ## Completed tasks for this week
 
 - Presentation
-- Components for front end including tests and documentation. 
+- Components for front end including tests and documentation.
+- Small figma design changes. 
   
 ## Tasks in progress
 
 - Backend registartion
 - Business logic to process register and login pages.
+- Pipeline
 
 ## Burn Up Chart
 ![burnup_chart](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/2200318a-3203-4352-a187-f65bdf413442)
