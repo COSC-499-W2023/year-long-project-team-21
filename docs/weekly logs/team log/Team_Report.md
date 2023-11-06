@@ -1,4 +1,4 @@
-# Team 21 - 10/22 to 10/29
+# Team 21 - 10/30 to 11/05
 
 ## Overview
 
@@ -25,7 +25,7 @@ After completeting the JWT authentication for our weekly presentation we decided
 - Pipeline
 
 ## Burn Up Chart
-![burnup_chart](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/2200318a-3203-4352-a187-f65bdf413442)
+![week9 burnup](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b0ace1fc-947b-4b99-84b7-7eabd0623bff)
 
 ### Test Report
 
@@ -38,8 +38,8 @@ Once we implement our pipeline, this will be much more streamlined.
 ![views_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/4e7ade34-e362-4a90-b5e4-7788ce4c9fd2)
 
 ### Project Board
+![week9 taskboard](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/3c439a0e-1fe0-41f6-a5ae-e90bd7384bdb)
 
-![project](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/8fe42c12-964f-491b-894b-2e66ed098568)
 
 ## Individual Reports
 
