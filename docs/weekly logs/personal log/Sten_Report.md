@@ -1,19 +1,22 @@
 # Sten Korver Personal Weekly Log
 
-10/02 to 10/08
+10/30 to 11/05
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
-* Participate in Monday team meeting
+* Participate team meetings
+* Give mini presentation
+* Write tests for database models/tables
+* Create Django models for database
+ 
 
 ### Completed Features For This Week:
 
-* None 
-
-* I was away from Wednesday to Sunday in Vancouver.
+* Mini presentation
+* More tests for database models
 
 ### Types of Tasks Worked On:
 
-![image](https://imgtr.ee/images/2023/10/08/c66efe3e99c364127ff330089d749aa8.png)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/3a4f9ad1-a12c-457f-a438-9fde9476cb57)

@@ -1,10 +1,12 @@
+
 import { Alert, SafeAreaView } from 'react-native';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
+
 
 /**
  * Login component.
@@ -18,7 +20,7 @@ import styles from '../styles/loginStyle';
  * // Usage
  * <Login />
  */
-const Login = () => {
+const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -29,7 +31,7 @@ const Login = () => {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/users/token', {
+        const response = await axios.post('http://10.0.2.2:8000/users/token', {
           username: username,
           password: password,
         });
@@ -38,6 +40,8 @@ const Login = () => {
 
         // Check response successful
         if (response.status === 200 && data.token) {
+          //initiate sending request here?
+          navigation.navigate('Instruction');
           Alert.alert('Login Successful', `Token: ${data.token}`);
         } else {
           Alert.alert('Error', 'Failed to login or retrieve token.');
@@ -47,6 +51,7 @@ const Login = () => {
           'Error',
           'An error occurred while trying to retrieve data.',
         );
+        console.log(error)
       }
     }
   };
@@ -77,5 +82,6 @@ const Login = () => {
     </SafeAreaView>
   );
 };
+
 
 export default Login;

@@ -1,25 +1,25 @@
 # Keizo Kato Personal Weekly Log
 
-10/08 to 10/15
+10/30 to 11/05
 
 Username: Keizo410
 
 ## My Features For This Week
 
-- Practicing frameworks by creating a calculator app.
+- Implementing the Login screen with full design. 
+- Giving a presentation.
+- Helping with task assignments for the next sprint.
 
 ## Completed Features For This Week
 
-- none
+- Giving a presentation
+- Helping with task assignments. 
 
 ## Features in progress
 
-- Set up the environment for the backend (Django) with dockerizing. 
-- Error shooting with my docker system.
-- Practicing the framework
-  
+-  Implementing the components that are compatible with our actual UI.
+-  Implementing the Login screen with full design. 
 
 ## Types of Tasks Worked On
 
-![スクリーンショット 2023-10-15 202611](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/40b2b6f2-9bd4-4c40-b36b-f4170233f0fd)
-
+![indiv log week 9](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/15ee7e7a-0877-452d-9da6-8b84c8fb448b)

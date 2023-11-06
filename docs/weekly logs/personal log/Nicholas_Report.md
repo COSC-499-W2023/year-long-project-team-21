@@ -1,19 +1,24 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-10/09 to 10/15
+10/30 to 11/5
 
 Username: n3c777
 
 ## My Features For This Week
 
-- Learn chosen tools, mainly react
-- Creating UI design
+- Help Present the frist presentation
+  -Finish Instructions page
 
 ## Completed Features For This Week
 
--created 3rd Draft of UI design
--working on setting up back end and front end
+-Presented the the presenation
+-Instructions page completed
+-Plan next sprint
+
+## Features in progress
+
+- Implementing the logo
 
 ## Types of Tasks Worked On
 
-![individual log week 6](https://imgtr.ee/images/2023/10/16/b93838a7fdebc4c95159c6e9c1d6185b.png)
+![individual log week 9](https://imgtr.ee/images/2023/11/06/ef9db0906950277c17985dfebb10f17f.png)

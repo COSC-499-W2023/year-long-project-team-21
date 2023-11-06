@@ -1,20 +1,19 @@
 # Gerren Hunter Personal Weekly Log
 
-10/08 to 10/15
+10/29 to 11/05
 
 Username: CookiedOutMonster
 
 ## My Features For This Week
 
-- Scheduled and led meetings 
-- Worked on the development enviornment
+- Scheduled meetings
+- Worked on api, code reviewed, and architecutre. 
 
 ## Completed Features For This Week
 
-- Scheduled and led meetings 
-- Dockerized a postgre and django backend.
-- Documented how to get it running. 
+- Scheduled meetings
+- Worked on api, code reviewed, and architecutre. 
 
 ## Types of Tasks Worked On
 
-![Screen shot week 5](https://imgtr.ee/images/2023/10/08/dc1f14921b21d00bea1c48de8185dbfa.png)
+![week9](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/e39c50c6-04d4-4edc-a346-4a8d970e9041)
