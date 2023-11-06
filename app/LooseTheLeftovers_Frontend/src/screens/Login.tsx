@@ -1,6 +1,7 @@
 import { Alert, SafeAreaView } from 'react-native';
 import React, { useState } from 'react';
 import axios from 'axios';
+import Config from 'react-native-config';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
@@ -22,14 +23,21 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  //Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
+  // Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
     // later we can preprocess the input type for now, we assume it is string
     if (username === '' || password === '') {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/users/token', {
+        const apiUrl = Config.API_TOKEN!;
+      
+        // Throw an error if API_TOKEN is missing in .env file
+        if (!apiUrl) {
+          throw new Error('API_TOKEN is not defined in the .env file.');
+        }
+
+        const response = await axios.post(apiUrl, {
           username: username,
           password: password,
         });
