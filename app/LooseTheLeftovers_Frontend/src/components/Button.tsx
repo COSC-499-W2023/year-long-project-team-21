@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, View } from 'react-native';
 import styles from '../styles/buttonStyles';
+import React from 'react';
 
 /**
  * ButtonProps interface for the Button component.
