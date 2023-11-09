@@ -1,4 +1,5 @@
 import InputField from '../src/components/InputField';
+
 import { fireEvent, render } from '@testing-library/react-native';
 test('mock random text input and check the state update', () => {
   //void
@@ -21,3 +22,4 @@ test('mock random text input and check the state update', () => {
   expect(inputField.props.value).toBe('New Text');
   expect(mockOnChangeText).toHaveBeenCalledWith('New Text');
 });
+

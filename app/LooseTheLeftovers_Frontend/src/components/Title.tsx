@@ -25,7 +25,7 @@ interface TitleProps {
 const Title: React.FC<TitleProps> = ({ title }) => {
   return (
     <View style={styles.TitleContainer}>
-      <Text style={styles.TitleText}>{title}</Text>
+      <Text>{title}</Text>
     </View>
   );
 };

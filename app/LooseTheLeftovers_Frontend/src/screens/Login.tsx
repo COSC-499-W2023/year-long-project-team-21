@@ -1,11 +1,13 @@
+
 import { Alert, SafeAreaView } from 'react-native';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import Config from 'react-native-config';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
+
 
 /**
  * Login component.
@@ -19,7 +21,7 @@ import styles from '../styles/loginStyle';
  * // Usage
  * <Login />
  */
-const Login = () => {
+const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -46,6 +48,8 @@ const Login = () => {
 
         // Check response successful
         if (response.status === 200 && data.token) {
+          //initiate sending request here?
+          navigation.navigate('Instruction');
           Alert.alert('Login Successful', `Token: ${data.token}`);
         } else {
           Alert.alert('Error', 'Failed to login or retrieve token.');
@@ -55,6 +59,7 @@ const Login = () => {
           'Error',
           'An error occurred while trying to retrieve data.',
         );
+        console.log(error)
       }
     }
   };
@@ -86,5 +91,6 @@ const Login = () => {
     </SafeAreaView>
   );
 };
+
 
 export default Login;
