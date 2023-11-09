@@ -9,14 +9,15 @@ describe('Icon Component Tests', () => {
     const localImageSource = require('../src/assets/test-home.png');
 
     const { getByTestId } = render(
-      <Icon 
-        source={localImageSource} 
-        size={30} 
+      <Icon
+        source={localImageSource}
+        size={30}
         onPress={mockOnPress}
         testID="icon-test"
-      />
+      />,
     );
 
+    // icon pressed
     const icon = getByTestId('icon-test');
     fireEvent.press(icon);
 
@@ -28,14 +29,15 @@ describe('Icon Component Tests', () => {
     const remoteImageSource = { uri: Config.ICON_TEST_URL };
 
     const { getByTestId } = render(
-      <Icon 
-        source={remoteImageSource} 
-        size={30} 
+      <Icon
+        source={remoteImageSource}
+        size={30}
         onPress={mockOnPress}
         testID="icon-test-remote"
-      />
+      />,
     );
 
+    // icon pressed
     const icon = getByTestId('icon-test-remote');
     fireEvent.press(icon);
 
