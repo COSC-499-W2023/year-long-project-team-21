@@ -15,6 +15,7 @@ test('mock random text input and check the state update', () => {
 
   const inputField = getByPlaceholderText(placeholder_test);
 
+  // write text
   fireEvent.changeText(inputField, 'New Text');
 
   expect(inputField.props.value).toBe('New Text');
