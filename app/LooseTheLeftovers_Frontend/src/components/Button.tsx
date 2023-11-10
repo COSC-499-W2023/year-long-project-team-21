@@ -8,6 +8,9 @@ import React from 'react';
  * @interface
  * @property {() => void} onPress - Callback function executed when the button is pressed.
  * @property {string} title - Text displayed on the button.
+ * @property {string} textColor - choose text color
+ * @property {number} buttonSize - Choose button size (width)
+ * @property {number} textSize - Choose text size
  */
 interface ButtonProps {
   onPress: () => void;
