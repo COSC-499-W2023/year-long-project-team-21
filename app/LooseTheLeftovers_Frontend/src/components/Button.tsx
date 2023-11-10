@@ -51,12 +51,12 @@ const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, 
   }
 
   return (
-    <SafeAreaView>
+    <>
       <View style={styles.space} />
       <TouchableOpacity style={[styles.button,buttonStyles]} onPress={onPress}>
         <Text style={[styles.buttonText, textStyles]}>{title}</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </>
   );
 };
 
