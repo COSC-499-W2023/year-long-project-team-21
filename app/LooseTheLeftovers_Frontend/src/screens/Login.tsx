@@ -1,12 +1,11 @@
-
 import { Alert, SafeAreaView } from 'react-native';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
-
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 /**
  * Login component.
@@ -24,9 +23,9 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  //Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
+  // Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
-    // later we can preprocess the input type for now, we assume it is string
+    // Later we can preprocess the input type for now, we assume it is string
     if (username === '' || password === '') {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
@@ -40,7 +39,7 @@ const Login = ({ navigation }: { navigation: any }) => {
 
         // Check response successful
         if (response.status === 200 && data.token) {
-          //initiate sending request here?
+          await storeJWT(data.token);
           navigation.navigate('Instruction');
           Alert.alert('Login Successful', `Token: ${data.token}`);
         } else {
@@ -51,16 +50,25 @@ const Login = ({ navigation }: { navigation: any }) => {
           'Error',
           'An error occurred while trying to retrieve data.',
         );
-        console.log(error)
+        console.log(error);
       }
     }
   };
 
-  //Set input text from the text box so that we can handle the credential (username)
+  async function storeJWT(token: string) {
+    try {
+      await EncryptedStorage.setItem('user_token', token);
+    } catch (error) {
+      // Error on the native side
+      Alert.alert('Error', 'Failed to store the token securely.');
+    }
+  }
+
+  // Set input text from the text box so that we can handle the credential (username)
   const handleUsername = (input: string) => {
     setUsername(input);
   };
-  //Set input text from the text box so that we can handle the credential (password)
+  // Set input text from the text box so that we can handle the credential (password)
   const handlePassword = (input: string) => {
     setPassword(input);
   };
@@ -82,6 +90,5 @@ const Login = ({ navigation }: { navigation: any }) => {
     </SafeAreaView>
   );
 };
-
 
 export default Login;
