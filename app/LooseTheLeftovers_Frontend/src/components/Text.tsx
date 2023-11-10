@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import styles from '../styles/titleStyles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /**
  * TextProps interface for the Text component.
  *
  * @interface
- * @property {string} texts - Text to be displayed as the Text.
- * @property {number} textxSize
+ * @property {string} texts -  displays the Text.
+ * @property {number} textxSize -changes the text size
  * @property {() => void} onPress - Callback function executed when the button is pressed.
  */
 interface TextsProps {
@@ -15,7 +16,7 @@ interface TextsProps {
   textsSize?: number;
   textsColor?: string;
   position?: string;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 /**
@@ -48,11 +49,11 @@ const Texts: React.FC<TextsProps> = ({
   };
 
   return (
-    <Pressable onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.TitleContainer}>
         <Text style={[styles.TitleText, textsStyles]}>{texts}</Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
