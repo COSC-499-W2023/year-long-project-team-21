@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text} from 'react-native';
 import styles from '../styles/titleStyles';
 
 /**
@@ -8,6 +8,8 @@ import styles from '../styles/titleStyles';
  * @interface
  * @property {string} title - Text to be displayed as the title.
  * @property {number} titleSize - Text size for the title.
+ * @property {string} titleColor - Text color for the title
+ * @property {string} position - Text position for the title
  */
 interface TitleProps {
   title: string;
