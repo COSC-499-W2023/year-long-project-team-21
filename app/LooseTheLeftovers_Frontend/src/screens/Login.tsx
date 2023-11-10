@@ -6,7 +6,6 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
-import Title from '../components/Title';
 
 
 /**
@@ -67,7 +66,6 @@ const Login = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-  <>
     <SafeAreaView style={styles.LoginContainer}>
       <Header image="" />
       <InputField
@@ -82,7 +80,6 @@ const Login = ({ navigation }: { navigation: any }) => {
       />
       <Button title="Login" onPress={() => handleButtonOnPress()} />
     </SafeAreaView>
-  </>
   );
 };
 
