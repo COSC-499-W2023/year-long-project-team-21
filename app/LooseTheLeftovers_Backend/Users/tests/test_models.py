@@ -1,6 +1,8 @@
 from .test_setup import TestSetUpCreateAccount
 from Users.models import CustomUser
 from rest_framework.authtoken.models import Token
+from django.test import Client
+from django.urls import reverse
 
 
 class TestModels(TestSetUpCreateAccount):
@@ -29,13 +31,24 @@ class TestModels(TestSetUpCreateAccount):
         postal_code = CustomUser.objects.get(username=self.test_user).postal_code
         self.assertEqual(postal_code, "V0E1V4")
 
-    def test_update_postal_code_user(self):
+    def test_update_postal_code(self):
         """
         Test if a field (postal_code) can be updated for existing user
         """
-        pass
+        client = Client()
+        data = {
+            "username": "test", 
+            "postal_code": "V1X1H0"
+        }
+        response = client.post(
+            reverse("users"), 
+            data
+        )
 
-    def test_add_email_user(self):
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.test_user.postal_code, "V1X1H0")
+
+    def test_add_email(self):
         """
         Test if a field that is blank can be filled in after account creation
         """
