@@ -4,6 +4,7 @@ from rest_framework import status
 from .test_setup import TestSetUpCreateAccount
 from Users.models import CustomUser
 from rest_framework.authtoken.models import Token
+from rest_framework.test import APITestCase
 
 """
 Test cases for views related to user authentication.
@@ -39,7 +40,6 @@ class TestUserAuth(TestSetUpCreateAccount):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Extract the token from the response.
         response_token = json.loads(response.content.decode("utf-8"))["token"]
-        print(response_token)
         # Query the database for the user ID using the username.
         user_id = CustomUser.objects.get(username=self.test_user).id
         # Retrieve the authentication token for the user from the database.
@@ -61,3 +61,37 @@ class TestUserAuth(TestSetUpCreateAccount):
 
         # Assert that the response status code is 400 Bad Request.
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TestUserCreation(APITestCase):
+    # URL endpoint for registering User
+    __register_url = reverse("register")
+
+    def query_and_test_user(self, username):
+        try:
+            user = CustomUser.objects.get(username="test123")
+            self.assertIsNotNone(user)
+        except CustomUser.DoesNotExist:
+            self.fail("User does not exist")
+
+    def test_creating_new_user(self):
+        """
+        Test sending a POST request with valid credentials to create a new user. Expecting 200 as the response.
+        """
+
+        # send a post request, save response
+        response = self.client.post(
+            self.__register_url,
+            {
+                "email": "test@123.com",
+                "username": "test123",
+                "password": "testcase12",
+                "verify_password": "testcase12",
+            },
+            format="json",
+        )
+
+        # test if appropriate response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # check if user in the database
+        self.query_and_test_user("test123")
