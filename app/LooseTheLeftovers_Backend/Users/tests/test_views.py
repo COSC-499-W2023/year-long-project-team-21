@@ -71,10 +71,12 @@ class TestUserCreation(APITestCase):
         try:
             user = CustomUser.objects.get(username="test123")
             self.assertIsNotNone(user)
+            return user.id
         except CustomUser.DoesNotExist:
             self.fail("User does not exist")
+            return None
 
-    def test_creating_new_user(self):
+    def test_creating_new_user_correct_fields(self):
         """
         Test sending a POST request with valid credentials to create a new user. Expecting 200 as the response.
         """
@@ -94,4 +96,30 @@ class TestUserCreation(APITestCase):
         # test if appropriate response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # check if user in the database
-        self.query_and_test_user("test123")
+        user_id = self.query_and_test_user("test123")
+        # check if correct token is in response
+        if user_id is not None:
+            # retrieve response token
+            response_token = json.loads(response.content.decode("utf-8"))["token"]
+            # query token in database based on id
+            token = Token.objects.get(user_id=user_id)
+            self.assertEqual(response_token, str(token))
+        # delete user
+        user_id.delete()
+
+    def test_creating_new_user_wrong_email(self):
+        """
+        Test sending a POST request with valid credentials to create a new user. Expecting 200 as the response.
+        """
+        response = self.client.post(
+            self.__register_url,
+            {
+                "email": "test",
+                "username": "test123",
+                "password": "testcase12",
+                "verify_password": "testcase12",
+            },
+            format="json",
+        )
+
+        print(response)
