@@ -1,13 +1,16 @@
 from rest_framework.test import APITestCase
-from Users.models import CustomUser
+from ..models import CustomUser
+from django.test.client import RequestFactory
 
 
 class TestSetUpCreateAccount(APITestCase):
     def setUp(self):
+        # create instance of RequestFactory to similate requests
+        self.factory = RequestFactory()
         # create temp user
         self.test_user = CustomUser.objects.create_user(
             username="test", password="test123", postal_code="V0E1V4"
-        )
+        ) 
         # save temp user credentials in db
         self.test_account = {
             "username": "test",
