@@ -8,9 +8,6 @@ import styles from '../styles/titleStyles';
  * @interface
  * @property {string} title - Text to be displayed as the title.
  */
-interface TitleProps {
-  title: string;
-}
 
 /**
  * Title component.

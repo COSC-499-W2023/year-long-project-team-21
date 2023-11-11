@@ -3,13 +3,13 @@ import { View, Text } from 'react-native';
 import styles from '../styles/logoStyles';
 
 /**
- * Logo Props interface for the Logo component.
+ * Logo Props interface for the logo component.
  *
  * @interface
- * @property {string} Logo - Text to be displayed as the logo.
+ * @param {number} props.LogoSize - change the size of a logo
  */
 interface LogoProps {
-  Logo: string;
+  LogoSize?: number;
 }
 
 /**

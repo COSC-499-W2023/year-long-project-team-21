@@ -10,7 +10,7 @@ describe('Title component', () => {
     const logoTitle = 'LosetheLeftovers';
 
     //render Title component
-    const { getByText } = render(<Logo Logo={logoTitle} />);
+    const { getByText } = render(<Logo />);
 
     //Assert
     const titleElement = getByText(logoTitle);
