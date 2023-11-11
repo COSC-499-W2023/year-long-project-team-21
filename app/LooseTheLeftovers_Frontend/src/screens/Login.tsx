@@ -1,4 +1,3 @@
-
 import { Alert, SafeAreaView } from 'react-native';
 import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
@@ -6,8 +5,7 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
-import Title from '../components/Title';
-
+import Icon from '../components/Icon';
 
 /**
  * Login component.
@@ -25,14 +23,16 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  //Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
+  // Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
     // later we can preprocess the input type for now, we assume it is string
     if (username === '' || password === '') {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
       try {
-        const response = await axios.post('http://10.0.2.2:8000/users/token', {
+        const apiUrl = 'http://10.0.2.2:8000/users/token';
+
+        const response = await axios.post(apiUrl, {
           username: username,
           password: password,
         });
@@ -70,6 +70,7 @@ const Login = ({ navigation }: { navigation: any }) => {
   <>
     <SafeAreaView style={styles.LoginContainer}>
       <Header image="" />
+      <Icon source={require('../assets/test-home.png')} />
       <InputField
         placeholder="Username"
         onChangeText={input => handleUsername(input)}
@@ -79,6 +80,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         placeholder="Password"
         onChangeText={input => handlePassword(input)}
         value={password}
+        secureTextEntry={true}
       />
       <Button title="Login" onPress={() => handleButtonOnPress()} />
     </SafeAreaView>
