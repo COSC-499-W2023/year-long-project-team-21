@@ -27,7 +27,7 @@ const Logo: React.FC<LogoProps> = ({ LogoSize }) => {
 
   return (
     <View>
-      <Text style={styles.greyText}>
+      <Text style={(styles.greyText, logoStyles)}>
         Lose
         <Text style={(styles.yellowText, logoStyles)}>the</Text>
         Leftovers
