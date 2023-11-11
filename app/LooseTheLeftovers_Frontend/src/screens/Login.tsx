@@ -1,8 +1,6 @@
-
 import { Alert, SafeAreaView } from 'react-native';
 import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
-import Config from 'react-native-config';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
@@ -32,12 +30,7 @@ const Login = ({ navigation }: { navigation: any }) => {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
       try {
-        const apiUrl = Config.API_TOKEN!;
-      
-        // Throw an error if API_TOKEN is missing in .env file
-        if (!apiUrl) {
-          throw new Error('API_TOKEN is not defined in the .env file.');
-        }
+        const apiUrl = 'http://10.0.2.2:8000/users/token';
 
         const response = await axios.post(apiUrl, {
           username: username,
