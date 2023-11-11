@@ -6,11 +6,8 @@ import styles from '../styles/logoStyles';
  * Logo Props interface for the logo component.
  *
  * @interface
- * @param {number} props.LogoSize - change the size of a logo
  */
-interface LogoProps {
-  LogoSize?: number;
-}
+interface LogoProps {}
 
 /**
  * Logo component.
