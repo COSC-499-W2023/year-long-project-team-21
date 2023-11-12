@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    """ "
+    """
     Registration serializer used for deserializing incoming post request, cleansing, validating, and saving user model.
 
     This serializer is responsible for creation of a new user. Incoming data is sanitized and validated. Two methods are overriden,
