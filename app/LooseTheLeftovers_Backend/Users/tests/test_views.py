@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
 """
-Test cases for views related to user authentication.
+Test cases for views related to user authentication and creation
 """
 
 
@@ -162,7 +162,7 @@ class TestUserCreation(APITestCase):
         self.assertIn("password", response.data)
         self.assertEqual(str(response.data["password"]), "Passwords must match")
 
-    def test_creating_new_user_same_with_existing_username(self):
+    def test_creating_new_user_with_existing_username(self):
         """
         Test creates a user and then creates another user with the same username. Expecting 400 response
         """
@@ -182,6 +182,9 @@ class TestUserCreation(APITestCase):
         # test for a 200 indicating that a user is made
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # query user
+        user_id = self.query_and_test_user("test123")
+
         # send another post request with the same credentials
         next_response = self.client.post(
             self.__register_url,
@@ -204,9 +207,12 @@ class TestUserCreation(APITestCase):
             "A user with that username already exists.",
         )
 
+        # delete user
+        self.delete_user(user_id)
+
     def test_creating_new_user_same_with_existing_email(self):
         """
-        Test creates a user and then creates another user with the same username. Expecting 400 response
+        Test creates a user and then creates another user with the same email. Expecting 400 response
         """
 
         # send a post request with correct credentials
@@ -229,7 +235,7 @@ class TestUserCreation(APITestCase):
             self.__register_url,
             {
                 "email": "test@test.com",
-                "username": "test123",
+                "username": "123test123",
                 "password": "testcase12",
                 "verify_password": "testcase12",
             },
@@ -240,8 +246,71 @@ class TestUserCreation(APITestCase):
         self.assertEqual(next_response.status_code, status.HTTP_400_BAD_REQUEST)
 
         # test correct response
-        self.assertIn("username", next_response.data)
+        self.assertIn("email", next_response.data)
         self.assertEqual(
-            str(next_response.data["username"][0]),
-            "A user with that username already exists.",
+            str(next_response.data["email"][0]),
+            "A user with that email already exists.",
         )
+
+        # delete user
+        user_id = self.query_and_test_user("test123")
+        self.delete_user(user_id)
+
+    def test_incorrect_body_parameters_only_email_and_password(self):
+        """
+        Test ensures that if incorrect parameters are sent a 400 will be the response.
+        """
+
+        # send a post request with correct credentials
+        response = self.client.post(
+            self.__register_url,
+            {
+                "email": "test@test.com",
+                "password": "testcase12",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_incorrect_body_parameters_no_verify_password(self):
+        """
+        Test ensures that if incorrect parameters are sent a 400 will be the response.
+        """
+
+        # send a post request with correct credentials
+        response = self.client.post(
+            self.__register_url,
+            {
+                "email": "test@test.com",
+                "username": "123test123",
+                "password": "testcase12",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    # TODO this test is really important and we can use it for other things. We should figure out how to make this a class or something that all the other Apps can inherit from
+    def test_try_other_request(self):
+        """
+        Test ensures that only a POST is accepted. Expected a 405 response
+        """
+
+        # try for a get request
+        response = self.client.get(self.__register_url)
+
+        # test for a 405
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        # try for a put
+        response = self.client.put(self.__register_url)
+
+        # test for a 405
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        # try for a put
+        response = self.client.delete(self.__register_url)
+
+        # test for a 405
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
