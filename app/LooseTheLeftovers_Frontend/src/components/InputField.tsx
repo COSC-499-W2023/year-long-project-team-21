@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, TouchableOpacity } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/inputFieldStyles';
 
 /**
@@ -40,34 +41,41 @@ interface InputFieldProps {
 const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
-  value,
   secureTextEntry = false,
 }) => {
   const [text, setText] = useState('');
+  const [isSecure, setIsSecure] = useState(secureTextEntry);
 
-  /**
-   * Handles changes in the input field.
-   * Updates the local state and notifies parent components through the onChangeText prop.
-   *
-   * @function
-   * @param {string} inputText - The new text in the input field.
-   */
+  const toggleSecureEntry = () => {
+    setIsSecure(!isSecure);
+  };
+
   const handleChange = (inputText: string) => {
     setText(inputText);
     onChangeText(inputText);
   };
 
+  const inputStyle = secureTextEntry ? styles.inputWithToggle : styles.input;
+
   return (
-    <>
-      <View style={styles.space} />
+    <View style={styles.inputContainer}>
       <TextInput
-        style={styles.container}
+        style={inputStyle}
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}
-        secureTextEntry={secureTextEntry}
+        secureTextEntry={isSecure}
       />
-    </>
+      {secureTextEntry && ( // Render if secureTextEntry is true
+        <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
+          <MaterialCommunityIcons
+            name={isSecure ? 'eye-outline' : 'eye-off-outline'}
+            size={24}
+            color="grey"
+          />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
