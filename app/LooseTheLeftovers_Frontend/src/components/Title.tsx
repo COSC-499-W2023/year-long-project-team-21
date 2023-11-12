@@ -17,7 +17,6 @@ interface TitleProps {
   titleColor?: string;
   position?: string;
 }
-
 /**
  * Title component.
  *
