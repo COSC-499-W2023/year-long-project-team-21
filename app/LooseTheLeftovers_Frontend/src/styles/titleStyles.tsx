@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   TitleText: {
-    
+    color: 'black'
   },
 });
 

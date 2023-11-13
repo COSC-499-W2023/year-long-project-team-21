@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text} from 'react-native';
+import { View, Text, SafeAreaView} from 'react-native';
 import styles from '../styles/titleStyles';
 
 /**
@@ -33,16 +33,18 @@ const Title: React.FC<TitleProps> = ({ title, titleSize, titleColor, position })
   //Default/Custom styles for Text component
   const titleStyles = {
     fontSize: titleSize||25,
-    color: titleColor||" #555455",
-    marginTop: position == 'top' ? 150:0
+    color: titleColor|| '#555455',
+    marginTop: 0
   }
 
   return (
-   
+    <>
+    <SafeAreaView>
       <View style={[styles.TitleContainer]}>
         <Text style={[styles.TitleText, titleStyles]}>{title}</Text>
       </View>
-   
+   </SafeAreaView>
+   </>
   );
 };
 

@@ -11,6 +11,7 @@ import React from 'react';
  * @property {string} textColor - choose text color
  * @property {number} buttonSize - Choose button size (width)
  * @property {number} textSize - Choose text size
+ * @property {string} testID - Choose the testID
  */
 interface ButtonProps {
   onPress: () => void;
@@ -19,6 +20,7 @@ interface ButtonProps {
   borderColor?: string;
   buttonSize?: number;
   textSize?: number;
+  testID?: string;
 }
 
 /**
@@ -32,16 +34,18 @@ interface ButtonProps {
  * @param {string} props.borderColor - Border color for a Button component (defult: #ffb800)
  * @param {number} props.buttonSize - change Button width (size)
  * @param {number} props.textSize - change text font size in a Button. 
+ * @param {string} props.testID - specify the testID for button
  * @example
  * <Button onPress={() => console.log('Button Pressed!')} title="Click Me" />
  */
-const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, textSize, buttonSize}) => {
+const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, textSize, buttonSize, testID}) => {
  
   //Set Default/Custom Button style
   const buttonStyles = {
     backgroundColor: 'white', // You can set a default background color or remove this line
     borderColor: borderColor || '#ffb800', // Use the provided borderColor or a default value
     width: buttonSize || 250, // Use the provided buttonSize or a default value
+    testID: testID || "button"
   };
 
   //Set Default/Custom Button style
@@ -53,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, 
   return (
     <>
       <View style={styles.space} />
-      <TouchableOpacity style={[styles.button,buttonStyles]} onPress={onPress}>
+      <TouchableOpacity testID={testID} style={[styles.button,buttonStyles]} onPress={onPress}>
         <Text style={[styles.buttonText, textStyles]}>{title}</Text>
       </TouchableOpacity>
     </>

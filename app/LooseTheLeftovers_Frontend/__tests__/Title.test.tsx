@@ -1,3 +1,4 @@
+import React from 'react';
 import Title from '../src/components/Title';
 
 import { render } from '@testing-library/react-native';

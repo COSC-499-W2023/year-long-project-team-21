@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import styles from '../styles/inputFieldStyles';
 
 /**
@@ -16,6 +16,7 @@ interface InputFieldProps {
   onChangeText: (input: string) => void;
   value: string | number;
   secureTextEntry?: boolean;
+  style?: StyleProp<ViewStyle & TextStyle>;
 }
 
 /**
@@ -42,6 +43,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChangeText,
   value,
   secureTextEntry = false,
+  style
 }) => {
   const [text, setText] = useState('');
 
@@ -61,7 +63,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <>
       <View style={styles.space} />
       <TextInput
-        style={styles.container}
+        style={[styles.container,style]}
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}
