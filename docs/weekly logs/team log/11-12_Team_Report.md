@@ -36,6 +36,7 @@ Tasks in progress
   - Model implentataion. 
 
 ## Burn Up Chart
+![burnup chart](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/cbfb7186-02f7-4d4b-b8a7-c8d82ea442ce)
 
 
 ## Test Report
@@ -50,6 +51,7 @@ Once we implement our pipeline, this will be much more streamlined.
 
 
 ## Project Board
+![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/66dd05bf-47a6-47d6-977c-7b195defbb78)
 
 
 ## Individual Reports
