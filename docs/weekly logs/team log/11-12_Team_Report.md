@@ -43,10 +43,10 @@ Tasks in progress
 Once we implement our pipeline, this will be much more streamlined. 
 
 #### Test for backend (frontend)
+![backend test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/034e2be3-a9dc-40a7-85c0-a2acb8b912d9)
 
 
 ### Project Board
-![week9 taskboard](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/3c439a0e-1fe0-41f6-a5ae-e90bd7384bdb)
 
 
 ## Individual Reports
