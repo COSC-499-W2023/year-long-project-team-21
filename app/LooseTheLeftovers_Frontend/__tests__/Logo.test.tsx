@@ -1,19 +1,14 @@
-import Logo from '../src/components/Logo';
 import React from 'react';
-
 import { render } from '@testing-library/react-native';
+import Logo from '../src/components/Logo';
 
-describe('Title component', () => {
-  test('test Title component: render properly with provided tile', () => {
-    //set title
-
-    const logoTitle = 'LosetheLeftovers';
-
-    //render Title component
+describe('Logo component', () => {
+  test('renders each part of the logo', () => {
     const { getByText } = render(<Logo />);
 
-    //Assert
-    const titleElement = getByText(logoTitle);
-    expect(titleElement).toBeDefined();
+    // Assert each part of the logo text is rendered
+    expect(getByText('Lose')).toBeDefined();
+    expect(getByText('the')).toBeDefined();
+    expect(getByText('Leftovers')).toBeDefined();
   });
 });

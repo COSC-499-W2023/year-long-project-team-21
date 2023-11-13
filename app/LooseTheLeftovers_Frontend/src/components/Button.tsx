@@ -1,6 +1,6 @@
-import { TouchableOpacity, Text, View, SafeAreaView } from 'react-native';
-import styles from '../styles/buttonStyles';
 import React from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
+import styles from '../styles/buttonStyles';
 
 /**
  * ButtonProps interface for the Button component.
@@ -19,6 +19,7 @@ interface ButtonProps {
   borderColor?: string;
   buttonSize?: number;
   textSize?: number;
+  testID?: string;
 }
 
 /**
@@ -35,7 +36,7 @@ interface ButtonProps {
  * @example
  * <Button onPress={() => console.log('Button Pressed!')} title="Click Me" />
  */
-const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, textSize, buttonSize}) => {
+const Button: React.FC<ButtonProps> = ({ onPress, title, textColor, borderColor, textSize, buttonSize, testID }) => {
  
   //Set Default/Custom Button style
   const buttonStyles = {
@@ -53,7 +54,7 @@ const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, 
   return (
     <>
       <View style={styles.space} />
-      <TouchableOpacity style={[styles.button,buttonStyles]} onPress={onPress}>
+      <TouchableOpacity style={[styles.button,buttonStyles]} onPress={onPress} testID={testID}>
         <Text style={[styles.buttonText, textStyles]}>{title}</Text>
       </TouchableOpacity>
     </>
