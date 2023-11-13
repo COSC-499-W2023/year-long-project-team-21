@@ -1,6 +1,7 @@
+import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 import InputField from '../src/components/InputField';
 
-import { fireEvent, render } from '@testing-library/react-native';
 test('mock random text input and check the state update', () => {
   //void
   const placeholder_test = 'testing';
