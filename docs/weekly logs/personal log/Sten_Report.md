@@ -1,22 +1,23 @@
 # Sten Korver Personal Weekly Log
 
-10/30 to 11/05
+11/06 to 11/12
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Give mini presentation
-* Write tests for database models/tables
-* Create Django models for database
- 
+* Create tests for Messages/Advertisments models
+* Write code for Messages/Advertisments models
+* Create tests and method for editing fields in Users table
 
 ### Completed Features For This Week:
 
-* Mini presentation
-* More tests for database models
+* Tests for Messages/Advertisments models
+    * Code for Messages/Advertisments models started but not passing tests yet
+* Tests for editing fields in User table
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/3a4f9ad1-a12c-457f-a438-9fde9476cb57)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/07a58334-d54d-46cd-8044-afd86e348717)
+
