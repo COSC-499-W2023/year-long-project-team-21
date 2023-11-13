@@ -73,7 +73,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         <Logo LogoSize={40} />
         <Title title="Login" titleSize={30} testID="loginTitle" />
         <InputField
-          placeholder="Email"
+          placeholder="Username"
           onChangeText={input => handleUsername(input)}
           value={username}
         />

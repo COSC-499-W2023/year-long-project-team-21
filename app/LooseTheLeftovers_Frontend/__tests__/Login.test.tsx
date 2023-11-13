@@ -25,7 +25,7 @@ describe('Login component', () => {
     const { getByPlaceholderText, getByTestId } = render(<Login navigation={navigation} />);
    
     // Check if the username and password input fields are rendered
-    expect(getByPlaceholderText('Email')).toBeTruthy();
+    expect(getByPlaceholderText('Username')).toBeTruthy();
     expect(getByPlaceholderText('Password')).toBeTruthy();
 
     // Use testID to get the specific elements
@@ -40,12 +40,12 @@ describe('Login component', () => {
     const { getByPlaceholderText } = render(<Login navigation={navigation} />);
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('Email'), 'testuser@mail.com');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser@mail.com');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
 
     // Check if the input values are updated
-    expect(getByPlaceholderText('Email').props.value).toBe('testuser@mail.com');
+    expect(getByPlaceholderText('Username').props.value).toBe('testuser@mail.com');
     expect(getByPlaceholderText('Password').props.value).toBe('testpassword');
   });
 
@@ -55,7 +55,7 @@ describe('Login component', () => {
     const { getByPlaceholderText, getByTestId } = render(<Login navigation={navigation} />);
     
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('Email'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
     // Simulate button press
@@ -88,7 +88,7 @@ describe('Login component', () => {
     const { getByPlaceholderText, getByTestId } = render(<Login navigation = {navigation} />);
     
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('Email'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
 
@@ -119,7 +119,7 @@ describe('Login component', () => {
     const { getByPlaceholderText, getByTestId } = render(<Login navigation={navigation} />);
          
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('Email'), 'wrongtestuser');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'wrongtestuser');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('Password'), 'wrongtestpassword');
 
