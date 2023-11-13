@@ -44,7 +44,6 @@ const Login = ({ navigation }: { navigation: any }) => {
         // Check response successful
         if (response.status === 200 && data.token) {
           navigation.navigate('Instruction');
-          Alert.alert('Login Successful', `Token: ${data.token}`);
         } else {
           Alert.alert('Error', 'Failed to login or retrieve token.');
         }

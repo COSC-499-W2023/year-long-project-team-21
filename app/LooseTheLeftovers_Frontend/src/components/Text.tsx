@@ -6,8 +6,10 @@ import styles from '../styles/textStyles';
  * TextProps interface for the Text component.
  *
  * @interface
- * @property {string} texts -  displays the Text.
- * @property {number} textxSize -changes the text size
+ * @property {string} texts - Displays Text passed to the component.
+ * @property {number} textsSize - Changes Text size
+ * @property {string} textsColor - Changes Text color.
+ * @property {string} position - Changes Text position on the screen.
  * @property {() => void} onPress - Callback function executed when the button is pressed.
  */
 interface TextsProps {
@@ -25,9 +27,9 @@ interface TextsProps {
  *
  * @param {TextsProps} props - The props for the Text component.
  * @param {string} props.texts - Text to be displayed as the Text.
- * @param {number} props.textsSize - Text size
- * @param {string} props.textsColor color specification
- * @param {string} props.position - Determines Text position
+ * @param {number} props.textsSize - Text size.
+ * @param {string} props.textsColor - Color specification.
+ * @param {string} props.position - Determines Text position.
  * @param {() => void} props.onPress - Callback function to execute when the button is pressed.
  * @example
  * <Texts texts="Words" />
@@ -41,6 +43,7 @@ const Texts: React.FC<TextsProps> = ({
   onPress,
 }) => {
   // Default/Custom styles for Text component
+  // If any custom values are passed as props, apply them, default otherwise
   const textsStyles = {
     fontSize: textsSize || 25,
     color: textsColor || '#555455',
