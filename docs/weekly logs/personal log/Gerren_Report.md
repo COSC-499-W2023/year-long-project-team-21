@@ -11,6 +11,7 @@ Username: CookiedOutMonster
 - Worked on POST request for backend to register a new user
 - Documentation
 - Testing
+- My report doesn't say it but I am also doing code reviews as well. 
 
 
 ## Completed Features For This Week
