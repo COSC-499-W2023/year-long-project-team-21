@@ -42,7 +42,7 @@ Tasks in progress
 
 Once we implement our pipeline, this will be much more streamlined. 
 
-#### Test for backend (frontend)
+#### Test for backend 
 ![backend test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/034e2be3-a9dc-40a7-85c0-a2acb8b912d9)
 
 
