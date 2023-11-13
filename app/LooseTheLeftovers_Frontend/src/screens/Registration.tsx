@@ -78,8 +78,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         
                 // Check response successful
                 if (response.status === 200 && data.token) {
-                  navigation.navigate('Login');
-                  Alert.alert('Registration Successful', `Token: ${data.token}`);
+                  navigation.navigate('Instruction');
                 } else {
                   Alert.alert('Error', 'Failed to register or retrieve token.');
                 }
