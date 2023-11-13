@@ -22,16 +22,14 @@ interface LogoProps {
  */
 const Logo: React.FC<LogoProps> = ({ LogoSize }) => {
   const logoStyles = {
-    fontSize: LogoSize || 30, // can use defualt or the size
+    fontSize: LogoSize || 30,
   };
 
   return (
-    <View>
-      <Text style={(styles.greyText, logoStyles)}>
-        Lose
-        <Text style={(styles.yellowText, logoStyles)}>the</Text>
-        Leftovers
-      </Text>
+    <View style={styles.logoContainer}>
+      <Text style={[styles.greyText, logoStyles]}>Lose</Text>
+      <Text style={[styles.yellowText, logoStyles]}>the</Text>
+      <Text style={[styles.greyText, logoStyles]}>Leftovers</Text>
     </View>
   );
 };
