@@ -22,5 +22,5 @@ Username: Keizo410
 
 ## Types of Tasks Worked On
 
-<img width="807" alt="indiv log week10" src="https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/ce53718e-c468-4ea7-af17-2680788c31df">
+![スクリーンショット 2023-11-12 194816](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/72be0a0e-1b55-483c-a451-c6daf29d123b)
 
