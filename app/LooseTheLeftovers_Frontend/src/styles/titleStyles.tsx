@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   TitleContainer: {
     flexDirection:"row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginVertical: 20,
   },
   TitleText: {
     

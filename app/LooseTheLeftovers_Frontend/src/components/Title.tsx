@@ -16,6 +16,7 @@ interface TitleProps {
   titleSize?: number;
   titleColor?: string;
   position?: string;
+  testID?: string;
 }
 /**
  * Title component.
@@ -29,20 +30,20 @@ interface TitleProps {
  * @example
  * <Title title="My Page Title" />
  */
-const Title: React.FC<TitleProps> = ({ title, titleSize, titleColor, position }) => {
+const Title: React.FC<TitleProps> = ({ title, titleSize, titleColor, position, testID }) => {
   //Default/Custom styles for Text component
   const titleStyles = {
-    fontSize: titleSize||25,
-    color: titleColor||" #555455",
+    fontSize: titleSize || 25,
+    color: titleColor || '#555455',
     marginTop: position == 'top' ? 150:0
   }
 
   return (
-   
       <View style={[styles.TitleContainer]}>
-        <Text style={[styles.TitleText, titleStyles]}>{title}</Text>
+        <Text style={[styles.TitleText, titleStyles]} testID={testID}>
+          {title}
+        </Text>
       </View>
-   
   );
 };
 
