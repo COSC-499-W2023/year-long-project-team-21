@@ -2,12 +2,12 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   TitleContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection:"row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   TitleText: {
-    fontSize: 25,
+    
   },
 });
 

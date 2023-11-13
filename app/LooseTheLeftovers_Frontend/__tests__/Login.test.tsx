@@ -22,7 +22,7 @@ describe('Login component', () => {
   });
 
   it('renders correctly', () => {
-    const { getByPlaceholderText, getByText } = render(<Login naviagation={navigation} />);
+    const { getByPlaceholderText, getByText } = render(<Login navigation={navigation} />);
    
     // Check if the username and password input fields are rendered
     expect(getByPlaceholderText('Username')).toBeTruthy();
