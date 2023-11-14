@@ -9,14 +9,12 @@ import styles from '../styles/titleStyles';
  * @property {string} title - Text to be displayed as the title.
  * @property {number} titleSize - Text size for the title.
  * @property {string} titleColor - Text color for the title
- * @property {number} position - Text position for the title
- */
+ * @property {number} position - Text position for the title */
 interface TitleProps {
   title: string;
   titleSize?: number;
   titleColor?: string;
   position?: number;
-  pad?: number;
 }
 /**
  * Title component.
@@ -27,7 +25,7 @@ interface TitleProps {
  * @param {number} props.titleSize - Title size
  * @param {string} props.titleColor - Title color specification
  * @param {number} props.position - Specifies position of the Title (top or middle)
- * @param {number} props.pad - Specifies position of the Title (top or middle)
+
  * @example
  * <Title title="My Page Title" />
  */
@@ -36,14 +34,12 @@ const Title: React.FC<TitleProps> = ({
   titleSize,
   titleColor,
   position,
-  pad,
 }) => {
   //Default/Custom styles for Text component
   const titleStyles = {
-    marginTop: position || 50,
+    marginTop: position,
     fontSize: titleSize || 25,
     color: titleColor || '#555455',
-    padding: pad,
     //marginTop: position == 'top' ? 150 : 0,
   };
 
