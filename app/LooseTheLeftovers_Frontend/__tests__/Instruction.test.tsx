@@ -27,26 +27,18 @@ describe('Get started component', () => {
   it('first instruction renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
     expect(
-      getByText('-This is an app to share left over to others in need'),
+      getByText('This is an app to share left over food to others in need'),
     ).toBeTruthy();
   });
   // Check if second instruction text is rendered
   it('second instruction renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
-    expect(
-      getByText(
-        '-You can view others food posts, makes posts yourself and communicate with other users to set a time and place for pickup',
-      ),
-    ).toBeTruthy();
+    expect(getByText('See what others are offering')).toBeTruthy();
   });
   // Check if third instruction text is rendered
   it('third instruction renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
-    expect(
-      getByText(
-        '-It has some unique features like the ability how long the food will expire in, and the ability end a conversation once a deal has been made.',
-      ),
-    ).toBeTruthy();
+    expect(getByText('Select the range')).toBeTruthy();
   });
   // Check if text is rendered
   it('Get started button renders correctly', () => {
