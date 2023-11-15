@@ -6,6 +6,10 @@ from .models import CustomUser
 
 
 class CustomUserAdmin(UserAdmin):
+    ''''
+    This class allows model fields to be viawable in Admin page (viewable in browser).
+    Also makes it possible to add/update Users fields from the admin page.
+    '''
     add_form = CustomUserCreationForm
     form = EditCustomUserProfileForm
     model = CustomUser
@@ -18,7 +22,8 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
         "is_active",
         "date_joined",
-        "postal_code",
+        "latitude",
+        "longitude",
     )
 
     fieldsets = (
@@ -37,7 +42,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
-        ("Additional info", {"fields": ("postal_code",)}),
+        ("Additional info", {"fields": ("latitude", "longitude",)}),
     )
 
     add_fieldsets = (
@@ -56,7 +61,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
-        ("Additional info", {"fields": ("postal_code")}),
+        ("Additional info", {"fields": ("latitude", "longitude",)}),
     )
 
 
