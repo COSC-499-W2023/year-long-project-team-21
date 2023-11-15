@@ -1,3 +1,4 @@
+import React from 'react';
 import InputField from '../src/components/InputField';
 
 import { fireEvent, render } from '@testing-library/react-native';

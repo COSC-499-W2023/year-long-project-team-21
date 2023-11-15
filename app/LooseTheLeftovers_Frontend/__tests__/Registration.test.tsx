@@ -13,17 +13,19 @@ jest.mock('react-native', () => {
 });
 // Mocking the navigate function
 const navigation = {
-    navigate: jest.fn(), 
-  };
+  navigate: jest.fn(),
+};
 
 describe('Registration Component', () => {
-    beforeEach(() => {
-        jest.clearAllMocks(); // Clear all mocks including axios
-      });
+  beforeEach(() => {
+    jest.clearAllMocks(); // Clear all mocks including axios
+  });
 
   test('renders correctly', () => {
-    const { getByPlaceholderText, getByTestId} = render(<Registration navigation={navigation} />);
-    
+    const { getByPlaceholderText, getByTestId } = render(
+      <Registration navigation={navigation} />,
+    );
+
     // Check if key input fileds are rendered
     expect(getByPlaceholderText('+Email')).toBeTruthy();
     expect(getByPlaceholderText('+Username')).toBeTruthy();
@@ -35,41 +37,45 @@ describe('Registration Component', () => {
   });
 
   test('handles input changes', () => {
-    const { getByPlaceholderText } = render(<Registration  navigation={navigation}  />);
+    const { getByPlaceholderText } = render(
+      <Registration navigation={navigation} />,
+    );
 
     // Simulate input changes
     fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
     fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'password123');
-    fireEvent.changeText(getByPlaceholderText('+Confirm Password'), 'password123');
+    fireEvent.changeText(getByPlaceholderText('+Password'), 'password123!');
+    fireEvent.changeText(
+      getByPlaceholderText('+Confirm Password'),
+      'password123!',
+    );
 
     // Check if input values are updated
     expect(getByPlaceholderText('+Email').props.value).toBe('test@example.com');
     expect(getByPlaceholderText('+Username').props.value).toBe('testuser');
-    expect(getByPlaceholderText('+Password').props.value).toBe('password123');
-    expect(getByPlaceholderText('+Confirm Password').props.value).toBe('password123');
+    expect(getByPlaceholderText('+Password').props.value).toBe('password123!');
+    expect(getByPlaceholderText('+Confirm Password').props.value).toBe(
+      'password123!',
+    );
   });
 
-  test('handles button press', () => {
-    const { getByTestId } = render(<Registration  navigation={navigation} />);
-    
-    // Simulate button press
-    fireEvent.press(getByTestId('register-button'));
-  });
-
-  
   test('handles button press - success', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByTestId } = render(<Registration  navigation={navigation} />);
+    const { getByPlaceholderText, getByTestId, getByText } = render(
+      <Registration navigation={navigation} />,
+    );
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@email');
+    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'testpassword');
+    fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
     // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Confirm Password'), 'testpassword');
+    fireEvent.changeText(
+      getByPlaceholderText('+Confirm Password'),
+      'Test444test!',
+    );
     // Simulate button press
     fireEvent.press(getByTestId('register-button'));
 
@@ -77,69 +83,38 @@ describe('Registration Component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://10.0.2.2:8000/users/",
-        { 
-          email: 'test@email',
+        'http://10.0.2.2:8000/users/',
+        {
+          email: 'test@example.com',
           username: 'testuser',
-          password: 'testpassword',
-          verify_password: 'testpassword'
-        }
+          password: 'Test444test!',
+          verify_password: 'Test444test!',
+        },
       );
       // Check if the expected success/failure message is displayed
-      expect(Alert.alert).toHaveBeenCalledWith(
-        'Registration Successful', 
-        'Token: fake_token'
-      );
+      expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
     });
   });
-  test('handles button press - success', async () => {
-    const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByTestId } = render(<Registration  navigation={navigation} />);
 
-    // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@email');
-    // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
-    // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'testpassword');
-    // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Confirm Password'), 'testpassword');
-    // Simulate button press
-    fireEvent.press(getByTestId('register-button'));
-
-    // Wait for the asynchronous operation to complete
-    await waitFor(() => {
-      // Check if the Axios POST request is called with the correct arguments
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://10.0.2.2:8000/users/",
-        { 
-          email: 'test@email',
-          username: 'testuser',
-          password: 'testpassword',
-          verify_password: 'testpassword'
-        }
-      );
-      // Check if the expected success/failure message is displayed
-      expect(Alert.alert).toHaveBeenCalledWith(
-        'Registration Successful', 
-        'Token: fake_token'
-      );
-    });
-  });
   test('handles button press - failure to send API request', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     // Mock a failed API response
     mockedAxios.post.mockRejectedValueOnce(new Error('API error'));
-    const { getByPlaceholderText, getByTestId } = render(<Registration  navigation={navigation} />);
+    const { getByPlaceholderText, getByTestId, getByText } = render(
+      <Registration navigation={navigation} />,
+    );
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@email');
+    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'testpassword');
+    fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
     // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Confirm Password'), 'testpassword');
+    fireEvent.changeText(
+      getByPlaceholderText('+Confirm Password'),
+      'Test444test!',
+    );
     // Simulate button press
     fireEvent.press(getByTestId('register-button'));
 
@@ -147,40 +122,41 @@ describe('Registration Component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://10.0.2.2:8000/users/",
-        { 
-          email: 'test@email',
+        'http://10.0.2.2:8000/users/',
+        {
+          email: 'test@example.com',
           username: 'testuser',
-          password: 'testpassword',
-          verify_password: 'testpassword'
-        }
+          password: 'Test444test!',
+          verify_password: 'Test444test!',
+        },
       );
-      // Check if the expected success/failure message is displayed
-      expect(Alert.alert).toHaveBeenCalledWith(
-        'Error',
-        'An error occurred while trying to register'
-      );
+
+      expect(getByText('Request error, unable to process.')).toBeTruthy();
     });
   });
   test('handles button press - failure to register with invalid credentials', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByTestId } = render(<Registration  navigation={navigation} />);
+    const { getByPlaceholderText, getByTestId, getByText } = render(
+      <Registration navigation={navigation} />,
+    );
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@email');
+    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'testpassword');
+    fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
     // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Confirm Password'), 'testpassword');
+    fireEvent.changeText(
+      getByPlaceholderText('+Confirm Password'),
+      'Test444test!',
+    );
 
-    
     // Mock a bad response (Unauthorized) from the API
     mockedAxios.post.mockResolvedValueOnce({
       status: 401,
       data: {
-         error: 'Invalid credentials',
+        error: 'Invalid credentials',
       },
     });
 
@@ -191,20 +167,16 @@ describe('Registration Component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "http://10.0.2.2:8000/users/",
-        { 
-          email: 'test@email',
+        'http://10.0.2.2:8000/users/',
+        {
+          email: 'test@example.com',
           username: 'testuser',
-          password: 'testpassword',
-          verify_password: 'testpassword'
-        }
+          password: 'Test444test!',
+          verify_password: 'Test444test!',
+        },
       );
-      // Check if the expected success/failure message is displayed
-      expect(Alert.alert).toHaveBeenCalledWith(
-        'Error',
-        'Failed to register or retrieve token.'
-      );
+
+      expect(getByText('Server error, unable to process.')).toBeTruthy();
     });
   });
 });
-

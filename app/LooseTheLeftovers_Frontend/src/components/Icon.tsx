@@ -1,5 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, Image, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle } from 'react-native';
+import {
+  TouchableOpacity,
+  Image,
+  ImageSourcePropType,
+  StyleProp,
+  ViewStyle,
+  ImageStyle,
+} from 'react-native';
 
 /**
  * IconProps interface for the Icon component.
@@ -42,7 +49,14 @@ interface IconProps {
  *   testID="icon-test"
  * />
  */
-const Icon: React.FC<IconProps> = ({ source, size = 24, onPress, testID, containerStyle, imageStyle }) => {
+const Icon: React.FC<IconProps> = ({
+  source,
+  size = 24,
+  onPress,
+  testID,
+  containerStyle,
+  imageStyle,
+}) => {
   return (
     <TouchableOpacity onPress={onPress} testID={testID} style={containerStyle}>
       <Image

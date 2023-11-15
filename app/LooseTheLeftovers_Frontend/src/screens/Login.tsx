@@ -52,7 +52,7 @@ const Login = ({ navigation }: { navigation: any }) => {
           'Error',
           'An error occurred while trying to retrieve data.',
         );
-        console.log(error)
+        console.log(error);
       }
     }
   };
@@ -67,26 +67,25 @@ const Login = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-  <>
-    <SafeAreaView style={styles.LoginContainer}>
-      <Header image="" />
-      <Icon source={require('../assets/test-home.png')} />
-      <InputField
-        placeholder="Username"
-        onChangeText={input => handleUsername(input)}
-        value={username}
-      />
-      <InputField
-        placeholder="Password"
-        onChangeText={input => handlePassword(input)}
-        value={password}
-        secureTextEntry={true}
-      />
-      <Button title="Login" onPress={() => handleButtonOnPress()} />
-    </SafeAreaView>
-  </>
+    <>
+      <SafeAreaView style={styles.LoginContainer}>
+        <Header image="" />
+        <Icon source={require('../assets/test-home.png')} />
+        <InputField
+          placeholder="Username"
+          onChangeText={input => handleUsername(input)}
+          value={username}
+        />
+        <InputField
+          placeholder="Password"
+          onChangeText={input => handlePassword(input)}
+          value={password}
+          secureTextEntry={true}
+        />
+        <Button title="Login" onPress={() => handleButtonOnPress()} />
+      </SafeAreaView>
+    </>
   );
 };
-
 
 export default Login;

@@ -19,5 +19,3 @@ describe('<App />', () => {
     //expect(getByTestId('loginTitle')).toBeTruthy();
   });
 });
-
-

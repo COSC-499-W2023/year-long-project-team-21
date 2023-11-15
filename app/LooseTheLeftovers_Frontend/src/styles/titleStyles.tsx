@@ -2,12 +2,12 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   TitleContainer: {
-    flexDirection:"row",
-    alignItems: "center",
-    justifyContent: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   TitleText: {
-    color: 'black'
+    color: 'black',
   },
 });
 

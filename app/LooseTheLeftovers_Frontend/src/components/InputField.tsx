@@ -43,7 +43,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChangeText,
   value,
   secureTextEntry = false,
-  style
+  style,
 }) => {
   const [text, setText] = useState('');
 
@@ -63,7 +63,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <>
       <View style={styles.space} />
       <TextInput
-        style={[styles.container,style]}
+        style={[styles.container, style]}
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}

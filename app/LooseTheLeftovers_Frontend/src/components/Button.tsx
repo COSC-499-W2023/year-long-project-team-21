@@ -33,31 +33,41 @@ interface ButtonProps {
  * @param {string} props.textColor - Text color in a Button component (defult:#555455)
  * @param {string} props.borderColor - Border color for a Button component (defult: #ffb800)
  * @param {number} props.buttonSize - change Button width (size)
- * @param {number} props.textSize - change text font size in a Button. 
+ * @param {number} props.textSize - change text font size in a Button.
  * @param {string} props.testID - specify the testID for button
  * @example
  * <Button onPress={() => console.log('Button Pressed!')} title="Click Me" />
  */
-const Button: React.FC<ButtonProps> = ({onPress, title, textColor, borderColor, textSize, buttonSize, testID}) => {
- 
+const Button: React.FC<ButtonProps> = ({
+  onPress,
+  title,
+  textColor,
+  borderColor,
+  textSize,
+  buttonSize,
+  testID,
+}) => {
   //Set Default/Custom Button style
   const buttonStyles = {
     backgroundColor: 'white', // You can set a default background color or remove this line
     borderColor: borderColor || '#ffb800', // Use the provided borderColor or a default value
     width: buttonSize || 250, // Use the provided buttonSize or a default value
-    testID: testID || "button"
+    testID: testID || 'button',
   };
 
   //Set Default/Custom Button style
   const textStyles = {
     color: textColor || '#555455', // Use the provided textColor or a default value
     fontSize: textSize || 25, // Use the provided textSize or a default value
-  }
+  };
 
   return (
     <>
       <View style={styles.space} />
-      <TouchableOpacity testID={testID} style={[styles.button,buttonStyles]} onPress={onPress}>
+      <TouchableOpacity
+        testID={testID}
+        style={[styles.button, buttonStyles]}
+        onPress={onPress}>
         <Text style={[styles.buttonText, textStyles]}>{title}</Text>
       </TouchableOpacity>
     </>
