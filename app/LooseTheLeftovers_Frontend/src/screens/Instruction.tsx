@@ -4,10 +4,54 @@ import Title from '../components/Title';
 import Texts from '../components/Text';
 import Button from '../components/Button';
 import style from '../styles/instructionStyles';
-import Icon from '../components/Icon';
+import TextImage from '../components/TextImage';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
   const handleButtonOnPress = async () => {};
+  const instructions = [
+    {
+      key: '1',
+      txt: 'See what others are offering',
+      image: require('../assets/banana.png'),
+      size: 60,
+    },
+    {
+      key: '2',
+      txt: 'Select the range',
+      image: require('../assets/select-range.png'),
+      size: 120,
+    },
+    {
+      key: '3',
+      txt: 'See how long food will expire in',
+      image: require('../assets/expiry.png'),
+      size: 80,
+    },
+    {
+      key: '3',
+      txt: 'Create your own food ads',
+      image: require('../assets/ad.png'),
+      size: 60,
+    },
+    {
+      key: '4',
+      txt: 'edit and delete ads with your account',
+      image: require('../assets/account.png'),
+      size: 60,
+    },
+  ];
+
+  const list = () => {
+    return instructions.map(element => {
+      return (
+        <TextImage
+          text={element.txt}
+          source={element.image}
+          size={element.size}
+        />
+      );
+    });
+  };
 
   return (
     <View style={style.container}>
@@ -23,62 +67,9 @@ const Instruction = ({ navigation }: { navigation: any }) => {
           textsSize={20}
           texts="This is an app to share left over food to others in need"
         />
-        <View style={style.textimage}>
-          <View style={style.text}>
-            <Texts //displays instruction
-              textsSize={20}
-              texts="See what others are offering"
-            />
-          </View>
-          <View style={style.image}>
-            <Icon size={60} source={require('../assets/banana.png')} />
-          </View>
-        </View>
-        <View style={style.textimage}>
-          <View style={style.text}>
-            <Texts //displays instruction
-              textsSize={20}
-              texts="Select the range"
-            />
-          </View>
-          <View style={style.image}>
-            <Icon size={120} source={require('../assets/select-range.png')} />
-          </View>
-        </View>
-        <View style={style.textimage}>
-          <View style={style.text}>
-            <Texts //displays instruction
-              textsSize={20}
-              texts="See how long food will expire in"
-            />
-          </View>
-          <View style={style.image}>
-            <Icon size={80} source={require('../assets/expiry.png')} />
-          </View>
-        </View>
-        <View style={style.textimage}>
-          <View style={style.text}>
-            <Texts //displays instruction
-              textsSize={20}
-              texts="Create your own food ads"
-            />
-          </View>
-          <View style={style.image}>
-            <Icon size={60} source={require('../assets/Ad.png')} />
-          </View>
-        </View>
-        <View style={style.textimage}>
-          <View style={style.text}>
-            <Texts //displays instruction
-              textsSize={20}
-              texts="edit and delete ads with your account"
-            />
-          </View>
-          <View style={style.image}>
-            <Icon size={60} source={require('../assets/account.png')} />
-          </View>
-        </View>
+        {list()}
       </View>
+
       <View style={style.button}>
         <Button //displays get started button. Will navigate to home screen
           onPress={handleButtonOnPress}
