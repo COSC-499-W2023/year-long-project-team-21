@@ -13,4 +13,4 @@ class EditCustomUserProfileForm(UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = ("first_name", "last_name", "postal_code")
+        fields = ("first_name", "last_name")
