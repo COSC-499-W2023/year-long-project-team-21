@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { global } from './global';
+import { global } from '../common/global';
 
 const styles = StyleSheet.create({
   logoContainer: {

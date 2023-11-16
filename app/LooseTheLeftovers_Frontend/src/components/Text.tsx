@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/textStyles';
-import { global } from '../styles/global';
+import { global } from '../common/global';
 
 /**
  * TextProps interface for the Text component.

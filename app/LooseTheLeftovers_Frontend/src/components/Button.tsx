@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import styles from '../styles/buttonStyles';
-import { global } from '../styles/global';
+import { global } from '../common/global';
 
 /**
  * ButtonProps interface for the Button component.
