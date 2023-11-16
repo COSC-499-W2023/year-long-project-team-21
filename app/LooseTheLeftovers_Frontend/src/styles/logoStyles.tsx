@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { global } from './global';
 
 const styles = StyleSheet.create({
   logoContainer: {
@@ -8,12 +9,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   greyText: {
-    color: '#555455',
+    color: global.primary,
     fontSize: 30,
     fontWeight: 'bold',
   },
   yellowText: {
-    color: '#FFB800',
+    color: global.secondary,
     fontSize: 30,
     fontWeight: '300',
   },

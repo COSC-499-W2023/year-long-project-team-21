@@ -1,19 +1,18 @@
 import { StyleSheet } from 'react-native';
+import { global } from './global';
 
 const styles = StyleSheet.create({
   textStyles: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: `#555455`,
+    color: global.primary,
   },
   TitleContainer: {
-    flexDirection:"row",
-    alignItems: "center",
-    justifyContent: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  TitleText: {
-    
-  },
+  TitleText: {},
 });
 
 export default styles;
