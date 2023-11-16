@@ -72,7 +72,7 @@ const Button: React.FC<ButtonProps> = ({
       <TouchableOpacity
         style={[styles.button, buttonStyles]}
         onPress={onPress}
-        testID={testID}> // 
+        testID={testID}>
         <Text style={[styles.buttonText, textStyles]}>{title}</Text>
       </TouchableOpacity>
     </>
