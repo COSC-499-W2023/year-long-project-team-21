@@ -5,6 +5,8 @@ import {
   ImageStyle,
 } from 'react-native';
 
+//type.tsx is a file that holds interfaces for all components
+
 interface ButtonProps {
   onPress: () => void;
   title: string;
