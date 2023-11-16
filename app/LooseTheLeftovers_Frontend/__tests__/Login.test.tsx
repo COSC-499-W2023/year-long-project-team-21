@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import Login from '../src/screens/Login';
 
 jest.mock('axios');
@@ -178,4 +179,52 @@ describe('Login component', () => {
       );
     });
   });
+
+  it('stores JWT token on successful login', async () => {
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    // Mock a successful API response
+    mockedAxios.post.mockResolvedValueOnce({
+      status: 200,
+      data: { token: 'fake_token' },
+    });
+  
+    const { getByPlaceholderText, getByTestId } = render(
+      <Login navigation={navigation} />,
+    );
+  
+    // Simulate user input and button press
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
+    fireEvent.press(getByTestId('loginButton'));
+  
+    await waitFor(() => {
+      // Check if the token is stored in EncryptedStorage
+      expect(EncryptedStorage.setItem).toHaveBeenCalledWith(
+        'user_token',
+        'fake_token'
+      );
+    });
+  });
+
+  it('does not store JWT token on invalid login', async () => {
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    // Mock a bad response (e.g., Unauthorized) from the API
+    mockedAxios.post.mockRejectedValueOnce(new Error('Invalid credentials'));
+  
+    const { getByPlaceholderText, getByTestId } = render(
+      <Login navigation={navigation} />,
+    );
+  
+    // Simulate user input with invalid credentials
+    fireEvent.changeText(getByPlaceholderText('Username'), 'wrongUser');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'wrongPassword');
+    fireEvent.press(getByTestId('loginButton'));
+  
+    await waitFor(() => {
+      // Check that the token is not stored in EncryptedStorage
+      expect(EncryptedStorage.setItem).not.toHaveBeenCalled();
+    });
+  });
+  
+  
 });
