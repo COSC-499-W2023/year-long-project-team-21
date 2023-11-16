@@ -187,21 +187,21 @@ describe('Login component', () => {
       status: 200,
       data: { token: 'fake_token' },
     });
-  
+
     const { getByPlaceholderText, getByTestId } = render(
       <Login navigation={navigation} />,
     );
-  
+
     // Simulate user input and button press
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
     fireEvent.press(getByTestId('loginButton'));
-  
+
     await waitFor(() => {
       // Check if the token is stored in EncryptedStorage
       expect(EncryptedStorage.setItem).toHaveBeenCalledWith(
         'user_token',
-        'fake_token'
+        'fake_token',
       );
     });
   });
@@ -210,21 +210,19 @@ describe('Login component', () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     // Mock a bad response (e.g., Unauthorized) from the API
     mockedAxios.post.mockRejectedValueOnce(new Error('Invalid credentials'));
-  
+
     const { getByPlaceholderText, getByTestId } = render(
       <Login navigation={navigation} />,
     );
-  
+
     // Simulate user input with invalid credentials
     fireEvent.changeText(getByPlaceholderText('Username'), 'wrongUser');
     fireEvent.changeText(getByPlaceholderText('Password'), 'wrongPassword');
     fireEvent.press(getByTestId('loginButton'));
-  
+
     await waitFor(() => {
       // Check that the token is not stored in EncryptedStorage
       expect(EncryptedStorage.setItem).not.toHaveBeenCalled();
     });
   });
-  
-  
 });

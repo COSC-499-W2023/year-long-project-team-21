@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import styles from '../styles/loginStyle';
 
 import Logo from '../components/Logo';
@@ -51,6 +52,7 @@ const Login = ({ navigation }: { navigation: any }) => {
 
         // Check response successful
         if (response.status === 200 && data.token) {
+          await storeJWT(data.token);
           navigation.navigate('Instruction');
           setErrorMessage('');
         } else {
@@ -62,6 +64,15 @@ const Login = ({ navigation }: { navigation: any }) => {
       }
     }
   };
+
+  async function storeJWT(token: string) {
+    try {
+      await EncryptedStorage.setItem('user_token', token);
+    } catch (error) {
+      // error on the native side
+      setErrorMessage('Failed to store the token securely.');
+    }
+  }
 
   // Set input text from the text box so that we can handle the credential (username)
   const handleUsername = (input: string) => {
@@ -96,7 +107,7 @@ const Login = ({ navigation }: { navigation: any }) => {
             texts={errorMessage} // Pass error message
             textsSize={14}
             textsColor="red"
-            testID='error-msg'
+            testID="error-msg"
           />
         )}
         <Button
