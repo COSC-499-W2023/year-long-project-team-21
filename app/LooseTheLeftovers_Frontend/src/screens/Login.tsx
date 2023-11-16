@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import axios from 'axios';
 import styles from '../styles/loginStyle';
 
@@ -24,12 +24,20 @@ import Button from '../components/Button';
 const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
     // Later we can preprocess the input type for now, we assume it is string
-    if (username === '' || password === '') {
-      Alert.alert('Error', 'Please fill in the credentials.');
+    if (username === '' && password === '') {
+      setErrorMessage('Please fill in credentials');
+      // Stop if both fields are empty
+    } else if (username === '') {
+      setErrorMessage('Please fill in the username');
+      // Stop if username is empty
+    } else if (password === '') {
+      setErrorMessage('Please fill in the password');
+      // Stop if password is empty
     } else {
       try {
         const apiUrl = 'http://10.0.2.2:8000/users/token';
@@ -44,14 +52,12 @@ const Login = ({ navigation }: { navigation: any }) => {
         // Check response successful
         if (response.status === 200 && data.token) {
           navigation.navigate('Instruction');
+          setErrorMessage('');
         } else {
-          Alert.alert('Error', 'Failed to login or retrieve token.');
+          setErrorMessage('Failed to login or retrieve token.');
         }
       } catch (error) {
-        Alert.alert(
-          'Error',
-          'An error occurred while trying to retrieve data.',
-        );
+        setErrorMessage('An error occurred while trying to retrieve data.');
         console.log(error);
       }
     }
@@ -60,10 +66,12 @@ const Login = ({ navigation }: { navigation: any }) => {
   // Set input text from the text box so that we can handle the credential (username)
   const handleUsername = (input: string) => {
     setUsername(input);
+    setErrorMessage(''); // Clear the error message when the user starts typing again
   };
   // Set input text from the text box so that we can handle the credential (password)
   const handlePassword = (input: string) => {
     setPassword(input);
+    setErrorMessage(''); // Clear the error message when the user starts typing again
   };
 
   return (
@@ -82,12 +90,21 @@ const Login = ({ navigation }: { navigation: any }) => {
           value={password}
           secureTextEntry={true}
         />
-        <Text texts="Forgot password?" textsSize={18} />
+        {/* Conditionally render the error message */}
+        {errorMessage !== '' && (
+          <Text
+            texts={errorMessage} // Pass error message
+            textsSize={14}
+            textsColor="red"
+            testID='error-msg'
+          />
+        )}
         <Button
           title="Login"
           onPress={() => handleButtonOnPress()}
           testID="loginButton"
         />
+        <Text texts="Forgot password?" textsSize={18} />
       </SafeAreaView>
     </>
   );
