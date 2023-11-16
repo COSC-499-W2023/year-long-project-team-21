@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/inputFieldStyles';
+import { type InputFieldProps } from '../components/type';
 
 /**
  * InputFieldProps interface for the InputField component.
@@ -12,12 +13,6 @@ import styles from '../styles/inputFieldStyles';
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
  */
-interface InputFieldProps {
-  placeholder: string;
-  onChangeText: (input: string) => void;
-  value: string | number;
-  secureTextEntry?: boolean;
-}
 
 /**
  * InputField component.

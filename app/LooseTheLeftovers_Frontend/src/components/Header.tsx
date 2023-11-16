@@ -2,6 +2,7 @@ import React from 'react';
 
 import { View, Image } from 'react-native';
 import styles from '../styles/headerStyles';
+import { type HeaderProps } from '../components/type';
 
 /**
  * HeaderProps interface for the Header component.
@@ -9,9 +10,6 @@ import styles from '../styles/headerStyles';
  * @interface
  * @property {string} image - URL of the image to be displayed in the header.
  */
-interface HeaderProps {
-  image: string;
-}
 
 /**
  * Header component that displays an image.

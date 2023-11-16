@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styles from '../styles/logoStyles';
+import { type LogoProps } from '../components/type';
 
 /**
  * Logo Props interface for the logo component.
@@ -8,9 +9,6 @@ import styles from '../styles/logoStyles';
  * @interface
  * @param {number} props.LogoSize - change the size of a logo
  */
-interface LogoProps {
-  LogoSize?: number;
-}
 
 /**
  * Logo component.
