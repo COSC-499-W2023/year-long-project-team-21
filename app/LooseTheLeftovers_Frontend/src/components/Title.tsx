@@ -1,17 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styles from '../styles/titleStyles';
-import { type TitleProps } from './type';
-
-/**
- * TitleProps interface for the Title component.
- *
- * @interface
- * @property {string} title - Text to be displayed as the title.
- * @property {number} titleSize - Text size for the title.
- * @property {string} titleColor - Text color for the title
- * @property {string} position - Text position for the title
- */
+import { type TitleProps } from '../common/Types';
 
 /**
  * Title component.

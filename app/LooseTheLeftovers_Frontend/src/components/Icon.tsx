@@ -7,19 +7,7 @@ import {
   ViewStyle,
   ImageStyle,
 } from 'react-native';
-import { type IconProps } from '../components/type';
-
-/**
- * IconProps interface for the Icon component.
- *
- * @interface
- * @property {ImageSourcePropType} source - The image source for the icon. Can be a local asset or a remote URL.
- * @property {number} [size=24] - Size of the icon, defaults to 24.
- * @property {() => void} onPress - Callback function executed when the icon is pressed.
- * @property {string} [testID] - Identifier for the component in test environments.
- * @property {StyleProp<ViewStyle>} [containerStyle] - Optional style for the TouchableOpacity container.
- * @property {StyleProp<ImageStyle>} [imageStyle] - Optional style for the Image element.
- */
+import { type IconProps } from '../common/Types';
 
 /**
  * Icon component.

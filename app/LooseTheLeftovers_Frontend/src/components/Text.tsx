@@ -1,16 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/textStyles';
-import { type TextsProps } from './type';
-
-/**
- * TextProps interface for the Text component.
- *
- * @interface
- * @property {string} texts -  displays the Text.
- * @property {number} textxSize -changes the text size
- * @property {() => void} onPress - Callback function executed when the button is pressed.
- */
+import { type TextsProps } from '../common/Types';
 
 /**
  * Text component.
