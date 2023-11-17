@@ -1,6 +1,6 @@
 # Messages Microservice
 
-### Overview
+### Model Overview
 
 Messages holds all messages sent between users on the app. Below is the table schema:
 
