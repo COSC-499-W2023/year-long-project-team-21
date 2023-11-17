@@ -3,8 +3,8 @@ from django.urls import reverse
 from rest_framework import status
 from .test_setup import TestSetUpCreateAccount
 from Users.models import CustomUser
-from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
+
 
 """
 Test cases for views related to user authentication and creation
@@ -13,7 +13,7 @@ Test cases for views related to user authentication and creation
 
 class TestUserAuth(TestSetUpCreateAccount):
     # URL endpoint for token generation/authentication.
-    __login_url = reverse("token")
+    __login_url = reverse("token_obtain_pair")
 
     def test_user_authentication_no_body(self):
         """
@@ -27,6 +27,7 @@ class TestUserAuth(TestSetUpCreateAccount):
     def test_user_authentication_with_valid_account(self):
         """
         Test sending auth request with valid account in body, expect 200
+        Login should return both an access and refresh token in response
         """
 
         # Authenticate using the stored test account credentials.
@@ -38,18 +39,18 @@ class TestUserAuth(TestSetUpCreateAccount):
 
         # Assert that the response status code is 200 OK.
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Extract the token from the response.
-        response_token = json.loads(response.content.decode("utf-8"))["token"]
-        # Query the database for the user ID using the username.
-        user_id = CustomUser.objects.get(username=self.test_user).id
-        # Retrieve the authentication token for the user from the database.
-        token = Token.objects.get(user_id=user_id)
-        # Assert that the token in the response matches the token in the database.
-        self.assertEqual(response_token, str(token))
+
+        # Assert access token returned
+        access_token = json.loads(response.content.decode("utf-8"))["access"]
+        self.assertTrue(access_token)
+
+        # Assert refresh token returned
+        refresh_token = json.loads(response.content.decode("utf-8"))["refresh"]
+        self.assertTrue(refresh_token)
 
     def test_user_authentication_with_invalid_credentials(self):
         """
-        Test sending invalid credentials for auth, expect 400
+        Test sending invalid credentials for auth, expect 401
         """
 
         # Authenticate using the incorrect credentials
@@ -59,8 +60,8 @@ class TestUserAuth(TestSetUpCreateAccount):
             format="json",
         )
 
-        # Assert that the response status code is 400 Bad Request.
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # Assert that the response status code is 401 Unauthorized.
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class TestUserCreation(APITestCase):
@@ -71,7 +72,7 @@ class TestUserCreation(APITestCase):
         try:
             user = CustomUser.objects.get(username="test123")
             self.assertIsNotNone(user)
-            return user.id
+            return user
         except CustomUser.DoesNotExist:
             self.fail("User does not exist")
             return None
@@ -103,16 +104,16 @@ class TestUserCreation(APITestCase):
 
         # test if appropriate response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         # check if user in the database
-        user_id = self.query_and_test_user("test123")
-        # check if correct token is in response
-        if user_id is not None:
-            # retrieve response token
-            response_token = json.loads(response.content.decode("utf-8"))["token"]
-            # query token in database based on id
-            token = Token.objects.get(user_id=user_id)
-            self.assertEqual(response_token, str(token))
-            self.delete_user(user_id)
+        user = self.query_and_test_user("test123")
+        self.assertEqual(user.username, "test123")
+        
+        # assert access token returned
+        response_token = json.loads(response.content.decode("utf-8"))["access_token"]
+        self.assertTrue(response_token)
+
+        self.delete_user(user.id)
 
     def test_creating_new_user_wrong_email(self):
         """
@@ -183,7 +184,7 @@ class TestUserCreation(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # query user
-        user_id = self.query_and_test_user("test123")
+        user_id = self.query_and_test_user("test123").id
 
         # send another post request with the same credentials
         next_response = self.client.post(
@@ -253,7 +254,7 @@ class TestUserCreation(APITestCase):
         )
 
         # delete user
-        user_id = self.query_and_test_user("test123")
+        user_id = self.query_and_test_user("test123").id
         self.delete_user(user_id)
 
     def test_incorrect_body_parameters_only_email_and_password(self):
