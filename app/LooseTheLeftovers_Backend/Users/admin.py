@@ -7,7 +7,7 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     ''''
-    This class allows model fields to be viawable in Admin page (viewable in browser).
+    This class allows model fields to be viewable in Admin page (viewable in browser).
     Also makes it possible to add/update Users fields from the admin page.
     '''
     add_form = CustomUserCreationForm
@@ -18,6 +18,7 @@ class CustomUserAdmin(UserAdmin):
         "username",
         "email",
         "password",
+        "first_name",
         "last_name",
         "is_staff",
         "is_active",
@@ -46,7 +47,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
     add_fieldsets = (
-        (None, {"fields": ("username", "password")}),
+        (None, {"fields": ("username", "password1", "password2")}),
         ("Personal info", {"fields": ("first_name", "last_name", "email")}),
         (
             "Permissions",
@@ -64,6 +65,8 @@ class CustomUserAdmin(UserAdmin):
         ("Additional info", {"fields": ("latitude", "longitude",)}),
     )
 
+    search_fields = ('username', 'first_name', 'last_name',)
+    ordering = ('username',)
 
 # Register your models here.
 admin.site.register(CustomUser, CustomUserAdmin)
