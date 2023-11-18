@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styles from '../styles/titleStyles';
-import { global } from '../common/global';
+import { global } from '../common/global_styles';
 
 /**
  * TitleProps interface for the Title component.

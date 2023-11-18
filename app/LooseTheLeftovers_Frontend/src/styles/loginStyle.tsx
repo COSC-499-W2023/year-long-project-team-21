@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { global } from '../common/global';
+import { global } from '../common/global_styles';
 
 const styles = StyleSheet.create({
   LoginContainer: {
