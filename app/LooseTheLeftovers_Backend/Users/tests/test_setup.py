@@ -18,5 +18,7 @@ class TestSetUpCreateAccount(APITestCase):
         return super().setUp()
 
     def tearDown(self):
+        # delete user
         self.test_user = CustomUser.objects.get(username="test")
+        self.test_user.delete()
         return super().tearDown()

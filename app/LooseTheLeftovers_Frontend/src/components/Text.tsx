@@ -1,26 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/textStyles';
-
-/**
- * TextProps interface for the Text component.
- *
- * @interface
- * @property {string} texts - Displays Text passed to the component.
- * @property {number} textsSize - Changes Text size
- * @property {string} textsColor - Changes Text color.
- * @property {string} position - Changes Text position on the screen.
- * @property {() => void} onPress - Callback function executed when the button is pressed.
- * @property {string} testID - Used to identify an element in testing.
- */
-interface TextsProps {
-  texts: string;
-  textsSize?: number;
-  textsColor?: string;
-  position?: string;
-  onPress?: () => void;
-  testID?: string;
-}
+import { type TextsProps } from '../common/Types';
 
 /**
  * Text component.
