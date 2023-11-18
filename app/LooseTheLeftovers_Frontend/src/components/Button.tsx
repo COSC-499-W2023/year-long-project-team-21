@@ -12,8 +12,8 @@ import { type ButtonProps } from '../common/Types';
  * @param {string} props.title - Text to display on the button.
  * @param {string} props.textColor - Text color in a Button component (defult:#555455)
  * @param {string} props.borderColor - Border color for a Button component (defult: #ffb800)
- * @param {number} props.textSize - change text font size in a Button.
- * @param {number} props.buttonSize - change Button width (size).
+ * @param {number} props.textSize - Change text font size in a Button.
+ * @param {number} props.buttonSize - Change Button width (size).
  * @example
  * <Button onPress={() => console.log('Button Pressed!')} title="Click Me" />
  */
@@ -29,7 +29,6 @@ const Button: React.FC<ButtonProps> = ({
   // If any custom values are passed as props, apply them, default otherwise
   // Set Default/Custom Button style
   const buttonStyles = {
-    backgroundColor: backgroundColor || 'white', // You can set a default background color or remove this line
     borderColor: borderColor || '#ffb800', // Use the provided borderColor or a default value
     width: buttonSize || 250, // Use the provided buttonSize or a default value
   };
