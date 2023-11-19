@@ -27,44 +27,59 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
-    // Later we can preprocess the input type for now, we assume it is string
-    if (username === '' && password === '') {
-      setErrorMessage('Please fill in credentials');
-      // Stop if both fields are empty
-    } else if (username === '') {
-      setErrorMessage('Please fill in the username');
-      // Stop if username is empty
-    } else if (password === '') {
-      setErrorMessage('Please fill in the password');
-      // Stop if password is empty
-    } else {
-      try {
-        const apiUrl = 'http://10.0.2.2:8000/users/token';
-
-        const response = await axios.post(apiUrl, {
-          username: username,
-          password: password,
-        });
-
-        const { data } = response;
-
-        // Check response successful
-        if (response.status === 200 && data.token) {
-          await storeJWT(data.token);
-          navigation.navigate('Instruction');
-          setErrorMessage('');
-        } else {
-          setErrorMessage('Failed to login or retrieve token.');
-        }
-      } catch (error) {
-        setErrorMessage('An error occurred while trying to retrieve data.');
-        console.log(error);
+    if (validateInputs()) {
+      // If both data fields are filled, proceed to API call
+      const responseData = await loginUser();
+      if (responseData) {
+        // If response is OK, store JWT and proceed
+        await storeJWT(responseData.token);
+        navigation.navigate('Instruction');
       }
     }
   };
 
+  // Set error message accordingly
+  const validateInputs = () => {
+    if (username === '' && password === '') {
+      setErrorMessage('Please fill in credentials');
+      return false;
+    }
+    if (username === '') {
+      setErrorMessage('Please fill in the username');
+      return false;
+    }
+    if (password === '') {
+      setErrorMessage('Please fill in the password');
+      return false;
+    }
+    setErrorMessage(''); // Clear any existing error messages
+    return true; // Inputs are valid
+  };
+
+  // Make an API call
+  const loginUser = async () => {
+    const apiUrl = 'http://10.0.2.2:8000/users/token';
+    try {
+      const response = await axios.post(apiUrl, {
+        username: username,
+        password: password,
+      });
+
+      if (response.status === 200 && response.data.token) {
+        return response.data; // Return the response data for successful login
+      } else {
+        setErrorMessage('Failed to login or retrieve token.');
+        return null; // Indicate an unsuccessful login attempt
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred while trying to retrieve data.');
+      console.log(error);
+      return null; // Indicate an error occurred
+    }
+  };
+
+  // Store JWT token
   async function storeJWT(token: string) {
     try {
       await EncryptedStorage.setItem('user_token', token);
@@ -74,12 +89,13 @@ const Login = ({ navigation }: { navigation: any }) => {
     }
   }
 
-  // Set input text from the text box so that we can handle the credential (username)
+  // Handle input text from the InputFields for username and password.
+  // Update their respective states and clear any existing error messages.
   const handleUsername = (input: string) => {
     setUsername(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
-  // Set input text from the text box so that we can handle the credential (password)
+
   const handlePassword = (input: string) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
