@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styles from '../styles/titleStyles';
+import { global } from '../common/global_styles';
 import { type TitleProps } from '../common/Types';
+
 
 /**
  * Title component.
@@ -25,7 +27,7 @@ const Title: React.FC<TitleProps> = ({
   //Default/Custom styles for Text component
   const titleStyles = {
     fontSize: titleSize || 25,
-    color: titleColor || '#555455',
+    color: titleColor || global.primary,
     marginTop: position == 'top' ? 150 : 0,
   };
 

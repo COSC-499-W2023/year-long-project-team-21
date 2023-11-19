@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/textStyles';
 import { type TextsProps } from '../common/Types';
 
+
 /**
  * Text component.
  *
@@ -31,7 +32,7 @@ const Texts: React.FC<TextsProps> = ({
   // If any custom values are passed as props, apply them, default otherwise
   const textsStyles = {
     fontSize: textsSize || 25,
-    color: textsColor || '#555455',
+    color: textsColor || global.primary,
     marginTop: position == 'top' ? 150 : 0,
   };
 
