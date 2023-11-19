@@ -1,21 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styles from '../styles/titleStyles';
+import { global } from '../common/global_styles';
+import { type TitleProps } from '../common/Types';
 
-/**
- * TitleProps interface for the Title component.
- *
- * @interface
- * @property {string} title - Text to be displayed as the title.
- * @property {number} titleSize - Text size for the title.
- * @property {string} titleColor - Text color for the title
- * @property {number} position - Text position for the title */
-interface TitleProps {
-  title: string;
-  titleSize?: number;
-  titleColor?: string;
-  position?: number;
-}
+
 /**
  * Title component.
  *
@@ -34,13 +23,14 @@ const Title: React.FC<TitleProps> = ({
   titleSize,
   titleColor,
   position,
+  testID,
 }) => {
   //Default/Custom styles for Text component
   const titleStyles = {
-    marginTop: position,
     fontSize: titleSize || 25,
-    color: titleColor || '#555455',
-    //marginTop: position == 'top' ? 150 : 0,
+    color: titleColor || global.primary,
+    marginTop: position == 'top' ? 150 : 0,
+
   };
 
   return (
