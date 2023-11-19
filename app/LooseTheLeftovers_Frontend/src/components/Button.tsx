@@ -2,26 +2,8 @@ import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import styles from '../styles/buttonStyles';
 import { global } from '../common/global_styles';
+import { type ButtonProps } from '../common/Types';
 
-/**
- * ButtonProps interface for the Button component.
- *
- * @interface
- * @property {() => void} onPress - Callback function executed when the button is pressed.
- * @property {string} title - Text displayed on the button.
- * @property {string} textColor - choose text color
- * @property {number} buttonSize - Choose button size (width)
- * @property {number} textSize - Choose text size
- */
-interface ButtonProps {
-  onPress: () => void;
-  title: string;
-  textColor?: string;
-  borderColor?: string;
-  buttonSize?: number;
-  textSize?: number;
-  testID?: string;
-}
 
 /**
  * Button component.
