@@ -4,6 +4,7 @@ import styles from '../styles/logoStyles';
 import { type LogoProps } from '../common/Types';
 
 const Logo: React.FC<LogoProps> = ({ LogoSize }) => {
+  // If any custom values are passed as props, apply them, default otherwise
   const logoStyles = {
     fontSize: LogoSize || 30,
   };
