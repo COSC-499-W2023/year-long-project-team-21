@@ -128,6 +128,7 @@ describe('Login component', () => {
           password: 'testpassword',
         },
       );
+
       // Find the error message element
       const errorMessageElement = getByTestId('error-msg');
 
@@ -174,6 +175,7 @@ describe('Login component', () => {
       const errorMessageElement = getByTestId('error-msg');
 
       // Check if the expected success/failure message is displayed
+
       expect(errorMessageElement.props.children).toBe(
         'Failed to login or retrieve token.',
       );

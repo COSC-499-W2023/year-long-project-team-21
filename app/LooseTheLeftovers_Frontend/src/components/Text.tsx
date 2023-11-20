@@ -1,10 +1,8 @@
 import React from 'react';
-
-import { View, Text, TouchableOpacity } from 'react-native';
+import { global } from '../common/global_styles';
+import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import styles from '../styles/textStyles';
 import { type TextsProps } from '../common/Types';
-
-
 
 /**
  * Text component.
@@ -26,6 +24,7 @@ const Texts: React.FC<TextsProps> = ({
   texts,
   textsSize,
   textsColor,
+  position,
   onPress,
   testID,
 }) => {
@@ -40,7 +39,9 @@ const Texts: React.FC<TextsProps> = ({
   return (
     <Pressable onPress={onPress}>
       <View style={styles.TitleContainer}>
-        <Text style={[styles.TitleText, textsStyles]} testID={testID}>{texts}</Text>
+        <Text style={[styles.TitleText, textsStyles]} testID={testID}>
+          {texts}
+        </Text>
       </View>
     </Pressable>
   );
