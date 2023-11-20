@@ -1,24 +1,24 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-10/30 to 11/5
+11/5 to 11/12
 
 Username: n3c777
 
 ## My Features For This Week
 
-- Help Present the frist presentation
-  -Finish Instructions page
+-Creating text and logo components
+-Creating instructions screen
 
 ## Completed Features For This Week
 
--Presented the the presenation
--Instructions page completed
--Plan next sprint
+-Created text and logo components
+-Remade instructions with all components made
+-Reviewed others code
 
 ## Features in progress
 
-- Implementing the logo
+- Making the instructions page look more like the figma design
 
 ## Types of Tasks Worked On
 
-![individual log week 9](https://imgtr.ee/images/2023/11/06/ef9db0906950277c17985dfebb10f17f.png)
+![individual log week 10](https://i.postimg.cc/YCxnCT1X/Nov-12.png)

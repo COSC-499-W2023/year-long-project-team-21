@@ -1,23 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { View, TextInput, TouchableOpacity } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/inputFieldStyles';
-
-/**
- * InputFieldProps interface for the InputField component.
- *
- * @interface
- * @property {string} placeholder - The placeholder text to display in the input field.
- * @property {(input: string) => void} onChangeText - Callback function to notify parent components when the text changes.
- * @property {string | number} value - The initial value of the input field.
- * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
- */
-interface InputFieldProps {
-  placeholder: string;
-  onChangeText: (input: string) => void;
-  value: string | number;
-  secureTextEntry?: boolean;
-  style?: StyleProp<ViewStyle & TextStyle>;
-}
+import { type InputFieldProps } from '../common/Types';
 
 /**
  * InputField component.
@@ -41,35 +26,44 @@ interface InputFieldProps {
 const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
-  value,
   secureTextEntry = false,
   style,
 }) => {
   const [text, setText] = useState('');
+  const [isSecure, setIsSecure] = useState(secureTextEntry);
 
-  /**
-   * Handles changes in the input field.
-   * Updates the local state and notifies parent components through the onChangeText prop.
-   *
-   * @function
-   * @param {string} inputText - The new text in the input field.
-   */
+  // Toggle the state of isSecure, controls the visibility of the password
+  const toggleSecureEntry = () => {
+    setIsSecure(!isSecure);
+  };
+
   const handleChange = (inputText: string) => {
     setText(inputText);
     onChangeText(inputText);
   };
 
+  // If secureEntry is true, apply styling with visibility toggle button
+  const inputStyle = secureTextEntry ? styles.inputWithToggle : styles.input;
+
   return (
-    <>
-      <View style={styles.space} />
+    <View style={styles.inputContainer}>
       <TextInput
-        style={[styles.container, style]}
+        style={inputStyle}
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}
-        secureTextEntry={secureTextEntry}
+        secureTextEntry={isSecure} // Determine if the text should be obscured
       />
-    </>
+      {secureTextEntry && ( // Render if secureTextEntry is true
+        <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
+          <MaterialCommunityIcons
+            name={isSecure ? 'eye-outline' : 'eye-off-outline'}
+            size={24}
+            color="grey"
+          />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 

@@ -16,7 +16,7 @@ describe('Icon Component Tests', () => {
       />,
     );
 
-    // icon pressed
+    // Icon pressed
     const icon = getByTestId('icon-test');
     fireEvent.press(icon);
 
@@ -25,7 +25,9 @@ describe('Icon Component Tests', () => {
 
   it('triggers onPress event with remote image', () => {
     const mockOnPress = jest.fn();
-    const remoteImageSource = { uri: 'https://imgtr.ee/images/2023/11/09/17cba266c9b2443e11f53e1a3cc736a5.png' };
+    const remoteImageSource = {
+      uri: 'https://imgtr.ee/images/2023/11/09/17cba266c9b2443e11f53e1a3cc736a5.png',
+    };
 
     const { getByTestId } = render(
       <Icon
@@ -36,7 +38,7 @@ describe('Icon Component Tests', () => {
       />,
     );
 
-    // icon pressed
+    // Icon pressed
     const icon = getByTestId('icon-test-remote');
     fireEvent.press(icon);
 

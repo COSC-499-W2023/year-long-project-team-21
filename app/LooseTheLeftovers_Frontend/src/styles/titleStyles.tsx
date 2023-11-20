@@ -5,10 +5,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 20,
   },
-  TitleText: {
-    color: 'black',
-  },
+  TitleText: {},
 });
 
 export default styles;
