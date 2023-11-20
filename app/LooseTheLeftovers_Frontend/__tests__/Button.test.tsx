@@ -1,3 +1,4 @@
+import React from 'react';
 import Button from '../src/components/Button';
 import { fireEvent, render } from '@testing-library/react-native';
 
