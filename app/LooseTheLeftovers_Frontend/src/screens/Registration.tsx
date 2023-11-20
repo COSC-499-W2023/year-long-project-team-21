@@ -1,9 +1,5 @@
 import Logo from '../components/Logo';
-import {
-  SafeAreaView,
-  Text,
-  View,
-} from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import styles from '../styles/registrationStyles';
 import React, { useState } from 'react';
 import Texts from '../components/Text';
@@ -34,7 +30,8 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const [usernameLengthError, setUsernameLengthError] = useState(false);
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [serverError, setServerError] = useState(false);
-  const [credentialFilledInError, setCredentialsFilledInError] = useState(false);
+  const [credentialFilledInError, setCredentialsFilledInError] =
+    useState(false);
   const [apiRequestError, setApiRequestError] = useState(false);
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
   //set input text from the text box so that we can handle credential (Email)
@@ -53,9 +50,9 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const handlePassword2 = (input: string) => {
     setPassword2(input);
   };
-  const handleLoginNavigation = ()  => {
-    navigation.navigate('Login')
-  }
+  const handleLoginNavigation = () => {
+    navigation.navigate('Login');
+  };
   //Handle password strength check
   const passwordStrengthColor = (
     passwordStrengthId: number,
@@ -116,10 +113,10 @@ const Registration = ({ navigation }: { navigation: any }) => {
 
         // Check response successful
         if (response.status === 200 && data.token) {
-          setUsername("");
-          setEmail("");
-          setPassword1("");
-          setPassword2("");
+          setUsername('');
+          setEmail('');
+          setPassword1('');
+          setPassword2('');
           navigation.navigate('Instruction');
         } else {
           //red text error produced by server
@@ -136,9 +133,6 @@ const Registration = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={styles.RegistrationContainer}>
       <View style={styles.container}>
-        {/* <View style={styles.logo}>
-          <Logo LogoSize={40} />
-        </View> */}
         <Logo LogoSize={40} />
         <Title title="Register" titleSize={30} />
         <InputField
@@ -164,7 +158,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
             Username is too short. Enter more than 8 characters.
           </Text>
         )}
-         <InputField
+        <InputField
           placeholder="+Password"
           onChangeText={input => handlePassword1(input)}
           value={password1}
@@ -220,7 +214,11 @@ const Registration = ({ navigation }: { navigation: any }) => {
             onPress={() => handleButtonOnPress()}
           />
         </View>
-        <Texts texts="Login" textsSize={18} onPress={() => handleLoginNavigation()}/>
+        <Texts
+          texts="Login"
+          textsSize={18}
+          onPress={() => handleLoginNavigation()}
+        />
       </View>
     </SafeAreaView>
   );

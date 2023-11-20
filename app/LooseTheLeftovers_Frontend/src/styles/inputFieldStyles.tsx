@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     width: 280,
     marginVertical: 10,
     color: global.primary,
-    
   },
   input: {
     color: global.secondary,

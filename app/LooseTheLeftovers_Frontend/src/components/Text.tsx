@@ -4,8 +4,6 @@ import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import styles from '../styles/textStyles';
 import { type TextsProps } from '../common/Types';
 
-
-
 /**
  * Text component.
  *
@@ -41,7 +39,9 @@ const Texts: React.FC<TextsProps> = ({
   return (
     <Pressable onPress={onPress}>
       <View style={styles.TitleContainer}>
-        <Text style={[styles.TitleText, textsStyles]} testID={testID}>{texts}</Text>
+        <Text style={[styles.TitleText, textsStyles]} testID={testID}>
+          {texts}
+        </Text>
       </View>
     </Pressable>
   );

@@ -34,7 +34,7 @@ const Title: React.FC<TitleProps> = ({
 
   return (
     <View style={[styles.TitleContainer]}>
-      <Text style={[styles.TitleText, titleStyles]}>{title}</Text>
+      <Text style={[styles.TitleText, titleStyles]} testID={testID}>{title}</Text>
     </View>
   );
 };
