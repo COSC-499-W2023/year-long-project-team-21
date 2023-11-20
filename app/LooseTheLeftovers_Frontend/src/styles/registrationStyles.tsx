@@ -1,8 +1,9 @@
 import { Platform, StyleSheet } from 'react-native';
-
+import { global } from '../common/global_styles';
 const styles = StyleSheet.create({
   RegistrationContainer: {
     flex: 1,
+    backgroundColor: global.background,
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 20,
@@ -21,20 +22,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   passwordContainer: {
-    borderColor: 'gray',
-    height: 40,
-    width: 250,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10, // Adjust the marginTop to add more space
-    marginHorizontal: 60,
     borderWidth: 1,
-    borderRadius: 5,
+    borderColor: global.primary,
+    borderRadius: 8,
+    width: 280,
+    marginVertical: 10,
+    color: global.primary,
   },
   input: {
     flex: 1,
     paddingVertical: 1,
+    color: global.secondary,
+    padding: 10,
   },
   icon: {
     padding: 10,

@@ -27,7 +27,7 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
   secureTextEntry = false,
-  style,
+  placeholderTextColor = "white"
 }) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
@@ -53,6 +53,7 @@ const InputField: React.FC<InputFieldProps> = ({
         onChangeText={handleChange}
         value={text}
         secureTextEntry={isSecure} // Determine if the text should be obscured
+        placeholderTextColor={"#FFB800"}
       />
       {secureTextEntry && ( // Render if secureTextEntry is true
         <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
