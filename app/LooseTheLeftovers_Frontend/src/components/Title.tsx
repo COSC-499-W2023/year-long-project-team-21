@@ -13,7 +13,8 @@ import { type TitleProps } from '../common/Types';
  * @param {string} props.title - Text to be displayed as the title.
  * @param {number} props.titleSize - Title size
  * @param {string} props.titleColor - Title color specification
- * @param {string} props.position - Specifies position of the Title (top or middle)
+ * @param {number} props.position - Specifies position of the Title (top or middle)
+
  * @example
  * <Title title="My Page Title" />
  */
@@ -29,13 +30,12 @@ const Title: React.FC<TitleProps> = ({
     fontSize: titleSize || 25,
     color: titleColor || global.primary,
     marginTop: position == 'top' ? 150 : 0,
+
   };
 
   return (
     <View style={[styles.TitleContainer]}>
-      <Text style={[styles.TitleText, titleStyles]} testID={testID}>
-        {title}
-      </Text>
+      <Text style={[styles.TitleText, titleStyles]}>{title}</Text>
     </View>
   );
 };

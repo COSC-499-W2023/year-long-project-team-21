@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/textStyles';
 import { type TextsProps } from '../common/Types';
+
 
 
 /**
@@ -24,7 +26,6 @@ const Texts: React.FC<TextsProps> = ({
   texts,
   textsSize,
   textsColor,
-  position,
   onPress,
   testID,
 }) => {
@@ -37,11 +38,11 @@ const Texts: React.FC<TextsProps> = ({
   };
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <Pressable onPress={onPress}>
       <View style={styles.TitleContainer}>
         <Text style={[styles.TitleText, textsStyles]} testID={testID}>{texts}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
