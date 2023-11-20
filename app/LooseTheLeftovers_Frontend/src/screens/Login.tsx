@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import styles from '../styles/loginStyle';
@@ -10,6 +10,7 @@ import InputField from '../components/InputField';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import LocationService from '../components/LocationService';
+import Texts from '../components/Text';
 
 /**
  * Login component.
@@ -27,6 +28,10 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleRegistrationNavigation = () => {
+    navigation.navigate('Registration')
+  }
 
   const handleButtonOnPress = async () => {
     if (validateInputs()) {
@@ -109,7 +114,9 @@ const Login = ({ navigation }: { navigation: any }) => {
       <SafeAreaView style={styles.LoginContainer}>
         
         <Logo LogoSize={40} />
+        
         <Title title="Login" titleSize={30} testID="loginTitle" />
+
         <InputField
           placeholder="Username"
           onChangeText={input => handleUsername(input)}
@@ -136,6 +143,7 @@ const Login = ({ navigation }: { navigation: any }) => {
           testID="loginButton"
         />
         <Text texts="Forgot password?" textsSize={18} />
+        <Texts texts="Sign Up" textsSize={18} onPress={() => handleRegistrationNavigation()}/>
       </SafeAreaView>
     </>
   );
