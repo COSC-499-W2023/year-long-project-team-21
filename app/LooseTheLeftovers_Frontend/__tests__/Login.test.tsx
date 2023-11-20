@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import axios from 'axios';
-import Login from '../src/screens/Login';
 import { Alert } from 'react-native';
+import Login from '../src/screens/Login';
 
 jest.mock('axios');
 jest.mock('react-native', () => {
@@ -22,14 +22,18 @@ describe('Login component', () => {
   });
 
   it('renders correctly', () => {
-    const { getByPlaceholderText, getByText } = render(<Login navigation={navigation} />);
+    const { getByPlaceholderText, getByTestId } = render(<Login navigation={navigation} />);
    
     // Check if the username and password input fields are rendered
     expect(getByPlaceholderText('Username')).toBeTruthy();
     expect(getByPlaceholderText('Password')).toBeTruthy();
 
-    // Check if the Login button is rendered
-    expect(getByText('Login')).toBeTruthy();
+    // Use testID to get the specific elements
+    const loginTitle = getByTestId('loginTitle');
+    const loginButton = getByTestId('loginButton');
+
+    expect(loginTitle).toBeTruthy();
+    expect(loginButton).toBeTruthy();
   });
 
   it('handles input changes', () => {
@@ -48,14 +52,14 @@ describe('Login component', () => {
 
   it('handles button press - success', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByText } = render(<Login navigation={navigation} />);
+    const { getByPlaceholderText, getByTestId } = render(<Login navigation={navigation} />);
     
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
     // Simulate button press
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByTestId('loginButton'));
 
     // Wait for the asynchronous operation to complete
     await waitFor(() => {
@@ -81,7 +85,7 @@ describe('Login component', () => {
     // Mock a failed API response
     mockedAxios.post.mockRejectedValueOnce(new Error('API error'));
 
-    const { getByPlaceholderText, getByText } = render(<Login navigation = {navigation} />);
+    const { getByPlaceholderText, getByTestId } = render(<Login navigation = {navigation} />);
     
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
@@ -89,7 +93,7 @@ describe('Login component', () => {
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
 
     // Simulate button press
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByTestId('loginButton'));
 
     // Wait for the asynchronous operation to complete
     await waitFor(() => {
@@ -112,7 +116,7 @@ describe('Login component', () => {
 
   it('handles button press - failure to login with invalid credentials',async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByText } = render(<Login navigation={navigation} />);
+    const { getByPlaceholderText, getByTestId } = render(<Login navigation={navigation} />);
          
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'wrongtestuser');
@@ -128,7 +132,7 @@ describe('Login component', () => {
     });
 
     // Simulate button press
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByTestId('loginButton'));
 
     // Wait for the asynchronous operation to complete
     await waitFor(() => {

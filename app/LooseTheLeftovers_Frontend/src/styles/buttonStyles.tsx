@@ -5,9 +5,9 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   button: {
-    borderWidth: 2,         // Set the border width
+    borderWidth: 2,
     margin: 10,
-    borderRadius: 5,
+    borderRadius: 8,
     height: 50,
     justifyContent: "center",
     alignItems: "center",

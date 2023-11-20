@@ -1,11 +1,14 @@
+import React, { useState } from 'react';
 import { Alert, SafeAreaView } from 'react-native';
-import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
-import Button from '../components/Button';
-import Header from '../components/Header';
-import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
-import Icon from '../components/Icon';
+
+import Logo from '../components/Logo';
+import Title from '../components/Title';
+import InputField from '../components/InputField';
+import Text from '../components/Text';
+import Button from '../components/Button';
+import LocationService from '../components/LocationService';
 
 /**
  * Login component.
@@ -25,7 +28,7 @@ const Login = ({ navigation }: { navigation: any }) => {
 
   // Checks if the username&password is empty. If not, then we proceed to check the credential to the backend
   const handleButtonOnPress = async () => {
-    // later we can preprocess the input type for now, we assume it is string
+    // Later we can preprocess the input type for now, we assume it is string
     if (username === '' || password === '') {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
@@ -41,7 +44,6 @@ const Login = ({ navigation }: { navigation: any }) => {
 
         // Check response successful
         if (response.status === 200 && data.token) {
-          //initiate sending request here?
           navigation.navigate('Instruction');
           Alert.alert('Login Successful', `Token: ${data.token}`);
         } else {
@@ -52,41 +54,50 @@ const Login = ({ navigation }: { navigation: any }) => {
           'Error',
           'An error occurred while trying to retrieve data.',
         );
-        console.log(error)
+        console.log(error);
       }
     }
   };
 
-  //Set input text from the text box so that we can handle the credential (username)
+  // Set input text from the text box so that we can handle the credential (username)
   const handleUsername = (input: string) => {
     setUsername(input);
   };
-  //Set input text from the text box so that we can handle the credential (password)
+  // Set input text from the text box so that we can handle the credential (password)
   const handlePassword = (input: string) => {
     setPassword(input);
   };
+  
+  const {location, sendLocationToServer} = LocationService();
 
+  
+  
   return (
-  <>
-    <SafeAreaView style={styles.LoginContainer}>
-      <Header image="" />
-      <Icon source={require('../assets/test-home.png')} />
-      <InputField
-        placeholder="Username"
-        onChangeText={input => handleUsername(input)}
-        value={username}
-      />
-      <InputField
-        placeholder="Password"
-        onChangeText={input => handlePassword(input)}
-        value={password}
-        secureTextEntry={true}
-      />
-      <Button title="Login" onPress={() => handleButtonOnPress()} />
-    </SafeAreaView>
-  </>
+    <>
+      <SafeAreaView style={styles.LoginContainer}>
+        
+        <Logo LogoSize={40} />
+        <Title title="Login" titleSize={30} testID="loginTitle" />
+        <InputField
+          placeholder="Username"
+          onChangeText={input => handleUsername(input)}
+          value={username}
+        />
+        <InputField
+          placeholder="Password"
+          onChangeText={input => handlePassword(input)}
+          value={password}
+          secureTextEntry={true}
+        />
+        <Text texts="Forgot password?" textsSize={18} />
+        <Button
+          title="Login"
+          onPress={() => handleButtonOnPress()}
+          testID="loginButton"
+        />
+      </SafeAreaView>
+    </>
   );
 };
-
 
 export default Login;

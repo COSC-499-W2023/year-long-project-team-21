@@ -1,23 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import styles from '../styles/titleStyles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-/**
- * TextProps interface for the Text component.
- *
- * @interface
- * @property {string} texts -  displays the Text.
- * @property {number} textxSize -changes the text size
- * @property {() => void} onPress - Callback function executed when the button is pressed.
- */
-interface TextsProps {
-  texts: string;
-  textsSize?: number;
-  textsColor?: string;
-  position?: string;
-  onPress?: () => void;
-}
+import { View, Text, TouchableOpacity } from 'react-native';
+import styles from '../styles/textStyles';
+import { type TextsProps } from '../common/Types';
 
 /**
  * Text component.
@@ -27,7 +11,7 @@ interface TextsProps {
  * @param {TextsProps} props - The props for the Text component.
  * @param {string} props.texts - Text to be displayed as the Text.
  * @param {number} props.textsSize - Text size
- * @param {string} props.textxColor color specification
+ * @param {string} props.textsColor color specification
  * @param {string} props.position - Determines Text position
  * @param {() => void} props.onPress - Callback function to execute when the button is pressed.
  * @example
@@ -41,7 +25,7 @@ const Texts: React.FC<TextsProps> = ({
   position,
   onPress,
 }) => {
-  //Default/Custom styles for Text component
+  // Default/Custom styles for Text component
   const textsStyles = {
     fontSize: textsSize || 25,
     color: textsColor || '#555455',
