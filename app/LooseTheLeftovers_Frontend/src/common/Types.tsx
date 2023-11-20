@@ -101,6 +101,7 @@ interface TextsProps {
   textsColor?: string;
   position?: string;
   onPress?: () => void;
+  testID?: string;
 }
 
 /**

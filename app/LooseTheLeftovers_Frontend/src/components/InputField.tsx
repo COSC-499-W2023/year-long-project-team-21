@@ -31,6 +31,7 @@ const InputField: React.FC<InputFieldProps> = ({
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 
+  // Toggle the state of isSecure, controls the visibility of the password
   const toggleSecureEntry = () => {
     setIsSecure(!isSecure);
   };
@@ -40,6 +41,7 @@ const InputField: React.FC<InputFieldProps> = ({
     onChangeText(inputText);
   };
 
+  // If secureEntry is true, apply styling with visibility toggle button
   const inputStyle = secureTextEntry ? styles.inputWithToggle : styles.input;
 
   return (
@@ -49,7 +51,7 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}
-        secureTextEntry={isSecure}
+        secureTextEntry={isSecure} // Determine if the text should be obscured
       />
       {secureTextEntry && ( // Render if secureTextEntry is true
         <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
