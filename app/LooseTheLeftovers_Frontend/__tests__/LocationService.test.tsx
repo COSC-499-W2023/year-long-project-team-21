@@ -1,53 +1,77 @@
-// // __tests__/LocationService.test.tsx
-
+// import { render, renderHook } from '@testing-library/react-native';
 // import React from 'react';
-// import { render, waitFor } from '@testing-library/react-native';
-// import LocationService from '../src/components/LocationService'; // Adjust the path as needed
+// import { act } from 'react-test-renderer'; // Use React Test Renderer for async testing
+// import useLocationService from '../src/components/LocationService';
+// import { GeoPosition } from 'react-native-geolocation-service';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// // Mock AsyncStorage
 // jest.mock('@react-native-async-storage/async-storage', () => ({
 //   getItem: jest.fn(),
 //   setItem: jest.fn(),
 // }));
 
-// // Mock Geolocation
 // jest.mock('react-native-geolocation-service', () => ({
 //   getCurrentPosition: jest.fn(),
 // }));
 
-// // Mock requestLocationPermission
-// jest.mock('../LocationPermission', () => ({
-//   __esModule: true,
-//   default: jest.fn().mockResolvedValue(true), // Adjust the resolved value based on your needs
-// }));
-
 // describe('LocationService', () => {
-//   it('declared without crashing', async () => {
-//     // Ensure that the component renders without crashing
-//   });
-
-//   it('fetches and displays location data', async () => {
-//     render(<LocationService />);
-
-//     // Mock the response from Geolocation
-//     const mockPosition = {
+//   it('should retrieve cached location from AsyncStorage', async () => {
+//     const mockedCachedLocation: GeoPosition = {
 //       coords: {
 //         latitude: 40.7128,
-//         longitude: -74.006,
+//         longitude: -74.0060,
+//         accuracy: 0,
+//         altitude: null,
+//         heading: null,
+//         speed: null
 //       },
+//       timestamp: 0,
 //     };
-//     // Resolve the getCurrentPosition mock with the mocked position
-//     // Adjust the mockReturnValueOnce arguments based on your needs
-//     (global as any).navigator.geolocation.getCurrentPosition.mockReturnValueOnce(
-//       Promise.resolve(mockPosition)
-//     );
 
-//     // Wait for the component to render and the location to be displayed
-//     await waitFor(() => expect(getLocationText()).toBe(`Current location: ${JSON.stringify(mockPosition)}`));
+//     (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(mockedCachedLocation);
 
-//     // You might want to add more assertions based on your specific requirements
+//     let result: any;
+
+//     expect((AsyncStorage.getItem as jest.Mock)).toHaveBeenCalledWith('lastLocation');
+
+//     // Make assertions based on the result
+//     expect(result.current.location).toEqual(mockedCachedLocation);
 //   });
 
-//   // Add more test cases based on your component's behavior
-// });
+//   it('should send location to the server', async () => {
+//     const mockPosition: GeoPosition = {
+//       coords: {
+//         latitude: 10.123,
+//         longitude: -20.456,
+//         accuracy: 0,
+//         altitude: null,
+//         heading: null,
+//         speed: null
+//       },
+//       timestamp: 0,
+//     };
 
+//     (global as any).fetch = jest.fn().mockResolvedValueOnce({ ok: true });
+
+//     let result: any;
+
+    
+
+//     // Call the function that sends location to the server
+//     await act(async () => {
+//       result.current.sendLocationToServer(mockPosition);
+//     });
+
+//     // Make assertions based on the result
+//     expect(global.fetch).toHaveBeenCalledWith(
+//       'https://10.0.2.2:8000/ads/location',
+//       expect.objectContaining({
+//         method: 'POST',
+//         body: JSON.stringify({
+//           latitude: 10.123,
+//           longitude: -20.456,
+//         }),
+//       })
+//     );
+//   });
+// });

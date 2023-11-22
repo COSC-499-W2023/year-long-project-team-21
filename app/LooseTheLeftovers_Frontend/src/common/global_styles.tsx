@@ -10,5 +10,5 @@ export const global = {
   primary: '#FFB700', //yellow
   secondary: '#FFFFFF', //white
   background: '#2e2e2e', //dark grey
-  //08282B, 0D1830
+  //08282B, 0D1830,2e2e2e
 };
