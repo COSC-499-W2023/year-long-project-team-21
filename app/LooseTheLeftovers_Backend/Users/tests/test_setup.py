@@ -6,13 +6,17 @@ class TestSetUpCreateAccount(APITestCase):
     def setUp(self):
         # create temp user
         self.test_user = CustomUser.objects.create_user(
-            username="test", password="test123", postal_code="V0E1V4"
+            username = "test", 
+            password = "test123", 
+            latitude = 49.887673,
+            longitude = -119.495465,
         )
         # save temp user credentials in db
         self.test_account = {
             "username": "test",
             "password": "test123",
-            "postal_code": "V0E1V4",
+            "latitude": 49.887673,
+            "longitude": -119.495465,
         }
         # call APITestCase.setUp()
         return super().setUp()

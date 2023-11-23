@@ -2,22 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/inputFieldStyles';
-
-/**
- * InputFieldProps interface for the InputField component.
- *
- * @interface
- * @property {string} placeholder - The placeholder text to display in the input field.
- * @property {(input: string) => void} onChangeText - Callback function to notify parent components when the text changes.
- * @property {string | number} value - The initial value of the input field.
- * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
- */
-interface InputFieldProps {
-  placeholder: string;
-  onChangeText: (input: string) => void;
-  value: string | number;
-  secureTextEntry?: boolean;
-}
+import { type InputFieldProps } from '../common/Types';
 
 /**
  * InputField component.
@@ -42,10 +27,12 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
   secureTextEntry = false,
+  placeholderTextColor = 'white',
 }) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 
+  // Toggle the state of isSecure, controls the visibility of the password
   const toggleSecureEntry = () => {
     setIsSecure(!isSecure);
   };
@@ -55,6 +42,7 @@ const InputField: React.FC<InputFieldProps> = ({
     onChangeText(inputText);
   };
 
+  // If secureEntry is true, apply styling with visibility toggle button
   const inputStyle = secureTextEntry ? styles.inputWithToggle : styles.input;
 
   return (
@@ -64,7 +52,8 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChangeText={handleChange}
         value={text}
-        secureTextEntry={isSecure}
+        secureTextEntry={isSecure} // Determine if the text should be obscured
+        placeholderTextColor={'#FFB800'}
       />
       {secureTextEntry && ( // Render if secureTextEntry is true
         <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
