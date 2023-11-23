@@ -8,8 +8,8 @@ import Title from '../components/Title';
 import InputField from '../components/InputField';
 import Text from '../components/Text';
 import Button from '../components/Button';
-import LocationService from '../components/LocationService';
 import Texts from '../components/Text';
+import LocationService from '../common/LocationService';
 
 /**
  * Login component.
@@ -27,6 +27,7 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const locationService = new LocationService(1200000);
 
   const handleRegistrationNavigation = () => {
     navigation.navigate('Registration');

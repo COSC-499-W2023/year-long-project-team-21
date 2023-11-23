@@ -129,7 +129,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       }
     }
   };
-
+  
   return (
     <SafeAreaView style={styles.RegistrationContainer}>
       <View style={styles.container}>

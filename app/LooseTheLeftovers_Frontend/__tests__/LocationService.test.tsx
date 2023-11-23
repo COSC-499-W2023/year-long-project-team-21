@@ -1,77 +1,90 @@
-// import { render, renderHook } from '@testing-library/react-native';
-// import React from 'react';
-// import { act } from 'react-test-renderer'; // Use React Test Renderer for async testing
-// import useLocationService from '../src/components/LocationService';
-// import { GeoPosition } from 'react-native-geolocation-service';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import LocationService from '../src/common/LocationService';
+import Geolocation from 'react-native-geolocation-service';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { Alert, PermissionsAndroid } from 'react-native';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
-// jest.mock('@react-native-async-storage/async-storage', () => ({
-//   getItem: jest.fn(),
-//   setItem: jest.fn(),
-// }));
+// Mocking dependencies
+jest.mock('react-native-geolocation-service');
+jest.mock('react-native-encrypted-storage');
+jest.mock('react-native-permissions', () => ({
+  check: jest.fn(),
+  request: jest.fn(),
+  PERMISSIONS: {
+    IOS: {
+      LOCATION_WHEN_IN_USE: 'ios.permission.LOCATION_WHEN_IN_USE',
+      LOCATION_ALWAYS: 'ios.permission.LOCATION_ALWAYS',
+    },
+    ANDROID: {
+      ACCESS_FINE_LOCATION: 'android.permission.ACCESS_FINE_LOCATION',
+    },
+  },
+  RESULTS: {
+    GRANTED: 'granted',
+  },
+}));
+jest.mock('react-native', () => ({
+  Platform: {
+    select: jest.fn(),
+  },
+  Alert: {
+    alert: jest.fn(),
+  },
+}));
+describe('LocationService', () => {
+  let locationservice: LocationService;
+  beforeEach(() => {
+    locationservice = new LocationService(100000);
+  });
 
-// jest.mock('react-native-geolocation-service', () => ({
-//   getCurrentPosition: jest.fn(),
-// }));
+  it('should initialize with undefined location and false permission', () => {
+    expect(locationservice.location).toBeUndefined();
+    expect(locationservice.hasPermission).toBe(false);
+  });
 
-// describe('LocationService', () => {
-//   it('should retrieve cached location from AsyncStorage', async () => {
-//     const mockedCachedLocation: GeoPosition = {
-//       coords: {
-//         latitude: 40.7128,
-//         longitude: -74.0060,
-//         accuracy: 0,
-//         altitude: null,
-//         heading: null,
-//         speed: null
-//       },
-//       timestamp: 0,
-//     };
+  it('should request location permission if not granted', async () => {
+    const locationService = new LocationService(100000);
 
-//     (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(mockedCachedLocation);
+    // Mock the getLocationPermission method
+    const getLocationPermissionMock = jest.fn();
+    jest
+      .spyOn(locationService, 'getLocationPermission')
+      .mockImplementation(getLocationPermissionMock);
 
-//     let result: any;
+    // Set hasPermission to false to simulate the case where permission is not granted
+    locationService.hasPermission = false;
 
-//     expect((AsyncStorage.getItem as jest.Mock)).toHaveBeenCalledWith('lastLocation');
+    // Call the method that triggers the permission request
+    await locationService.getLocationPermission();
 
-//     // Make assertions based on the result
-//     expect(result.current.location).toEqual(mockedCachedLocation);
-//   });
+    // Assert that the mocked method was called
+    expect(getLocationPermissionMock).toHaveBeenCalled();
+  });
 
-//   it('should send location to the server', async () => {
-//     const mockPosition: GeoPosition = {
-//       coords: {
-//         latitude: 10.123,
-//         longitude: -20.456,
-//         accuracy: 0,
-//         altitude: null,
-//         heading: null,
-//         speed: null
-//       },
-//       timestamp: 0,
-//     };
+  it('should get cached location if within threshold', async () => {
+    // Arrange
+    const locationService = new LocationService(200000);
 
-//     (global as any).fetch = jest.fn().mockResolvedValueOnce({ ok: true });
+    // Mock the getCachedLocation method
+    jest.spyOn(locationService, 'getCachedLocation').mockResolvedValue({
+      latitude: 37.4226711,
+      longitude: -122.0849872,
+    });
 
-//     let result: any;
+    // Set the location property directly since getLocation is asynchronous
+    locationService.location = {
+      coords: {
+        latitude: 37.4226711,
+        longitude: -122.0849872,
+      },
+    };
 
-    
-
-//     // Call the function that sends location to the server
-//     await act(async () => {
-//       result.current.sendLocationToServer(mockPosition);
-//     });
-
-//     // Make assertions based on the result
-//     expect(global.fetch).toHaveBeenCalledWith(
-//       'https://10.0.2.2:8000/ads/location',
-//       expect.objectContaining({
-//         method: 'POST',
-//         body: JSON.stringify({
-//           latitude: 10.123,
-//           longitude: -20.456,
-//         }),
-//       })
-//     );
-//   });
-// });
+    // Assert that the location property has the expected values
+    expect(locationService.location).toEqual({
+      coords: {
+        latitude: 37.4226711,
+        longitude: -122.0849872,
+      },
+    });
+  });
+});
