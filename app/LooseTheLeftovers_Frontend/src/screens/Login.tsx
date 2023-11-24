@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import InputField from '../components/InputField';
 import styles from '../styles/loginStyle';
+import NetworkRequest from '../common/NetworkRequest'
 
 
 /**
@@ -30,22 +31,13 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (username === '' || password === '') {
       Alert.alert('Error', 'Please fill in the credentials.');
     } else {
+      // create a new network request
+      const networkRequest = new NetworkRequest('tokens');
       try {
-        const response = await axios.post('http://10.0.2.2:8000/users/token', {
-          username: username,
-          password: password,
-        });
-
-        const { data } = response;
-
-        // Check response successful
-        if (response.status === 200 && data.token) {
-          //initiate sending request here?
-          navigation.navigate('Instruction');
-          Alert.alert('Login Successful', `Token: ${data.token}`);
-        } else {
-          Alert.alert('Error', 'Failed to login or retrieve token.');
-        }
+        // await credential authentication
+        await networkRequest.login(username, password);
+        // once credentials are authenticated, navigate to instructions
+        navigation.navigate('Instruction');
       } catch (error) {
         Alert.alert(
           'Error',
@@ -55,7 +47,7 @@ const Login = ({ navigation }: { navigation: any }) => {
       }
     }
   };
-
+  
   //Set input text from the text box so that we can handle the credential (username)
   const handleUsername = (input: string) => {
     setUsername(input);
