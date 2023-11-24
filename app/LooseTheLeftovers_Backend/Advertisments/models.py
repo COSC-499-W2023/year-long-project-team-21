@@ -5,7 +5,7 @@ class Advertisment(models.Model):
     user_id = models.IntegerField()
     title = models.TextField(max_length=50)
     description = models.TextField(max_length=1000)
-    #image = models.ImageField()
+    image = models.ImageField(upload_to="images/")
     category = models.TextField(max_length=20)
     expiry = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
