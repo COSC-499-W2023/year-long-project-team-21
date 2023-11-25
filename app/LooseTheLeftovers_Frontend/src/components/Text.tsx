@@ -1,6 +1,6 @@
 import React from 'react';
+import { View, Text, Pressable } from 'react-native';
 import { global } from '../common/global_styles';
-import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import styles from '../styles/textStyles';
 import { type TextsProps } from '../common/Types';
 
@@ -19,7 +19,6 @@ import { type TextsProps } from '../common/Types';
  * @example
  * <Texts texts="Words" />
  */
-
 const Texts: React.FC<TextsProps> = ({
   texts,
   textsSize,
