@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from Users.models import CustomUser
 from Advertisments.models import Advertisment
 
 class TestSetUpCreateAdvertisment(APITestCase):
@@ -15,23 +16,15 @@ class TestSetUpCreateAdvertisment(APITestCase):
         # create test user
         self.username = "test_user"
         self.password = "123"
-        self.user = get_user_model().objects.create_user(
+        self.user = CustomUser.objects.create_user(
             username=self.username,
-            password=self.password
         )
+        self.user.set_password(self.password)
         self.user.save()
-
-        response = self.client.post(
-            self.__login_url,
-            {"username": self.username, "password": self.password},
-            format="json"
-        )
         
         token = RefreshToken.for_user(self.user)
         self.token = str(token.access_token)
         self.refresh = str(token)
-
-        
 
         # create temp ad
         self.test_ad = Advertisment.objects.create(

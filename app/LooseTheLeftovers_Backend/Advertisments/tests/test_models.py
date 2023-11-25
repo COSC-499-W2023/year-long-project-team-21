@@ -4,6 +4,8 @@ from django.urls import reverse
 from rest_framework import status
 import datetime
 from LooseTheLeftovers_Backend.settings import BASE_DIR
+
+
 from rest_framework.test import APIClient
 
 class TestModels(TestSetUpCreateAdvertisment):
@@ -22,27 +24,30 @@ class TestModels(TestSetUpCreateAdvertisment):
         """
         Test if ad can be created via POST request
         """
-        client = APIClient()
-        client.login(username=self.username,
-                     password=self.password)
-        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
+        # login user and assert successful
+        client = APIClient()
+        # login_successful = client.login(username=self.username,
+        #              password=self.password)
+        # self.assertTrue(login_successful)
+
+        # create request and assert successful
         data = {
-            'user_id': 1,
+            'user_id': 2,
             'title': "Bananas",
             'description': "Three Bananas",
             'category': "Fruit",
-            'expiry': datetime.datetime(2023, 12, 12, 10, 30),
         }
 
         response = client.post(
             self.__create_ad_url,
             data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
             format="json",
         )
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # assert new ad exists in database
         new_ad = Advertisment.objects.get(title="Bananas")
         self.assertEqual(new_ad.description, "Three Bananas")
         self.assertEqual(new_ad.category, "Fruit")
