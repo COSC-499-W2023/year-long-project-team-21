@@ -1,4 +1,4 @@
-import json, datetime
+import datetime
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
@@ -8,8 +8,6 @@ from Users.models import CustomUser
 from Advertisments.models import Advertisment
 
 class TestSetUpCreateAdvertisment(APITestCase):
-
-    __login_url = reverse("token_obtain_pair")
 
     def setUp(self):
 
@@ -32,7 +30,7 @@ class TestSetUpCreateAdvertisment(APITestCase):
             user_id = 1,
             description = "test",
             category = "Food",
-            expiry = datetime.datetime(2023, 12, 12, 10, 30)
+            expiry = datetime.datetime(2023, 12, 12, 12, 30)
         )
         # call APITestCase.setUp()
         return super().setUp()
