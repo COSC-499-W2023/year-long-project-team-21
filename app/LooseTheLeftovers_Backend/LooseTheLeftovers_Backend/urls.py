@@ -8,5 +8,5 @@ urlpatterns = [
     # linking to User's urls.api 
     path("users/", include("Users.api.urls")),
     # linking to Advertisments's urls.api 
-    path("advertisments/", include("Advertisments.api.urls")),
+    path("ads/", include("Advertisments.api.urls")),
 ]
