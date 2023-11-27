@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import styles from '../styles/loginStyle';
@@ -30,8 +30,8 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleRegistrationNavigation = () => {
-    navigation.navigate('Registration')
-  }
+    navigation.navigate('Registration');
+  };
 
   const handleButtonOnPress = async () => {
     if (validateInputs()) {
@@ -79,7 +79,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         return null; // Indicate an unsuccessful login attempt
       }
     } catch (error) {
-      setErrorMessage('An error occurred while trying to retrieve data.');
+      setErrorMessage('An error occurred while trying to retrieve data.'); // Invalid credentials
       console.log(error);
       return null; // Indicate an error occurred
     }
@@ -116,9 +116,7 @@ const Login = ({ navigation }: { navigation: any }) => {
       <SafeAreaView style={styles.LoginContainer}>
         
         <Logo LogoSize={40} />
-        
         <Title title="Login" titleSize={30} testID="loginTitle" />
-
         <InputField
           placeholder="Username"
           onChangeText={input => handleUsername(input)}
@@ -145,7 +143,11 @@ const Login = ({ navigation }: { navigation: any }) => {
           testID="loginButton"
         />
         <Text texts="Forgot password?" textsSize={18} />
-        <Texts texts="Sign Up" textsSize={18} onPress={() => handleRegistrationNavigation()}/>
+        <Texts
+          texts="Sign Up"
+          textsSize={18}
+          onPress={() => handleRegistrationNavigation()}
+        />
       </SafeAreaView>
     </>
   );
