@@ -40,6 +40,7 @@ Tasks in progress
 
 
 ## Burn Up Chart
+![week11 12](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/c56a00e5-c7b0-417c-b05d-f72517c1b3d5)
 
 
 ## Test Report
@@ -47,6 +48,7 @@ Tasks in progress
 Once we implement our pipeline, this will be much more streamlined. 
 
 #### Test for frontend
+![スクリーンショット 2023-11-26 200634](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b8b30ae7-d167-43fb-91b3-4f1b78cf2a1a)
 
 
 #### Test for backend 
