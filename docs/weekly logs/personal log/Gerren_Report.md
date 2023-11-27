@@ -1,26 +1,32 @@
 # Gerren Hunter Personal Weekly Log
 
-10/29 to 11/05
+11/19 to 11/26
+
+More or less the last two weeks. 
 
 Username: CookiedOutMonster
 
 ## My Features For This Week
 
 - Scheduled and lead meetings
-- Designed registration architecture
-- Worked on POST request for backend to register a new user
-- Documentation
-- Testing
-- My report doesn't say it but I am also doing code reviews as well. 
+- Helped Nicholas design tab bar
+- Created tickets for the next phase of the sprint
+- Worked on an authentication class in the front end (holy smokes)
+- Created a new file to handle session storage
+- Helped Egor plan out the database implementation.
+- Code review,. 
 
 
 ## Completed Features For This Week
 
 - Scheduled and lead meetings
-- Designed registration architecture
-- Worked on POST request for backend to register a new user
-- Documentation
-- Testing
+- Helped Nicholas design tab bar
+- Created tickets for the next phase of the sprint
+- Worked on an authentication class in the front end (holy smokes)
+- Created a new file to handle session storage
+- Helped Egor plan out the database implementation.
+- Code review. 
 
 ## Types of Tasks Worked On
-![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/5ab3d731-43c8-4cf2-a722-063998ef6cee)
+
+![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/d67f9bbe-8810-4ab9-a7a8-17f723a7a553)
