@@ -9,6 +9,7 @@ import Title from '../components/Title';
 import InputField from '../components/InputField';
 import Text from '../components/Text';
 import Button from '../components/Button';
+import Texts from '../components/Text';
 
 /**
  * Login component.
@@ -26,6 +27,10 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleRegistrationNavigation = () => {
+    navigation.navigate('Registration');
+  };
 
   const handleButtonOnPress = async () => {
     if (validateInputs()) {
@@ -73,7 +78,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         return null; // Indicate an unsuccessful login attempt
       }
     } catch (error) {
-      setErrorMessage('An error occurred while trying to retrieve data.');
+      setErrorMessage('An error occurred while trying to retrieve data.'); // Invalid credentials
       console.log(error);
       return null; // Indicate an error occurred
     }
@@ -132,6 +137,11 @@ const Login = ({ navigation }: { navigation: any }) => {
           testID="loginButton"
         />
         <Text texts="Forgot password?" textsSize={18} />
+        <Texts
+          texts="Sign Up"
+          textsSize={18}
+          onPress={() => handleRegistrationNavigation()}
+        />
       </SafeAreaView>
     </>
   );

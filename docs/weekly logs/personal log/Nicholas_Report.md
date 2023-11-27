@@ -1,24 +1,27 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-11/5 to 11/12
+11/12 to 11/26
 
 Username: n3c777
 
 ## My Features For This Week
 
--Creating text and logo components
--Creating instructions screen
+-Instructions Screen
+-Tabar Screen
 
 ## Completed Features For This Week
 
--Created text and logo components
--Remade instructions with all components made
--Reviewed others code
+-completed Instructions Screen
+-Instructions component
+-added Global styles for color
+-Global types (for all interfaces)
 
 ## Features in progress
 
-- Making the instructions page look more like the figma design
+These are very close to being done, just being reviewed
+-tab bar component
+-home icon, message icon, account icon, create ad icon
 
 ## Types of Tasks Worked On
 
-![individual log week 10](https://i.postimg.cc/YCxnCT1X/Nov-12.png)
+![individual log week 12](https://i.postimg.cc/CKLZ4sNZ/nov-26.png)

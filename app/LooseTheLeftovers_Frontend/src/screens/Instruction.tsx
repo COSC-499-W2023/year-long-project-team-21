@@ -1,14 +1,15 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import style from '../styles/instructionStyles';
+
 import Title from '../components/Title';
 import Texts from '../components/Text';
 import Button from '../components/Button';
-import style from '../styles/instructionStyles';
 import TextImage from '../components/TextImage';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
   const handleButtonOnPress = async () => {};
-  //creates an array of the instructions and images
+  // Creates an array of the instructions and images
   const instructions = [
     {
       id: 1,
@@ -31,7 +32,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     {
       id: 4,
       txt: 'Create your own food ads',
-      image: require('../assets/ad.png'),
+      image: require('../assets/Ad.png'),
       size: 60,
     },
     {
@@ -41,7 +42,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
       size: 60,
     },
   ];
-  //loops through the array and returns the entire instruction
+  // Loops through the array and returns the entire instruction
   const list = () => {
     return instructions.map(element => {
       return (
@@ -58,24 +59,24 @@ const Instruction = ({ navigation }: { navigation: any }) => {
   return (
     <View style={style.container}>
       <View style={style.title}>
-        <Title //displays weclome message
+        <Title // Displays weclome message
           titleSize={50}
           titleColor="#FFB800"
           title="Weclome!"
         />
       </View>
       <View style={style.instruction}>
-        <Texts //displays the first text
+        <Texts // Displays the first text
           textsSize={20}
           texts="This is an app to share left over food to others in need"
 
-          //the list below displays the entire instruction and images
+          // The list below displays the entire instruction and images
         />
         {list()}
       </View>
 
       <View style={style.button}>
-        <Button //displays get started button. Will navigate to home screen
+        <Button // Displays get started button. Will navigate to home screen
           onPress={handleButtonOnPress}
           title="Get Started"
           buttonSize={200}

@@ -77,6 +77,7 @@ interface InputFieldProps {
   onChangeText: (input: string) => void;
   value: string | number;
   secureTextEntry?: boolean;
+  placeholderTextColor?: string;
 }
 
 /**

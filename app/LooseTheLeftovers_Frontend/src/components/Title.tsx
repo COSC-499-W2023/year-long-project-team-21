@@ -30,12 +30,11 @@ const Title: React.FC<TitleProps> = ({
     fontSize: titleSize || 25,
     color: titleColor || global.primary,
     marginTop: position == 'top' ? 150 : 0,
-
   };
 
   return (
     <View style={[styles.TitleContainer]}>
-      <Text style={[styles.TitleText, titleStyles]}>{title}</Text>
+      <Text style={[styles.TitleText, titleStyles]} testID={testID}>{title}</Text>
     </View>
   );
 };
