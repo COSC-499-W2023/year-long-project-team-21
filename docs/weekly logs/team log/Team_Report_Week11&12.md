@@ -18,7 +18,8 @@ In the upcoming week we will be focused on completing our design milestone and d
 
 ## Completed tasks for this week
 
-- Front End Components: 
+- Front End Components:
+    - LocationService.tsx
     - TabBar.tsx
     - MessageIcon.tsx
     - HomeIcon.tsx
