@@ -1,4 +1,3 @@
-import style from '../styles/instructionStyles';
 import React from 'react';
 import {
   Image,
@@ -9,18 +8,19 @@ import {
   View,
   Text,
 } from 'react-native';
+import style from '../styles/instructionStyles';
 
 /**
  * Text image interface for the TextImage component.
  *
  * @interface
- * @property {ImageSourcePropType} source - The image for instruction
+ * @property {ImageSourcePropType} source - The image for instruction.
  * @property {number} [size=24] - Size of the image, defaults to 24.
  * @property {string} [testID] - Identifier for the component in test environments.
  * @property {StyleProp<ViewStyle>} [containerStyle] - Optional style for the TouchableOpacity container.
  * @property {StyleProp<ImageStyle>} [imageStyle] - Optional style for the Image element.
- * @property {number} textSize -changes the text size
- * @property {string} text -  displays the Text.
+ * @property {number} textSize - Changes the text size.
+ * @property {string} text - Displays the Text.
  */
 interface ImageTextProps {
   source: ImageSourcePropType;
@@ -45,18 +45,16 @@ interface ImageTextProps {
  * @param {StyleProp<ViewStyle>} [props.containerStyle] - Optional custom style for the TouchableOpacity container.
  * @param {StyleProp<ImageStyle>} [props.imageStyle] - Optional custom style for the Image element.
  * @param {string} props.text - Text to be displayed as the Text.
- * @param {number} props.textSize - Text size
+ * @param {number} props.textSize - Text size.
  * @example
  *
  */
 const ImageText: React.FC<ImageTextProps> = ({
   source,
   size = 24,
-  testID,
-  containerStyle,
+  testID = 'TextImage-image',
   imageStyle,
   text,
-  textSize,
 }) => {
   return (
     <View style={style.textimage}>
@@ -68,7 +66,7 @@ const ImageText: React.FC<ImageTextProps> = ({
           source={source}
           style={[{ width: size, height: size }, imageStyle]}
           resizeMode="contain"
-          testID="TextImage-image"
+          testID={testID}
         />
       </View>
     </View>

@@ -27,7 +27,6 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   onChangeText,
   secureTextEntry = false,
-  placeholderTextColor = 'white',
 }) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
