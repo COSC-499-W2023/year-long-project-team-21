@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, TextInput, Button } from 'react-native';
 import database from '../database';
 import User from '../database/models/User';
 import Ads from '../database/models/Ads';
@@ -10,7 +10,7 @@ const TestScreen = () => {
 
   const addUser = async () => {
     await database.write(async () => {
-      await User.createUser(username); // This is now much cleaner!
+      await User.createUser(username);
     });
   };
 
@@ -18,18 +18,16 @@ const TestScreen = () => {
     await database.write(async () => {
       const newUser = await database.get('users').query().fetch();
       if (newUser.length > 0) {
-        await database.get('ads').create((ad: any) => {
-          ad.title = title;
-          ad.user_id = newUser[0].id.toString();
-          // Assign other fields as necessary
-          ad.description = 'Sample description'; // Replace with actual data
-          ad.image = 'path/to/image'; // Replace with actual data
-          ad.category = 'Sample category'; // Replace with actual data
-          ad.expiry = new Date().getTime(); // Replace with actual expiry date
-          ad.is_active = true; // Replace with actual status
-          ad.postal_code = '12345'; // Replace with actual postal code
-          ad.last_updated = new Date().getTime(); // Use current timestamp for last updated
-        });
+        await Ads.createAd(
+          title,
+          'Sample description',
+          'path/to/image',
+          'Sample category',
+          new Date(),
+          true,
+          '12345',
+          newUser[0].id // Assume attaching it to the first user
+        );
       }
     });
   };
