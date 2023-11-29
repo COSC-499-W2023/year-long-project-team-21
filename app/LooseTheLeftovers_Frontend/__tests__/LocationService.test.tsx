@@ -1,8 +1,5 @@
 import LocationService from '../src/common/LocationService';
-import Geolocation from 'react-native-geolocation-service';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import { Alert, PermissionsAndroid } from 'react-native';
-import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+
 
 // Mocking dependencies
 jest.mock('react-native-geolocation-service');
@@ -48,43 +45,16 @@ describe('LocationService', () => {
     // Mock the getLocationPermission method
     const getLocationPermissionMock = jest.fn();
     jest
-      .spyOn(locationService, 'getLocationPermission')
+      .spyOn(locationService, 'getLocationPermissionAndroid')
       .mockImplementation(getLocationPermissionMock);
 
     // Set hasPermission to false to simulate the case where permission is not granted
     locationService.hasPermission = false;
 
     // Call the method that triggers the permission request
-    await locationService.getLocationPermission();
+    await locationService.getLocationPermissionAndroid();
 
     // Assert that the mocked method was called
     expect(getLocationPermissionMock).toHaveBeenCalled();
-  });
-
-  it('should get cached location if within threshold', async () => {
-    // Arrange
-    const locationService = new LocationService(200000);
-
-    // Mock the getCachedLocation method
-    jest.spyOn(locationService, 'getCachedLocation').mockResolvedValue({
-      latitude: 37.4226711,
-      longitude: -122.0849872,
-    });
-
-    // Set the location property directly since getLocation is asynchronous
-    locationService.location = {
-      coords: {
-        latitude: 37.4226711,
-        longitude: -122.0849872,
-      },
-    };
-
-    // Assert that the location property has the expected values
-    expect(locationService.location).toEqual({
-      coords: {
-        latitude: 37.4226711,
-        longitude: -122.0849872,
-      },
-    });
   });
 });
