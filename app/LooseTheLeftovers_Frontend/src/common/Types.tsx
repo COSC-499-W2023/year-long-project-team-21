@@ -4,6 +4,7 @@ import {
   ViewStyle,
   ImageStyle,
 } from 'react-native';
+import { ReactNode } from 'react';
 
 //type.tsx is a file that holds interfaces for all components
 
@@ -64,6 +65,7 @@ interface IconProps {
  * InputFieldProps interface for the InputField component.
  *
  * @interface
+ * @property {string} placeholderTextColor - The placeholder text to display in the input field.
  * @property {string} placeholder - The placeholder text to display in the input field.
  * @property {(input: string) => void} onChangeText - Callback function to notify parent components when the text changes.
  * @property {string | number} value - The initial value of the input field.
@@ -122,6 +124,38 @@ interface TitleProps {
   testID?: string;
 }
 
+/**
+ * AllIconProps interface for the all the Icon components.
+ *
+ * @interface
+ * @property {ImageSourcePropType} source - The image source for the icon. Is local
+ * @property {number} [size=45] - Size of the icon.
+ * @property {() => void} onPress - Callback function executed when the icon is pressed.
+ * @property {string} [testID] - Identifier for the component in test environments. It will change depending on the specific icon
+ */
+
+interface AllIconProps {
+  source?: ImageSourcePropType;
+  size?: number;
+  onPress?: void;
+  testID?: string;
+}
+/**
+ * TabBar interface for the tabbar.
+ *
+ * @interface
+ * @property {ImageSourcePropType} source - The image source for the icon. Is local
+ * @property {ReactNode} props.LeftIcon - the input for the left component. Will take any type
+ * @property {ReactNode} props.LeftIcon - the input for the middle component. Will take any type
+ * @property {ReactNode} props.LeftIcon - the input for the right component. Will take any type
+ */
+
+interface TabBarProps {
+  LeftIcon?: ReactNode;
+  MiddleIcon?: ReactNode;
+  RightIcon?: ReactNode;
+}
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -130,4 +164,6 @@ export {
   type LogoProps,
   type TextsProps,
   type TitleProps,
+  type AllIconProps,
+  type TabBarProps,
 };

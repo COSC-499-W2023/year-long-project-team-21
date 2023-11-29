@@ -32,7 +32,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     {
       id: 4,
       txt: 'Create your own food ads',
-      image: require('../assets/Ad.png'),
+      image: require('../assets/ad.png'),
       size: 60,
     },
     {
