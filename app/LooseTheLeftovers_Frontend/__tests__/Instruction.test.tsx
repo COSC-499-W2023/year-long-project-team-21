@@ -21,7 +21,7 @@ describe('Get started component', () => {
   it('Welcome text renders correctly', () => {
     // Check if Welcome text is rendered
     const { getByText } = render(<Instruction navigation={navigation} />);
-    expect(getByText('Weclome!')).toBeTruthy();
+    expect(getByText('Welcome!')).toBeTruthy();
   });
   // Check if first instruction text is rendered
   it('first instruction renders correctly', () => {

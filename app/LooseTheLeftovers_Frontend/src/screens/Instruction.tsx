@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import style from '../styles/instructionStyles';
 
 import Title from '../components/Title';
-import Texts from '../components/Text';
+import Text from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
 
@@ -62,11 +62,11 @@ const Instruction = ({ navigation }: { navigation: any }) => {
         <Title // Displays weclome message
           titleSize={50}
           titleColor="#FFB800"
-          title="Weclome!"
+          title="Welcome!"
         />
       </View>
       <View style={style.instruction}>
-        <Texts // Displays the first text
+        <Text // Displays the first text
           textsSize={20}
           texts="This is an app to share left over food to others in need"
 
