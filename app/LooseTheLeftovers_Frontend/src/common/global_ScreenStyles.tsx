@@ -7,4 +7,5 @@ const globalscreenstyles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
+
 export default globalscreenstyles;

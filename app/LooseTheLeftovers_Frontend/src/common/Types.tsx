@@ -1,10 +1,10 @@
+import { ReactNode } from 'react';
 import {
   ImageSourcePropType,
   StyleProp,
   ViewStyle,
   ImageStyle,
 } from 'react-native';
-import { ReactNode } from 'react';
 
 //type.tsx is a file that holds interfaces for all components
 
@@ -14,9 +14,9 @@ import { ReactNode } from 'react';
  * @interface
  * @property {() => void} onPress - Callback function executed when the button is pressed.
  * @property {string} title - Text displayed on the button.
- * @property {string} textColor - choose text color
- * @property {number} buttonSize - Choose button size (width)
- * @property {number} textSize - Choose text size
+ * @property {string} textColor - Choose text color.
+ * @property {number} buttonSize - Choose button size (width).
+ * @property {number} textSize - Choose text size.
  */
 
 interface ButtonProps {
@@ -81,10 +81,10 @@ interface InputFieldProps {
 }
 
 /**
- * Logo Props interface for the logo component.
+ * Logo Props interface for the Logo component.
  *
  * @interface
- * @param {number} props.LogoSize - change the size of a logo
+ * @param {number} props.LogoSize - Change the size of the Logo.
  */
 interface LogoProps {
   LogoSize?: number;
@@ -93,8 +93,8 @@ interface LogoProps {
  * TextProps interface for the Text component.
  *
  * @interface
- * @property {string} texts -  displays the Text.
- * @property {number} textxSize -changes the text size
+ * @property {string} texts - Displays the Text.
+ * @property {number} textxSize - Changes the Text size.
  * @property {() => void} onPress - Callback function executed when the button is pressed.
  */
 
@@ -128,10 +128,10 @@ interface TitleProps {
  * AllIconProps interface for the all the Icon components.
  *
  * @interface
- * @property {ImageSourcePropType} source - The image source for the icon. Is local
- * @property {number} [size=45] - Size of the icon.
- * @property {() => void} onPress - Callback function executed when the icon is pressed.
- * @property {string} [testID] - Identifier for the component in test environments. It will change depending on the specific icon
+ * @property {ImageSourcePropType} source - The image source for the Icon. Is local.
+ * @property {number} [size=45] - Size of the Icon.
+ * @property {() => void} onPress - Callback function executed when the Icon is pressed.
+ * @property {string} [testID] - Identifier for the component in test environments. It will change depending on the specific Icon.
  */
 
 interface AllIconProps {
@@ -141,19 +141,42 @@ interface AllIconProps {
   testID?: string;
 }
 /**
- * TabBar interface for the tabbar.
+ * TabBar interface for the TabBar.
  *
  * @interface
- * @property {ImageSourcePropType} source - The image source for the icon. Is local
- * @property {ReactNode} props.LeftIcon - the input for the left component. Will take any type
- * @property {ReactNode} props.LeftIcon - the input for the middle component. Will take any type
- * @property {ReactNode} props.LeftIcon - the input for the right component. Will take any type
+ * @property {ImageSourcePropType} source - The image source for the Icon. Is local.
+ * @property {ReactNode} props.LeftIcon - The input for the left component. Will take any type.
+ * @property {ReactNode} props.LeftIcon - The input for the middle component. Will take any type.
+ * @property {ReactNode} props.LeftIcon - The input for the right component. Will take any type.
  */
 
 interface TabBarProps {
   LeftIcon?: ReactNode;
   MiddleIcon?: ReactNode;
   RightIcon?: ReactNode;
+}
+
+/**
+ * TextImage interface for the TextImage component.
+ *
+ * @interface
+ * @property {ImageSourcePropType} source - The image for instruction.
+ * @property {number} [size=24] - Size of the image, defaults to 24.
+ * @property {string} [testID] - Identifier for the component in test environments.
+ * @property {StyleProp<ViewStyle>} [containerStyle] - Optional style for the TouchableOpacity container.
+ * @property {StyleProp<ImageStyle>} [imageStyle] - Optional style for the Image element.
+ * @property {number} textSize - Changes the text size.
+ * @property {string} text - Displays the Text.
+ */
+
+interface ImageTextProps {
+  source: ImageSourcePropType;
+  size?: number;
+  testID?: string;
+  containerStyle?: StyleProp<ViewStyle>;
+  imageStyle?: StyleProp<ImageStyle>;
+  text: string;
+  textSize?: number;
 }
 
 export {
@@ -166,4 +189,5 @@ export {
   type TitleProps,
   type AllIconProps,
   type TabBarProps,
+  type ImageTextProps,
 };
