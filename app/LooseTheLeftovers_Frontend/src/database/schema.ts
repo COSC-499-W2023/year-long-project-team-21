@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export const mySchema = appSchema({
-  version: 1, // Increment whenever you make changes to the schema
+  version: 1,
   tables: [
     tableSchema({
       name: 'users',
