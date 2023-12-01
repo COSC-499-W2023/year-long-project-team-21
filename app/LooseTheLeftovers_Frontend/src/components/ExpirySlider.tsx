@@ -21,7 +21,7 @@ const ExpirySlider = () => {
         value={sliderValue}
         onValueChange={handleValueChange}
         minimumTrackTintColor={global.primary}
-        maximumTrackTintColor='#d3d3d3'
+        maximumTrackTintColor="#d3d3d3"
         thumbTintColor={global.primary}
       />
       <View style={styles.sliderLabels}>
@@ -34,9 +34,9 @@ const ExpirySlider = () => {
 };
 
 const styles = StyleSheet.create({
-    slider: {
-        width: '100%', // Take full width of the content container
-      },
+  slider: {
+    width: '100%', // Take full width of the content container
+  },
   sliderLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',

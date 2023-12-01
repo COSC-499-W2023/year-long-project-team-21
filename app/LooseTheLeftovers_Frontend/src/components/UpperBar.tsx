@@ -1,20 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageSourcePropType } from 'react-native';
 import { global } from '../common/global_styles';
+
 import Icon from '../components/Icon';
 
 type HeaderProps = {
   onBackPress: () => void;
   onQuitPress: () => void;
-  backIconSource: ImageSourcePropType;
-  quitIconSource: ImageSourcePropType;
+  leftIconSource: ImageSourcePropType;
+  rightIconSource: ImageSourcePropType;
 };
 
-const Header: React.FC<HeaderProps> = ({ onBackPress, onQuitPress, backIconSource, quitIconSource }) => {
+const Header: React.FC<HeaderProps> = ({
+  onBackPress,
+  onQuitPress,
+  leftIconSource,
+  rightIconSource,
+}) => {
   return (
     <View style={styles.header}>
       <Icon
-        source={backIconSource}
+        source={leftIconSource}
         size={30}
         onPress={onBackPress}
         containerStyle={styles.iconContainer}
@@ -22,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ onBackPress, onQuitPress, backIconSourc
       />
       <Text style={styles.title}>Create an Ad</Text>
       <Icon
-        source={quitIconSource}
+        source={rightIconSource}
         size={30}
         onPress={onQuitPress}
         containerStyle={styles.iconContainer}

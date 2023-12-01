@@ -17,20 +17,20 @@ const Ticks: React.FC<TicksProps> = ({ steps }) => {
 };
 
 const styles = StyleSheet.create({
-    ticksContainer: {
-      position: 'absolute',
-      top: 368, // Adjust this value to align with the slider's track
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '100%', // Set width to match the slider's width
-      paddingHorizontal: 20, // Adjust to align with the slider's sides
-    },
-    tick: {
-      width: 1,
-      height: 10, // Adjust height as needed to match the slider's track height
-      backgroundColor: global.primary, // Use your global.primary color here
-    },
-    // Other styles...
-  });
+  ticksContainer: {
+    position: 'absolute',
+    top: 368, // Adjust this value to align with the slider's track
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%', // Set width to match the slider's width
+    paddingHorizontal: 20, // Adjust to align with the slider's sides
+  },
+  tick: {
+    width: 1,
+    height: 10, // Adjust height as needed to match the slider's track height
+    backgroundColor: global.primary, // Use your global.primary color here
+  },
+  // Other styles...
+});
 
 export default Ticks;

@@ -4,20 +4,20 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { global } from '../common/global_styles';
 
 const ImagePickerButton = () => {
-    const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imageUri, setImageUri] = useState<string | null>(null);
 
-    const handlePress = async () => {
-        // Add options here for image picker
-        const result = await launchImageLibrary({
-          mediaType: 'photo',
-          quality: 1,
-        });
-      
-        // Check if the uri is not undefined before updating the state
-        if (result.assets && result.assets[0].uri) {
-          setImageUri(result.assets[0].uri);
-        }
-    };
+  const handlePress = async () => {
+    // Add options for image picker
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      quality: 1,
+    });
+
+    // Check if the uri is not undefined before updating the state
+    if (result.assets && result.assets[0].uri) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
 
   return (
     <View style={styles.container}>
