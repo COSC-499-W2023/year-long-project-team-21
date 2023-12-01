@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../common/global_styles';
 
 import Header from '../components/UpperBar';
+import ImagePickerButton from '../components/ImagePicker';
+import InputField from '../components/InputField';
+import ExpirySlider from '../components/ExpirySlider';
+import Button from '../components/Button';
 
 const ShellPage = () => {
-
   // Placeholder functions for onPress events
   const handleBackPress = () => {
     console.log('Back button pressed');
@@ -16,8 +20,8 @@ const ShellPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header Component */}
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
       <Header
         onBackPress={handleBackPress}
         onQuitPress={handleQuitPress}
@@ -25,12 +29,12 @@ const ShellPage = () => {
         quitIconSource={require('../assets/home.png')}
       />
       <View style={styles.contentContainer}>
-      {/* Entry Component */}
-      <View style={styles.navigationContainer}>
-        {/* Placeholder for Navigation Buttons */}
+        {/* Data Entry Component */}
+        <View style={styles.navigationContainer}>
+          {/* Placeholder for Navigation Buttons */}
+        </View>
       </View>
-    </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -41,10 +45,12 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    // Additional styles for content container
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center', // Center horizontally
+    paddingHorizontal: 20,
   },
   navigationContainer: {
-    // Additional styles for navigation container
+    // Styles for navigation container
   },
 });
 
