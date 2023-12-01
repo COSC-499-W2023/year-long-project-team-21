@@ -11,6 +11,7 @@
     "prettier": "prettier src/**/*.tsx"
   },
   "dependencies": {
+    "@react-native-community/slider": "^4.4.3",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
