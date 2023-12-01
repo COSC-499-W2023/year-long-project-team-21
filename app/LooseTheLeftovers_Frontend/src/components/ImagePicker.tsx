@@ -3,6 +3,19 @@ import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { global } from '../common/global_styles';
 
+/**
+ * ImagePickerButton component.
+ *
+ * This component provides a button to trigger an image selection process. Upon pressing the button,
+ * it opens the device's image library, allowing the user to choose an image. The selected image is then displayed
+ * in the component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ImagePickerButton />
+ * )
+ */
 const ImagePickerButton = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 

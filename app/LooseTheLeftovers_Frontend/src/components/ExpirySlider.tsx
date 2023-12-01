@@ -3,6 +3,18 @@ import { View, StyleSheet, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { global } from '../common/global_styles';
 
+/**
+ * ExpirySlider component.
+ *
+ * A slider component for selecting an expiry range for an item. The slider allows users
+ * to choose a value between 1 day and 2 weeks.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ExpirySlider />
+ * )
+ */
 const ExpirySlider = () => {
   const [sliderValue, setSliderValue] = useState(1);
 

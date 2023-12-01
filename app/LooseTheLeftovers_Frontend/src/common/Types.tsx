@@ -4,7 +4,6 @@ import {
   StyleProp,
   ViewStyle,
   ImageStyle,
-  TextStyle,
 } from 'react-native';
 
 //type.tsx is a file that holds interfaces for all components
@@ -182,6 +181,23 @@ interface ImageTextProps {
   textSize?: number;
 }
 
+/**
+ * UpperBarProps (Header) interface for the UpperBar component.
+ * 
+ * @interface
+ * @property {() => void} onLeftPress - Callback function to execute when the left icon is pressed.
+ * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
+ * @property {ImageSourcePropType} leftIconSource - The image source for the left icon.
+ * @property {ImageSourcePropType} rightIconSource - The image source for the right icon.
+ */
+
+interface UpperBarProps {
+  onLeftPress: () => void;
+  onRightPress: () => void;
+  leftIconSource: ImageSourcePropType;
+  rightIconSource: ImageSourcePropType;
+}
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -193,4 +209,5 @@ export {
   type AllIconProps,
   type TabBarProps,
   type ImageTextProps,
+  type UpperBarProps,
 };
