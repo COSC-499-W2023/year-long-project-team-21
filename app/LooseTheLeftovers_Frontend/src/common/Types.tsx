@@ -4,6 +4,7 @@ import {
   StyleProp,
   ViewStyle,
   ImageStyle,
+  TextStyle,
 } from 'react-native';
 
 //type.tsx is a file that holds interfaces for all components
@@ -70,6 +71,7 @@ interface IconProps {
  * @property {(input: string) => void} onChangeText - Callback function to notify parent components when the text changes.
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
+ * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
  */
 
 interface InputFieldProps {
@@ -78,6 +80,7 @@ interface InputFieldProps {
   value: string | number;
   secureTextEntry?: boolean;
   placeholderTextColor?: string;
+  multiline?: boolean;
 }
 
 /**
