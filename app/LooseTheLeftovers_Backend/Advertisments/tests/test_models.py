@@ -26,7 +26,6 @@ class TestModels(TestSetUpCreateAdvertisment):
         """
         client = APIClient()
         data = {
-            'user_id': 2,
             'title': "Bananas",
             'description': "Three Bananas",
             'category': "Fruit",
@@ -53,7 +52,6 @@ class TestModels(TestSetUpCreateAdvertisment):
         '''
         client = APIClient()
         data = {
-            'user_id': 2,
             'title': "Bananas",
             'description': "Three Bananas",
             'category': "Fruit",
@@ -77,7 +75,6 @@ class TestModels(TestSetUpCreateAdvertisment):
         client = APIClient()
         # create data with no title
         data = {
-            'user_id': 2,
             'description': "Three Bananas",
             'category': "Fruit",
             'expiry': "2023-12-25T12:30:00.000000Z"
@@ -99,7 +96,6 @@ class TestModels(TestSetUpCreateAdvertisment):
         client = APIClient()
         # create data with no title
         data = {
-            'user_id': 2,
             'title': "Bananas",
             'description': "Three Bananas",
             'category': "Fruit",
@@ -114,3 +110,28 @@ class TestModels(TestSetUpCreateAdvertisment):
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_post_new_ad_empty_date(self):
+        '''
+        Test POST request to create-ad without expiry date provided (expiry is allowed to be null)
+        '''
+        client = APIClient()
+        data = {
+            'title': "Apples",
+            'description': "Two Apples",
+            'category': "Fruit",
+        }
+
+        # post request and assert valid response
+        response = client.post(
+            self.__create_ad_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # assert new ad exists in database
+        new_ad = Advertisment.objects.get(title="Apples")
+        self.assertEqual(new_ad.description, "Two Apples")
+        self.assertEqual(new_ad.category, "Fruit")
