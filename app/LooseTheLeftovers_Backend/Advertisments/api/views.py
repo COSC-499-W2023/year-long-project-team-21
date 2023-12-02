@@ -2,15 +2,12 @@ from django.shortcuts import render, redirect
 from rest_framework.response import Response 
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework import status
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 from Advertisments.api.serializers import AdvertismentSerializer
 
-authentication_classes = (JWTAuthentication, )
-permission_classes = (IsAuthenticated, )
-
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_advertisment(request):
     '''
     POST request to handle creating new advertisment.
@@ -20,7 +17,6 @@ def create_advertisment(request):
     in the POST request and to save the new ad if valid.
 
     HTTP POST request requires these fields:
-        - user_id (of user creating ad)
         - title
         - description
         - category
@@ -37,7 +33,7 @@ def create_advertisment(request):
     '''
     
     # deserialize incoming data
-    serializer = AdvertismentSerializer(data=request.data)
+    serializer = AdvertismentSerializer(data=request.data, context={'request': request})
 
     # validate data in request
     if serializer.is_valid():
