@@ -8,7 +8,7 @@ class Advertisment(models.Model):
     description = models.TextField(max_length=1000)
     #image = models.ImageField()
     category = models.TextField(max_length=20)
-    expiry = models.DateTimeField(default=datetime.datetime(2023, 12, 25, 12, 30, 0))
+    expiry = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
     view_count = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
