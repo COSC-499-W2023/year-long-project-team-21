@@ -27,8 +27,7 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const loc = new LocationService(12000);
-  loc.initializeLocationService()
+  const locationinstance = LocationService.CreateAndInitialize();
   const handleRegistrationNavigation = () => {
     navigation.navigate('Registration');
   };

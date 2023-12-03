@@ -70,7 +70,6 @@ const Registration = ({ navigation }: { navigation: any }) => {
         return { color: 'white' };
     }
   };
-
   //Checks following cases: Any credentials are not provided, password unmatched, password matched&credentials are filled
   const handleButtonOnPress = async () => {
     setCredentialsFilledInError(false);
@@ -129,7 +128,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       }
     }
   };
-  
+
   return (
     <SafeAreaView style={styles.RegistrationContainer}>
       <View style={styles.container}>
