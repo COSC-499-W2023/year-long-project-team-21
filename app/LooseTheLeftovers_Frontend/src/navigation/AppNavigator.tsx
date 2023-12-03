@@ -9,7 +9,6 @@ import Home from '../screens/Home';
 
 import CreateAd from '../screens/CreateAd';
 
-
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -20,13 +19,13 @@ const AppNavigator = () => {
         component={Instruction}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
-        name="CreatAd"
+      <Stack.Screen
+        name="CreateAd"
         component={CreateAd}
         options={{ headerShown: false }}
       />

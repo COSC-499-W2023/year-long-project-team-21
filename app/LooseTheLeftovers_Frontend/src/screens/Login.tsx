@@ -38,7 +38,7 @@ const Login = ({ navigation }: { navigation: any }) => {
       if (responseData) {
         // If response is OK, store JWT and proceed
         await storeJWT(responseData.token);
-        navigation.navigate('Instruction');
+        navigation.navigate('CreateAd');
       }
     }
   };
