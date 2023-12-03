@@ -3,6 +3,10 @@ import { View, StyleSheet, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { global } from '../common/global_styles';
 
+interface ExpirySliderProps {
+  onExpiryChange: (expiry: number) => void;
+}
+
 /**
  * ExpirySlider component.
  *
@@ -15,7 +19,7 @@ import { global } from '../common/global_styles';
  *   <ExpirySlider />
  * )
  */
-const ExpirySlider = () => {
+const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
   const handleValueChange = (value: number) => {

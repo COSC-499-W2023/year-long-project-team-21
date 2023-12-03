@@ -80,6 +80,7 @@ interface InputFieldProps {
   secureTextEntry?: boolean;
   placeholderTextColor?: string;
   multiline?: boolean;
+  width?: string | number;
 }
 
 /**
@@ -104,6 +105,7 @@ interface TextsProps {
   texts: string;
   textsSize?: number;
   textsColor?: string;
+  textsWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
   position?: string;
   onPress?: () => void;
   testID?: string;
@@ -194,8 +196,8 @@ interface ImageTextProps {
 interface UpperBarProps {
   onLeftPress: () => void;
   onRightPress: () => void;
-  leftIconSource: ImageSourcePropType;
-  rightIconSource: ImageSourcePropType;
+  leftIconSource?: ImageSourcePropType;
+  rightIconSource?: ImageSourcePropType;
 }
 
 export {

@@ -24,21 +24,29 @@ const Header: React.FC<UpperBarProps> = ({
 }) => {
   return (
     <View style={styles.header}>
-      <Icon
-        source={leftIconSource}
-        size={30}
-        onPress={onLeftPress}
-        containerStyle={styles.iconContainer}
-        imageStyle={styles.icon}
-      />
+      {leftIconSource ? (
+        <Icon
+          source={leftIconSource}
+          size={30}
+          onPress={onLeftPress}
+          containerStyle={styles.iconContainer}
+          imageStyle={styles.icon}
+        />
+      ) : (
+        <View style={styles.placeholderIcon} />
+      )}
       <Text style={styles.title}>Create an Ad</Text>
-      <Icon
-        source={rightIconSource}
-        size={30}
-        onPress={onRightPress}
-        containerStyle={styles.iconContainer}
-        imageStyle={styles.icon}
-      />
+      {rightIconSource ? (
+        <Icon
+          source={rightIconSource}
+          size={30}
+          onPress={onRightPress}
+          containerStyle={styles.iconContainer}
+          imageStyle={styles.icon}
+        />
+      ) : (
+        <View style={styles.placeholderIcon} />
+      )}
     </View>
   );
 };
@@ -56,12 +64,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: global.primary,
+    textAlign: 'center',
   },
   iconContainer: {
     padding: 8, // Adjust padding
   },
   icon: {
     // Add styles for the icon
+  },
+  placeholderIcon: {
+    // Placeholder to maintain balance in the layout
+    width: 48, // Width should match the Icon size plus padding
+    height: 48, // Height should match the Icon size plus padding
   },
 });
 

@@ -3,6 +3,10 @@ import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { global } from '../common/global_styles';
 
+interface ImagePickerButtonProps {
+  onImagePicked: (imageUri: string | null) => void;
+}
+
 /**
  * ImagePickerButton component.
  *
@@ -16,7 +20,7 @@ import { global } from '../common/global_styles';
  *   <ImagePickerButton />
  * )
  */
-const ImagePickerButton = () => {
+const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ onImagePicked }) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   const handlePress = async () => {
@@ -35,7 +39,7 @@ const ImagePickerButton = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handlePress} style={styles.button}>
-        <Text style={styles.buttonText}>Pick an image</Text>
+        <Text style={styles.buttonText}>Open Gallery</Text>
       </TouchableOpacity>
       {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
     </View>
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   buttonText: {
-    color: global.primary,
+    color: global.secondary,
     textAlign: 'center',
   },
   image: {
