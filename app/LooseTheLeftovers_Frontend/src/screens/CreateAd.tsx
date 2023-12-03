@@ -37,7 +37,8 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   // Handle Submit press
   const handleSubmit = async () => {
-    const jwtToken = await retrieveJWTToken(); // Get JWT from encrypted storage
+    const jwtToken = true;
+    // await retrieveJWTToken(); // Get JWT from encrypted storage
     if (!jwtToken) {
       console.error('No token found');
       return;
@@ -46,8 +47,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     const url = 'create_ad_url';
     const adDataToSubmit = composeAdData(adData);
 
-    const result = await sendPostRequest(url, adDataToSubmit, jwtToken);
-    if (result.success) {
+    const result = true;
+    // await sendPostRequest(url, adDataToSubmit, jwtToken);
+    // if (result.success) {
+    if (result) {
       // Cache to DB
       // Navigate to Home screen
     } else {
