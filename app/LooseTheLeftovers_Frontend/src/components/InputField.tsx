@@ -16,7 +16,7 @@ import { type InputFieldProps } from '../common/Types';
  * @param {(inputText: string) => void} props.onChangeText - Callback function to handle changes in text input.
  * @param {string | number} props.value - The initial value of the input field.
  * @param {boolean} [props.secureTextEntry=false] - Enables secure text entry for sensitive information like passwords.
- * @param {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
+ * @param {boolean} props.multiline - Optional prop to make InputField multiline, capped at 10.
  * @example
  * <InputField
  *   placeholder="Username"

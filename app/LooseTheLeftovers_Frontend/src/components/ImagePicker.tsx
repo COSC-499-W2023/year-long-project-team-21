@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { global } from '../common/global_styles';
-
-interface ImagePickerButtonProps {
-  onImagePicked: (imageUri: string | null) => void;
-}
+import { type ImagePickerButtonProps } from '../common/Types';
 
 /**
  * ImagePickerButton component.

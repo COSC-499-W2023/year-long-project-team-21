@@ -17,6 +17,7 @@ import {
  * @property {string} textColor - Choose text color.
  * @property {number} buttonSize - Choose button size (width).
  * @property {number} textSize - Choose text size.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface ButtonProps {
@@ -89,9 +90,11 @@ interface InputFieldProps {
  * @interface
  * @param {number} props.LogoSize - Change the size of the Logo.
  */
+
 interface LogoProps {
   LogoSize?: number;
 }
+
 /**
  * TextProps interface for the Text component.
  *
@@ -99,6 +102,7 @@ interface LogoProps {
  * @property {string} texts - Displays the Text.
  * @property {number} textxSize - Changes the Text size.
  * @property {() => void} onPress - Callback function executed when the button is pressed.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface TextsProps {
@@ -119,7 +123,9 @@ interface TextsProps {
  * @property {number} titleSize - Text size for the title.
  * @property {string} titleColor - Text color for the title
  * @property {string} position - Text position for the title
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
+
 interface TitleProps {
   title: string;
   titleSize?: number;
@@ -144,6 +150,7 @@ interface AllIconProps {
   onPress?: void;
   testID?: string;
 }
+
 /**
  * TabBar interface for the TabBar.
  *
@@ -204,6 +211,10 @@ interface UpperBarProps {
  * AdDataProps interface for the CreateAd screen.
  * 
  * @interface
+ * @property {string} title - The title of the ad.
+ * @property {string} description - The description of the ad.
+ * @property {string | null} imageUri - The URI of the image associated with the ad. Can be null if no image is selected.
+ * @property {number} expiry - The number of days until the ad expires.
  */
 
 interface AdDataProps {
@@ -211,6 +222,30 @@ interface AdDataProps {
   description: string;
   imageUri: string | null;
   expiry: number;
+}
+
+/**
+ * ImagePickerButtonProps interface for ImagePicker component.
+ * 
+ * @interface
+ * @property {function} onImagePicked - A callback function that gets triggered when an image is selected.
+ *                                      Receives the URI of the picked image as a string, or null if no image is selected.
+ */
+
+interface ImagePickerButtonProps {
+  onImagePicked: (imageUri: string | null) => void;
+}
+
+/**
+ * ExpirySliderProps interface for ExpirySlider component.
+ * 
+ * @interface
+ * @property {function} onExpiryChange - A callback function that gets triggered when the slider value changes.
+ *                                       Receives the new expiry value as a number representing the number of days until expiry.
+ */
+
+interface ExpirySliderProps {
+  onExpiryChange: (expiry: number) => void;
 }
 
 export {
@@ -226,4 +261,6 @@ export {
   type ImageTextProps,
   type UpperBarProps,
   type AdDataProps,
+  type ImagePickerButtonProps,
+  type ExpirySliderProps,
 };
