@@ -102,15 +102,15 @@ describe('Test API requests', () => {
     const endpoint = '/test-post-params';
     const postData = { key: 'value' };
     const params = { param1: 'one', param2: 'two' };
-  
+
     mockAdapter.onPost(endpoint, postData).reply(config => {
-      expect(config.data).toEqual(JSON.stringify(postData)); 
+      expect(config.data).toEqual(JSON.stringify(postData));
       expect(config.params).toEqual(params);
       return [200, fakeResponse];
     });
-  
+
     const api = await SecureAPIReq.createInstance();
-  
+
     try {
       const response = await api.post(endpoint, postData, params);
       expect(response.data).toEqual(fakeResponse);
@@ -119,7 +119,7 @@ describe('Test API requests', () => {
       expect(false).toBe(true);
     }
   });
-  
+
   it('should handle errors in POST request', async () => {
     const endpoint = '/test-post-error';
     mockAdapter.onPost(endpoint).reply(500);
@@ -150,9 +150,9 @@ describe('Test API requests', () => {
     const params = { param1: 'one', param2: 'two' };
 
     mockAdapter.onPut(endpoint).reply(config => {
-      expect(config.data).toEqual(JSON.stringify(updateData)); 
-      expect(config.params).toEqual(params); 
-      return [200, fakeResponse]; 
+      expect(config.data).toEqual(JSON.stringify(updateData));
+      expect(config.params).toEqual(params);
+      return [200, fakeResponse];
     });
 
     try {

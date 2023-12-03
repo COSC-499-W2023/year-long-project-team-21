@@ -56,8 +56,21 @@ export function handleAxiosError(
   throw new Error(`Axios error: ${error.message}`);
 }
 
-
-// async function handling login. Stores authentication token in encrypted storage
+/**
+ * Asynchronously handles user login, authenticating with provided credentials.
+ * On successful login, the function stores the authentication token in encrypted storage.
+ *
+ * @param {string} user - The username of the user attempting to log in.
+ * @param {string} pass - The password of the user.
+ * @throws Will throw an error with a custom message if the login attempt fails.
+ * @example
+ * // Example usage
+ * loginReq('testuser', 'password123').then(() => {
+ *   console.log('Login successful');
+ * }).catch(error => {
+ *   console.error('Login failed:', error);
+ * });
+ */
 export async function loginReq(user: string, pass: string) {
   // login URL (need to remove hard-coding)
   const endpoint: string = 'users/tokens/';
@@ -195,7 +208,6 @@ export class SecureAPIReq {
     body?: any,
     params?: { [key: string]: any },
   ) {
-    console.log(params);
     try {
       const headers = await this.createSecureHeader();
       return this.instance.put(endpoint, body, { params, headers });
