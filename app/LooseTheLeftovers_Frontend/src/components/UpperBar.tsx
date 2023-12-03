@@ -70,10 +70,9 @@ const styles = StyleSheet.create({
     padding: 8, // Adjust padding
   },
   icon: {
-    // Add styles for the icon
   },
   placeholderIcon: {
-    // Placeholder to maintain balance in the layout
+    // Placeholder to keep balance in the layout
     width: 48, // Width should match the Icon size plus padding
     height: 48, // Height should match the Icon size plus padding
   },

@@ -194,10 +194,23 @@ interface ImageTextProps {
  */
 
 interface UpperBarProps {
-  onLeftPress: () => void;
-  onRightPress: () => void;
+  onLeftPress?: () => void;
+  onRightPress?: () => void;
   leftIconSource?: ImageSourcePropType;
   rightIconSource?: ImageSourcePropType;
+}
+
+/**
+ * AdDataProps interface for the CreateAd screen.
+ * 
+ * @interface
+ */
+
+interface AdDataProps {
+  title: string;
+  description: string;
+  imageUri: string | null;
+  expiry: number;
 }
 
 export {
@@ -212,4 +225,5 @@ export {
   type TabBarProps,
   type ImageTextProps,
   type UpperBarProps,
+  type AdDataProps,
 };

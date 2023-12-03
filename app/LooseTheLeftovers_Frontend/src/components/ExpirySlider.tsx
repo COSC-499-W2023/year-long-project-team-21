@@ -24,7 +24,7 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
 
   const handleValueChange = (value: number) => {
     setSliderValue(value);
-    console.log('Slider Value:', value);
+    onExpiryChange(value);
   };
 
   return (

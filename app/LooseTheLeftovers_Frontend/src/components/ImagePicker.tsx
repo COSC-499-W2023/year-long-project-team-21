@@ -20,7 +20,9 @@ interface ImagePickerButtonProps {
  *   <ImagePickerButton />
  * )
  */
-const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ onImagePicked }) => {
+const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
+  onImagePicked,
+}) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   const handlePress = async () => {
