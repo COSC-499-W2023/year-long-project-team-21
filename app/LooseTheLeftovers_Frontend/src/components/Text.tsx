@@ -13,6 +13,7 @@ import { type TextsProps } from '../common/Types';
  * @param {string} props.texts - Text to be displayed as the Text.
  * @param {number} props.textsSize - Text size.
  * @param {string} props.textsColor - Color specification.
+ * @param {string} props.textsWeight - Text weight.
  * @param {string} props.position - Determines Text position.
  * @param {() => void} props.onPress - Callback function to execute when the button is pressed.
  * @param {string} props.testID - Identify Text in testing.
@@ -23,6 +24,7 @@ const Texts: React.FC<TextsProps> = ({
   texts,
   textsSize,
   textsColor,
+  textsWeight,
   position,
   onPress,
   testID,
@@ -32,6 +34,7 @@ const Texts: React.FC<TextsProps> = ({
   const textsStyles = {
     fontSize: textsSize || 25,
     color: textsColor || global.primary,
+    fontWeight: textsWeight || 'normal',
     marginTop: position == 'top' ? 150 : 0,
   };
 
