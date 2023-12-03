@@ -11,9 +11,9 @@ const Logo: React.FC<LogoProps> = ({ LogoSize }) => {
 
   return (
     <View style={styles.logoContainer}>
-      <Text style={[styles.greyText, logoStyles]}>Lose</Text>
-      <Text style={[styles.yellowText, logoStyles]}>the</Text>
-      <Text style={[styles.greyText, logoStyles]}>Leftovers</Text>
+      <Text style={[styles.primary, logoStyles]}>Lose</Text>
+      <Text style={[styles.secondary, logoStyles]}>the</Text>
+      <Text style={[styles.primary, logoStyles]}>Leftovers</Text>
     </View>
   );
 };

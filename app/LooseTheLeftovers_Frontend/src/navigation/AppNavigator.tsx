@@ -4,7 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
 import Instruction from '../screens/Instruction';
+
+import Home from '../screens/Home';
+
 import CreateAd from '../screens/CreateAd';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -12,7 +16,17 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="CreateAd"
+        name="Instruction"
+        component={Instruction}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="CreatAd"
         component={CreateAd}
         options={{ headerShown: false }}
       />
@@ -24,11 +38,6 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Instruction"
-        component={Instruction}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

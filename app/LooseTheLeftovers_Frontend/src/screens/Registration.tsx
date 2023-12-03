@@ -120,7 +120,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           setEmail('');
           setPassword1('');
           setPassword2('');
-          navigation.navigate('Instruction');
+          navigation.navigate('Login');
         } else {
           //red text error produced by server
           setServerError(true);
@@ -218,7 +218,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           />
         </View>
         <Texts
-          texts="Login"
+          texts="Sign In"
           textsSize={18}
           onPress={() => handleLoginNavigation()}
         />
