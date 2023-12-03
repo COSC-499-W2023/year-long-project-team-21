@@ -1,9 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
 import Instruction from '../screens/Instruction';
+
 import Home from '../screens/Home';
+
+import CreateAd from '../screens/CreateAd';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -15,9 +20,14 @@ const AppNavigator = () => {
         component={Instruction}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+       <Stack.Screen
         name="Home"
         component={Home}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="CreatAd"
+        component={CreateAd}
         options={{ headerShown: false }}
       />
       <Stack.Screen
