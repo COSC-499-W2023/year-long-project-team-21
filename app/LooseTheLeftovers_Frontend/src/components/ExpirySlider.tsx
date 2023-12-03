@@ -34,7 +34,7 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
         step={1}
         value={sliderValue}
         onValueChange={handleValueChange}
-        minimumTrackTintColor={global.primary}
+        minimumTrackTintColor={global.secondary}
         maximumTrackTintColor="#d3d3d3"
         thumbTintColor={global.primary}
       />
