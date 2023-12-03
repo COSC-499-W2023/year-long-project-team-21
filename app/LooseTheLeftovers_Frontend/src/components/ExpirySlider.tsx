@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { global } from '../common/global_styles';
+import styles from '../styles/expirySliderStyles';
 import { type ExpirySliderProps } from '../common/Types';
 
 /**
@@ -45,20 +46,5 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  slider: {
-    width: '100%', // Take full width of the content container
-  },
-  sliderLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%', // Match the width of the slider
-    marginTop: 10, // Add space between the slider and the labels
-  },
-  sliderLabel: {
-    color: global.primary,
-  },
-});
 
 export default ExpirySlider;

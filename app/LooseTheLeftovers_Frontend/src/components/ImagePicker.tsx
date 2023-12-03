@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { global } from '../common/global_styles';
+import styles from '../styles/imagePickerStyles';
 import { type ImagePickerButtonProps } from '../common/Types';
 
 /**
@@ -42,29 +42,5 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: global.background,
-    padding: 10,
-    borderRadius: 5,
-    borderColor: global.primary,
-    borderWidth: 1,
-  },
-  buttonText: {
-    color: global.secondary,
-    textAlign: 'center',
-  },
-  image: {
-    marginTop: 10,
-    width: 100, // Set the width
-    height: 100, // Set the height
-    borderRadius: 10, // Optional, rounded corners
-  },
-});
 
 export default ImagePickerButton;

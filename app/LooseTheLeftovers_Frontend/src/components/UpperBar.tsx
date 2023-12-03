@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { global } from '../common/global_styles';
+import { View, Text } from 'react-native';
+import styles from '../styles/upperBarStyles';
 import { UpperBarProps } from '../common/Types';
 import Icon from '../components/Icon';
 
@@ -50,32 +50,5 @@ const Header: React.FC<UpperBarProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: global.primary,
-    textAlign: 'center',
-  },
-  iconContainer: {
-    padding: 8, // Adjust padding
-  },
-  icon: {
-  },
-  placeholderIcon: {
-    // Placeholder to keep balance in the layout
-    width: 48, // Width should match the Icon size plus padding
-    height: 48, // Height should match the Icon size plus padding
-  },
-});
 
 export default Header;
