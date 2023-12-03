@@ -56,6 +56,36 @@ export function handleAxiosError(
   throw new Error(`Axios error: ${error.message}`);
 }
 
+
+// async function handling login. Stores authentication token in encrypted storage
+export async function loginReq(user: string, pass: string) {
+  // login URL (need to remove hard-coding)
+  const endpoint: string = 'users/tokens/';
+  try {
+    // Create axios POST request, incoming username and password in the body
+    const response = await axios.post(
+      endpoint,
+      {
+        username: user,
+        password: pass,
+      },
+      djangoConfig(),
+    );
+    // Parse the response and assign to respective variables
+    const accessToken: string = response.data['access'];
+    const refreshToken: string = response.data['refresh'];
+    // Clear any existing user session before storing the new one
+    await removeUserSession();
+    // Store the new user session
+    await storeUserSession(accessToken, refreshToken);
+  } catch (error) {
+    // generate custom error
+    handleAxiosError(error, {
+      401: 'Invalid username or password',
+    });
+  }
+}
+
 /**
  * Class representing secure API requests with session management.
  */
@@ -165,6 +195,7 @@ export class SecureAPIReq {
     body?: any,
     params?: { [key: string]: any },
   ) {
+    console.log(params);
     try {
       const headers = await this.createSecureHeader();
       return this.instance.put(endpoint, body, { params, headers });

@@ -97,24 +97,29 @@ describe('Test API requests', () => {
 
     expect(response.data).toEqual(fakeResponse);
   });
-  it('should send POST request with correct query parameters', async () => {
+  it('should send POST request with correct query parameters and body', async () => {
     const fakeResponse = { data: 'test' };
     const endpoint = '/test-post-params';
     const postData = { key: 'value' };
-    const params: any = { param1: 'one', param2: 'two' };
-
-    // Ensure that mockAdapter intercepts the exact POST request
-    mockAdapter.onPost(endpoint, postData, { params }).reply(200, fakeResponse);
-
+    const params = { param1: 'one', param2: 'two' };
+  
+    mockAdapter.onPost(endpoint, postData).reply(config => {
+      expect(config.data).toEqual(JSON.stringify(postData)); 
+      expect(config.params).toEqual(params);
+      return [200, fakeResponse];
+    });
+  
     const api = await SecureAPIReq.createInstance();
-
+  
     try {
       const response = await api.post(endpoint, postData, params);
       expect(response.data).toEqual(fakeResponse);
     } catch (e) {
       console.error('Error:', e);
+      expect(false).toBe(true);
     }
   });
+  
   it('should handle errors in POST request', async () => {
     const endpoint = '/test-post-error';
     mockAdapter.onPost(endpoint).reply(500);
@@ -142,20 +147,22 @@ describe('Test API requests', () => {
     const fakeResponse = { data: 'test' };
     const endpoint = '/test-put-params';
     const updateData = { key: 'updatedValue' };
-    const params: any = { param1: 'one', param2: 'two' };
+    const params = { param1: 'one', param2: 'two' };
 
-    // Ensure that mockAdapter intercepts the exact PUT request
-    mockAdapter
-      .onPut(endpoint, updateData, { params })
-      .reply(200, fakeResponse);
-
-    const api = await SecureAPIReq.createInstance();
+    mockAdapter.onPut(endpoint).reply(config => {
+      expect(config.data).toEqual(JSON.stringify(updateData)); 
+      expect(config.params).toEqual(params); 
+      return [200, fakeResponse]; 
+    });
 
     try {
+      const api = await SecureAPIReq.createInstance();
       const response = await api.put(endpoint, updateData, params);
       expect(response.data).toEqual(fakeResponse);
+      console.log(response.data);
     } catch (e) {
       console.error('Error:', e);
+      //expect(false).toEqual(true);
     }
   });
 
