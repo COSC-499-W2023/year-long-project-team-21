@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class Advertisment(models.Model):
@@ -7,7 +8,7 @@ class Advertisment(models.Model):
     description = models.TextField(max_length=1000)
     image = models.ImageField(upload_to="images/")
     category = models.TextField(max_length=20)
-    expiry = models.DateTimeField()
+    expiry = models.DateTimeField(null=True)
     created = models.DateTimeField(auto_now_add=True)
     view_count = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
