@@ -3,12 +3,12 @@ import { global } from '../common/global_styles';
 
 const tabBarStyles = StyleSheet.create({
   container: {
-    flex: 0.1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: global.background,
+    flex: 5,
+    borderColor: global.secondary,
   },
   left: {
     flex: 1 / 3,

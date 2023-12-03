@@ -91,7 +91,7 @@ describe('Registration Component', () => {
         },
       );
       // Check if the expected success/failure message is displayed
-      expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
+      expect(navigation.navigate).toHaveBeenCalledWith('Login');
     });
   });
 
