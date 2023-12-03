@@ -114,12 +114,14 @@ const Login = ({ navigation }: { navigation: any }) => {
           placeholder="Username"
           onChangeText={input => handleUsername(input)}
           value={username}
+          width={280}
         />
         <InputField
           placeholder="Password"
           onChangeText={input => handlePassword(input)}
           value={password}
           secureTextEntry={true}
+          width={280}
         />
         {/* Conditionally render the error message */}
         {errorMessage !== '' && (

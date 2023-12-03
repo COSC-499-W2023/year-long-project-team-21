@@ -137,7 +137,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <Header
         onLeftPress={handleBackPress}
-        leftIconSource={require('../assets/plus_white.png')}
+        leftIconSource={require('../assets/plus.png')}
       />
       <ScrollView contentContainerStyle={styles.formContainer}>
         {/* Title */}
@@ -145,7 +145,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <Texts
             texts="Food Name"
             textsSize={22}
-            textsColor={global.secondary}
+            textsColor={global.primary}
             textsWeight="bold"
           />
         </View>
@@ -161,7 +161,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <Texts
             texts="Description (optional)"
             textsSize={22}
-            textsColor={global.secondary}
+            textsColor={global.primary}
             textsWeight="bold"
           />
         </View>
@@ -178,7 +178,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <Texts
             texts="Pick an image of the food"
             textsSize={22}
-            textsColor={global.secondary}
+            textsColor={global.primary}
             textsWeight="bold"
           />
         </View>
@@ -191,7 +191,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <Texts
             texts="Set an expiry range"
             textsSize={22}
-            textsColor={global.secondary}
+            textsColor={global.primary}
             textsWeight="bold"
           />
         </View>
