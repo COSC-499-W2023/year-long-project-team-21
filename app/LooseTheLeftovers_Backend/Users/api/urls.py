@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
 
 # import views
 from Users.api.views import register_user
+from Users.api.views import hello_world
 
 
 urlpatterns = [

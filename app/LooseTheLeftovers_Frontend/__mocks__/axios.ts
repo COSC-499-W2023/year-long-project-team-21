@@ -1,11 +1,4 @@
-const post = jest.fn(() =>
-  Promise.resolve({ 
-    data: { 
-      accessToken: 'fake_access_token',
-      refreshToken: 'fake_refresh_token' 
-    }, 
-    status: 200 
-  }),
-);
+const mockAxios:any = jest.genMockFromModule('axios')
+mockAxios.create = jest.fn(() => mockAxios)
 
-export default { post };
+export default mockAxios
