@@ -1,14 +1,17 @@
-import Logo from '../components/Logo';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import styles from '../styles/registrationStyles';
-import React, { useState } from 'react';
+import { global } from '../common/global_styles';
+import axios from 'axios';
+import * as EmailValidator from 'email-validator';
+import { passwordStrength } from 'check-password-strength';
+
+import Logo from '../components/Logo';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
-import axios from 'axios';
-import * as EmailValidator from 'email-validator';
-import { passwordStrength } from 'check-password-strength';
+
 /**
  * Registration page
  *
@@ -59,15 +62,15 @@ const Registration = ({ navigation }: { navigation: any }) => {
   ): { color: string } => {
     switch (passwordStrengthId) {
       case 0:
-        return { color: '#FC7676' };
+        return { color: global.pass_strength.zero };
       case 1:
-        return { color: '#FFB800' };
+        return { color: global.pass_strength.one };
       case 2:
-        return { color: '#96EEE5' };
+        return { color: global.pass_strength.two };
       case 3:
-        return { color: '#85F773' };
+        return { color: global.pass_strength.three };
       default:
-        return { color: 'white' };
+        return { color: global.pass_strength.base };
     }
   };
 
@@ -142,7 +145,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         />
         {/* When the emailFormatError is true, the red text tells following. */}
         {emailFormatError && (
-          <Text style={{ color: 'red', fontSize: 15 }}>
+          <Text style={{ color: global.error, fontSize: 15 }}>
             Invalid email format. Please use a valid email address (e.g.,
             abc@gmail.com).
           </Text>
@@ -154,7 +157,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         />
         {/* When the usernameLengthError is true, the red text tells following. */}
         {usernameLengthError && (
-          <Text style={{ color: 'red', fontSize: 15 }}>
+          <Text style={{ color: global.error, fontSize: 15 }}>
             Username is too short. Enter more than 8 characters.
           </Text>
         )}
@@ -172,31 +175,31 @@ const Registration = ({ navigation }: { navigation: any }) => {
         />
         {/* When the passwordMatch is true, the red text tells following. */}
         {passwordsMatchError && (
-          <Text style={{ color: 'red', fontSize: 15 }}>
+          <Text style={{ color: global.error, fontSize: 15 }}>
             Password do not match.
           </Text>
         )}
         {/* When the credentialFilledinError is true, the red text tells following. */}
         {credentialFilledInError && (
-          <Text style={{ color: 'red', fontSize: 15 }}>
+          <Text style={{ color: global.error, fontSize: 15 }}>
             Please fill in credentials.
           </Text>
         )}
         {/* When the serverError is true, the red text tells following. */}
         {serverError && (
-          <Text style={{ color: 'red', fontSize: 15 }}>
+          <Text style={{ color: global.error, fontSize: 15 }}>
             Server error, unable to process.
           </Text>
         )}
         {/* When the apiRquestError is true, the red text tells following. */}
         {apiRequestError && (
-          <Text style={{ color: 'red', fontSize: 15 }}>
+          <Text style={{ color: global.error, fontSize: 15 }}>
             Request error, unable to process.
           </Text>
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}
         {password1 && passwordStrengthError && (
-          <Text style={{ color: '#FFFFFF', fontSize: 15 }}>
+          <Text style={{ color: global.secondary, fontSize: 15 }}>
             Password Strength:{' '}
             <Text
               style={{
