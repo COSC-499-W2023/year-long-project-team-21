@@ -9,7 +9,6 @@ import InputField from '../components/InputField';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Texts from '../components/Text';
-import LocationService from '../common/LocationService';
 
 /**
  * Login component.
@@ -27,7 +26,6 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const locationinstance = LocationService.CreateAndInitialize();
   const handleRegistrationNavigation = () => {
     navigation.navigate('Registration');
   };
@@ -109,7 +107,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     <>
       <SafeAreaView style={styles.LoginContainer}>
         <Logo LogoSize={40} />
-        {}
         <Title title="Login" titleSize={30} testID="loginTitle" />
         <InputField
           placeholder="Username"

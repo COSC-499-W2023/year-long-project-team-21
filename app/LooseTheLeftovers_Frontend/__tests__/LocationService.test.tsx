@@ -1,6 +1,5 @@
 import LocationService from '../src/common/LocationService';
 
-
 // Mocking dependencies
 jest.mock('react-native-geolocation-service');
 jest.mock('react-native-encrypted-storage');
@@ -30,8 +29,15 @@ jest.mock('react-native', () => ({
 }));
 describe('LocationService', () => {
   let locationservice: LocationService;
+
+  // Before any instances are created, spy on the prototype method
+  const getLocationPermissionMock = jest.fn();
+  jest
+    .spyOn(LocationService.prototype, 'getLocationPermissionAndroid')
+    .mockImplementation(getLocationPermissionMock);
+
   beforeEach(() => {
-    locationservice = new LocationService(100000);
+    locationservice = new LocationService();
   });
 
   it('should initialize with undefined location and false permission', () => {
@@ -40,19 +46,17 @@ describe('LocationService', () => {
   });
 
   it('should request location permission if not granted', async () => {
-    const locationService = new LocationService(100000);
-
     // Mock the getLocationPermission method
     const getLocationPermissionMock = jest.fn();
     jest
-      .spyOn(locationService, 'getLocationPermissionAndroid')
+      .spyOn(locationservice, 'getLocationPermissionAndroid')
       .mockImplementation(getLocationPermissionMock);
 
     // Set hasPermission to false to simulate the case where permission is not granted
-    locationService.hasPermission = false;
+    locationservice.hasPermission = false;
 
     // Call the method that triggers the permission request
-    await locationService.getLocationPermissionAndroid();
+    await locationservice.getLocationPermissionAndroid();
 
     // Assert that the mocked method was called
     expect(getLocationPermissionMock).toHaveBeenCalled();
