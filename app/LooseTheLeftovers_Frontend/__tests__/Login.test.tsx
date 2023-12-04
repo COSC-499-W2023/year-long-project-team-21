@@ -97,7 +97,7 @@ describe('Login component', () => {
 
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
-      expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
+      expect(navigation.navigate).toHaveBeenCalledWith('CreateAd');
     });
   });
 

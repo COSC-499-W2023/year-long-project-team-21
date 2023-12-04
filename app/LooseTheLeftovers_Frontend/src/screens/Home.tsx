@@ -9,8 +9,10 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
+import LocationService from '../common/LocationService';
 
 const Home = ({ navigation }: { navigation: any }) => {
+  const locationInstance = LocationService.CreateAndInitialize();
   return (
     <View style={globalscreenstyles.container}>
       <TabBar
