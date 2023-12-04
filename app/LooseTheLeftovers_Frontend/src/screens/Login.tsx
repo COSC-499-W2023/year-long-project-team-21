@@ -76,7 +76,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         return null; // Indicate an unsuccessful login attempt
       }
     } catch (error) {
-      setErrorMessage('An error occurred while trying to retrieve data.');
+      setErrorMessage('An error occurred while trying to retrieve data.'); // Invalid credentials
       console.log(error);
       return null; // Indicate an error occurred
     }
@@ -134,10 +134,11 @@ const Login = ({ navigation }: { navigation: any }) => {
           testID="loginButton"
         />
         <Text texts="Forgot password?" textsSize={18} />
-        <Texts
+        <Text
           texts="Sign Up"
           textsSize={18}
           onPress={() => handleRegistrationNavigation()}
+          position="top"
         />
       </SafeAreaView>
     </>

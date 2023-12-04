@@ -1,41 +1,12 @@
-import style from '../styles/instructionStyles';
 import React from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  StyleProp,
-  ViewStyle,
-  ImageStyle,
-  View,
-  Text,
-} from 'react-native';
+import { Image, View, Text } from 'react-native';
+import style from '../styles/instructionStyles';
+import { type ImageTextProps } from '../common/Types';
 
 /**
- * Text image interface for the TextImage component.
+ * TextImage component.
  *
- * @interface
- * @property {ImageSourcePropType} source - The image for instruction
- * @property {number} [size=24] - Size of the image, defaults to 24.
- * @property {string} [testID] - Identifier for the component in test environments.
- * @property {StyleProp<ViewStyle>} [containerStyle] - Optional style for the TouchableOpacity container.
- * @property {StyleProp<ImageStyle>} [imageStyle] - Optional style for the Image element.
- * @property {number} textSize -changes the text size
- * @property {string} text -  displays the Text.
- */
-interface ImageTextProps {
-  source: ImageSourcePropType;
-  size?: number;
-  testID?: string;
-  containerStyle?: StyleProp<ViewStyle>;
-  imageStyle?: StyleProp<ImageStyle>;
-  text: string;
-  textSize?: number;
-}
-
-/**
- * Textimage component.
- *
- * The instruction component that is used for the instruction screen.
+ * The instruction component that is used for the Instruction screen.
  *
  * @component
  * @param {ImageTextProps} props - The props for the TextImage component.
@@ -45,30 +16,28 @@ interface ImageTextProps {
  * @param {StyleProp<ViewStyle>} [props.containerStyle] - Optional custom style for the TouchableOpacity container.
  * @param {StyleProp<ImageStyle>} [props.imageStyle] - Optional custom style for the Image element.
  * @param {string} props.text - Text to be displayed as the Text.
- * @param {number} props.textSize - Text size
+ * @param {number} props.textSize - Text size.
  * @example
  *
  */
 const ImageText: React.FC<ImageTextProps> = ({
   source,
   size = 24,
-  testID,
-  containerStyle,
+  testID = 'TextImage-image',
   imageStyle,
   text,
-  textSize,
 }) => {
   return (
     <View style={style.textimage}>
       <View style={style.text}>
         <Text>{text}</Text>
       </View>
-      <View style={style.image}>
+      <View style={style.textimage}>
         <Image
           source={source}
           style={[{ width: size, height: size }, imageStyle]}
           resizeMode="contain"
-          testID="TextImage-image"
+          testID={testID}
         />
       </View>
     </View>

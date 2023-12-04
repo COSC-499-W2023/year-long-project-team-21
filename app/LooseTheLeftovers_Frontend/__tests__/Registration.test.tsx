@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import Registration from '../src/screens/Registration';
 import axios from 'axios';
-import { Alert } from 'react-native';
+import Registration from '../src/screens/Registration';
 
 // Mocking a function
 jest.mock('axios');
@@ -61,7 +60,7 @@ describe('Registration Component', () => {
 
   test('handles button press - success', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByTestId, getByText } = render(
+    const { getByPlaceholderText, getByTestId } = render(
       <Registration navigation={navigation} />,
     );
 

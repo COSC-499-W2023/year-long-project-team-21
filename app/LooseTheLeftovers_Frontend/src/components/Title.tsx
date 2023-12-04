@@ -4,16 +4,16 @@ import styles from '../styles/titleStyles';
 import { global } from '../common/global_styles';
 import { type TitleProps } from '../common/Types';
 
-
 /**
  * Title component.
  *
  * @component
  * @param {TitleProps} props - The props for the Title component.
  * @param {string} props.title - Text to be displayed as the title.
- * @param {number} props.titleSize - Title size
- * @param {string} props.titleColor - Title color specification
- * @param {number} props.position - Specifies position of the Title (top or middle)
+ * @param {number} props.titleSize - Title size.
+ * @param {string} props.titleColor - Title color specification.
+ * @param {number} props.position - Specifies position of the Title (top or middle).
+ * @param {string} props.testID - Optional test identifier for the component.
 
  * @example
  * <Title title="My Page Title" />
@@ -35,7 +35,9 @@ const Title: React.FC<TitleProps> = ({
 
   return (
     <View style={[styles.TitleContainer]}>
-      <Text style={[styles.TitleText, titleStyles]} testID={testID}>{title}</Text>
+      <Text style={[styles.TitleText, titleStyles]} testID={testID}>
+        {title}
+      </Text>
     </View>
   );
 };
