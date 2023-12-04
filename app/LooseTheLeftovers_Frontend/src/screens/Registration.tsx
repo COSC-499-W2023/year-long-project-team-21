@@ -73,7 +73,6 @@ const Registration = ({ navigation }: { navigation: any }) => {
         return { color: global.pass_strength.base };
     }
   };
-
   //Checks following cases: Any credentials are not provided, password unmatched, password matched&credentials are filled
   const handleButtonOnPress = async () => {
     setCredentialsFilledInError(false);

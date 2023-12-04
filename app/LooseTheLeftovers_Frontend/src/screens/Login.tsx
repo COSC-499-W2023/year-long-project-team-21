@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View } from 'react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import styles from '../styles/loginStyle';
-
 import Logo from '../components/Logo';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
 import Text from '../components/Text';
 import Button from '../components/Button';
+import Texts from '../components/Text';
 
 /**
  * Login component.
@@ -26,7 +26,6 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
   const handleRegistrationNavigation = () => {
     navigation.navigate('Registration');
   };
@@ -104,7 +103,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
-
   return (
     <>
       <SafeAreaView style={styles.LoginContainer}>
