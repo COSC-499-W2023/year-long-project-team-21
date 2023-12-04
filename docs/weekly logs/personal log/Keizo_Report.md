@@ -1,25 +1,21 @@
 # Keizo Kato Personal Weekly Log
 
-10/30 to 11/05
+11/27 to 12/03
 
 Username: Keizo410
 
 ## My Features For This Week
 
-- Implementing the Login screen with full design. 
-- Giving a presentation.
-- Helping with task assignments for the next sprint.
+- Recoding Location service
 
 ## Completed Features For This Week
 
-- Giving a presentation
-- Helping with task assignments. 
+- Finishing location service class implementation. 
 
 ## Features in progress
 
--  Implementing the components that are compatible with our actual UI.
--  Implementing the Login screen with full design. 
+-  Restructuring registration component. 
 
 ## Types of Tasks Worked On
 
-![indiv log week 9](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/15ee7e7a-0877-452d-9da6-8b84c8fb448b)
+![スクリーンショット 2023-12-03 192620](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/629bd055-edd1-4e35-a317-9cd203f79eb0)

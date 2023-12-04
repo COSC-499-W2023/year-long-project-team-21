@@ -1,26 +1,32 @@
 # Egor Bezriadin Personal Weekly Log
 
-10/30 to 11/05
+11/27 to 12/03
 
 Username: rogeonee
 
 ## My Features For This Week
 
-1. Implement secure storage of JWT token
-2. InputField component
-3. Icon component
-4. Live demo preparation
+1. CreateAd page implementation
+2. CreateAd business logic
+3. ExpirySlider component
+4. ImagePicker component
+5. Other component updates as needed
+6. Research SQLite caching
 
 ## Completed Features For This Week
 
-1. InputField component
-2. Live demo on presentation
+1. CreateAd page implemented
+2. CreateAd basic business logic ready
+3. ExpirySlider component
+4. ImagePicker component
+5. InputField, UpperBar (Header) component updates
 
 ## Tasks In Progress
 
-- Secure storage for JWT
-- Icon component
+- CreateAd logic revision and enhancement
+- Research SQLite caching
+- Tests for new components
 
 ## Types of Tasks Worked On
 
-![week 9](https://imgtr.ee/images/2023/11/06/05b1f6d81523b198a3b3b361b14fc0af.png)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/68e6c46a-d395-460b-a352-4e99da13198f)

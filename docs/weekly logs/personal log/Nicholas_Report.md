@@ -1,24 +1,25 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-10/30 to 11/5
+11/27 to 12/03
 
 Username: n3c777
 
 ## My Features For This Week
 
-- Help Present the frist presentation
-  -Finish Instructions page
+-Making design video
+-UI Design Document
 
 ## Completed Features For This Week
 
--Presented the the presenation
--Instructions page completed
--Plan next sprint
+-Merged Message Icon, account Icon, create ad icon,home icon and tabbar
+-Created Design Document
+-Made design video (planning writing recording and editing)
+-programmed new navigation with new incompleted homescreen and combining the rest of the other new features. this is within the demo branch
 
 ## Features in progress
 
-- Implementing the logo
+None, I'm finished for the semeseter.
 
 ## Types of Tasks Worked On
 
-![individual log week 9](https://imgtr.ee/images/2023/11/06/ef9db0906950277c17985dfebb10f17f.png)
+![individual log week 13](https://i.postimg.cc/yYDmHrpk/Dec-3.png)
