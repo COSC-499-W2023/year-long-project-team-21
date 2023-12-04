@@ -234,6 +234,7 @@ interface AdDataProps {
 
 interface ImagePickerButtonProps {
   onImagePicked: (imageUri: string | null) => void;
+  testID?: string;
 }
 
 /**
@@ -246,6 +247,7 @@ interface ImagePickerButtonProps {
 
 interface ExpirySliderProps {
   onExpiryChange: (expiry: number) => void;
+  testID?: string;
 }
 
 export {

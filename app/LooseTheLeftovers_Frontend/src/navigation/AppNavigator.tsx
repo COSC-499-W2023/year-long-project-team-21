@@ -12,13 +12,13 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="CreateAd"
-        component={CreateAd}
+        name="Registration"
+        component={Registration}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Registration"
-        component={Registration}
+        name="CreateAd"
+        component={CreateAd}
         options={{ headerShown: false }}
       />
       <Stack.Screen

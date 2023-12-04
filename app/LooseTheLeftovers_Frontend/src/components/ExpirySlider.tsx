@@ -25,6 +25,8 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
     onExpiryChange(value);
   };
 
+  const testID = 'expiry-slider';
+
   return (
     <>
       <Slider
@@ -37,6 +39,7 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
         minimumTrackTintColor={global.primary}
         maximumTrackTintColor="#d3d3d3"
         thumbTintColor={global.primary}
+        testID={testID}
       />
       <View style={styles.sliderLabels}>
         <Text style={styles.sliderLabel}>1 day</Text>

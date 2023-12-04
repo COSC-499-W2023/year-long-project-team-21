@@ -22,6 +22,8 @@ const Header: React.FC<UpperBarProps> = ({
   leftIconSource,
   rightIconSource,
 }) => {
+  const testID = 'upperbar-test';
+
   return (
     <View style={styles.header}>
       {leftIconSource ? (
@@ -31,11 +33,14 @@ const Header: React.FC<UpperBarProps> = ({
           onPress={onLeftPress}
           containerStyle={styles.iconContainer}
           imageStyle={styles.icon}
+          testID='left-icon'
         />
       ) : (
         <View style={styles.placeholderIcon} />
       )}
-      <Text style={styles.title}>Create an Ad</Text>
+      <Text style={styles.title} testID={testID}>
+        Create an Ad
+      </Text>
       {rightIconSource ? (
         <Icon
           source={rightIconSource}
@@ -43,6 +48,7 @@ const Header: React.FC<UpperBarProps> = ({
           onPress={onRightPress}
           containerStyle={styles.iconContainer}
           imageStyle={styles.icon}
+          testID='right-icon'
         />
       ) : (
         <View style={styles.placeholderIcon} />

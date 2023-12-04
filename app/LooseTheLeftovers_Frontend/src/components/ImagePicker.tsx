@@ -19,6 +19,7 @@ import { type ImagePickerButtonProps } from '../common/Types';
  */
 const ImagePickerButton: React.FC<ImagePickerButtonProps> = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const testID = 'image-picker';
 
   const handlePress = async () => {
     // Add options for image picker
@@ -35,10 +36,19 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handlePress} style={styles.button}>
+      <TouchableOpacity
+        onPress={handlePress}
+        style={styles.button}
+        testID={testID}>
         <Text style={styles.buttonText}>Open Gallery</Text>
       </TouchableOpacity>
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+      {imageUri && (
+        <Image
+          source={{ uri: imageUri }}
+          style={styles.image}
+          testID='selected-image'
+        />
+      )}
     </View>
   );
 };
