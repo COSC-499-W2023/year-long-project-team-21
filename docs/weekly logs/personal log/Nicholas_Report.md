@@ -1,27 +1,25 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-11/12 to 11/26
+11/27 to 12/3
 
 Username: n3c777
 
 ## My Features For This Week
 
--Instructions Screen
--Tabar Screen
+-Making design video
+-UI Design Document
 
 ## Completed Features For This Week
 
--completed Instructions Screen
--Instructions component
--added Global styles for color
--Global types (for all interfaces)
+-Merged Message Icon, account Icon, create ad icon,home icon and tabbar
+-Created Design Document
+-Made design video (planning writing recording and editing)
+-programmed new navigation with new incompleted homescreen and combining the rest of the other new features. this is within the demo branch
 
 ## Features in progress
 
-These are very close to being done, just being reviewed
--tab bar component
--home icon, message icon, account icon, create ad icon
+None, I'm finished for the semeseter.
 
 ## Types of Tasks Worked On
 
-![individual log week 12](https://i.postimg.cc/CKLZ4sNZ/nov-26.png)
+![individual log week 13](https://i.postimg.cc/yYDmHrpk/Dec-3.png)
