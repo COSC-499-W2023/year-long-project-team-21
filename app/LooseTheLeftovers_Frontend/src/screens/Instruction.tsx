@@ -8,7 +8,9 @@ import Button from '../components/Button';
 import TextImage from '../components/TextImage';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {};
+  const handleButtonOnPress = async () => {
+    navigation.navigate('Home');
+  };
   // Creates an array of the instructions and images
   const instructions = [
     {
@@ -80,6 +82,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
           onPress={handleButtonOnPress}
           title="Get Started"
           buttonSize={200}
+          testID="register-button"
         />
       </View>
     </View>
