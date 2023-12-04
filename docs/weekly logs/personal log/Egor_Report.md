@@ -30,4 +30,3 @@ Username: rogeonee
 ## Types of Tasks Worked On
 
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/68e6c46a-d395-460b-a352-4e99da13198f)
-

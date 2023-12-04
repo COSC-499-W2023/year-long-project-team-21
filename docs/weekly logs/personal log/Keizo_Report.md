@@ -19,4 +19,3 @@ Username: Keizo410
 ## Types of Tasks Worked On
 
 ![スクリーンショット 2023-12-03 192620](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/629bd055-edd1-4e35-a317-9cd203f79eb0)
-
