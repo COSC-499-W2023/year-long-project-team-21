@@ -39,24 +39,23 @@ Tasks in progress
 - Backend 
   - Add images to POST request to ads/
 
-
 ## Burn Up Chart
-![week11 12](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/c56a00e5-c7b0-417c-b05d-f72517c1b3d5)
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/24841b20-267f-44f7-b7f4-fb0d9d07076d)
 
 ## Test Report
 
 Once we implement our pipeline, this will be much more streamlined. 
 
 #### Test for frontend
-![スクリーンショット 2023-11-26 200634](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b8b30ae7-d167-43fb-91b3-4f1b78cf2a1a)
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/d8ed7fc9-f5b9-4a9f-b0f2-3a3ecb191124)
 
 #### Test for backend 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/af3a5413-d7d1-4a36-aa10-9fb512354c0e)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/c27ae8d1-fd02-40d4-be06-7fe845d75c02)
+
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/476cb781-d6c6-422a-9ff0-c977a3b04884)
 
 ## Project Board
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/81adc9c9-29ea-46e0-9742-1e6c660cfb56)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/aaf4ec15-7589-42ad-ac27-0d232232a369)
 
 ## Individual Reports
 
