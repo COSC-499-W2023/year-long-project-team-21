@@ -70,16 +70,8 @@ const Registration = ({ navigation }: { navigation: any }) => {
         return { color: 'white' };
     }
   };
-
-  //Checks following cases: Any credentials are not provided, password unmatched, password matched&credentials are filled
-  const handleButtonOnPress = async () => {
-    setCredentialsFilledInError(false);
-    setEmailFormatError(false);
-    setPasswordsMatchError(false);
-    setUsernameLengthError(false);
-    setServerError(false);
-    setPasswordStrengthError(false);
-    setApiRequestError(false);
+  //check if there is any credential errors
+  const validateCredential = async () => {
     if (email == '' || username == '' || password1 == '' || password2 == '') {
       setCredentialsFilledInError(true);
     } else if (password1 !== password2) {
@@ -99,35 +91,64 @@ const Registration = ({ navigation }: { navigation: any }) => {
       setPasswordsMatchError(false);
       setCredentialsFilledInError(false);
       setPasswordStrengthError(false);
-      try {
-        const apiUrl = 'http://10.0.2.2:8000/users/';
-
-        const response = await axios.post(apiUrl, {
-          username: username,
-          email: email,
-          password: password1,
-          verify_password: password2,
-        });
-
-        const { data } = response;
-
-        // Check response successful
-        if (response.status === 200 && data.token) {
-          setUsername('');
-          setEmail('');
-          setPassword1('');
-          setPassword2('');
-          navigation.navigate('Instruction');
-        } else {
-          //red text error produced by server
-          setServerError(true);
-        }
-      } catch (error) {
-        //red text error produced by requesting error
-        setApiRequestError(true);
-        console.log(error);
-      }
     }
+  };
+  //reset the error state
+  const resetCredentialError = () => {
+    setCredentialsFilledInError(false);
+    setEmailFormatError(false);
+    setPasswordsMatchError(false);
+    setUsernameLengthError(false);
+    setServerError(false);
+    setPasswordStrengthError(false);
+    setApiRequestError(false);
+  };
+  //reset the credential info
+  const resetCredentialInfo = () => {
+    setUsername('');
+    setEmail('');
+    setPassword1('');
+    setPassword2('');
+  };
+  //send the credential data to database
+  const sendCredentialToServer = async () => {
+    try {
+      const apiUrl = 'http://10.0.2.2:8000/users/';
+      const response = await axios.post(apiUrl, {
+        username: username,
+        email: email,
+        password: password1,
+        verify_password: password2,
+      });
+      const { data } = response;
+      if (response.status === 200 && data.token) {
+        resetCredentialInfo();
+        navigation.navigate('Instruction');
+      } else {
+        setServerError(true);
+      }
+    } catch (error) {
+      setApiRequestError(true);
+      console.log(error);
+    }
+  };
+  //Checks following cases: Any credentials are not provided, password unmatched, password matched&credentials are filled
+  const handleButtonOnPress = async () => {
+    //reset error setting to false
+    resetCredentialError();
+    //set credential error state
+    validateCredential();
+
+    const isErrorPresent =
+      passwordsMatchError ||
+      usernameLengthError ||
+      emailFormatError ||
+      serverError ||
+      credentialFilledInError ||
+      apiRequestError ||
+      passwordStrengthError;
+
+    if (!isErrorPresent) sendCredentialToServer();
   };
 
   return (
