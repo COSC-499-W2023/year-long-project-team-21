@@ -142,6 +142,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           placeholder="+Email"
           onChangeText={input => handleEmail(input)}
           value={email}
+          width={280}
         />
         {/* When the emailFormatError is true, the red text tells following. */}
         {emailFormatError && (
@@ -154,6 +155,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           placeholder="+Username"
           onChangeText={input => handleUsername(input)}
           value={username}
+          width={280}
         />
         {/* When the usernameLengthError is true, the red text tells following. */}
         {usernameLengthError && (
@@ -166,12 +168,14 @@ const Registration = ({ navigation }: { navigation: any }) => {
           onChangeText={input => handlePassword1(input)}
           value={password1}
           secureTextEntry={true}
+          width={280}
         />
         <InputField
           placeholder="+Confirm Password"
           onChangeText={input => handlePassword2(input)}
           value={password2}
           secureTextEntry={true}
+          width={280}
         />
         {/* When the passwordMatch is true, the red text tells following. */}
         {passwordsMatchError && (

@@ -64,11 +64,9 @@ describe('CreateAd Screen - ImagePickerButton', () => {
   
     it('calls onImagePicked with image URI when an image is picked', async () => {
       const imageUri = '../src/assets/home.png';
-      /*
-      launchImageLibrary.mockResolvedValueOnce({
+      require('react-native-image-picker').launchImageLibrary.mockResolvedValueOnce({
         assets: [{ uri: imageUri }],
-      });
-      */
+    });
   
       const { getByTestId } = render(<CreateAd navigation={undefined} />);
       const imagePickerButton = getByTestId('image-picker');
@@ -78,10 +76,11 @@ describe('CreateAd Screen - ImagePickerButton', () => {
       });
   
       expect(launchImageLibrary).toHaveBeenCalled();
+
       // Verify if the mock function is called with the correct URI
-      // You may need to adjust this based on how `handleSetImageUri` updates the state
-      expect(launchImageLibrary).toHaveBeenCalledWith(imageUri);
+      expect(launchImageLibrary).toHaveBeenCalledWith({
+        mediaType: 'photo',
+        quality: 1,
+      });
     });
-  
-    // Additional tests for other functionalities...
-});
+  });
