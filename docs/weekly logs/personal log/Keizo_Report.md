@@ -1,21 +1,21 @@
 # Keizo Kato Personal Weekly Log
 
-11/27 to 12/03
+1/07 to 1/14
 
 Username: Keizo410
 
 ## My Features For This Week
 
-- Recoding Location service
+- Homescreen frontend implementation
 
 ## Completed Features For This Week
 
-- Finishing location service class implementation. 
+- not much
 
 ## Features in progress
 
--  Restructuring registration component. 
+-  Homescreen frontend component
 
 ## Types of Tasks Worked On
 
-![スクリーンショット 2023-12-03 192620](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/629bd055-edd1-4e35-a317-9cd203f79eb0)
+![スクリーンショット 2024-01-14 181534](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/5f192b3e-a7ec-484d-a234-bb9e09b11349)
