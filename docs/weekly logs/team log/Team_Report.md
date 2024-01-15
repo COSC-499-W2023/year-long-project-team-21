@@ -2,7 +2,7 @@
 
 ## Overview
 
-After completeting the JWT authentication for our weekly presentation we decided that our next course of action was getting our UI similar to the mockup design. We decided for this sprint to try and divide the work based on writing components that we can reuse throughout the app.  We decided to go down this route as we wanted to ensure we are only writing code once and give each member some practice and some feedback using React. This sprint is rather small and will have a meeting soon to discuss how this all went. On the backend side, we are working on processing a POST request to users/ that will create and register a new user. We also made some light changes to the Figma design based on presentation feedback. We are also assessing how to setup a pipeline. 
+This week we focused on re-evaulauting our timeline, going through client and peer feedback, redesigning our figma, and assigning tasks to be worked on for the next couple of weeks. We are giving more work per member on our team so we can safely meet our deadlines. We have a few questions we have that we want to ask our client regarding location services and how we are doing it as we feel we are doing it a little different than other people. There was some work done during the break that we are going to approve PR's in the next couple of days. 
 
 ## Quick reminder for usernames
 
@@ -14,15 +14,18 @@ After completeting the JWT authentication for our weekly presentation we decided
 
 ## Completed tasks for this week
 
-- Presentation
-- Components for front end including tests and documentation.
-- Small figma design changes. 
+- Complete figma redesign
+- Create ad page
+- Refactored registration screen
+- Evaluate peer and client feedback
   
 ## Tasks in progress
 
-- Backend registartion
-- Business logic to process register and login pages.
-- Pipeline
+- Saving images to the backend
+- View profile page
+- Pipeline and automated tests
+- Home screen page
+- View ad page 
 
 ## Burn Up Chart
 ![week9 burnup](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b0ace1fc-947b-4b99-84b7-7eabd0623bff)
