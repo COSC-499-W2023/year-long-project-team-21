@@ -1,8 +1,8 @@
-# Team 21 - 10/30 to 11/05
+# Team 21 - 01/08 to 01/14
 
 ## Overview
 
-After completeting the JWT authentication for our weekly presentation we decided that our next course of action was getting our UI similar to the mockup design. We decided for this sprint to try and divide the work based on writing components that we can reuse throughout the app.  We decided to go down this route as we wanted to ensure we are only writing code once and give each member some practice and some feedback using React. This sprint is rather small and will have a meeting soon to discuss how this all went. On the backend side, we are working on processing a POST request to users/ that will create and register a new user. We also made some light changes to the Figma design based on presentation feedback. We are also assessing how to setup a pipeline. 
+This week we focused on re-evaulauting our timeline, going through client and peer feedback, redesigning our figma, and assigning tasks to be worked on for the next couple of weeks. We are giving more work per member on our team so we can safely meet our deadlines. We have a few questions we have that we want to ask our client regarding location services and how we are doing it as we feel we are doing it a little different than other people. There was some work done during the break that we are going to approve PR's in the next couple of days. 
 
 ## Quick reminder for usernames
 
@@ -14,35 +14,37 @@ After completeting the JWT authentication for our weekly presentation we decided
 
 ## Completed tasks for this week
 
-- Presentation
-- Components for front end including tests and documentation.
-- Small figma design changes. 
+- Complete figma redesign
+- Create ad page
+- Refactored registration screen
+- Evaluate peer and client feedback
   
 ## Tasks in progress
 
-- Backend registartion
-- Business logic to process register and login pages.
-- Pipeline
+- Saving images to the backend
+- View profile page
+- Pipeline and automated tests
+- Home screen page
+- View ad page 
 
 ## Burn Up Chart
-![week9 burnup](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b0ace1fc-947b-4b99-84b7-7eabd0623bff)
+![burn up](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/ff9bef01-4b83-4e56-a5c9-089eab8b9afc)
 
 ### Test Report
 
 Once we implement our pipeline, this will be much more streamlined. 
 
 #### Test for modules (frontend)
-![week9 fronttest](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/f5d974be-dc3d-4ab6-af05-0c0ed5ff9a42)
+![frontend test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/51825005-c2ec-4b06-8941-316a86216d3d)
 
 #### Test for modules (backend)
-![module_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/7abb3098-0165-47c8-8782-174597ae37e8)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/88bdd5f5-9707-49eb-8e83-0bb961800bfc)
 
 #### Test for authentication (backend) 
 ![views_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/4e7ade34-e362-4a90-b5e4-7788ce4c9fd2)
 
 ### Project Board
-![week9 taskboard](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/3c439a0e-1fe0-41f6-a5ae-e90bd7384bdb)
-
+![project board](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/c2ab0cb6-3973-41a5-be16-fdbf6674907d)
 
 ## Individual Reports
 
