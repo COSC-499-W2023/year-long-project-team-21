@@ -248,6 +248,19 @@ interface ExpirySliderProps {
   onExpiryChange: (expiry: number) => void;
 }
 
+
+/**
+ * PostProps interface for Post component.
+ * 
+ * @interface
+ * @property 
+ * 
+ */
+
+interface PostProps {
+  
+}
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -263,4 +276,5 @@ export {
   type AdDataProps,
   type ImagePickerButtonProps,
   type ExpirySliderProps,
+  type PostProps,
 };

@@ -10,6 +10,7 @@ import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import LocationService from '../common/LocationService';
+import Post from '../components/Post';
 
 const Home = ({ navigation }: { navigation: any }) => {
   const locationInstance = LocationService.CreateAndInitialize();
@@ -19,7 +20,9 @@ const Home = ({ navigation }: { navigation: any }) => {
         LeftIcon={<Logo LogoSize={15}></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBar>
 
-      <View style={globalscreenstyles.body}></View>
+      <View style={globalscreenstyles.body}>
+        <Post/>
+      </View>
 
       <TabBar
         LeftIcon={<HomeIcon></HomeIcon>}
