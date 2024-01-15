@@ -28,14 +28,14 @@ This week we focused on re-evaulauting our timeline, going through client and pe
 - View ad page 
 
 ## Burn Up Chart
-![week9 burnup](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b0ace1fc-947b-4b99-84b7-7eabd0623bff)
+![burn up](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/ff9bef01-4b83-4e56-a5c9-089eab8b9afc)
 
 ### Test Report
 
 Once we implement our pipeline, this will be much more streamlined. 
 
 #### Test for modules (frontend)
-![week9 fronttest](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/f5d974be-dc3d-4ab6-af05-0c0ed5ff9a42)
+![frontend test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/51825005-c2ec-4b06-8941-316a86216d3d)
 
 #### Test for modules (backend)
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/88bdd5f5-9707-49eb-8e83-0bb961800bfc)
@@ -44,8 +44,7 @@ Once we implement our pipeline, this will be much more streamlined.
 ![views_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/4e7ade34-e362-4a90-b5e4-7788ce4c9fd2)
 
 ### Project Board
-![week9 taskboard](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/3c439a0e-1fe0-41f6-a5ae-e90bd7384bdb)
-
+![project board](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/c2ab0cb6-3973-41a5-be16-fdbf6674907d)
 
 ## Individual Reports
 
