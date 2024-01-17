@@ -253,12 +253,17 @@ interface ExpirySliderProps {
  * PostProps interface for Post component.
  * 
  * @interface
- * @property 
- * 
+ * @property {id} - id for the ad
+ * @property {title} - title for the ad
+ * @property {image} - image for the ad
+ * @property {expiryDate} - expiry date for the ad
  */
 
 interface PostProps {
-  
+  id: number;
+  title: string;
+  image: string; // Assuming image is a string representing the path or URL
+  expiryDate: string;
 }
 
 export {

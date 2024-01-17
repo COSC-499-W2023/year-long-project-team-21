@@ -11,6 +11,7 @@ import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import LocationService from '../common/LocationService';
 import Post from '../components/Post';
+import PostListRenderer from '../components/PostListRenderer';
 
 const Home = ({ navigation }: { navigation: any }) => {
   const locationInstance = LocationService.CreateAndInitialize();
@@ -21,7 +22,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBar>
 
       <View style={globalscreenstyles.body}>
-        <Post/>
+        <PostListRenderer/>
       </View>
 
       <TabBar

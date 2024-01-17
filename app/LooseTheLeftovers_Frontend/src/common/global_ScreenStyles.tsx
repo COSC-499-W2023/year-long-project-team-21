@@ -11,7 +11,7 @@ const globalscreenstyles = StyleSheet.create({
   body: {
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 8,
+    flex: 10,
   },
 });
 
