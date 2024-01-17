@@ -53,6 +53,8 @@ def create_advertisment(request):
     image_serializer = ImageSerializer(data=request.FILES, context={'ad': ad})
     if image_serializer.is_valid(): 
         image_serializer.save()
+    else:
+       return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # return 201 response indicating ad was created successfully
     return Response(ad_serializer.validated_data, status=status.HTTP_201_CREATED)
