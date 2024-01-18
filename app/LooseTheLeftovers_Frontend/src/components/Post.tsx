@@ -66,7 +66,9 @@ const Post: React.FC<PostProps> = ({
     return { lightColor, originalColor, middleColor };
   };
 
-  const handleCardClick = () => {};
+  const handleCardClick = () => {
+    console.log("tapped:",id);
+  };
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
@@ -120,10 +122,7 @@ const Post: React.FC<PostProps> = ({
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
             <View style={cardStyles.card_dietaryIcons_style}>
               {renderHiddenIcon(showNutIcon, require('../assets/banana.png'))}
-              {renderHiddenIcon(
-                showGlutenFreeIcon,
-                require('../assets/banana.png'),
-              )}
+              {renderHiddenIcon(showGlutenFreeIcon,require('../assets/banana.png'))}
               {renderHiddenIcon(showVeganIcon, require('../assets/banana.png'))}
             </View>
             <View style={cardStyles.card_image_style}>
