@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { type PostProps } from '../common/Types';
 import { Card, Title } from 'react-native-paper';
 import Icon from '../components/Icon';
@@ -11,8 +11,14 @@ import {
 } from 'react-native';
 import tinycolor from 'tinycolor2';
 import generateHomeScreenCardStyles from '../styles/postStyles';
-
-const Post: React.FC<PostProps> = ({ id, title, image, expiryDate }) => {
+import { global } from '../common/global_styles';
+const Post: React.FC<PostProps> = ({
+  id,
+  title,
+  image,
+  expiryDate,
+  category,
+}) => {
   const screenWidth = Dimensions.get('window').width;
   const scaleValue = useRef(new Animated.Value(1)).current;
   const [lightMode, setLightMode] = useState('');
@@ -20,10 +26,27 @@ const Post: React.FC<PostProps> = ({ id, title, image, expiryDate }) => {
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
 
-  const checkDietaryOption = () => {
-    setShowNutAllergyIcon(true);
-    setShowGlutenFreeIcon(true);
-    setShowVeganIcon(true);
+  // Move checkDietaryOption to useEffect to avoid re-renders
+  useEffect(() => {
+    checkDietaryOption(category);
+  }, [category]);
+
+  const checkDietaryOption = (category: string) => {
+    switch (category) {
+      case 'nut':
+        setShowNutAllergyIcon(true);
+        break;
+      case 'gluten-free':
+        setShowGlutenFreeIcon(true);
+        break;
+      case 'vegan':
+        setShowVeganIcon(true);
+        break;
+      default:
+        setShowNutAllergyIcon(false);
+        setShowGlutenFreeIcon(false);
+        setShowVeganIcon(false);
+    }
   };
 
   const checkExpiryDate = () => {};
@@ -38,14 +61,12 @@ const Post: React.FC<PostProps> = ({ id, title, image, expiryDate }) => {
     const middleColor = mainColor.lighten(20).toString();
 
     // Lighter Shade
-    const lightColor = mainColor.lighten(45).toString();
+    const lightColor = mainColor.lighten(20).toString();
 
     return { lightColor, originalColor, middleColor };
   };
 
-  const handleCardClick = () => {
-    checkDietaryOption();
-  };
+  const handleCardClick = () => {};
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
@@ -94,22 +115,30 @@ const Post: React.FC<PostProps> = ({ id, title, image, expiryDate }) => {
     return (
       <Card style={cardStyles.card_front}>
         <Card.Content>
-          <Title style={cardStyles.card_title_style}>{title}</Title>
-          <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
-          <View style={cardStyles.card_dietaryIcons_style}>
-            {renderHiddenIcon(showNutIcon, require('../assets/banana.png'))}
-            {renderHiddenIcon(
-              showGlutenFreeIcon,
-              require('../assets/banana.png'),
-            )}
-            {renderHiddenIcon(showVeganIcon, require('../assets/banana.png'))}
+          <View style={cardStyles.front_container}>
+            <Title style={cardStyles.card_title_style}>{title}</Title>
+            <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
+            <View style={cardStyles.card_dietaryIcons_style}>
+              {renderHiddenIcon(showNutIcon, require('../assets/banana.png'))}
+              {renderHiddenIcon(
+                showGlutenFreeIcon,
+                require('../assets/banana.png'),
+              )}
+              {renderHiddenIcon(showVeganIcon, require('../assets/banana.png'))}
+            </View>
+            <View style={cardStyles.card_image_style}>
+              <Icon
+                source={require('../assets/banana.png')}
+                imageStyle={{ width: 100, height: 100 }}
+              />
+            </View>
           </View>
         </Card.Content>
       </Card>
     );
   };
 
-  const colors = getCardColors('#301934');
+  const colors = getCardColors(global.post_color.expiry_long);
   const cardStyles = generateHomeScreenCardStyles(
     0.5 * screenWidth, //height
     0.8 * screenWidth, //width

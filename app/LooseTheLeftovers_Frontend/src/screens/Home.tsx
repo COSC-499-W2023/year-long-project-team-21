@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import TabBar from '../components/TabBar';
 
@@ -10,8 +10,8 @@ import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import PostListRenderer from '../components/PostListRenderer';
-
 const Home = ({ navigation }: { navigation: any }) => {
+
   return (
     <View style={globalscreenstyles.container}>
       <TabBar

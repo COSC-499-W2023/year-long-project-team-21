@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import DropDownPicker, { ValueType } from 'react-native-dropdown-picker';
 import generateSelectRangeBarStyles from '../styles/SelectRangeBarStyles';
-
-interface SelectRangeBarProps {
-  onSelectRange: (selectedRange: number) => void;
-}
+import { SelectRangeBarProps } from '../common/Types';
 
 const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
     const screenWidth = Dimensions.get('window').width;
@@ -30,10 +27,9 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
       setValue={setValue}
       setItems={setSelectedItem}
       style ={styles.picker}
-      containerStyle={styles.container}
       textStyle={styles.text}
       dropDownContainerStyle={styles.dropDown}
-      itemSeparator
+      itemSeparator = {true}
       itemSeparatorStyle={styles.separater}
       />
   );

@@ -1,19 +1,24 @@
 import { StyleSheet } from 'react-native';
 
-const postListStyles = StyleSheet.create({
-  container: {
-    flex: 14,
-  },
+const generatePostListStyles = (screenWidth: number) =>StyleSheet.create({
   postContainer: {
     marginBottom: 20,
   },
+  headerContainer:{
+    zIndex:9999, 
+    elevation:10,
+  },
   listHeder: {
-    margin:20,
-    alignSelf:'flex-start'
+    backgroundColor:'white',
   },
   titleHeader: {
-    justifyContent:'center'
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  dropdownHeader: {
+    marginVertical:20,
+    left: 0.07*screenWidth,    
   }
 });
 
-export default postListStyles;
+export default generatePostListStyles;

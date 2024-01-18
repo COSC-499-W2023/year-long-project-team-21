@@ -1,17 +1,14 @@
 import { StyleSheet } from 'react-native';
+import { global } from '../common/global_styles';
 
 const generateSelectRangeBarStyles = (screenWidth:number) => StyleSheet.create({
-  container: {
-    marginLeft: 0.01 * screenWidth, 
-    backgroundColor:'red',
-    width:screenWidth/2,
-  },
   picker: {
+    width:screenWidth/2,
     borderWidth:2,
-    borderColor:'green', 
+    borderColor:global.dropdown_color.light_border, 
     borderRadius: 0.1 * screenWidth,
-    backgroundColor:'black',
-    minHeight:0.05 * screenWidth
+    minHeight:0.05 * screenWidth,
+    backgroundColor: global.dropdown_color.background
   },
   text: {
     fontSize:15, 
@@ -19,13 +16,14 @@ const generateSelectRangeBarStyles = (screenWidth:number) => StyleSheet.create({
     textAlign:'center',
   },
   dropDown: {
-    borderColor:'green', 
+    borderColor: global.dropdown_color.light_border, 
     width:screenWidth/2,
     borderRadius: 0.1 * screenWidth, 
-    borderWidth: 1,    
+    borderWidth: 2,    
+    backgroundColor: global.dropdown_color.background,
   },
   separater: {
-    borderWidth: 2,
+    backgroundColor: 'black',
   }
 });
 

@@ -109,7 +109,18 @@ interface TextsProps {
   texts: string;
   textsSize?: number;
   textsColor?: string;
-  textsWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+  textsWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
   position?: string;
   onPress?: () => void;
   testID?: string;
@@ -192,7 +203,7 @@ interface ImageTextProps {
 
 /**
  * UpperBarProps (Header) interface for the UpperBar component.
- * 
+ *
  * @interface
  * @property {() => void} onLeftPress - Callback function to execute when the left icon is pressed.
  * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
@@ -209,7 +220,7 @@ interface UpperBarProps {
 
 /**
  * AdDataProps interface for the CreateAd screen.
- * 
+ *
  * @interface
  * @property {string} title - The title of the ad.
  * @property {string} description - The description of the ad.
@@ -226,7 +237,7 @@ interface AdDataProps {
 
 /**
  * ImagePickerButtonProps interface for ImagePicker component.
- * 
+ *
  * @interface
  * @property {function} onImagePicked - A callback function that gets triggered when an image is selected.
  *                                      Receives the URI of the picked image as a string, or null if no image is selected.
@@ -238,7 +249,7 @@ interface ImagePickerButtonProps {
 
 /**
  * ExpirySliderProps interface for ExpirySlider component.
- * 
+ *
  * @interface
  * @property {function} onExpiryChange - A callback function that gets triggered when the slider value changes.
  *                                       Receives the new expiry value as a number representing the number of days until expiry.
@@ -248,15 +259,15 @@ interface ExpirySliderProps {
   onExpiryChange: (expiry: number) => void;
 }
 
-
 /**
  * PostProps interface for Post component.
- * 
+ *
  * @interface
  * @property {id} - id for the ad
  * @property {title} - title for the ad
  * @property {image} - image for the ad
  * @property {expiryDate} - expiry date for the ad
+ * @property {category} - category for the ad
  */
 
 interface PostProps {
@@ -264,6 +275,18 @@ interface PostProps {
   title: string;
   image: string; // Assuming image is a string representing the path or URL
   expiryDate: string;
+  category: string;
+}
+
+/**
+ * PostProps interface for Post component.
+ *
+ * @interface
+ * @property {function} selectedRange - get range selected and send it back to the home
+ */
+
+interface SelectRangeBarProps {
+  onSelectRange: (selectedRange: number) => void;
 }
 
 export {
@@ -282,4 +305,5 @@ export {
   type ImagePickerButtonProps,
   type ExpirySliderProps,
   type PostProps,
+  type SelectRangeBarProps,
 };

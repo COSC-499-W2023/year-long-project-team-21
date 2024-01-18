@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList, Dimensions } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
 import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
-import postListStyles from '../styles/postListStyles';
 import LocationService from '../common/LocationService';
 import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
+import generatePostListStyles from '../styles/postListStyles';
 const PostListRenderer = () => {
+  const screenWidth = Dimensions.get('window').width;
   const [posts, setPosts] = useState<PostProps[]>([]);
-  const [hasLocationPermission, setHasLocationPermission] = useState<
-    boolean | null
-  >(null);
-
+  const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
+  const postListStyles = generatePostListStyles(screenWidth);
   useEffect(() => {
     const checkLocationPermission = async () => {
       try {
@@ -55,6 +54,7 @@ const PostListRenderer = () => {
           title={item.title}
           image={item.image}
           expiryDate={item.expiryDate}
+          category={item.category}
           // Pass other necessary props
         />
       </View>
@@ -67,18 +67,19 @@ const PostListRenderer = () => {
 
   const renderRangeBar = () => {
     return (
-      <View style = {postListStyles.listHeder}>
-        <View style = {postListStyles.titleHeader}>
-        <Title>Showing Posts Nearby</Title>
+      <View style={postListStyles.listHeder}>
+        <View style={postListStyles.titleHeader}>
+          <Title>Showing Posts Nearby</Title>
         </View>
-        <SelectRangeBar onSelectRange={handleSelectRange} />
+        <View style={postListStyles.dropdownHeader}>
+          <SelectRangeBar onSelectRange={handleSelectRange} />
+        </View>
       </View>
     );
   };
 
   return (
     <FlatList
-      style={postListStyles.container}
       initialNumToRender={2}
       windowSize={2}
       removeClippedSubviews={true}
@@ -86,6 +87,7 @@ const PostListRenderer = () => {
       keyExtractor={item => item.id.toString()} // Replace 'id' with your post identifier
       renderItem={renderPostItem}
       ListHeaderComponent={renderRangeBar}
+      ListHeaderComponentStyle={postListStyles.headerContainer}
     />
   );
 };
