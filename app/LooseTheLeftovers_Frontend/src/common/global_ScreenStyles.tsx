@@ -5,6 +5,7 @@ const globalscreenstyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    backgroundColor: 'black',
   },
 });
 

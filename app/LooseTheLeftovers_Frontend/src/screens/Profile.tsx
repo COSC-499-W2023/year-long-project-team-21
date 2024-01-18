@@ -1,6 +1,8 @@
 import { Text, View, FlatList } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
+import profileStyles from '../styles/profileStyles';
+import globalscreenstyles from '../common/global_ScreenStyles';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const mockData = [
@@ -9,17 +11,19 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const [jsonData] = useState(mockData);
 
   return (
-    <View>
-      <Text>Mock UserData</Text>
-      <FlatList
-        data={jsonData}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{`Name: ${item.username}, Age: ${item.email}`}</Text>
-          </View>
-        )}
-      />
+    <View style={globalscreenstyles.container}>
+      <View style={profileStyles.userInformation}>
+        <Text>Mock UserData</Text>
+        <FlatList
+          data={jsonData}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
+            <Text style={profileStyles.profileText}>
+              {`Name: ${item.username}, Age: ${item.email}`}
+            </Text>
+          )}
+        />
+      </View>
     </View>
   );
 };
