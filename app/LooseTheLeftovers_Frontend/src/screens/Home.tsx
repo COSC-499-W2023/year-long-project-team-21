@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View } from 'react-native';
 import TabBar from '../components/TabBar';
 
 import globalscreenstyles from '../common/global_ScreenStyles';
@@ -9,12 +9,9 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
-import LocationService from '../common/LocationService';
-import Post from '../components/Post';
 import PostListRenderer from '../components/PostListRenderer';
 
 const Home = ({ navigation }: { navigation: any }) => {
-  const locationInstance = LocationService.CreateAndInitialize();
   return (
     <View style={globalscreenstyles.container}>
       <TabBar
@@ -22,7 +19,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBar>
 
       <View style={globalscreenstyles.body}>
-        <PostListRenderer/>
+        <PostListRenderer />
       </View>
 
       <TabBar

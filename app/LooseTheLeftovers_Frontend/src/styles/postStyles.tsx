@@ -13,7 +13,7 @@ const generateHomeScreenCardStyles = (
       flexDirection: 'row',
     },
     animation_style: {
-      position:'relative',
+      position: 'relative',
       flexDirection: 'row',
       transform: [{ scale: scaleValue }],
     },
@@ -22,7 +22,7 @@ const generateHomeScreenCardStyles = (
       width: card_width,
       borderRadius: 0.1 * screenWidth,
       backgroundColor: colors.lightColor,
-      zIndex: 1,
+      zIndex: -3,
       marginLeft: 0.01 * screenWidth, // margin from left side screen
     },
     card_middle: {
@@ -30,7 +30,7 @@ const generateHomeScreenCardStyles = (
       width: card_width,
       borderRadius: 0.1 * screenWidth,
       backgroundColor: colors.middleColor,
-      zIndex: 2,
+      zIndex: -2,
       marginLeft: -0.75 * screenWidth, // Slightly overlapping the previous card
     },
     card_front: {
@@ -38,7 +38,7 @@ const generateHomeScreenCardStyles = (
       width: card_width,
       borderRadius: 0.1 * screenWidth,
       backgroundColor: colors.originalColor,
-      zIndex: 3,
+      zIndex: -1,
       flexDirection: 'column',
       marginLeft: -0.75 * screenWidth, // No overlap for the front card
       justifyContent: 'space-evenly', // Center content vertically

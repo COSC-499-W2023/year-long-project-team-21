@@ -11,7 +11,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
  */
 class LocationService {
   location: GeoPosition | undefined;
-  hasPermission: boolean | null;
+  hasPermission: boolean;
   os: string;
   private threshold: number;
 
@@ -98,7 +98,7 @@ class LocationService {
 
       if (this.hasPermission) {
         const location = await this.getCachedLocation();
-        if(location === null) this.getLocation();
+        if (location === null) this.getLocation();
       }
     } catch (error: any) {
       throw new Error(`Error initialize Location Service: ${error.message}`);
