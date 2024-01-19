@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import Registration from '../src/screens/Registration';
+import Registration from '../../src/screens/Registration';
 import axios from 'axios';
 import { Alert } from 'react-native';
 
@@ -71,11 +71,20 @@ describe('Registration Component', () => {
     fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
-    // Simulate user input in the password field
+    // Simulate user input in the confirm password field
     fireEvent.changeText(
       getByPlaceholderText('+Confirm Password'),
       'Test444test!',
     );
+  
+    // Mock a good response
+    mockedAxios.post.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        token: 'FakeToken',
+      },
+    });
+
     // Simulate button press
     fireEvent.press(getByTestId('register-button'));
 
@@ -91,6 +100,7 @@ describe('Registration Component', () => {
           verify_password: 'Test444test!',
         },
       );
+      //console.log("do we make it here\n");
       // Check if the expected success/failure message is displayed
       expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
     });

@@ -5,6 +5,8 @@ import Texts from '../components/Text';
 import Button from '../components/Button';
 import style from '../styles/instructionStyles';
 import TextImage from '../components/TextImage';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
   const handleButtonOnPress = async () => {};

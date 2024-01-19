@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import App from '../App';
+import App from '../../App';
 
 // Mocking Navigation
 jest.mock('@react-navigation/native', () => {

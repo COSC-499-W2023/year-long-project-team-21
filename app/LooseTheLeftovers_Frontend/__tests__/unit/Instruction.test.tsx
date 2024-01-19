@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-import Instruction from '../src/screens/Instruction';
+import Instruction from '../../src/screens/Instruction';
 
 jest.mock('axios');
 jest.mock('react-native', () => {

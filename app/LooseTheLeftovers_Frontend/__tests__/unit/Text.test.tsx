@@ -1,4 +1,4 @@
-import Text from '../src/components/Text';
+import Text from '../../src/components/Text';
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 

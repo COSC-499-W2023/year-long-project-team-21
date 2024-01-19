@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import Icon from '../src/components/Icon';
+import Icon from '../../src/components/Icon';
 
 describe('Icon Component Tests', () => {
   it('triggers onPress event with local image', () => {
     const mockOnPress = jest.fn();
-    const localImageSource = require('../src/assets/test-home.png');
+    const localImageSource = require('../../src/assets/test-home.png');
 
     const { getByTestId } = render(
       <Icon
