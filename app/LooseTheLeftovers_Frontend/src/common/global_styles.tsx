@@ -37,6 +37,5 @@ export const global = {
     expiry_short: ['#AD0D3A', '#E73742', '#FF6950'],
     expiry_mid: ['#291859', '#71408B', '#DFBDE1'],
     expiry_long: ['#0E5B53', '#288F61', '#91C974'],
-    
   }
 };
