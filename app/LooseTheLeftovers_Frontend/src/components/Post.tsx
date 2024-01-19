@@ -12,6 +12,7 @@ import {
 import tinycolor from 'tinycolor2';
 import generateHomeScreenCardStyles from '../styles/postStyles';
 import { global } from '../common/global_styles';
+import { useColorScheme } from 'react-native';
 
 
 /**
@@ -85,24 +86,25 @@ const Post: React.FC<PostProps> = ({
     setShowVeganIcon(dietaryOptions.includes('vegan'))
   };
 
-  const checkExpiryDate = () => {};
-
   /**
    * Calculates different shades of a color for the post card.
    * @param {string} color - The base color.
    * @returns {Object} Object containing lightColor, originalColor, and middleColor.
    */
-  const getCardColors = (color: string) => {
-    const mainColor = tinycolor(color);
-
+  const getCardColors = (color: string[]) => {
+    let swapBuffer = "";
     // Original Color
-    const originalColor = mainColor.toString();
-
+    let originalColor = color[0];
     // Darker Shade
-    const middleColor = mainColor.lighten(20).toString();
-
+    const middleColor = color[1];
     // Lighter Shade
-    const lightColor = mainColor.lighten(20).toString();
+    let lightColor = color[2];
+
+    if(useColorScheme()!=='dark'){
+      swapBuffer=originalColor 
+      originalColor = lightColor
+      lightColor=swapBuffer
+    } 
 
     return { lightColor, originalColor, middleColor };
   };
@@ -202,11 +204,7 @@ const Post: React.FC<PostProps> = ({
           <View style={cardStyles.front_container}>
             <Title style={cardStyles.card_title_style}>{title}</Title>
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
-            <View style={cardStyles.card_dietaryIcons_wrapper_style}>
-              {renderHiddenIcon(showNutIcon, require('../assets/nut.png'))}
-              {renderHiddenIcon(showGlutenFreeIcon,require('../assets/gluten-free.png'))}
-              {renderHiddenIcon(showVeganIcon, require('../assets/vegan.png'))}
-            </View>
+            {render_Icons()}
             <View style={cardStyles.card_image_wrapper_style}>{renderPostImage()}</View>
           </View>
         </Card.Content>
@@ -214,7 +212,32 @@ const Post: React.FC<PostProps> = ({
     );
   };
 
-  const colors = getCardColors(global.post_color.expiry_long);
+  const render_Icons = () => {
+    const icons = {
+      dark: [require('../assets/nut_dark.png'), require('../assets/gluten-free_dark.png'), require('../assets/vegan_dark.png')],
+      light: [require('../assets/nut.png'), require('../assets/gluten-free.png'), require('../assets/vegan.png')]
+    }
+  
+    return (
+      <View style={cardStyles.card_dietaryIcons_wrapper_style}>
+        {renderHiddenIcon(showNutIcon, icons.dark[0])}
+        {renderHiddenIcon(showGlutenFreeIcon, icons.dark[1])}
+        {renderHiddenIcon(showVeganIcon, icons.dark[2])}
+      </View>
+    );
+  }
+
+  const assignRandomColor = () => {
+    const colors = [
+      global.post_color.expiry_mid,
+      global.post_color.expiry_long,
+      global.post_color.expiry_short
+    ];
+    const randomInd = Math.floor(Math.random() * 3)
+    return getCardColors(colors[randomInd]);
+  }
+
+  const colors = assignRandomColor();
   const cardStyles = generateHomeScreenCardStyles(
     0.5 * screenWidth, //height
     0.8 * screenWidth, //width

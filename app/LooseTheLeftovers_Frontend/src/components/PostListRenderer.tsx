@@ -9,7 +9,7 @@ import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
-  isHeaderInNeed
+  isHeaderInNeed,
 }) => {
   const screenWidth = Dimensions.get('window').width;
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -46,9 +46,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
           expiryDate: post.expiryDate,
           category: post.category,
         }));
-        
+
         setPosts(filteredPosts);
-        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -69,7 +68,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
           image={item.image}
           expiryDate={item.expiryDate}
           category={item.category}
-        
+
           // Pass other necessary props
         />
       </View>
@@ -83,8 +82,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderRangeBar = () => {
     return (
       <View style={postListStyles.listHeder}>
-        <View style={postListStyles.titleHeader}>
-          <Title>Showing Posts Nearby</Title>
+        <View style={postListStyles.titleContainer}>
+          <Title style={postListStyles.title}>Showing Posts Nearby</Title>
         </View>
         <View style={postListStyles.dropdownHeader}>
           <SelectRangeBar onSelectRange={handleSelectRange} />

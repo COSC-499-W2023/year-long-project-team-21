@@ -32,10 +32,11 @@ export const global = {
     dark_text: 'black'
   },
 
-  //post color
+  //post color [original, lighter, even lighter]
   post_color: {
-    expiry_short: '#932F4A',
-    expiry_mid: '#38214E',
-    expiry_long: '#396457',
+    expiry_short: ['#AD0D3A', '#E73742', '#FF6950'],
+    expiry_mid: ['#291859', '#71408B', '#DFBDE1'],
+    expiry_long: ['#0E5B53', '#288F61', '#91C974'],
+    
   }
 };

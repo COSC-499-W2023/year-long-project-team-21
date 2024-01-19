@@ -11,23 +11,22 @@ import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 
 const View_Post = ({ navigation }: { navigation: any }) => {
-    return (
-      <View style={globalscreenstyles.container}>
-        <TabBar
-          LeftIcon={<Logo LogoSize={15}></Logo>}
-          RightIcon={<MessageIcon></MessageIcon>}></TabBar>
-  
-        <View>
-            <Text>1</Text>
-        </View>
-  
-        <TabBar
-          LeftIcon={<HomeIcon></HomeIcon>}
-          MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-          RightIcon={<AccountIcon></AccountIcon>}></TabBar>
+  return (
+    <View style={globalscreenstyles.container}>
+      <TabBar
+        LeftIcon={<Logo LogoSize={15}></Logo>}
+        RightIcon={<MessageIcon></MessageIcon>}></TabBar>
+
+      <View>
+        <Text>1</Text>
       </View>
-    );
-  };
-  
-  export default View_Post;
-  
+
+      <TabBar
+        LeftIcon={<HomeIcon></HomeIcon>}
+        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
+        RightIcon={<AccountIcon></AccountIcon>}></TabBar>
+    </View>
+  );
+};
+
+export default View_Post;

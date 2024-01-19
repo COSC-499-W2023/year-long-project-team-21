@@ -25,6 +25,7 @@ const generateHomeScreenCardStyles = (
       backgroundColor: colors.lightColor,
       zIndex: -3,
       marginLeft: 0.01 * screenWidth, // margin from left side screen
+      elevation:5,
     },
     card_middle: {
       height: card_height,
@@ -33,6 +34,7 @@ const generateHomeScreenCardStyles = (
       backgroundColor: colors.middleColor,
       zIndex: -2,
       marginLeft: -0.75 * screenWidth, // Slightly overlapping the previous card
+      elevation:5,
     },
     card_front: {
       height: card_height,
@@ -43,6 +45,7 @@ const generateHomeScreenCardStyles = (
       flexDirection: 'column',
       marginLeft: -0.75 * screenWidth, // No overlap for the front card
       justifyContent: 'center', // Center content vertically
+      elevation:5,
     },
     front_container: {
       justifyContent: 'space-evenly', // Center content vertically
@@ -50,7 +53,7 @@ const generateHomeScreenCardStyles = (
       height: card_height*0.9,
     },
     card_title_style: {
-      color: 'white', // could be black in light mode
+      color: 'black', // could be black in light mode
       fontSize: 0.07 * screenWidth,
     },
     card_expiry_style: {
