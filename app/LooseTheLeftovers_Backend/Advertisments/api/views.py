@@ -16,13 +16,28 @@ def create_advertisment(request):
 
     HTTP POST request requires these fields:
         - title
-        - description
+        - description (optional)
         - category
-        - expiry datetime
+        - expiry datetime (optional)
             - expected format = 'yyyy-mm-ddThh:mm:ss:nnnnnnZ
-            - example: '2013-01-29T12:34:56.000000Z'
         - image
             - to be provided as a Django SimpleUploadFile
+
+    Example request:
+
+    json_data = {
+        'title': 'Post Title',
+        'description': 'Short description for post',
+        'category': 'Vegan',
+        'expiry': '2013-01-29T12:34:56.000000Z',
+        'image': image_file
+    }
+    response = client.post(
+        'http://localhost:8000/ads/',
+        json_data,
+        HTTP_AUTHORIZATION="Bearer " + access_token,
+        format="multipart"
+    )
 
     Returns:
         - If successful, returns a HTTP response 201 and validated data from serializer used to create ad
