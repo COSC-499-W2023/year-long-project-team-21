@@ -40,13 +40,21 @@ class TestUserAuth(TestSetUpCreateAccount):
         # Assert that the response status code is 200 OK.
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        decoded_response = json.loads(response.content.decode("utf-8"))
+
         # Assert access token returned
-        access_token = json.loads(response.content.decode("utf-8"))["access"]
+        access_token = decoded_response["access"]
         self.assertTrue(access_token)
 
         # Assert refresh token returned
-        refresh_token = json.loads(response.content.decode("utf-8"))["refresh"]
+        refresh_token = decoded_response["refresh"]
         self.assertTrue(refresh_token)
+
+        # Assert user_id returned 
+        user_id = decoded_response["user_id"]
+        self.assertTrue(user_id)
+
+        
 
     def test_user_authentication_with_invalid_credentials(self):
         """
