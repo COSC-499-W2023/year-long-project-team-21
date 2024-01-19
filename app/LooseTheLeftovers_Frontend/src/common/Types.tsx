@@ -293,6 +293,8 @@ type PostStackParamList = {
  */
 interface PostListRendererProps{
   isHeaderInNeed: boolean,
+  location?:[],
+  locationPermission?:boolean|null
   //navigation: NavigationProp<PostStackParamList, 'View_Post'>,
   //route: RouteProp<PostStackParamList, 'View_Post'>;
 }

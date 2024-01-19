@@ -5,61 +5,84 @@ import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
 import LocationService from '../common/LocationService';
 import SelectRangeBar from './SelectRangeBar';
-import { Title } from 'react-native-paper';
+import { ActivityIndicator, Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
+  locationPermission,
 }) => {
   const screenWidth = Dimensions.get('window').width;
-  const [posts, setPosts] = useState<PostProps[]>([]);
-  const [hasLocationPermission, setHasLocationPermission] = useState<
-    boolean | null
-  >(null);
   const postListStyles = generatePostListStyles(screenWidth);
+  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [range, setRange] = useState<number>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [pagecurrent, setPagecurrent] = useState(1);
   useEffect(() => {
-    const checkLocationPermission = async () => {
-      try {
-        const instance = await LocationService.CreateAndInitialize();
-        setHasLocationPermission(instance.hasPermission);
-      } catch (error) {
-        console.error('Error checking location permission:', error);
-        setHasLocationPermission(false); // Assume no permission in case of an error
-      }
-    };
-
-    checkLocationPermission();
-  }, []);
-
-  useEffect(() => {
-    // Fetch posts data from the backend API
-    const fetchData = async () => {
-      try {
-        // Replace 'your-backend-api-endpoint' with the actual endpoint
-        // const response = await fetch('your-backend-api-endpoint');
-        // const data = await response.json();
-        setPosts([]);
-        const filteredPosts = postData.map(post => ({
-          id: post.id,
-          title: post.title,
-          image: post.image,
-          expiryDate: post.expiryDate,
-          category: post.category,
-        }));
-
-        setPosts(filteredPosts);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array means this effect runs once when the component mounts
-
-  const renderPostItem = ({ item }: { item: PostProps }) => {
     console.log('loading...');
-    console.log('Rendering item:', item.id); // Log the item being rendered
+    console.log('useeffect pagecurrent', pagecurrent);
+    fetchData();
+  }, [pagecurrent]);
 
+  /**
+   * @function
+   * @description
+   * Fetches post data from the backend API based on locationPermission.
+   *
+   * @async
+   * @methodOf PostListRenderer
+   *
+   * @throws {Error} Throws an error if there is an issue fetching the data.
+   */
+  const fetchData = async () => {
+    try {
+      console.log('fetching data*************************');
+
+      // const apiUrl = locationPermission
+      //   ? 'backend-api-endpoint-for-post'
+      //   : 'backend-api-endpoint-for-get';
+
+      // const requestBody = locationPermission
+      //   ? { range } // Include range data in the POST request body
+      //   : null; // No request body for GET request
+
+      // // Make the request based on locationPermission
+      // const response = await fetch(apiUrl, {
+      //   method: locationPermission ? 'POST' : 'GET',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     // Add other headers if needed
+      //   },
+      //   body: locationPermission ? JSON.stringify(requestBody) : null,
+      // });
+
+      // const data = await response.json();
+
+      setPosts([]);
+      const filteredPosts = postData.map(post => ({
+        id: post.id,
+        title: post.title,
+        image: post.image,
+        expiryDate: post.expiryDate,
+        category: post.category,
+      }));
+
+      setPosts(filteredPosts);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  /**
+   * @function
+   * @description
+   * Renders an individual post item using the `Post` component.
+   *
+   * @param {Object} params - Parameters for rendering the post item.
+   * @param {PostProps} params.item - The post item to be rendered.
+   */
+  const renderPostItem = ({ item }: { item: PostProps }) => {
     return (
       <View style={postListStyles.postContainer}>
         <Post
@@ -68,18 +91,28 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
           image={item.image}
           expiryDate={item.expiryDate}
           category={item.category}
-
-          // Pass other necessary props
         />
       </View>
     );
   };
 
+  /**
+   * @function
+   * @description
+   * Updates the `range` state when a new range is selected.
+   *
+   * @param {number} selectedRange - The selected range value.
+   */
   const handleSelectRange = (selectedRange: number) => {
-    console.log('selected: ', selectedRange);
+    setRange(selectedRange);
   };
 
-  const renderRangeBar = () => {
+  /**
+   * @function
+   * @description
+   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
+   */
+  const renderHeader_Home = () => {
     return (
       <View style={postListStyles.listHeder}>
         <View style={postListStyles.titleContainer}>
@@ -92,16 +125,55 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     );
   };
 
+  /**
+   * @function
+   * @description
+   * Renders the header for the profile screen. (Currently set to null)
+   */
+  const renderHeader_Profile = () => {
+    return null;
+  };
+
+  /**
+   * @function
+   * @description
+   * Renders a loading indicator as a footer while data is being fetched.
+   */
+  const renderFooter = () => {
+    console.log('rendering footer00000000000000000');
+    return isLoading ? (
+      <View style={postListStyles.loader}>
+        <ActivityIndicator size="large" />
+      </View>
+    ) : null;
+  };
+
+  /**
+   * @function
+   * @description
+   * Triggered when the end of the list is reached, loading more data by incrementing the `pagecurrent` state.
+   */
+  const handleLoadMore = () => {
+    console.log('$$$$$$$$$$$$$$$$ loading more $$$$$$$$$$$$$$$');
+    setIsLoading(true);
+    setPagecurrent(pagecurrent + 1);
+  };
+
   return (
     <FlatList
       initialNumToRender={2}
       maxToRenderPerBatch={5}
       windowSize={1}
       removeClippedSubviews={true}
+      ListFooterComponent={renderFooter}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0}
       data={posts}
       keyExtractor={item => item.id.toString()} // Replace 'id' with your post identifier
       renderItem={renderPostItem}
-      ListHeaderComponent={isHeaderInNeed ? renderRangeBar : null}
+      ListHeaderComponent={
+        isHeaderInNeed ? renderHeader_Home : renderHeader_Profile
+      }
     />
   );
 };

@@ -11,29 +11,22 @@ import { SelectRangeBarProps } from '../common/Types';
  * distance options. The selected radius is communicated to the parent component through the
  * 'onSelectRange' prop, allowing for custom handling of the selected range.
  *
- * Components and Modules Used:
- * - React, useState: Core React and React hooks for managing state.
- * - Dimensions, View: React Native components for handling screen dimensions and view rendering.
- * - DropDownPicker: External component for creating dropdown pickers in React Native.
- * - generateSelectRangeBarStyles: Function for generating styles based on the device screen width.
+ * @component
  *
- * Props:
- * - onSelectRange: Callback function to handle the selected geographical radius.
+ * @param {Object} props - The properties passed to the component.
+ * @param {function} props.onSelectRange - Callback function to handle the selected geographical radius.
  *
- * State:
- * - item: Array of objects representing predefined distance options.
- * - open: Boolean indicating whether the dropdown picker is open.
- * - value: The selected value from the dropdown picker.
- *
- * Methods:
- * - handleDropDownChange: Handles changes in the dropdown picker's state.
- *
- * @param {SelectRangeBarProps} props - The properties passed to the component.
  * @returns {JSX.Element} The SelectRangeBar component.
  */
 const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
   const screenWidth = Dimensions.get('window').width;
-
+  /**
+   * SelectRangeBar State
+   * @type {Object}
+   * @property {Array<Object>} item - Array of objects representing predefined distance options.
+   * @property {boolean} open - Boolean indicating whether the dropdown picker is open.
+   * @property {number} value - The selected value from the dropdown picker.
+   */
   const [item, setSelectedItem] = useState([
     { label: 'All location', value: -1, testID: 'dropdown-item-all' },
     { label: '1 km', value: 1, testID: 'dropdown-item-1' },
@@ -47,9 +40,11 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
 
   /**
    * Handles changes in the dropdown picker's state.
-   * Updates the selected value and communicates it to the parent component.
    *
+   * @function
+   * @private
    * @param {number | null} newValue - The newly selected value from the dropdown picker.
+   * @returns {void}
    */
   const handleDropDownChange = (newValue: number | null) => {
     try {

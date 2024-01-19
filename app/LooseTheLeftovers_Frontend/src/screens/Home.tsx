@@ -10,8 +10,19 @@ import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import PostListRenderer from '../components/PostListRenderer';
+import LocationService from '../common/LocationService';
 const Home = ({ navigation }: { navigation: any }) => {
-
+  const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
+  const checkLocationPermission = async () => {
+    try {
+      const instance = await LocationService.CreateAndInitialize();
+      setHasLocationPermission(instance.hasPermission);
+    } catch (error) {
+      console.error('Error checking location permission:', error);
+      setHasLocationPermission(false); // Assume no permission in case of an error
+    }
+  };
+  
   return (
     <View style={globalscreenstyles.container}>
       <TabBar
@@ -19,7 +30,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBar>
 
       <View style={globalscreenstyles.body}>
-        <PostListRenderer isHeaderInNeed={true}/>
+        <PostListRenderer isHeaderInNeed={true} locationPermission={hasLocationPermission}/>
       </View>
 
       <TabBar

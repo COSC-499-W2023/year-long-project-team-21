@@ -18,6 +18,10 @@ const generatePostListStyles = (screenWidth: number) =>
       marginVertical: 20,
       left: 0.07 * screenWidth,
     },
+    loader: {
+      marginTop: 10,
+      alignContent: 'center',
+    }
   });
 
 export default generatePostListStyles;
