@@ -85,7 +85,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     <>
       <SafeAreaView style={styles.LoginContainer}>
         <Logo LogoSize={40} />
-
         <Title title="Login" titleSize={30} testID="loginTitle" />
 
         <InputField

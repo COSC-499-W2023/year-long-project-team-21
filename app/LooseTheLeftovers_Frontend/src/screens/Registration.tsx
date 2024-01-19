@@ -101,6 +101,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       setPasswordStrengthError(false);
       try {
         const apiUrl = 'http://10.0.2.2:8000/users/';
+
         const response = await axios.post(apiUrl, {
           username: username,
           email: email,
@@ -111,7 +112,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         const { data } = response;
 
         // Check response successful
-        if (response.status === 200) {
+        if (response.status === 200 && data.token) {
           setUsername('');
           setEmail('');
           setPassword1('');
@@ -124,6 +125,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       } catch (error) {
         //red text error produced by requesting error
         setApiRequestError(true);
+        console.log(error);
       }
     }
   };

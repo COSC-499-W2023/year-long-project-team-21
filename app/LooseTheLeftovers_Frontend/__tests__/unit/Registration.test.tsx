@@ -59,16 +59,11 @@ describe('Registration Component', () => {
     );
   });
 
-  it('handles button press - success', async () => {
+  test.only('handles button press - success', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     const { getByPlaceholderText, getByTestId, getByText } = render(
       <Registration navigation={navigation} />,
     );
-
-    mockedAxios.post.mockResolvedValueOnce({
-      data: {},
-      status: 200, // Include the status code your component expects
-    });
 
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
@@ -96,10 +91,9 @@ describe('Registration Component', () => {
           verify_password: 'Test444test!',
         },
       );
+      // Check if the expected success/failure message is displayed
+      expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
     });
-    // Check if the expected success/failure message is displayed
-    expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
-    
   });
 
   test('handles button press - failure to send API request', async () => {

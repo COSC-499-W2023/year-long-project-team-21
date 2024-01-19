@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Title from '../components/Title';
 import Texts from '../components/Text';

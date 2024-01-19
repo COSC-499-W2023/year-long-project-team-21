@@ -6,14 +6,21 @@ Username: CookiedOutMonster
 
 ## My Features For This Week
 
-- Scheduled meetings
-- Worked on api, code reviewed, and architecutre. 
+- Scheduled and lead meetings
+- Designed registration architecture
+- Worked on POST request for backend to register a new user
+- Documentation
+- Testing
+- My report doesn't say it but I am also doing code reviews as well. 
+
 
 ## Completed Features For This Week
 
-- Scheduled meetings
-- Worked on api, code reviewed, and architecutre. 
+- Scheduled and lead meetings
+- Designed registration architecture
+- Worked on POST request for backend to register a new user
+- Documentation
+- Testing
 
 ## Types of Tasks Worked On
-
-![week9](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/e39c50c6-04d4-4edc-a346-4a8d970e9041)
+![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/5ab3d731-43c8-4cf2-a722-063998ef6cee)
