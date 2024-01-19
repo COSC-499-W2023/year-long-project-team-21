@@ -7,8 +7,9 @@ const generateSelectRangeBarStyles = (screenWidth:number) => StyleSheet.create({
     borderWidth:2,
     borderColor:global.dropdown_color.light_border, 
     borderRadius: 0.1 * screenWidth,
-    minHeight:0.05 * screenWidth,
-    backgroundColor: global.dropdown_color.background
+    //minHeight:0.05 * screenWidth,
+    backgroundColor: global.dropdown_color.background,
+    elevation:5
   },
   text: {
     fontSize:15, 
@@ -20,6 +21,8 @@ const generateSelectRangeBarStyles = (screenWidth:number) => StyleSheet.create({
     width:screenWidth/2,
     borderRadius: 0.1 * screenWidth, 
     borderWidth: 2,    
+    textAlign:'center',
+    elevation: 5,
     backgroundColor: global.dropdown_color.background,
   },
   separater: {

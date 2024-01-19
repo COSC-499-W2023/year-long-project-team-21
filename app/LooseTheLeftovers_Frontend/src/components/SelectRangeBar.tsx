@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions} from 'react-native';
+import { Dimensions, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import generateSelectRangeBarStyles from '../styles/SelectRangeBarStyles';
 import { SelectRangeBarProps } from '../common/Types';
@@ -35,36 +35,37 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
   const screenWidth = Dimensions.get('window').width;
 
   const [item, setSelectedItem] = useState([
-    { label: 'All location', value: -1, testID: 'dropdown-item-all'},
+    { label: 'All location', value: -1, testID: 'dropdown-item-all' },
     { label: '1 km', value: 1, testID: 'dropdown-item-1' },
     { label: '5 km', value: 5, testID: 'dropdown-item-5' },
-    { label: '10 km', value: 10, testID: 'dropdown-item-10'},
-    { label: '20 km', value: 20,testID: 'dropdown-item-20' },
+    { label: '10 km', value: 10, testID: 'dropdown-item-10' },
+    { label: '20 km', value: 20, testID: 'dropdown-item-20' },
   ]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(-1);
   const styles = generateSelectRangeBarStyles(screenWidth);
 
   /**
- * Handles changes in the dropdown picker's state.
- * Updates the selected value and communicates it to the parent component.
- *
- * @param {number | null} newValue - The newly selected value from the dropdown picker.
- */
-const handleDropDownChange = (newValue: number|null) => {
-  try{
-    if(typeof newValue === 'number') {
-    // Ensure that newValue is a valid number or null before setting the state
-    setValue(newValue);
-    onSelectRange && onSelectRange(newValue as number);
-  }}catch(error){
-    console.error('Error handling dropdown change:', error);
-  }
-};
+   * Handles changes in the dropdown picker's state.
+   * Updates the selected value and communicates it to the parent component.
+   *
+   * @param {number | null} newValue - The newly selected value from the dropdown picker.
+   */
+  const handleDropDownChange = (newValue: number | null) => {
+    try {
+      if (typeof newValue === 'number') {
+        // Ensure that newValue is a valid number or null before setting the state
+        setValue(newValue);
+        onSelectRange && onSelectRange(newValue as number);
+      }
+    } catch (error) {
+      console.error('Error handling dropdown change:', error);
+    }
+  };
 
   return (
     <DropDownPicker
-      testID='select-radius-dropdown'
+      testID="select-radius-dropdown"
       placeholder="Select Radius"
       open={open}
       value={value}
@@ -72,7 +73,10 @@ const handleDropDownChange = (newValue: number|null) => {
       setOpen={setOpen}
       setValue={setValue}
       setItems={setSelectedItem}
-      style={styles.picker}
+      style={{
+        ...styles.picker,
+        marginBottom: open ? 200 : 0,
+      }}
       textStyle={styles.text}
       dropDownContainerStyle={styles.dropDown}
       itemSeparator={true}

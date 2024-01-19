@@ -1,3 +1,4 @@
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { ReactNode } from 'react';
 import {
   ImageSourcePropType,
@@ -276,6 +277,24 @@ interface PostProps {
   image: string; // Assuming image is a string representing the path or URL
   expiryDate: string;
   category: string;
+  //navigation: any;
+}
+
+//creates the parameters we're sending
+type PostStackParamList = {
+  View_Post: { postId: number };
+};
+
+/**
+ * PostListRendererProps interface for PostListRenderer component.
+ *
+ * @interface
+ * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
+ */
+interface PostListRendererProps{
+  isHeaderInNeed: boolean,
+  //navigation: NavigationProp<PostStackParamList, 'View_Post'>,
+  //route: RouteProp<PostStackParamList, 'View_Post'>;
 }
 
 /**
@@ -305,5 +324,6 @@ export {
   type ImagePickerButtonProps,
   type ExpirySliderProps,
   type PostProps,
+  type PostListRendererProps,
   type SelectRangeBarProps,
 };

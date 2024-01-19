@@ -7,10 +7,15 @@ import LocationService from '../common/LocationService';
 import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
-const PostListRenderer = () => {
+import { PostListRendererProps } from '../common/Types';
+const PostListRenderer: React.FC<PostListRendererProps> = ({
+  isHeaderInNeed
+}) => {
   const screenWidth = Dimensions.get('window').width;
   const [posts, setPosts] = useState<PostProps[]>([]);
-  const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
+  const [hasLocationPermission, setHasLocationPermission] = useState<
+    boolean | null
+  >(null);
   const postListStyles = generatePostListStyles(screenWidth);
   useEffect(() => {
     const checkLocationPermission = async () => {
@@ -34,7 +39,16 @@ const PostListRenderer = () => {
         // const response = await fetch('your-backend-api-endpoint');
         // const data = await response.json();
         setPosts([]);
-        setPosts(postData);
+        const filteredPosts = postData.map(post => ({
+          id: post.id,
+          title: post.title,
+          image: post.image,
+          expiryDate: post.expiryDate,
+          category: post.category,
+        }));
+        
+        setPosts(filteredPosts);
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -55,6 +69,7 @@ const PostListRenderer = () => {
           image={item.image}
           expiryDate={item.expiryDate}
           category={item.category}
+        
           // Pass other necessary props
         />
       </View>
@@ -81,13 +96,13 @@ const PostListRenderer = () => {
   return (
     <FlatList
       initialNumToRender={2}
-      windowSize={2}
+      maxToRenderPerBatch={5}
+      windowSize={1}
       removeClippedSubviews={true}
       data={posts}
       keyExtractor={item => item.id.toString()} // Replace 'id' with your post identifier
       renderItem={renderPostItem}
-      ListHeaderComponent={renderRangeBar}
-      ListHeaderComponentStyle={postListStyles.headerContainer}
+      ListHeaderComponent={isHeaderInNeed ? renderRangeBar : null}
     />
   );
 };

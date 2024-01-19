@@ -58,14 +58,25 @@ const generateHomeScreenCardStyles = (
       fontSize: 0.06 * screenWidth,
       opacity: 1,
     },
-    card_dietaryIcons_style: {
+    card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
+      width: card_width*0.45,
+      justifyContent:'flex-start'
     },
-    card_image_style: {
+    card_image_wrapper_style: {
       position: 'absolute',
       right: card_width*0.05,
       top: card_height*0.3,
+    },
+    dietary_icon_style: {
+      height: card_height*0.2,
+      paddingLeft: card_width*0.15
+    },
+    post_image_style: {
+      width: card_width*0.35, 
+      height: card_height*0.5 
     }
+
   });
 
 export default generateHomeScreenCardStyles;
