@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { global } from '../common/global_styles';
 
 const profileStyles = StyleSheet.create({
   userInformation: {
@@ -17,6 +16,14 @@ const profileStyles = StyleSheet.create({
     verticalAlign: 'middle',
     alignContent: 'center',
     alignItems: 'center',
+  },
+  item: {
+    alignItems: 'center',
+    marginVertical: '4%',
+    marginHorizontal: '4%',
+  },
+  title: {
+    fontSize: 25,
   },
 });
 

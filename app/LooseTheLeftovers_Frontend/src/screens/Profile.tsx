@@ -1,30 +1,48 @@
-import { Text, View, FlatList } from 'react-native';
 import React from 'react';
-import { useState } from 'react';
+import { FlatList, SafeAreaView, Text, View } from 'react-native';
 import profileStyles from '../styles/profileStyles';
 import globalscreenstyles from '../common/global_ScreenStyles';
 
-const Profile = ({ navigation }: { navigation: any }) => {
-  const mockData = [
-    { id: 1, username: 'Nicholas Chamberlain', email: 'n3c777@gmail.com' },
-  ];
-  const [jsonData] = useState(mockData);
+type ItemData = {
+  id: string;
+  title: string;
+};
 
+const DATA: ItemData[] = [
+  {
+    id: 'Name',
+    title: 'Nicholas Chamberlain',
+  },
+  {
+    id: 'email',
+    title: 'n3c777@gmail.com',
+  },
+];
+
+type ItemProps = {
+  item: ItemData;
+};
+
+const Item = ({ item }: ItemProps) => (
+  <View style={[profileStyles.item]}>
+    <Text style={[profileStyles.title]}>{item.title}</Text>
+  </View>
+);
+const Profile = () => {
+  const renderItem = ({ item }: { item: ItemData }) => {
+    return <Item item={item} />;
+  };
   return (
     <View style={globalscreenstyles.container}>
-      <View style={profileStyles.userInformation}>
-        <Text>Mock UserData</Text>
+      <SafeAreaView style={profileStyles.userInformation}>
         <FlatList
-          data={jsonData}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <Text style={profileStyles.profileText}>
-              {`Name: ${item.username}, Age: ${item.email}`}
-            </Text>
-          )}
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
         />
-      </View>
+      </SafeAreaView>
     </View>
   );
 };
+
 export default Profile;
