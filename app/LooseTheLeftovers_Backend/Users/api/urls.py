@@ -11,7 +11,7 @@ from Users.api.views import TokenObtainPairSerializerUserId
 
 
 urlpatterns = [
-    path("", UsersHandler.as_view(), name="register"),
+    path("", UsersHandler.as_view(), name="users"),
     path("<int:user_id>/", UsersHandler.as_view(), name='specific_user'),
     path('tokens/', TokenObtainPairSerializerUserId.as_view(), name='token_obtain_pair'),
     path('tokens/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

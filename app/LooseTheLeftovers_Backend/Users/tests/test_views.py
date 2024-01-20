@@ -4,6 +4,7 @@ from rest_framework import status
 from .test_setup import TestSetUpCreateAccount
 from Users.models import CustomUser
 from rest_framework.test import APITestCase
+from Users.api.serializers import UserSerializer
 
 
 """
@@ -73,7 +74,7 @@ class TestUserAuth(TestSetUpCreateAccount):
 
 class TestUserCreation(APITestCase):
     # URL endpoint for registering User
-    __register_url = reverse("register")
+    __register_url = reverse("users")
 
     def query_and_test_user(self, username):
         try:
@@ -319,4 +320,138 @@ class TestUserCreation(APITestCase):
         # test for a 405
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-#class TestGetUsers
+
+class TestGetUsers(TestSetUpCreateAccount):
+    # URL for ads. 
+    __users_url = reverse("users")
+
+    def test_retrieve_list_of_users_no_auth(self):
+        """"
+        Test ensures that a list of users are not retrieved on an unauthorized get request without ID specified. Expect a 401. 
+        """
+        
+        response = self.client.get(self.__users_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    def test_retrieve_single_user_no_auth(self):
+        """
+        Test ensures that a single user is not retrieved on an unathorized get request. Expect a 401.
+        """
+        
+        # retrieve user id 
+        specific_user_id = self.test_user.id
+        
+        # create get request using kwargs 
+        specific_user_url = reverse('specific_user', kwargs={'user_id': specific_user_id})
+       
+        # send unauth request 
+        response = self.client.get(specific_user_url)
+        
+        # assert that a 401 is returned 
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+    def test_retrieve_list_of_users_force_auth(self):
+        """
+        Test ensures that a list of users are retrieved on authorized GET request. 
+        Expect a 200 and correct response body.
+        """
+
+        # Force authentication for testing 
+        self.client.force_authenticate(user=self.test_user)
+
+        # Retrieve response
+        response = self.client.get(self.__users_url)
+
+        # Assert a 200 correctly received
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Get all users from the database
+        users = CustomUser.objects.all().order_by('id')  # Ensure ordering for comparison
+
+        # Serialize the users data for comparison
+        serializer = UserSerializer(users, many=True)
+
+        # Compare the response data with the serialized data
+        self.assertEqual(response.data, serializer.data)
+
+    def test_retrieve_individual_user_force_auth(self):
+        """
+        Test ensures that an individual (in our case, requesting user) credentials are retrieved with an authorized GET request. Expect a 200 and correct body. 
+        """
+            
+        # Retrieve user id 
+        specific_user_id = self.test_user.id
+
+        # Create GET request URL using kwargs 
+        specific_user_url = reverse('specific_user', kwargs={'user_id': specific_user_id})
+
+        # Force authentication for testing 
+        self.client.force_authenticate(user=self.test_user)
+
+        # Send authorized request 
+        response = self.client.get(specific_user_url)
+
+        # Assert that a 200 OK response is received
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Validate the response content
+        expected_data = UserSerializer(self.test_user).data
+        self.assertEqual(response.data, expected_data)
+    
+    def test_retrieve_list_of_new_users_auth(self):
+        """
+        Test ensures that a list of users, including newly created ones, are retrieved on an authorized GET request.
+        Expect a 200 and correct response body.
+        """
+
+        # Create additional users
+        CustomUser.objects.create_user(username="testuser1", password="testpassword1")
+        CustomUser.objects.create_user(username="testuser2", password="testpassword2")
+
+        # Force authentication for testing 
+        self.client.force_authenticate(user=self.test_user)
+
+        # Retrieve response
+        response = self.client.get(self.__users_url)
+
+        # Assert a 200 correctly received
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Get all users from the database, including the newly added ones
+        users = CustomUser.objects.all().order_by('id')  # Ensure ordering for comparison
+
+        # Serialize the users data for comparison
+        serializer = UserSerializer(users, many=True)
+
+        # Compare the response data with the serialized data
+        self.assertEqual(response.data, serializer.data)
+
+    def test_user_not_exist_auth(self):
+        """
+        Test ensures that a user that trying to retrieve a user that does not exist produces an error. Expect a 500 
+        """
+
+        # Retrieve user id 
+        specific_user_id = self.test_user.id
+
+        # modify url 
+        specific_user_id += 1
+
+        # Create GET request URL using kwargs 
+        specific_user_url = reverse('specific_user', kwargs={'user_id': specific_user_id})
+
+        # Force authentication for testing 
+        self.client.force_authenticate(user=self.test_user)
+
+        # Send authorized request 
+        response = self.client.get(specific_user_url)
+
+        # test for 500
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+        
+
+
+
