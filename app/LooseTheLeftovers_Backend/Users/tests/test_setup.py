@@ -15,13 +15,14 @@ class TestSetUpCreateAccount(APITestCase):
         test_account (dict): A dictionary containing the credentials and
                             location information of the test user.
     """
+
     def setUp(self):
         # create temp user
         self.test_user = CustomUser.objects.create_user(
-            username = "test", 
-            password = "test123", 
-            latitude = 49.887673,
-            longitude = -119.495465,
+            username="test",
+            password="test123",
+            latitude=49.887673,
+            longitude=-119.495465,
         )
         # save temp user credentials in db
         self.test_account = {

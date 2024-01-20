@@ -4,10 +4,12 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'first_name', 'last_name'] 
+        fields = ["id", "username", "email", "first_name", "last_name"]
+
 
 class TokenObtainPairSerializerUserId(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -15,7 +17,7 @@ class TokenObtainPairSerializerUserId(TokenObtainPairSerializer):
         data = super().validate(attrs)
 
         # Add the user ID to the response
-        data['user_id'] = self.user.id
+        data["user_id"] = self.user.id
         return data
 
 
@@ -67,4 +69,3 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-    

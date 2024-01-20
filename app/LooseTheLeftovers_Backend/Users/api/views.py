@@ -15,13 +15,13 @@ class TokenObtainPairSerializerUserId(TokenObtainPairView):
     """
     A custom view for token obtainment that uses TokenObtainPairSerializerUserId.
 
-    This view extends TokenObtainPairView from Django Rest Framework SimpleJWT 
+    This view extends TokenObtainPairView from Django Rest Framework SimpleJWT
     to use a custom serializer (TokenObtainPairSerializerUserId) for handling
-    the token creation logic. 
+    the token creation logic.
 
     Attributes:
     serializer_class: The serializer class to be used for token obtainment.
-                        Should be set to TokenObtainPairSerializerUserId or 
+                        Should be set to TokenObtainPairSerializerUserId or
                         another custom serializer extending TokenObtainPairSerializer.
     """
 
@@ -32,9 +32,10 @@ class UsersHandler(APIView):
     """
     API View for handling user-related requests.
 
-    This view handles creating new users with POST requests and retrieving 
+    This view handles creating new users with POST requests and retrieving
     specific users or all users with GET requests.
     """
+
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests to create a new user.
@@ -51,7 +52,7 @@ class UsersHandler(APIView):
         """
         Handle GET requests to retrieve a specific user or all users.
 
-        Retrieves a specific user if a user_id is provided in the URL, 
+        Retrieves a specific user if a user_id is provided in the URL,
         otherwise retrieves all users. Requires authentication.
 
         Args:
@@ -63,13 +64,16 @@ class UsersHandler(APIView):
         """
 
         # retrieve user_id from keyword argument
-        user_id = kwargs.get('user_id', None)
-         # create instance of isAuthenticated, use to check if incoming request has permission
+        user_id = kwargs.get("user_id", None)
+        # create instance of isAuthenticated, use to check if incoming request has permission
         permission = IsAuthenticated()
-         # Manually check if the incoming request has permission to resource
+        # Manually check if the incoming request has permission to resource
         if not permission.has_permission(request, self):
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
-        # return user(s) data 
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        # return user(s) data
         return retrieve_user(user_id)
 
 
@@ -112,7 +116,8 @@ def register_user(request):
         # if the user is not valid, place errors inside token placeholder
         error = serializer.errors
         return Response(error, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 def retrieve_user(user_id):
     """
     Retrieve a specific user by their ID or all users if no ID is provided.
@@ -134,25 +139,22 @@ def retrieve_user(user_id):
             users = CustomUser.objects.all()
             # send to serializer to package data
             serializer = UserSerializer(users, many=True)
-            # send response, 200 ok 
+            # send response, 200 ok
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             # send problem response and server error
-            response = {"message" : "Error retrieving users"}
+            response = {"message": "Error retrieving users"}
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
     else:
         try:
             # query user by id
             user = CustomUser.objects.get(pk=user_id)
             # send to serializer to package data
             serializer = UserSerializer(user)
-            # send response, 200 ok 
+            # send response, 200 ok
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except: 
-             # send problem response and server error
-            response = {"message" : "Error retrieving users: user does not exist"}
+        except:
+            # send problem response and server error
+            response = {"message": "Error retrieving users: user does not exist"}
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    
-
