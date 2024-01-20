@@ -12,6 +12,7 @@ describe('retrieveUserSession', () => {
         const mockSession = {
             token: 'mock_token',
             refresh_token: 'ref_token',
+            user_id: 'user_id',
             token_creation: Date.now() - 100000,
         };
         mockStorage.getItem.mockResolvedValue(JSON.stringify(mockSession));

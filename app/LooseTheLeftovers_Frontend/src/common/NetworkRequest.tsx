@@ -5,8 +5,12 @@ import {
   removeUserSession,
   storeUserSession,
 } from '../../src/common/EncryptedSession';
+import {BASE_URL,
+        refEndpoint, 
+        loginEndpoint,
+} from '../common/API';
 
-const BASE_URL: string = 'http://10.0.2.2:8000/';
+//const BASE_URL: string = 'http://10.0.2.2:8000/';
 
 /**
  * Function to configure Axios request defaults.
@@ -73,7 +77,7 @@ export function handleAxiosError(
  */
 export async function loginReq(user: string, pass: string) {
   // login URL (need to remove hard-coding)
-  const endpoint: string = 'users/tokens/';
+  const endpoint: string = loginEndpoint;
   try {
     // Create axios POST request, incoming username and password in the body
     const response = await axios.post(
@@ -87,10 +91,11 @@ export async function loginReq(user: string, pass: string) {
     // Parse the response and assign to respective variables
     const accessToken: string = response.data['access'];
     const refreshToken: string = response.data['refresh'];
+    const userId: string = response.data["user_id"];
     // Clear any existing user session before storing the new one
     await removeUserSession();
     // Store the new user session
-    await storeUserSession(accessToken, refreshToken);
+    await storeUserSession(accessToken, refreshToken, userId);
   } catch (error) {
     // generate custom error
     handleAxiosError(error, {
@@ -313,7 +318,8 @@ export class SecureAPIReq {
   private async getNewToken() {
     // retrieve refresh token
     const refreshToken = this.currentSesh['refresh_token'];
-    const endpoint: string = 'users/tokens/refresh/';
+    const endpoint: string = refEndpoint;
+    const user_id: string = this.currentSesh['userId']
     try {
       // @TODO efficiency concerns awaiting removeUserSession and storeUserSession.
       // make a request to refresh token
@@ -328,8 +334,8 @@ export class SecureAPIReq {
         );
       // Clear any existing user session before storing the new one
       await removeUserSession();
-      // Store the new user session
-      await storeUserSession(token, refreshToken);
+      // Store the new user session with the new token, refToken, and user_id
+      await storeUserSession(token, refreshToken, user_id);
       // return
       return token;
     } catch (e) {

@@ -4,13 +4,15 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+
 # import views
-from Users.api.views import register_user
+from Users.api.views import UsersHandler
 from Users.api.views import TokenObtainPairSerializerUserId
 
 
 urlpatterns = [
-    path("", register_user, name="register"),
+    path("", UsersHandler.as_view(), name="register"),
+    path("<int:user_id>/", UsersHandler.as_view(), name='specific_user'),
     path('tokens/', TokenObtainPairSerializerUserId.as_view(), name='token_obtain_pair'),
     path('tokens/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

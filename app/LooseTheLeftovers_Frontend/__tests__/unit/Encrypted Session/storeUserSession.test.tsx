@@ -9,10 +9,11 @@ describe('storeUserSession', () => {
     });
 
     it('should successfully store the user session', async () => {
-        const token = 'testToken';
-        const refreshToken = 'testRefreshToken';
+        const token:string = 'testToken';
+        const refreshToken:string = 'testRefreshToken';
+        const user_id:string = "user_id";
         
-        await storeUserSession(token, refreshToken);
+        await storeUserSession(token, refreshToken, user_id);
     
         expect(mockStorage.setItem).toHaveBeenCalledWith(
             "user_session",
@@ -21,6 +22,10 @@ describe('storeUserSession', () => {
         expect(mockStorage.setItem).toHaveBeenCalledWith(
             "user_session",
             expect.stringContaining(`"refresh_token":"${refreshToken}"`)
+        );
+        expect(mockStorage.setItem).toHaveBeenCalledWith(
+            "user_session",
+            expect.stringContaining(`"user_id":"${user_id}"`)
         );
         expect(mockStorage.setItem).toHaveBeenCalledWith(
             "user_session",
@@ -34,8 +39,9 @@ describe('storeUserSession', () => {
 
         const token = 'testToken';
         const refreshToken = 'testRefreshToken';
+        const user_id:string = "user_id";
 
-        await expect(storeUserSession(token, refreshToken)).rejects.toThrow('Failed to store JWT: Storage Error');
+        await expect(storeUserSession(token, refreshToken, user_id)).rejects.toThrow('Failed to store JWT: Storage Error');
     });
 
 });
