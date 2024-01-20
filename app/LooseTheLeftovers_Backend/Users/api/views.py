@@ -12,6 +12,19 @@ from Users.api.serializers import UserSerializer
 
 
 class TokenObtainPairSerializerUserId(TokenObtainPairView):
+    """
+    A custom view for token obtainment that uses TokenObtainPairSerializerUserId.
+
+    This view extends TokenObtainPairView from Django Rest Framework SimpleJWT 
+    to use a custom serializer (TokenObtainPairSerializerUserId) for handling
+    the token creation logic. 
+
+    Attributes:
+    serializer_class: The serializer class to be used for token obtainment.
+                        Should be set to TokenObtainPairSerializerUserId or 
+                        another custom serializer extending TokenObtainPairSerializer.
+    """
+
     serializer_class = TokenObtainPairSerializerUserId
 
 
@@ -55,7 +68,7 @@ class UsersHandler(APIView):
         permission = IsAuthenticated()
          # Manually check if the incoming request has permission to resource
         if not permission.has_permission(request, self):
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
         # return user(s) data 
         return retrieve_user(user_id)
 

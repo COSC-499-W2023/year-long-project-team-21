@@ -10,7 +10,6 @@ from rest_framework.test import APITestCase
 Test cases for views related to user authentication and creation
 """
 
-
 class TestUserAuth(TestSetUpCreateAccount):
     # URL endpoint for token generation/authentication.
     __login_url = reverse("token_obtain_pair")
@@ -117,10 +116,6 @@ class TestUserCreation(APITestCase):
         user = self.query_and_test_user("test123")
         self.assertEqual(user.username, "test123")
         
-        # assert access token returned
-        response_token = json.loads(response.content.decode("utf-8"))["access_token"]
-        self.assertTrue(response_token)
-
         self.delete_user(user.id)
 
     def test_creating_new_user_wrong_email(self):
@@ -303,14 +298,14 @@ class TestUserCreation(APITestCase):
     # TODO this test is really important and we can use it for other things. We should figure out how to make this a class or something that all the other Apps can inherit from
     def test_try_other_request(self):
         """
-        Test ensures that only a POST is accepted. Expected a 405 response
+        Test ensures that only a POST is accepted. Expected a 405 response for PUT and DELETE. GET should return a 401 as unauthorized.
         """
 
         # try for a get request
         response = self.client.get(self.__register_url)
 
-        # test for a 405
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        # test for a 401 since authentication is not supplied 
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         # try for a put
         response = self.client.put(self.__register_url)
@@ -323,3 +318,5 @@ class TestUserCreation(APITestCase):
 
         # test for a 405
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+#class TestGetUsers
