@@ -7,4 +7,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # linking to User's urls.api 
     path("users/", include("Users.api.urls")),
+    # linking to Advertisments's urls.api 
+    path("ads/", include("Advertisments.api.urls")),
 ]

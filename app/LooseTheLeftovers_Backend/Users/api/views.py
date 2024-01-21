@@ -2,11 +2,10 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import Token, RefreshToken
 
 # import serializers
 from Users.api.serializers import RegistrationSerializer
-
 
 @api_view(["POST"])
 def register_user(request):
@@ -39,8 +38,10 @@ def register_user(request):
         user = serializer.save()
         # retrieve user's newly created token
         try:
-            token = Token.objects.get(user_id=user.id)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
+            #token = Token.objects.get(user_id=user.id)
+
+            token = RefreshToken.for_user(user)
+            return Response({"access_token": str(token.access_token), "refresh_token": str(token)}, status=status.HTTP_200_OK)
 
         except:
             # return a 500 if there is an error retrieving token
