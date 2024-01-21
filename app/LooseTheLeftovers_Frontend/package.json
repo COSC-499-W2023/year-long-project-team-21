@@ -11,8 +11,9 @@
     "prettier": "prettier src/**/*.tsx"
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
-    "@react-navigation/native-stack": "^6.9.16",
+    "@react-navigation/native-stack": "^6.9.17",
     "axios": "^1.6.0",
     "check-password-strength": "^2.0.7",
     "email-validator": "^2.0.4",
