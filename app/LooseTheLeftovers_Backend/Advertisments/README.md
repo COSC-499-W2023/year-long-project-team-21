@@ -1,6 +1,6 @@
 # Advertisments Microservice
 
-### Overview
+### Model Overview
 
 Advertisments holds all ads created by users. Below is the table schema:
 

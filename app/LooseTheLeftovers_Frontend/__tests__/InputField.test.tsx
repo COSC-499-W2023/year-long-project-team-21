@@ -1,8 +1,9 @@
+import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 import InputField from '../src/components/InputField';
 
-import { fireEvent, render } from '@testing-library/react-native';
 test('mock random text input and check the state update', () => {
-  //void
+  // Void
   const placeholder_test = 'testing';
   const mockOnChangeText = jest.fn();
 
@@ -16,9 +17,9 @@ test('mock random text input and check the state update', () => {
 
   const inputField = getByPlaceholderText(placeholder_test);
 
+  // Write text
   fireEvent.changeText(inputField, 'New Text');
 
   expect(inputField.props.value).toBe('New Text');
   expect(mockOnChangeText).toHaveBeenCalledWith('New Text');
 });
-
