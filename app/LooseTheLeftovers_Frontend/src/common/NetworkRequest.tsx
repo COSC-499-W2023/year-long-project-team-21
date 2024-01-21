@@ -5,10 +5,7 @@ import {
   removeUserSession,
   storeUserSession,
 } from '../../src/common/EncryptedSession';
-import {BASE_URL,
-        refEndpoint, 
-        loginEndpoint,
-} from '../common/API';
+import { BASE_URL, refEndpoint, loginEndpoint } from '../common/API';
 
 //const BASE_URL: string = 'http://10.0.2.2:8000/';
 
@@ -91,7 +88,7 @@ export async function loginReq(user: string, pass: string) {
     // Parse the response and assign to respective variables
     const accessToken: string = response.data['access'];
     const refreshToken: string = response.data['refresh'];
-    const userId: string = response.data["user_id"];
+    const userId: string = response.data['user_id'];
     // Clear any existing user session before storing the new one
     await removeUserSession();
     // Store the new user session
@@ -319,7 +316,7 @@ export class SecureAPIReq {
     // retrieve refresh token
     const refreshToken = this.currentSesh['refresh_token'];
     const endpoint: string = refEndpoint;
-    const user_id: string = this.currentSesh['userId']
+    const user_id: string = this.currentSesh['user_id'];
     try {
       // @TODO efficiency concerns awaiting removeUserSession and storeUserSession.
       // make a request to refresh token

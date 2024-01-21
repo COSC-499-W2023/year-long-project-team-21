@@ -4,10 +4,14 @@ import EncryptedStorage from 'react-native-encrypted-storage';
  * Stores user session data securely.
  * @param {string} token - The user's token.
  * @param {string} refresh_token - The user's refresh token.
- * @param {string} userId - The user's id 
+ * @param {string} userId - The user's id
  * @throws {Error} - Throws an error if storing JWT fails.
  */
-export async function storeUserSession(token: string, refresh_token: string, userId: string) {
+export async function storeUserSession(
+  token: string,
+  refresh_token: string,
+  userId: string,
+) {
   const timestamp = Date.now(); // Get current timestamp
   try {
     await EncryptedStorage.setItem(
