@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import TabBar from '../src/components/TabBar';
+import TabBar from '../src/components/TabBarTop';
 import { Text } from 'react-native';
 import Title from '../src/components/Title';
 import Logo from '../src/components/Logo';

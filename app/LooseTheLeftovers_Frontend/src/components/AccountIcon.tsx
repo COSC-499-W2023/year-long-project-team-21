@@ -21,23 +21,21 @@ import { type AllIconProps } from '../common/Types';
 
 //creates the parameters we're sending
 type RootStackParamList = {
-  Instruction: { name: string };
+  Profile: { name: string };
 };
 
 //uses all icon prop for the interface
 const AccountIcon: React.FC<AllIconProps> = ({ size = 45 }) => {
   //creates a navigation hook
   const navigation =
-    useNavigation<
-      NativeStackNavigationProp<RootStackParamList, 'Instruction'>
-    >();
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Profile'>>();
 
   //link to image
   const image = '../assets/account.png';
 
   //navigates to instruction and sends parameters
   const goToHomeScreen = () => {
-    navigation.navigate('Instruction', { name: 'AccountIcon' });
+    navigation.navigate('Profile', { name: 'AccountIcon' });
   };
 
   //call this to display and icon image. No need to input anything to the component, will automatically

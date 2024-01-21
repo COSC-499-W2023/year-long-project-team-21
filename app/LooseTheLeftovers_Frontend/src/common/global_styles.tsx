@@ -9,7 +9,8 @@ export const global = {
   //darkmode
   primary: '#FFB700', //yellow
   secondary: '#FFFFFF', //white
-  background: '#2e2e2e', //dark grey
+  tertiary: '#2e2e2e', //dark grey
+  background: '#222222',
   error: 'red',
   //08282B, 0D1830
 
@@ -20,5 +21,5 @@ export const global = {
     two: '#96EEE5',
     three: '#85F773',
     base: 'white',
-  }
+  },
 };

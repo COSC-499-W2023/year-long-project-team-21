@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { global } from '../common/global_styles';
 
 const profileStyles = StyleSheet.create({
   userInformation: {
-    top: '10%',
+    top: '3%',
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: global.tertiary,
     flex: 0.3,
     borderRadius: 20,
   },
@@ -24,6 +25,7 @@ const profileStyles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
+    color: global.secondary,
   },
 });
 

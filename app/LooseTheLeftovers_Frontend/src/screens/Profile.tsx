@@ -2,19 +2,23 @@ import React from 'react';
 import { FlatList, SafeAreaView, Text, View } from 'react-native';
 import profileStyles from '../styles/profileStyles';
 import globalscreenstyles from '../common/global_ScreenStyles';
+import TabBarTop from '../components/TabBarTop';
+import AccountIcon from '../components/AccountIcon';
+import HomeIcon from '../components/HomeIcon';
+import CreateAdIcon from '../components/CreateAdIcon';
 
 type ItemData = {
-  id: string;
+  key: string;
   title: string;
 };
 
 const DATA: ItemData[] = [
   {
-    id: 'Name',
+    key: 'Name',
     title: 'Nicholas Chamberlain',
   },
   {
-    id: 'email',
+    key: 'Email',
     title: 'n3c777@gmail.com',
   },
 ];
@@ -28,17 +32,23 @@ const Item = ({ item }: ItemProps) => (
     <Text style={[profileStyles.title]}>{item.title}</Text>
   </View>
 );
+
 const Profile = () => {
   const renderItem = ({ item }: { item: ItemData }) => {
     return <Item item={item} />;
   };
   return (
     <View style={globalscreenstyles.container}>
+      <TabBarTop
+        LeftIcon={<HomeIcon></HomeIcon>}
+        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
+        RightIcon={<AccountIcon></AccountIcon>}></TabBarTop>
+
       <SafeAreaView style={profileStyles.userInformation}>
         <FlatList
           data={DATA}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.key}
         />
       </SafeAreaView>
     </View>
