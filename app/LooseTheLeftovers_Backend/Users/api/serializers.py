@@ -6,13 +6,50 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    A serializer for the CustomUser model.
+
+    This serializer is used to convert CustomUser instances into a format that
+    can be easily rendered into JSON. It defines the fields that are exposed
+    through the API when a CustomUser instance is serialized.
+    """
+
     class Meta:
+        """
+        Inner class that specifies the details about serialization.
+
+        Attributes:
+        model: The model class (CustomUser) that is being serialized.
+        fields: A list of field names that are included in the serialized output.
+        """
+
         model = CustomUser
         fields = ["id", "username", "email", "first_name", "last_name"]
 
 
 class TokenObtainPairSerializerUserId(TokenObtainPairSerializer):
+    """
+    A serializer that extends TokenObtainPairSerializer to include user ID.
+
+    This serializer is used during the token authentication process. It extends
+    the default TokenObtainPairSerializer by adding the user's ID to the response
+    after a successful authentication.
+    """
+
     def validate(self, attrs):
+        """
+        Validate and authenticate the user, and return the token pair.
+
+        This method is called when the serializer is used to validate an incoming
+        request. It first calls the superclass's validate method to perform
+        authentication and token generation, then adds the user ID to the response.
+
+        Args:
+        attrs: The authentication attributes, typically including username and password.
+
+        Returns:
+        A dictionary containing the access and refresh tokens, along with the user's ID.
+        """
         # Retrieve default token response
         data = super().validate(attrs)
 
