@@ -17,8 +17,22 @@ This post request must contain the following parameters
 
 - email
 - username
-- paassword
-- verify_passowrd
+- password
+- verify_password
+
+## GET Users
+
+It is possible to retrieve a list of users and an individual user.
+
+Simply send an authenticated GET request to `/users/` to retrieve a list of all the current users. The fields that you get are: 
+- username 
+- id 
+- email
+
+Functionality is also included to recieve an individual user. Attatch a user_id to the end of the URI to request an individual user. If the user does not exist, a 500 error
+will be produced.
+
+If your request is not authenticated, you will recieve a 401.
 
 ### Overview
 
