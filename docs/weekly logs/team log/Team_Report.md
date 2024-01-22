@@ -2,7 +2,9 @@
 
 ## Overview
 
-This week we focused on re-evaulauting our timeline, going through client and peer feedback, redesigning our figma, and assigning tasks to be worked on for the next couple of weeks. We are giving more work per member on our team so we can safely meet our deadlines. We have a few questions we have that we want to ask our client regarding location services and how we are doing it as we feel we are doing it a little different than other people. There was some work done during the break that we are going to approve PR's in the next couple of days. 
+This week our team is focused on the features we want to complete for the first round of peer testing. This includes finishing off several pages on the front end: 
+the home screen, view ad page, and the user profile page. On the backend we are creating the views that will handle requests from the front end to 
+provide them with what they need from the backend. 
 
 ## Quick reminder for usernames
 
@@ -14,37 +16,33 @@ This week we focused on re-evaulauting our timeline, going through client and pe
 
 ## Completed tasks for this week
 
-- Complete figma redesign
-- Create ad page
-- Refactored registration screen
-- Evaluate peer and client feedback
+- Refresh token authentication
+- Retrieve user profile from backend
+- Store ads with image in database
   
 ## Tasks in progress
 
-- Saving images to the backend
 - View profile page
-- Pipeline and automated tests
 - Home screen page
-- View ad page 
+- View ad page
+- Retrieve ad from backend
 
 ## Burn Up Chart
-![burn up](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/ff9bef01-4b83-4e56-a5c9-089eab8b9afc)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/daf9300a-3d4e-4f03-b95b-dacfb2a70441)
+
 
 ### Test Report
 
-Once we implement our pipeline, this will be much more streamlined. 
-
 #### Test for modules (frontend)
-![frontend test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/51825005-c2ec-4b06-8941-316a86216d3d)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/036a3d0b-ba90-47b5-b52c-a6e025c5c86d)
 
 #### Test for modules (backend)
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/88bdd5f5-9707-49eb-8e83-0bb961800bfc)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/6137c04e-49e5-48f4-bb90-a72461200fb6)
 
-#### Test for authentication (backend) 
-![views_test](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/4e7ade34-e362-4a90-b5e4-7788ce4c9fd2)
 
 ### Project Board
-![project board](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/c2ab0cb6-3973-41a5-be16-fdbf6674907d)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/296392a8-78e0-47d6-8097-5cca51af57c7)
+
 
 ## Individual Reports
 
