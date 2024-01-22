@@ -205,6 +205,7 @@ interface UpperBarProps {
   onRightPress?: () => void;
   leftIconSource?: ImageSourcePropType;
   rightIconSource?: ImageSourcePropType;
+  title?: string;
 }
 
 /**

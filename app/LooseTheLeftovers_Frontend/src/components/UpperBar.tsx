@@ -21,6 +21,7 @@ const Header: React.FC<UpperBarProps> = ({
   onRightPress,
   leftIconSource,
   rightIconSource,
+  title,
 }) => {
   const testID = 'upperbar-test';
 
@@ -39,7 +40,7 @@ const Header: React.FC<UpperBarProps> = ({
         <View style={styles.placeholderIcon} />
       )}
       <Text style={styles.title} testID={testID}>
-        Create an Ad
+        {title}
       </Text>
       {rightIconSource ? (
         <Icon

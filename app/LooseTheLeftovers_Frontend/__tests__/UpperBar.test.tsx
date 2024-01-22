@@ -17,11 +17,12 @@ describe('UpperBar component', () => {
         onRightPress={onRightPressMock}
         leftIconSource={mockLeftIconSource}
         rightIconSource={mockRightIconSource}
+        title='Test Title'
       />,
     );
 
     expect(getByTestId('upperbar-test')).toBeDefined();
-    expect(getByText('Create an Ad')).toBeDefined();
+    expect(getByText('Test Title')).toBeDefined();
   });
 
   it('calls onLeftPress function when the left icon is pressed', () => {
