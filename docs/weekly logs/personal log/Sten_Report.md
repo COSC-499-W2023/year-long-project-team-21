@@ -1,6 +1,6 @@
 # Sten Korver Personal Weekly Log
 
-01/08 to 01/14
+01/15 to 01/21
 
 Username: Rev-Rok
 
@@ -8,13 +8,13 @@ Username: Rev-Rok
 
 * Participate team meetings
 * Store images in database for advertisments
-* Set up automated tests for backend
+* Retrieve advertisments from the database
 
 ### Completed Features For This Week:
 
-* None
+* Store images in database for advertisments
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/ea1d1e20-cc9c-482f-9bb5-280473e9675d)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/96faabf9-1bf5-48bc-ac66-48f1a6100f5b)
 
