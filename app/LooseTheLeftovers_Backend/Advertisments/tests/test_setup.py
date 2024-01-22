@@ -16,8 +16,8 @@ class TestSetUpCreateAdvertisment(APITestCase):
         self.password = "123"
         self.user = CustomUser.objects.create_user(
             username=self.username,
+            password=self.password
         )
-        self.user.set_password(self.password)
         self.user.save()
         
         token = RefreshToken.for_user(self.user)
