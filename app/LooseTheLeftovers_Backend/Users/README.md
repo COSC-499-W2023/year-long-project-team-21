@@ -17,8 +17,8 @@ This post request must contain the following parameters
 
 - email
 - username
-- paassword
-- verify_passowrd
+- password
+- verify_password
 
 ## GET Users
 
