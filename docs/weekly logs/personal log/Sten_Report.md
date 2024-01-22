@@ -1,23 +1,21 @@
 # Sten Korver Personal Weekly Log
-
-11/06 to 11/12
+11/27 to 12/03
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Create tests for Messages/Advertisments models
-* Write code for Messages/Advertisments models
-* Create tests and method for editing fields in Users table
+* Updated ER diagram for design milestone
+* Backend/database written content for design milestone
+* Store images for ads on backend
 
 ### Completed Features For This Week:
 
-* Tests for Messages/Advertisments models
-    * Code for Messages/Advertisments models started but not passing tests yet
-* Tests for editing fields in User table
+* Updated ER diagram for design milestone
+* Backend/database written content for design milestone
+* Helped finish the architecture diagram
 
 ### Types of Tasks Worked On:
-
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/07a58334-d54d-46cd-8044-afd86e348717)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/b3722929-b018-442f-b471-56d726c38eb5)
 

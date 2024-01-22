@@ -1,21 +1,22 @@
 import { StyleSheet } from 'react-native';
+import { global } from '../common/global_styles';
 
 const style = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
-    margin: '10%',
+    backgroundColor: global.background,
+    padding: '10%',
   },
+
   title: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    flex: 0.15,
+    flex: 0.2,
   },
   instruction: {
     borderRadius: 10,
-    borderColor: '#555455',
+    borderColor: global.secondary,
     alignItems: 'center',
     justifyContent: 'space-around',
     flex: 0.8,
@@ -27,18 +28,14 @@ const style = StyleSheet.create({
     alignItems: 'center',
     flex: 0.5,
     justifyContent: 'center',
-    // backgroundColor: 'yellow',
   },
   text: {
     flex: 0.8,
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    //   backgroundColor: 'red',
   },
-  image: {
-    //  backgroundColor: 'green',
-  },
+  textColor: { color: global.primary },
   button: {
     flex: 0.15,
     alignItems: 'center',
