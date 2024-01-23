@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, FlatList, Dimensions } from 'react-native';
+import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
 import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
@@ -11,6 +11,7 @@ import { PostListRendererProps } from '../common/Types';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   locationPermission,
+  navigation
 }) => {
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
@@ -91,6 +92,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
           image={item.image}
           expiryDate={item.expiryDate}
           category={item.category}
+          navigation={navigation}
         />
       </View>
     );
@@ -105,6 +107,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const handleSelectRange = (selectedRange: number) => {
     setRange(selectedRange);
+    console.log(selectedRange)
   };
 
   /**
@@ -157,17 +160,18 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     console.log('$$$$$$$$$$$$$$$$ loading more $$$$$$$$$$$$$$$');
     setIsLoading(true);
     setPagecurrent(pagecurrent + 1);
+    setIsLoading(false);
   };
 
   return (
     <FlatList
-      initialNumToRender={2}
+      initialNumToRender={3}
       maxToRenderPerBatch={5}
-      windowSize={1}
+      windowSize={2}
       removeClippedSubviews={true}
       ListFooterComponent={renderFooter}
       onEndReached={handleLoadMore}
-      onEndReachedThreshold={0}
+      onEndReachedThreshold={0.5}
       data={posts}
       keyExtractor={item => item.id.toString()} // Replace 'id' with your post identifier
       renderItem={renderPostItem}

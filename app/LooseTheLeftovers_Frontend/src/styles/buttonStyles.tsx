@@ -12,9 +12,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  space: {
-    height: 10,
-  },
 });
 
 export default styles;

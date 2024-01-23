@@ -21,6 +21,7 @@ const generatePostListStyles = (screenWidth: number) =>
     loader: {
       marginTop: 10,
       alignContent: 'center',
+      color:'red'
     }
   });
 

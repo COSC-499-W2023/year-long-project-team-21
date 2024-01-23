@@ -29,6 +29,8 @@ interface ButtonProps {
   buttonSize?: number;
   textSize?: number;
   testID?: string;
+  borderRadius?: number;
+  color?: string;
 }
 
 /**
@@ -273,18 +275,49 @@ interface ExpirySliderProps {
 
 interface PostProps {
   id: number;
-  title: string;
-  image: string; // Assuming image is a string representing the path or URL
-  expiryDate: string;
+  title?: string;
+  image?: string; // Assuming image is a string representing the path or URL
+  expiryDate?: string;
   category: string;
-  //navigation: any;
+  navigation?: any;
 }
 
-//creates the parameters we're sending
+/**
+ * Defines the parameter structure for the 'View_Post' screen.
+ *
+ * @typedef {Object} PostStackParamList
+ * @property {Object} View_Post - Parameters for the 'View_Post' screen.
+ * @property {number} View_Post.postId - The post identifier.
+ */
 type PostStackParamList = {
   View_Post: { postId: number };
 };
 
+/**
+ * Type representing the route props for the 'View_Post' screen.
+ *
+ * @typedef {RouteProp<PostStackParamList, 'View_Post'>} ViewPostScreenRouteProp
+ */
+type ViewPostScreenRouteProp = RouteProp<PostStackParamList, 'View_Post'>;
+
+/**
+ * Type representing the navigation props for the 'View_Post' screen.
+ *
+ * @typedef {NavigationProp<PostStackParamList, 'View_Post'>} ViewPostScreenNavigationProp
+ */
+type ViewPostScreenNavigationProp = NavigationProp<PostStackParamList, 'View_Post'>
+
+/**
+ * Props type for the 'View_Post' screen.
+ *
+ * @typedef {Object} ViewPostProps
+ * @property {ViewPostScreenRouteProp} route - Route props for navigation.
+ * @property {ViewPostScreenNavigationProp} navigation - Navigation props for navigation.
+ */
+type ViewPostProps = {
+  route: ViewPostScreenRouteProp;
+  navigation: ViewPostScreenNavigationProp;
+}
 /**
  * PostListRendererProps interface for PostListRenderer component.
  *
@@ -295,8 +328,7 @@ interface PostListRendererProps{
   isHeaderInNeed: boolean,
   location?:[],
   locationPermission?:boolean|null
-  //navigation: NavigationProp<PostStackParamList, 'View_Post'>,
-  //route: RouteProp<PostStackParamList, 'View_Post'>;
+  navigation?: any
 }
 
 /**
@@ -328,4 +360,5 @@ export {
   type PostProps,
   type PostListRendererProps,
   type SelectRangeBarProps,
+  type ViewPostProps,
 };

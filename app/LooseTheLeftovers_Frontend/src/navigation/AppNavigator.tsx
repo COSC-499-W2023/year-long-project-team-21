@@ -6,7 +6,7 @@ import Login from '../screens/Login';
 import Instruction from '../screens/Instruction';
 
 import Home from '../screens/Home';
-
+import View_Post from '../screens/View_Post';
 import CreateAd from '../screens/CreateAd';
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +18,11 @@ const AppNavigator = () => {
         name="Instruction"
         component={Instruction}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="View_Post"
+        component={View_Post}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Home"

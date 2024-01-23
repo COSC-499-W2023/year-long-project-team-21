@@ -28,11 +28,14 @@ const Button: React.FC<ButtonProps> = ({
   textSize,
   buttonSize,
   testID,
+  borderRadius,
+  color
+  
 }) => {
   // If any custom values are passed as props, apply them, default otherwise
   // Set Default/Custom Button style
   const buttonStyles = {
-    backgroundColor: global.background, // You can set a default background color or remove this line
+    backgroundColor: color || global.background, // You can set a default background color or remove this line
     borderColor: borderColor || global.secondary, // Use the provided borderColor or a default value
     width: buttonSize || 250, // Use the provided buttonSize or a default value
     testID: testID || 'button',
@@ -46,7 +49,6 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <>
-      <View style={styles.space} />
       <TouchableOpacity
         style={[styles.button, buttonStyles]}
         onPress={onPress}

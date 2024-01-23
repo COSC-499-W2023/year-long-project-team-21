@@ -9,11 +9,17 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import tinycolor from 'tinycolor2';
 import generateHomeScreenCardStyles from '../styles/postStyles';
 import { global } from '../common/global_styles';
 import { useColorScheme } from 'react-native';
-
+import {
+  renderHiddenIcon,
+  getCardColors,
+  renderPostImage,
+  render_Card_Back,
+  render_Card_Middle,
+  render_Icons
+} from '../common/postUtils';
 /**
  * Post Component
  *
@@ -36,6 +42,7 @@ const Post: React.FC<PostProps> = ({
   image,
   expiryDate,
   category,
+  navigation,
 }: PostProps): JSX.Element => {
   const screenWidth = Dimensions.get('window').width;
   const scaleValue = useRef(new Animated.Value(1)).current;
@@ -43,7 +50,6 @@ const Post: React.FC<PostProps> = ({
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
-
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
     checkDietaryOption(category);
@@ -65,32 +71,6 @@ const Post: React.FC<PostProps> = ({
   };
 
   /**
-   * Calculates different shades of a color for the post card.
-   *
-   * @function
-   * @private
-   * @param {string} color - The base color.
-   * @returns {Object} Object containing lightColor, originalColor, and middleColor.
-   */
-  const getCardColors = (color: string[]) => {
-    let swapBuffer = '';
-    // Original Color
-    let originalColor = color[0];
-    // Darker Shade
-    const middleColor = color[1];
-    // Lighter Shade
-    let lightColor = color[2];
-
-    if (useColorScheme() !== 'dark') {
-      swapBuffer = originalColor;
-      originalColor = lightColor;
-      lightColor = swapBuffer;
-    }
-
-    return { lightColor, originalColor, middleColor };
-  };
-
-  /**
    * Handles the click event on the post card.
    *
    * @function
@@ -99,7 +79,7 @@ const Post: React.FC<PostProps> = ({
    */
   const handleCardClick = () => {
     console.log('tapped:', id);
-    // navigation.navigate('View_Post', { postId: id })
+    navigation.navigate('View_Post', { postId: id });
   };
 
   /**
@@ -131,78 +111,6 @@ const Post: React.FC<PostProps> = ({
   };
 
   /**
-   * Renders a hidden icon based on visibility and source.
-   *
-   * @function
-   * @private
-   * @param {boolean} isVisible - Flag indicating whether the icon should be visible.
-   * @param {ImageSourcePropType} source - Source for the icon image.
-   * @returns {JSX.Element | null} The rendered icon or null if not visible.
-   */
-  const renderHiddenIcon = (
-    isVisible: boolean,
-    source: ImageSourcePropType,
-  ) => {
-    return isVisible ? (
-      <Icon
-        source={source}
-        imageStyle={cardStyles.dietary_icon_style}
-        testID="hiddenIcons"
-      />
-    ) : null;
-  };
-
-  /**
-   * Renders the main image for the post.
-   *
-   * @function
-   * @private
-   * @returns {JSX.Element} The rendered image component.
-   */
-  const renderPostImage = () => {
-    return (
-      <Icon
-        source={require('../assets/banana.png')}
-        imageStyle={cardStyles.post_image_style}
-      />
-    );
-  };
-
-  /**
-   * Renders the back part of the post card.
-   *
-   * @function
-   * @private
-   * @returns {JSX.Element} The rendered back card component.
-   */
-  const render_Card_Back = () => {
-    return (
-      <Card style={cardStyles.card_back}>
-        <Card.Content>
-          <Title children={undefined} />
-        </Card.Content>
-      </Card>
-    );
-  };
-
-  /**
-   * Renders the middle part of the post card.
-   *
-   * @function
-   * @private
-   * @returns {JSX.Element} The rendered middle card component.
-   */
-  const render_Card_Middle = () => {
-    return (
-      <Card style={cardStyles.card_middle}>
-        <Card.Content>
-          <Title children={undefined} />
-        </Card.Content>
-      </Card>
-    );
-  };
-
-  /**
    * Renders the front part of the post card.
    *
    * @function
@@ -216,9 +124,9 @@ const Post: React.FC<PostProps> = ({
           <View style={cardStyles.front_container}>
             <Title style={cardStyles.card_title_style}>{title}</Title>
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
-            {render_Icons()}
+            {render_Icons(cardStyles.card_dietaryIcons_wrapper_style, cardStyles.dietary_icon_style,showNutIcon,showVeganIcon,showGlutenFreeIcon)}
             <View style={cardStyles.card_image_wrapper_style}>
-              {renderPostImage()}
+              {renderPostImage(cardStyles.post_image_style)}
             </View>
           </View>
         </Card.Content>
@@ -226,35 +134,47 @@ const Post: React.FC<PostProps> = ({
     );
   };
 
-  /**
-   * Renders dietary icons based on the color mode.
-   *
-   * @function
-   * @private
-   * @returns {JSX.Element} The rendered dietary icons.
-   */
-  const render_Icons = () => {
-    const icons = {
-      dark: [
-        require('../assets/nut_dark.png'),
-        require('../assets/gluten-free_dark.png'),
-        require('../assets/vegan_dark.png'),
-      ],
-      light: [
-        require('../assets/nut.png'),
-        require('../assets/gluten-free.png'),
-        require('../assets/vegan.png'),
-      ],
-    };
+  // /**
+  //  * Renders dietary icons based on the color mode.
+  //  *
+  //  * @function
+  //  * @private
+  //  * @returns {JSX.Element} The rendered dietary icons.
+  //  */
+  // const render_Icons = () => {
+  //   const icons = {
+  //     dark: [
+  //       require('../assets/nut_dark.png'),
+  //       require('../assets/gluten-free_dark.png'),
+  //       require('../assets/vegan_dark.png'),
+  //     ],
+  //     light: [
+  //       require('../assets/nut.png'),
+  //       require('../assets/gluten-free.png'),
+  //       require('../assets/vegan.png'),
+  //     ],
+  //   };
 
-    return (
-      <View style={cardStyles.card_dietaryIcons_wrapper_style}>
-        {renderHiddenIcon(showNutIcon, icons.dark[0])}
-        {renderHiddenIcon(showGlutenFreeIcon, icons.dark[1])}
-        {renderHiddenIcon(showVeganIcon, icons.dark[2])}
-      </View>
-    );
-  };
+  //   return (
+  //     <View style={cardStyles.card_dietaryIcons_wrapper_style}>
+  //       {renderHiddenIcon(
+  //         showNutIcon,
+  //         icons.dark[0],
+  //         cardStyles.dietary_icon_style,
+  //       )}
+  //       {renderHiddenIcon(
+  //         showGlutenFreeIcon,
+  //         icons.dark[1],
+  //         cardStyles.dietary_icon_style,
+  //       )}
+  //       {renderHiddenIcon(
+  //         showVeganIcon,
+  //         icons.dark[2],
+  //         cardStyles.dietary_icon_style,
+  //       )}
+  //     </View>
+  //   );
+  // };
 
   /**
    * Assigns a random color scheme for the post card.
@@ -288,8 +208,8 @@ const Post: React.FC<PostProps> = ({
       onPressOut={handlePressOut}>
       <View style={cardStyles.wrapper_style}>
         <Animated.View style={cardStyles.animation_style}>
-          {render_Card_Back()}
-          {render_Card_Middle()}
+          {render_Card_Back(cardStyles.card_back)}
+          {render_Card_Middle(cardStyles.card_middle)}
           {render_Card_Front()}
         </Animated.View>
       </View>

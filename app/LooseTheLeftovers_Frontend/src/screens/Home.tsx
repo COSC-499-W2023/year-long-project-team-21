@@ -11,6 +11,7 @@ import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import PostListRenderer from '../components/PostListRenderer';
 import LocationService from '../common/LocationService';
+import View_Post from './View_Post';
 const Home = ({ navigation }: { navigation: any }) => {
   const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   const checkLocationPermission = async () => {
@@ -30,7 +31,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBar>
 
       <View style={globalscreenstyles.body}>
-        <PostListRenderer isHeaderInNeed={true} locationPermission={hasLocationPermission}/>
+        <PostListRenderer isHeaderInNeed={true} locationPermission={hasLocationPermission} navigation={navigation}/>
       </View>
 
       <TabBar
