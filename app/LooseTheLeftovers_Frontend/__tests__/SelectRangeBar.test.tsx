@@ -14,4 +14,4 @@ describe('SelectRangeBar', () => {
 });
 
 
-//*************Testing seems Officially not supported*/
+//*************Testing seems Officially not supported for dropdown picker compoenmt*/

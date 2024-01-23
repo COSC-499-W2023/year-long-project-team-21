@@ -116,7 +116,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return (
       <View style={postListStyles.listHeder}>
         <View style={postListStyles.titleContainer}>
-          <Title style={postListStyles.title}>Showing Posts Nearby</Title>
+          <Title style={postListStyles.title} testID='header title'>Showing Posts Nearby</Title>
         </View>
         <View style={postListStyles.dropdownHeader}>
           <SelectRangeBar onSelectRange={handleSelectRange} />
