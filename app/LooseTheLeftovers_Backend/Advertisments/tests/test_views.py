@@ -9,6 +9,7 @@ from rest_framework.test import APIClient
 class TestModels(TestSetUpCreateAdvertisment):
 
     __create_ad_url = reverse("create-ad")
+    __get_ad_url = reverse("ads")
 
     def test_post_new_ad(self):
         """
@@ -149,3 +150,21 @@ class TestModels(TestSetUpCreateAdvertisment):
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    def test_get_single_ad(self):
+        """
+        Test if single ad can be retrieved via GET request. Expect HTTP_200_OK response and the ad
+        information in returned as json
+        """
+        # TODO: also needs to assert the ad image was returned
+        client = APIClient()
+
+        # get request and assert valid response
+        data = {'ad_id': 1}
+        response = client.get(
+            self.__get_ad_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
