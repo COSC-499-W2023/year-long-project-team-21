@@ -7,14 +7,27 @@ const styles = StyleSheet.create({
       backgroundColor: global.background,
     },
     tabcontainer: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
         paddingBottom: 15,
         paddingTop: 15,
         borderTopColor: '#ccc',
         borderTopWidth: 1,
+    },
+    chatItem: {
+      backgroundColor: global.background,
+      padding: 15,
+      borderWidth: 1,
+      borderColor: '#555',
+      borderRadius: 15,
+    },
+    chatItemName: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: 18,
+      marginBottom: 5,
+    },
+    chatItemMessage: {
+      color: '#fff',
+      fontSize: 15,
     },
 });
 
