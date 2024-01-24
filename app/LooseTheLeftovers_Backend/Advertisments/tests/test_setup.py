@@ -49,4 +49,7 @@ class TestSetUpCreateAdvertisment(APITestCase):
 
     def tearDown(self):
         os.remove(self.image_path)
+        for file in os.listdir('media/images'):
+            if file.startswith('test'):
+                os.remove(os.path.join('media/images', file))
         return super().tearDown()
