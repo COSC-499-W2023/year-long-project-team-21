@@ -6,8 +6,7 @@ import {
   storeUserSession,
 } from '../../src/common/EncryptedSession';
 import { BASE_URL, refEndpoint, loginEndpoint } from '../common/API';
-
-//const BASE_URL: string = 'http://10.0.2.2:8000/';
+import NavigationService from './NavigationService';
 
 /**
  * Function to configure Axios request defaults.
@@ -120,8 +119,7 @@ export class SecureAPIReq {
    */
   constructor(session: any, baseUrl?: string) {
     // this should change to redirecting the user to login or something fine for now
-    if (session === null)
-      throw new Error('Error: login before requesting private endpoint');
+    if (session === null) NavigationService.navigate('Login'); // this is where I want to log in.
     // assign session to object so we have reference to it
     this.currentSesh = session;
     // init instance

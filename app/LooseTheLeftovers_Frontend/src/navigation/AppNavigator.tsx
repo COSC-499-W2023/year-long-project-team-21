@@ -10,8 +10,8 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Registration"
-        component={Registration}
+        name="Instruction"
+        component={Instruction}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -20,8 +20,8 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Instruction"
-        component={Instruction}
+        name="Register"
+        component={Registration}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
