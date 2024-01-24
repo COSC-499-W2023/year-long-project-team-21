@@ -1,8 +1,9 @@
 from rest_framework.response import Response 
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from Advertisments.api.serializers import AdvertismentSerializer, ImageSerializer
+from Advertisments.models import Advertisment
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -66,3 +67,63 @@ def create_advertisment(request):
 
     # return 201 response indicating ad was created successfully
     return Response(ad_serializer.validated_data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_advertisment(request, *args, **kwargs):
+    '''
+    GET request to handle retrieving ads from the database. Retrieving ads does not require a logged in user
+    so no token has to be provided.
+
+    This method will return a single ad or multiple ads depending on the passed parameters:
+
+    if ad_id is passed, only the single ad matching that primary key is returned
+    if user_id is passed, all ads created by that user will be returned
+    if neither ad_id or user_id as passed all ads in the database are returned
+    '''
+    
+    # TODO: also get and return images for ads
+
+    # if ad id was passed, return single ad
+    ad_id = kwargs.get("ad_id", None)
+    if ad_id is not None:
+        try:
+            # query ad
+            ad = Advertisment.objects.get(pk=ad_id)
+            # send to serializer to package data
+            serializer = AdvertismentSerializer(ad)
+            # send response, 200 ok
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            # send problem response and server error
+            response = {"message": "Error retrieving ad"}
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    # if user id was passed, return all ads created by that user
+    user_id = kwargs.get("user_id", None)
+    if user_id is not None:
+        try:
+            # query ad
+            user_ads = Advertisment.objects.filter(user_id=user_id)
+            # send to serializer to package data
+            serializer = AdvertismentSerializer(user_ads, many=True)
+            # send response, 200 ok
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            # send problem response and server error
+            response = {"message": "Error retrieving user's ads"}
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    # if neither ad_id or user_id was passed return all ads
+    #   TODO: add pagination to only return a certain number of ads at a time
+    try:
+        # query ad
+        all_ads = Advertisment.objects.all()
+        # send to serializer to package data
+        serializer = AdvertismentSerializer(all_ads, many=True)
+        # send response, 200 ok
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        # send problem response and server error
+        response = {"message": "Error retrieving all ads"}
+        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
