@@ -17,7 +17,7 @@ import { type ImagePickerButtonProps } from '../common/Types';
  *   <ImagePickerButton />
  * )
  */
-const ImagePickerButton: React.FC<ImagePickerButtonProps> = () => {
+const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ onImagePicked }) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const testID = 'image-picker';
 
@@ -30,7 +30,9 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = () => {
 
     // Check if the uri is not undefined before updating the state
     if (result.assets && result.assets[0].uri) {
+      console.log(result.assets[0].uri);
       setImageUri(result.assets[0].uri);
+      onImagePicked(result.assets[0].uri);
     }
   };
 
