@@ -39,6 +39,7 @@ const Button: React.FC<ButtonProps> = ({
     borderColor: borderColor || global.secondary, // Use the provided borderColor or a default value
     width: buttonSize || 250, // Use the provided buttonSize or a default value
     testID: testID || 'button',
+    borderRadius: borderRadius,
   };
 
   // Set Default/Custom Button style

@@ -134,48 +134,6 @@ const Post: React.FC<PostProps> = ({
     );
   };
 
-  // /**
-  //  * Renders dietary icons based on the color mode.
-  //  *
-  //  * @function
-  //  * @private
-  //  * @returns {JSX.Element} The rendered dietary icons.
-  //  */
-  // const render_Icons = () => {
-  //   const icons = {
-  //     dark: [
-  //       require('../assets/nut_dark.png'),
-  //       require('../assets/gluten-free_dark.png'),
-  //       require('../assets/vegan_dark.png'),
-  //     ],
-  //     light: [
-  //       require('../assets/nut.png'),
-  //       require('../assets/gluten-free.png'),
-  //       require('../assets/vegan.png'),
-  //     ],
-  //   };
-
-  //   return (
-  //     <View style={cardStyles.card_dietaryIcons_wrapper_style}>
-  //       {renderHiddenIcon(
-  //         showNutIcon,
-  //         icons.dark[0],
-  //         cardStyles.dietary_icon_style,
-  //       )}
-  //       {renderHiddenIcon(
-  //         showGlutenFreeIcon,
-  //         icons.dark[1],
-  //         cardStyles.dietary_icon_style,
-  //       )}
-  //       {renderHiddenIcon(
-  //         showVeganIcon,
-  //         icons.dark[2],
-  //         cardStyles.dietary_icon_style,
-  //       )}
-  //     </View>
-  //   );
-  // };
-
   /**
    * Assigns a random color scheme for the post card.
    *

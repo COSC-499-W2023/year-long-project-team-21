@@ -60,17 +60,17 @@ export const renderHiddenIcon = (
       <View style={dietary_wrapper_style}>
         {renderHiddenIcon(
           showNutIcon,
-          icons.dark[0],
+          icons.light[0],
           icon_style,
         )}
         {renderHiddenIcon(
           showGlutenFreeIcon,
-          icons.dark[1],
+          icons.light[1],
           icon_style,
         )}
         {renderHiddenIcon(
           showVeganIcon,
-          icons.dark[2],
+          icons.light[2],
           icon_style,
         )}
       </View>
@@ -94,7 +94,7 @@ export const getCardColors = (color: string[]) => {
   // Lighter Shade
   let lightColor = color[2];
 
-  if (useColorScheme() !== 'dark') {
+  if (useColorScheme() === 'dark') {
     swapBuffer = originalColor;
     originalColor = lightColor;
     lightColor = swapBuffer;

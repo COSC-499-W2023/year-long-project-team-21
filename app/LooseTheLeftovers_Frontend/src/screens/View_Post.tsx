@@ -11,14 +11,18 @@ import {
   render_Card_Back,
   render_Card_Middle,
   getCardColors,
-  render_Icons
+  render_Icons,
 } from '../common/postUtils';
 import { global } from '../common/global_styles';
 import generateViewPostStyles from '../styles/view_postStyles';
 import Button from '../components/Button';
+
 const View_Post: React.FC<ViewPostProps> = ({ route }) => {
   const { postId } = route.params;
-  const styles = generateViewPostStyles(getCardColors(global.post_color.expiry_long))
+  const post_color = global.post_color.expiry_long
+  const styles = generateViewPostStyles(
+    getCardColors(post_color),
+  );
   // useEffect(() => {
   //   // Make a POST request to the backend API
   //   const fetchData = async () => {
@@ -54,16 +58,32 @@ const View_Post: React.FC<ViewPostProps> = ({ route }) => {
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
     return (
       <Card style={style}>
-        <Card.Content style = {styles.front_container} >
-          
-            <Title style={styles.title}>title</Title>
-            <Title style={styles.expiry}>2days</Title>
-            <Text style={styles.description}>Fresh salmon fillet grilled to perfection, served with lemon and herbs.</Text>
-            {render_Icons(styles.dietary_icons_wrapper,styles.dietary_icons, true, true, true)}
-            <View style={styles.message_button}>
-            <Button title='message' onPress={()=>{console.log('hi')}}/> 
-            </View>
-          
+        <Card.Content style={styles.front_container}>
+          <Title style={styles.title}>title</Title>
+          <Title style={styles.expiry}>2days</Title>
+          <Text style={styles.description}>
+            Fresh salmon fillet grilled to perfection, served with lemon and
+            herbs.  
+          </Text>
+          {render_Icons(
+            styles.dietary_icons_wrapper,
+            styles.dietary_icons,
+            true,
+            true,
+            true,
+          )}
+          <View style={styles.message_button}>
+            <Button
+              title="message"
+              onPress={() => {
+                console.log('hi');
+              }}
+              borderRadius={0.05 * Dimensions.get('window').width}
+              color= {post_color[1]}
+              borderColor={post_color[1]}
+              textColor= {global.secondary}
+            />
+          </View>
         </Card.Content>
       </Card>
     );

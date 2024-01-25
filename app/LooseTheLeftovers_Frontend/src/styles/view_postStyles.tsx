@@ -1,5 +1,5 @@
 import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
-
+import {global} from '../common/global_styles'
 const generateViewPostStyles = (  colors: { lightColor: string; middleColor: string; originalColor: string },
     ) => StyleSheet.create({
   image_container: {
@@ -43,13 +43,13 @@ const generateViewPostStyles = (  colors: { lightColor: string; middleColor: str
   },
   title:{
     fontSize: 30,
-    color: 'black', // could be black in light mode
+    color: global.secondary, // could be black in light mode
 },
   expiry: {
-    color: 'black'
+    color: global.secondary
   },
   description: {
-    color: 'black'
+    color: global.secondary
   },
   dietary_icons_wrapper: {
     flexDirection: 'row',

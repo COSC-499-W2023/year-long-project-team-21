@@ -31,7 +31,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBar>
 
       <View style={globalscreenstyles.body}>
-        <PostListRenderer isHeaderInNeed={true} locationPermission={hasLocationPermission} navigation={navigation}/>
+        <PostListRenderer isHeaderInNeed={true}  navigation={navigation}/>
       </View>
 
       <TabBar

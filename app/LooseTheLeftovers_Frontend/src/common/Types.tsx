@@ -339,7 +339,7 @@ interface PostListRendererProps{
  */
 
 interface SelectRangeBarProps {
-  onSelectRange: (selectedRange: number) => void;
+  onSelectRange: (selectedRange: string) => void;
 }
 
 export {

@@ -1,5 +1,5 @@
 import { Animated, StyleSheet } from 'react-native';
-
+import {global} from '../common/global_styles'
 const generateHomeScreenCardStyles = (
   card_height: number,
   card_width: number,
@@ -53,7 +53,7 @@ const generateHomeScreenCardStyles = (
       height: card_height*0.9,
     },
     card_title_style: {
-      color: 'black', // could be black in light mode
+      color: global.secondary, // could be black in light mode
       fontSize: 0.07 * screenWidth,
     },
     card_expiry_style: {

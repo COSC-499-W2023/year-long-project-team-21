@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import generateSelectRangeBarStyles from '../styles/SelectRangeBarStyles';
@@ -28,14 +28,14 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
    * @property {number} value - The selected value from the dropdown picker.
    */
   const [item, setSelectedItem] = useState([
-    { label: 'All location', value: -1, testID: 'dropdown-item-all' },
-    { label: '1 km', value: 1, testID: 'dropdown-item-1' },
-    { label: '5 km', value: 5, testID: 'dropdown-item-5' },
-    { label: '10 km', value: 10, testID: 'dropdown-item-10' },
-    { label: '20 km', value: 20, testID: 'dropdown-item-20' },
+    { label: 'All location', value: '-1', testID: 'dropdown-item-all' },
+    { label: '1 km', value: '1', testID: 'dropdown-item-1' },
+    { label: '5 km', value: '5', testID: 'dropdown-item-5' },
+    { label: '10 km', value: '10', testID: 'dropdown-item-10' },
+    { label: '20 km', value: '20', testID: 'dropdown-item-20' },
   ]);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(-1);
+  const [value, setValue] = useState<string>('');
   const styles = generateSelectRangeBarStyles(screenWidth);
 
   /**
@@ -46,12 +46,12 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
    * @param {number | null} newValue - The newly selected value from the dropdown picker.
    * @returns {void}
    */
-  const handleDropDownChange = (newValue: number | null) => {
+  const handleDropDownChange = (newValue: string | null) => {
     try {
-      if (typeof newValue === 'number') {
+      if (typeof newValue === 'string') {
         // Ensure that newValue is a valid number or null before setting the state
         setValue(newValue);
-        onSelectRange && onSelectRange(newValue as number);
+        onSelectRange && onSelectRange(newValue);
       }
     } catch (error) {
       console.error('Error handling dropdown change:', error);
@@ -61,8 +61,7 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
   return (
     <DropDownPicker
       testID="select-radius-dropdown"
-      placeholder="Select Radius"
-      open={open}
+      placeholder={value !=='' ? value : "Select Radius"}      open={open}
       value={value}
       items={item}
       setOpen={setOpen}
@@ -81,4 +80,4 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
   );
 };
 
-export default SelectRangeBar;
+export default memo(SelectRangeBar);

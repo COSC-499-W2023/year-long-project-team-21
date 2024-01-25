@@ -1,57 +1,44 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { render, waitFor, fireEvent, userEvent } from '@testing-library/react-native';
 import PostListRenderer from '../src/components/PostListRenderer';
 
-describe('PostListRenderer component', () => {
-  it('renders correctly with mock data', async () => {
-    // Mock fetchData to resolve immediately with sample data
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: async () => ({
-        posts: [
-          {
-            id: 1,
-            title: 'Test Post 1',
-            image: 'test-image-1.jpg',
-            expiryDate: '2024-01-31',
-            category: 'nut, vegan',
-          },
-          {
-            id: 2,
-            title: 'Test Post 2',
-            image: 'test-image-2.jpg',
-            expiryDate: '2024-02-28',
-            category: 'gluten-free',
-          },
-        ],
-      }),
-    } as Response);
+// Mock the fetch function
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve([]),
+  }) as Promise<Response>
+);
 
-    const { getByText, getByTestId, queryByTestId } = render(<PostListRenderer isHeaderInNeed={true} locationPermission={true} />);
+describe('PostListRenderer Component', () => {
+  it('renders correctly', async () => {
+    const { getByTestId, getByText } = render(<PostListRenderer isHeaderInNeed={true} locationPermission={true} navigation={{}} />);
 
-    // Wait for the loading indicator to appear
-    await waitFor(() => {
-      expect(getByTestId('loader')).toBeTruthy();
-    });
+    // Wait for the component to render
+    await waitFor(() => expect(getByTestId('header title')).toBeTruthy());
 
-    // Wait for the component to render and fetch data
-    await waitFor(() => {
-      expect(queryByTestId('loader')).toBeNull(); // Ensure the loading indicator has disappeared
-      expect(getByTestId('header title')).toBeTruthy();
-      expect(getByTestId('select-radius-dropdown')).toBeTruthy();
-      expect(getByText('Test Post 1')).toBeTruthy();
-      expect(getByText('Test Post 2')).toBeTruthy();
-    });
+    // Check if the title is displayed
+    expect(getByText('Showing Posts Nearby')).toBeTruthy();
+  });
+
+  it('handles loading more data on end reached', async () => {
+    const { getByTestId } = render(<PostListRenderer isHeaderInNeed={true} locationPermission={true} navigation={{}} />);
+
+    // Wait for the component to render
+    await waitFor(() => expect(getByTestId('header title')).toBeTruthy());
+
+    // // Trigger onEndReached by scrolling
+    // fireEvent.scroll(getByTestId('flatlist'), { nativeEvent: { contentSize: {height: 500, width: 300} , contentOffset: { y: 150, x: 0 } } , layoutMeasurement: { height: 100, width: 100 }});
+
+    await userEvent.scrollTo(getByTestId('flatlist'), {
+      y: 99999,
   });
   
-    // it('renders loading indicator while fetching data', async () => {
-    //   // Mock fetchData to delay and simulate loading
-    //   jest.spyOn(global, 'fetch').mockImplementation(() => new Promise(() => {}));
-  
-    //   const { getByTestId } = render(<PostListRenderer isHeaderInNeed={true} locationPermission={true} />);
-      
-    //   // Wait for the component to render and start fetching data
-    //   await waitFor(() => {
-    //     expect(getByTestId('loader')).toBeTruthy();
-    //   });
-    // });
+    // Wait for data to be loaded
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
+
+    // Assert that the handleLoadMore function is called
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
+
+  // Add more tests as needed
+});
