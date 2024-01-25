@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import globalscreenstyles from '../common/global_ScreenStyles';
 import tabBarStyles from '../styles/tabBarStyles';
 import { TabBarProps } from '../common/Types';
 

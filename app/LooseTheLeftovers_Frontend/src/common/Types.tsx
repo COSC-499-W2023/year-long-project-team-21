@@ -178,7 +178,13 @@ interface ImageTextProps {
   text: string;
   textSize?: number;
 }
-
+interface UserInfoProps {
+  userInfoKeys: (keyof UserInfoData)[];
+}
+interface UserInfoData {
+  username: string;
+  email: string;
+}
 export {
   type ButtonProps,
   type HeaderProps,
@@ -190,4 +196,5 @@ export {
   type AllIconProps,
   type TabBarProps,
   type ImageTextProps,
+  type UserInfoProps,
 };
