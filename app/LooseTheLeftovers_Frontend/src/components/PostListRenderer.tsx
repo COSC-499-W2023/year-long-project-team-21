@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
 import postData from '../assets/fake_post_data.json';
@@ -94,7 +94,21 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @param {Object} params - Parameters for rendering the post item.
    * @param {PostProps} params.item - The post item to be rendered.
    */
-  const renderPostItem = ({ item }: { item: PostProps }) => {
+  // const renderPostItem = ({ item }: { item: PostProps }) => {
+  //   return (
+  //     <View style={postListStyles.postContainer}>
+  //       <Post
+  //         id={item.id}
+  //         title={item.title}
+  //         image={item.image}
+  //         expiryDate={item.expiryDate}
+  //         category={item.category}
+  //         navigation={navigation}
+  //       />
+  //     </View>
+  //   );
+  // };
+  const renderPostItem = useCallback(({ item }: { item: PostProps }) => {
     return (
       <View style={postListStyles.postContainer}>
         <Post
@@ -107,7 +121,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         />
       </View>
     );
-  };
+  }, [navigation]);
 
   /**
    * @function
@@ -126,7 +140,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @description
    * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
    */
-  const renderHeader_Home = () => {
+  const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
         <View style={postListStyles.titleContainer}>
@@ -139,7 +153,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         </View>
       </View>
     );
-  };
+  });
 
   /**
    * @function
@@ -166,6 +180,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const handleLoadMore = async () => {
     setIsLoading(true);
+    console.log(stopFetchMore)
     if (!stopFetchMore) {
       console.log('Loading more data...');
       await fetchData(lastItemIndex);
@@ -173,6 +188,9 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     }
     setIsLoading(false);
   };
+
+  const keyExtractor = useCallback((item: { id: { toString: () => any; }; }) => item.id.toString(), []);
+
 
   return (
     <FlatList
@@ -185,7 +203,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
       data={posts}
-      keyExtractor={item => item.id.toString()} // Replace 'id' with your post identifier
+      keyExtractor=  {keyExtractor}// Replace 'id' with your post identifier
       renderItem={renderPostItem}
       ListHeaderComponent={
         isHeaderInNeed ? renderHeader_Home : renderHeader_Profile
@@ -197,4 +215,4 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   );
 };
 
-export default PostListRenderer;
+export default memo(PostListRenderer);

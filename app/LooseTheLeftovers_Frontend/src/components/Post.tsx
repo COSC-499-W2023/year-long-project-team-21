@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { type PostProps } from '../common/Types';
 import { Card, Title } from 'react-native-paper';
 import Icon from '../components/Icon';
@@ -175,4 +175,4 @@ const Post: React.FC<PostProps> = ({
   );
 };
 
-export default Post;
+export default memo(Post);
