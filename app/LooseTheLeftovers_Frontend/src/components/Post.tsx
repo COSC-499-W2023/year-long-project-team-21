@@ -18,7 +18,7 @@ import {
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
-  render_Icons
+  render_Icons,
 } from '../common/postUtils';
 /**
  * Post Component
@@ -124,7 +124,13 @@ const Post: React.FC<PostProps> = ({
           <View style={cardStyles.front_container}>
             <Title style={cardStyles.card_title_style}>{title}</Title>
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
-            {render_Icons(cardStyles.card_dietaryIcons_wrapper_style, cardStyles.dietary_icon_style,showNutIcon,showVeganIcon,showGlutenFreeIcon)}
+            {render_Icons(
+              cardStyles.card_dietaryIcons_wrapper_style,
+              cardStyles.dietary_icon_style,
+              showNutIcon,
+              showVeganIcon,
+              showGlutenFreeIcon,
+            )}
             <View style={cardStyles.card_image_wrapper_style}>
               {renderPostImage(cardStyles.post_image_style)}
             </View>

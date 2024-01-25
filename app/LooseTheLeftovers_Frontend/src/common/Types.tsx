@@ -305,7 +305,10 @@ type ViewPostScreenRouteProp = RouteProp<PostStackParamList, 'View_Post'>;
  *
  * @typedef {NavigationProp<PostStackParamList, 'View_Post'>} ViewPostScreenNavigationProp
  */
-type ViewPostScreenNavigationProp = NavigationProp<PostStackParamList, 'View_Post'>
+type ViewPostScreenNavigationProp = NavigationProp<
+  PostStackParamList,
+  'View_Post'
+>;
 
 /**
  * Props type for the 'View_Post' screen.
@@ -317,18 +320,18 @@ type ViewPostScreenNavigationProp = NavigationProp<PostStackParamList, 'View_Pos
 type ViewPostProps = {
   route: ViewPostScreenRouteProp;
   navigation: ViewPostScreenNavigationProp;
-}
+};
 /**
  * PostListRendererProps interface for PostListRenderer component.
  *
  * @interface
  * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
  */
-interface PostListRendererProps{
-  isHeaderInNeed: boolean,
-  location?:[],
-  locationPermission?:boolean|null
-  navigation?: any
+interface PostListRendererProps {
+  isHeaderInNeed: boolean;
+  location?: [];
+  locationPermission?: boolean | null;
+  navigation?: any;
 }
 
 /**

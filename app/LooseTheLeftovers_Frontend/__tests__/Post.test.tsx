@@ -6,7 +6,7 @@ describe('Post Component', () => {
   const mockPost = {
     id: 1,
     title: 'Sample Post',
-    description: "this is sample description", 
+    description: 'this is sample description',
     image: '/sample-image.jpg',
     expiryDate: '2024-12-31',
     category: 'nut',
@@ -14,7 +14,7 @@ describe('Post Component', () => {
 
   it('renders without crashing', () => {
     const { getByText, getByTestId } = render(<Post {...mockPost} />);
-    
+
     // Check if the title is rendered
     const titleElement = getByText(mockPost.title);
     expect(titleElement).toBeTruthy();
@@ -28,15 +28,15 @@ describe('Post Component', () => {
     expect(nutIcon).toBeTruthy();
   });
 
-//   it('handles click events', async () => {
-//     const { getByText } = render(<Post {...mockPost} />);
+  //   it('handles click events', async () => {
+  //     const { getByText } = render(<Post {...mockPost} />);
 
-//     // Trigger a click event on the component
-//     fireEvent.press(getByText(mockPost.title));
+  //     // Trigger a click event on the component
+  //     fireEvent.press(getByText(mockPost.title));
 
-//     // Wait for animations to complete (if any)
-//     await waitFor(() => {
-//       // Add any assertions or expectations for the post-click state if needed
-//     });
-//   });
+  //     // Wait for animations to complete (if any)
+  //     await waitFor(() => {
+  //       // Add any assertions or expectations for the post-click state if needed
+  //     });
+  //   });
 });

@@ -1,5 +1,5 @@
 import { Animated, StyleSheet } from 'react-native';
-import {global} from '../common/global_styles'
+import { global } from '../common/global_styles';
 const generateHomeScreenCardStyles = (
   card_height: number,
   card_width: number,
@@ -25,7 +25,7 @@ const generateHomeScreenCardStyles = (
       backgroundColor: colors.lightColor,
       zIndex: -3,
       marginLeft: 0.01 * screenWidth, // margin from left side screen
-      elevation:5,
+      elevation: 5,
     },
     card_middle: {
       height: card_height,
@@ -34,7 +34,7 @@ const generateHomeScreenCardStyles = (
       backgroundColor: colors.middleColor,
       zIndex: -2,
       marginLeft: -0.75 * screenWidth, // Slightly overlapping the previous card
-      elevation:5,
+      elevation: 5,
     },
     card_front: {
       height: card_height,
@@ -45,12 +45,12 @@ const generateHomeScreenCardStyles = (
       flexDirection: 'column',
       marginLeft: -0.75 * screenWidth, // No overlap for the front card
       justifyContent: 'center', // Center content vertically
-      elevation:5,
+      elevation: 5,
     },
     front_container: {
       justifyContent: 'space-evenly', // Center content vertically
-      flexDirection:'column',
-      height: card_height*0.9,
+      flexDirection: 'column',
+      height: card_height * 0.9,
     },
     card_title_style: {
       color: global.secondary, // could be black in light mode
@@ -63,23 +63,22 @@ const generateHomeScreenCardStyles = (
     },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
-      width: card_width*0.45,
-      justifyContent:'flex-start'
+      width: card_width * 0.45,
+      justifyContent: 'flex-start',
     },
     card_image_wrapper_style: {
       position: 'absolute',
-      right: card_width*0.05,
-      top: card_height*0.3,
+      right: card_width * 0.05,
+      top: card_height * 0.3,
     },
     dietary_icon_style: {
-      height: card_height*0.2,
-      paddingLeft: card_width*0.15
+      height: card_height * 0.2,
+      paddingLeft: card_width * 0.15,
     },
     post_image_style: {
-      width: card_width*0.35, 
-      height: card_height*0.5 
-    }
-
+      width: card_width * 0.35,
+      height: card_height * 0.5,
+    },
   });
 
 export default generateHomeScreenCardStyles;

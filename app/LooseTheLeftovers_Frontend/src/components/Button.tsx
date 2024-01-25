@@ -4,7 +4,6 @@ import styles from '../styles/buttonStyles';
 import { global } from '../common/global_styles';
 import { type ButtonProps } from '../common/Types';
 
-
 /**
  * Button component.
  *
@@ -29,8 +28,7 @@ const Button: React.FC<ButtonProps> = ({
   buttonSize,
   testID,
   borderRadius,
-  color
-  
+  color,
 }) => {
   // If any custom values are passed as props, apply them, default otherwise
   // Set Default/Custom Button style
