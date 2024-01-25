@@ -5,7 +5,7 @@ import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
 import LocationService from '../common/LocationService';
 import SelectRangeBar from './SelectRangeBar';
-import {Title } from 'react-native-paper';
+import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
 
@@ -27,6 +27,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     fetchData(0);
   }, [!stopFetchMore]);
 
+  /**
+   * Makes an asynchronous request to the backend API based on location permission.
+   * @async
+   * @function
+   * @throws {Error} Throws an error if there is an issue fetching the data.
+   */
   const server = async () => {
     try {
       const apiUrl = locationPermission
@@ -51,7 +57,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     } catch (error) {}
   };
 
-  const filterData = (data:any[]) => {
+  /**
+   * Filters and transforms raw data into a specific format.
+   * @function
+   * @param {any[]} data - The raw data to be filtered.
+   * @returns {Object[]} The filtered and transformed data.
+   */
+  const filterData = (data: any[]) => {
     const filteredPosts = postData.map(post => ({
       id: post.id,
       title: post.title,
@@ -60,7 +72,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       category: post.category,
     }));
     return filteredPosts;
-  }
+  };
   /**
    * @function
    * @description
@@ -71,13 +83,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    *
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
-  const fetchData = async (startIndex:number) => {
+  const fetchData = async (startIndex: number) => {
     try {
       //const data = server(lastItemIndex);
       // Update lastItemIndex with the new value
       setPosts([]);
-      const filteredPosts = filterData(postData)
-      setLastItemIndex(lastItemIndex + filterData.length);
+      const filteredPosts = filterData(postData);
+      setLastItemIndex(lastItemIndex + filteredPosts.length);
       setPosts(prevPosts => [...prevPosts, ...filteredPosts]);
       setIsLoading(false);
       stopFetchMore = false;
@@ -94,34 +106,23 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @param {Object} params - Parameters for rendering the post item.
    * @param {PostProps} params.item - The post item to be rendered.
    */
-  // const renderPostItem = ({ item }: { item: PostProps }) => {
-  //   return (
-  //     <View style={postListStyles.postContainer}>
-  //       <Post
-  //         id={item.id}
-  //         title={item.title}
-  //         image={item.image}
-  //         expiryDate={item.expiryDate}
-  //         category={item.category}
-  //         navigation={navigation}
-  //       />
-  //     </View>
-  //   );
-  // };
-  const renderPostItem = useCallback(({ item }: { item: PostProps }) => {
-    return (
-      <View style={postListStyles.postContainer}>
-        <Post
-          id={item.id}
-          title={item.title}
-          image={item.image}
-          expiryDate={item.expiryDate}
-          category={item.category}
-          navigation={navigation}
-        />
-      </View>
-    );
-  }, [navigation]);
+  const renderPostItem = useCallback(
+    ({ item }: { item: PostProps }) => {
+      return (
+        <View style={postListStyles.postContainer}>
+          <Post
+            id={item.id}
+            title={item.title}
+            image={item.image}
+            expiryDate={item.expiryDate}
+            category={item.category}
+            navigation={navigation}
+          />
+        </View>
+      );
+    },
+    [navigation],
+  );
 
   /**
    * @function
@@ -180,7 +181,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const handleLoadMore = async () => {
     setIsLoading(true);
-    console.log(stopFetchMore)
+    console.log(stopFetchMore);
     if (!stopFetchMore) {
       console.log('Loading more data...');
       await fetchData(lastItemIndex);
@@ -189,8 +190,10 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     setIsLoading(false);
   };
 
-  const keyExtractor = useCallback((item: { id: { toString: () => any; }; }) => item.id.toString(), []);
-
+  const keyExtractor = useCallback(
+    (item: { id: { toString: () => any } }) => item.id.toString(),
+    [],
+  );
 
   return (
     <FlatList
@@ -203,7 +206,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
       data={posts}
-      keyExtractor=  {keyExtractor}// Replace 'id' with your post identifier
+      keyExtractor={keyExtractor} // Replace 'id' with your post identifier
       renderItem={renderPostItem}
       ListHeaderComponent={
         isHeaderInNeed ? renderHeader_Home : renderHeader_Profile
