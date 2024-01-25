@@ -1,0 +1,9 @@
+env/*
+app/LooseTheLeftovers_Frontend/__mocks__/*
+app/LooseTheLeftovers_Frontend/.bundle/*
+app/LooseTheLeftovers_Frontend/.vscode/*
+app/LooseTheLeftovers_Frontend/android/*
+app/LooseTheLeftovers_Frontend/ios/*
+app/LooseTheLeftovers_Frontend/jest/*
+app/LooseTheLeftovers_Frontend/node_modeles/*
+app/LooseTheLeftovers_Frontend/*.js
