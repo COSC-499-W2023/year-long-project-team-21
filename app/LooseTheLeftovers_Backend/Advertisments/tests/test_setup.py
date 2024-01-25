@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+from Advertisments.models import Advertisment, AdvertismentImage
 from Users.models import CustomUser
 
 class TestSetUpCreateAdvertisment(APITestCase):
@@ -52,4 +53,84 @@ class TestSetUpCreateAdvertisment(APITestCase):
         for file in os.listdir('media/images'):
             if file.startswith('test'):
                 os.remove(os.path.join('media/images', file))
+        return super().tearDown()
+    
+class TestSetUpRetrieveAdvertisment(APITestCase):
+
+    def setUp(self):
+
+        # create 2 test users
+        self.username_1 = "user_1"
+        self.password_2 = "123"
+        self.user = CustomUser.objects.create_user(
+            username=self.username_1,
+            password=self.password_2
+        )
+        self.user.save()
+
+        self.username_1 = "user_2"
+        self.password_2 = "456"
+        self.user = CustomUser.objects.create_user(
+            username=self.username_1,
+            password=self.password_2
+        )
+        self.user.save()
+
+        # create 5 test ads
+        self.ad_1 = Advertisment.objects.create(
+            user_id=1,
+            title='Apples',
+            description='Some apples',
+            category= 'vegan',
+            expiry='2024-01-25T12:30:00.000000Z'
+        )
+        self.ad_2 = Advertisment.objects.create(
+            user_id=1,
+            title='Bananas',
+            description='Some bananas',
+            category='vegan',
+            expiry="2024-02-25T12:30:00.000000Z"
+        )
+        self.ad_3 = Advertisment.objects.create(
+            user_id=1,
+            title='Pasta',
+            description='Vegetarian pasta',
+            category='Vegetarian',
+        )
+        self.ad_4 = Advertisment.objects.create(
+            user_id=2,
+            title='Pizza',
+            description='Pepperoni',
+            category='None',
+        )
+        self.ad_5 = Advertisment.objects.create(
+            user_id=2,
+            title='Take out',
+            description='Some leftovers',
+            category='Unknown',
+        )
+
+        # create 5 test AdvertismentImages
+        self.image_1 = AdvertismentImage.objects.create(
+            ad_id=self.ad_1,
+            image='app/LooseTheLeftovers_Backend/media/images/12345.PNG'
+        )
+        self.image_2 = AdvertismentImage.objects.create(
+            ad_id=self.ad_2,
+            image='app/LooseTheLeftovers_Backend/media/images/12345.PNG'
+        )
+        self.image_3 = AdvertismentImage.objects.create(
+            ad_id=self.ad_3,
+            image='app/LooseTheLeftovers_Backend/media/images/12345.PNG'
+        )
+        self.image_4 = AdvertismentImage.objects.create(
+            ad_id=self.ad_4,
+            image='app/LooseTheLeftovers_Backend/media/images/12345.PNG'
+        )
+        self.image_5 = AdvertismentImage.objects.create(
+            ad_id=self.ad_5,
+            image='app/LooseTheLeftovers_Backend/media/images/12345.PNG'
+        )
+
+    def tearDown(self):
         return super().tearDown()
