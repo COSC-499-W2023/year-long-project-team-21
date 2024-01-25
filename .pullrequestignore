@@ -7,3 +7,4 @@ app/LooseTheLeftovers_Frontend/ios/*
 app/LooseTheLeftovers_Frontend/jest/*
 app/LooseTheLeftovers_Frontend/node_modeles/*
 app/LooseTheLeftovers_Frontend/*.js
+app/LooseTheLeftovers_Frontend/*.json
