@@ -76,3 +76,15 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     expiry = serializers.DateTimeField(required=False)
     longitude = serializers.FloatField(required=False)
     latitude = serializers.FloatField(required=False)
+
+class ReturnAdvertismentNoDescriptionSerializer(serializers.Serializer):
+    '''
+    Serializer to serialize data when retrieving ads from the database. 
+    This serializer will also return the primary key when an ad is retrieved.
+    '''
+    id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
+    title = serializers.CharField(max_length=50)
+    category = serializers.CharField(max_length=30)
+    expiry = serializers.DateTimeField(required=False)
+    longitude = serializers.FloatField(required=False)
+    latitude = serializers.FloatField(required=False)
