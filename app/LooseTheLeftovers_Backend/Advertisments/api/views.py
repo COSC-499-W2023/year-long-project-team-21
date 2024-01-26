@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from Advertisments.api.serializers import AdvertismentSerializer, ImageSerializer, ReturnAdvertismentSerializer
 from Advertisments.models import Advertisment, AdvertismentImage
+from rest_framework.utils.serializer_helpers import ReturnList
+from datetime import date, datetime
 
 class AdvertismentHandler(APIView):
     '''
@@ -56,11 +58,14 @@ class AdvertismentHandler(APIView):
         Detail on the response data structure:
 
             Data contained in the response is returned as two OrderedDicts in a list, 
-            where response.data[0] is the ad data and response.data[1] contains the image path.
+            where response.data[0] is the ad data and response.data[1] contains the image path,
+            and response.data[2] contains the expiry colors and days/weeks as a string
 
             If more than 1 ad is returned, another list is nested inside which means: 
-            response.data[0] holds data for all ads and response.data[1] holds all image paths.
-            To select data for the first add use response.data[0][0] and first image response.data[0][1]
+            response.data[0] holds data for all ads, response.data[1] holds all image paths, and
+            response data[2] holds all expiry information.
+            To select data for the first add use response.data[0][0], first image response.data[0][1], 
+            and first expiry response.data[0][2]
 
             Some examples to get specific data from response.data:
 
@@ -68,11 +73,13 @@ class AdvertismentHandler(APIView):
                     title = response.data[0]['title']
                     description = response.data[0]['description']
                     image_path = response.data[1]['image']
+                    expiry_color = response.data[1]['color']
                 
                 Multiple ads returned
-                    id = response.data[0][0]['id']            # id of first ad
-                    expiry = response.data[0][2]['expiry']    # expiry of third ad
-                    image_path = response.data[1][5]['image'] # image path of sixth ad
+                    id = response.data[0][0]['id']                # id of first ad
+                    expiry = response.data[0][2]['expiry']        # expiry of third ad
+                    image_path = response.data[1][5]['image']     # image path of sixth ad
+                    expiry_string = response.data[2][1]['expiry'] # expiry of second ad
 
         '''
         # if request to create-ads endpoint was made via GET, return 405 response
@@ -90,6 +97,15 @@ class AdvertismentHandler(APIView):
         # if user_id provided get all ads for user
         user_id = kwargs.get("user_id", None)
         if user_id is not None:
+
+            # Manually authenticate user
+            permission = IsAuthenticated()
+            if not permission.has_permission(request, self):
+                return Response(
+                    {"detail": "Authentication credentials were not provided."}, 
+                    status=status.HTTP_401_UNAUTHORIZED,
+            )
+
             return retrieve_advertisments_for_user(user_id)
         
         # ad_id and user_id not provided: get all ads in database
@@ -166,13 +182,20 @@ def retrieve_single_advertisment(ad_id):
         # query ad and its image
         ad = Advertisment.objects.get(pk=ad_id)
         ad_image = AdvertismentImage.objects.get(ad_id=ad)
-
+    except:
+        response = {"message": "No ad found"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
+    
+    try:
         # send to serializers to package data
         serializer = ReturnAdvertismentSerializer(ad)
         image_serializer = ImageSerializer(ad_image)
 
+        # get formatted expiry data for frontend
+        expiry = get_expiry_formatted(serializer.data['expiry'])
+
         # return response data of both serializers and 200 OK response
-        return Response([serializer.data, image_serializer.data], status=status.HTTP_200_OK)
+        return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
     except:
         # send problem response and server error
         response = {"message": "Error retrieving ad"}
@@ -188,13 +211,32 @@ def retrieve_advertisments_for_user(user_id):
         # query all ads and their images for passed user
         user_ads = Advertisment.objects.filter(user_id=user_id)
         user_ad_images = AdvertismentImage.objects.filter(ad_id__in=user_ads)
+    except:
+        response = {"message": "No ad found"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
 
+    try:
         # send to serializer to package data
         serializer = ReturnAdvertismentSerializer(user_ads, many=True)
         image_serializer = ImageSerializer(user_ad_images, many=True)
 
+        # get formatted expiry data for frontend for each ad returned
+        #   if serializer data is ReturnList multiple ads were returned (single ad is ReturnDict)
+        if type(serializer.data) is ReturnList:
+            expiry = []
+            for ad_data in serializer.data:
+                # If expiry is None call method, else it has to be converted to date
+                #   (for some reason ReturnList converts expiries to strings)
+                if ad_data['expiry'] is None:
+                    expiry.append(get_expiry_formatted(expiry_date))
+                else:
+                    expiry_date = datetime.strptime(ad_data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
+                    expiry.append(get_expiry_formatted(expiry_date))
+        else:
+            expiry = get_expiry_formatted(serializer.data['expiry'])
+
         # return response data of both serializers and 200 OK response
-        return Response([serializer.data, image_serializer.data], status=status.HTTP_200_OK)
+        return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
 
     except:
         # send problem response and server error
@@ -213,15 +255,56 @@ def retrieve_all_advertisments():
         # query all ads and their images
         all_ads = Advertisment.objects.all()
         all_images = AdvertismentImage.objects.all()
+    except:
+        response = {"message": "No ad found"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
 
+    try:
         # send to serializer to package data
         serializer = ReturnAdvertismentSerializer(all_ads, many=True)
         image_serializer = ImageSerializer(all_images, many=True)
 
+        # get formatted expiry data for frontend for each ad returned
+        #   if serializer data is ReturnList multiple ads were returned (single ad is ReturnDict)
+        if type(serializer.data) is ReturnList:
+            expiry = []
+            for ad_data in serializer.data:
+                # If expiry is None call method, else it has to be converted to date
+                #   (for some reason ReturnList converts expiries to strings)
+                if ad_data['expiry'] is None:
+                    expiry.append(get_expiry_formatted(expiry_date))
+                else:
+                    expiry_date = datetime.strptime(ad_data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
+                    expiry.append(get_expiry_formatted(expiry_date))
+        else:
+            expiry = get_expiry_formatted(serializer.data['expiry'])
+
         # send response, 200 ok
-        return Response([serializer.data, image_serializer.data], status=status.HTTP_200_OK)
+        return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
     
     except:
         # send problem response and server error
         response = {"message": "Error retrieving all ads"}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def get_expiry_formatted(expiry):
+    '''
+    returns dict with two items: color and expiry. Both items are formatted to how front end needs them.
+    To be passed the expiry of the ad as datetime or None
+    '''
+    if expiry is None:
+        return {'color': 'option_1', 'expiry': '2 weeks'}
+    today = date.today()
+    delta = expiry - today
+    # >9 days will show as 2 weeks (long color)
+    if delta.days > 9:
+        return {'color': ['#0E5B53', '#288F61', '#91C974'], 'expiry': '2 weeks'}
+    # >6 days will show as 1 week (mid color)
+    elif delta.days > 6:
+        return {'color': ['#291859', '#71408B', '#DFBDE1'], 'expiry': '1 week'}
+    # 1 day or less will show as 1 day (short color)
+    elif delta.days <= 1:
+        return {'color': ['#9E3452', '#E73742', '#FF6950'], 'expiry': '1 day'}
+    # 1 to 6 days will show as 'n' days (short color)
+    else:
+        return {'color': ['#9E3452', '#E73742', '#FF6950'], 'expiry': str(delta.days) + ' days'}
