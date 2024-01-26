@@ -42,6 +42,8 @@ class TestSetUpCreateAdvertisment(APITestCase):
             'description': "Three Bananas",
             'category': "Fruit",
             'expiry': "2023-12-25T12:30:00.000000Z",
+            'latitude': 49.8875083,
+            'longitude': -119.496064,
             'image': self.image_file
         }
 
@@ -87,7 +89,10 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
             title='Apples',
             description='Some apples',
             category= 'vegan',
-            expiry='2024-01-25T12:30:00.000000Z'
+            expiry='2024-01-25T12:30:00.000000Z',
+            latitude=49.8875083,
+            longitude=-119.496064
+
         )
         self.ad_2 = Advertisment.objects.create(
             user_id=1,
