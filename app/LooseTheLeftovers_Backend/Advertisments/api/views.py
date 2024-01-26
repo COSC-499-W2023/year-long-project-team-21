@@ -2,7 +2,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
-from Advertisments.api.serializers import AdvertismentSerializer, ImageSerializer, ReturnAdvertismentSerializer
+from Advertisments.api.serializers import AdvertismentSerializer, ImageSerializer, ReturnAdvertismentSerializer, \
+    ReturnAdvertismentNoDescriptionSerializer
 from Advertisments.models import Advertisment, AdvertismentImage
 from rest_framework.utils.serializer_helpers import ReturnList
 from datetime import date, datetime
@@ -192,7 +193,11 @@ def retrieve_single_advertisment(ad_id):
         image_serializer = ImageSerializer(ad_image)
 
         # get formatted expiry data for frontend
-        expiry = get_expiry_formatted(serializer.data['expiry'])
+        if type(serializer.data['expiry']) is str:
+            expiry_date = datetime.strptime(serializer.data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
+        else:
+            expiry_date = serializer.data['expiry']
+        expiry = get_expiry_formatted(expiry_date)
 
         # return response data of both serializers and 200 OK response
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
@@ -217,7 +222,7 @@ def retrieve_advertisments_for_user(user_id):
 
     try:
         # send to serializer to package data
-        serializer = ReturnAdvertismentSerializer(user_ads, many=True)
+        serializer = ReturnAdvertismentNoDescriptionSerializer(user_ads, many=True)
         image_serializer = ImageSerializer(user_ad_images, many=True)
 
         # get formatted expiry data for frontend for each ad returned
@@ -233,7 +238,12 @@ def retrieve_advertisments_for_user(user_id):
                     expiry_date = datetime.strptime(ad_data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
                     expiry.append(get_expiry_formatted(expiry_date))
         else:
-            expiry = get_expiry_formatted(serializer.data['expiry'])
+            # get formatted expiry for single ad
+            if type(serializer.data['expiry']) is str:
+                expiry_date = datetime.strptime(serializer.data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
+            else:
+                expiry_date = serializer.data['expiry']
+                expiry = get_expiry_formatted(expiry_date)
 
         # return response data of both serializers and 200 OK response
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
@@ -261,7 +271,7 @@ def retrieve_all_advertisments():
 
     try:
         # send to serializer to package data
-        serializer = ReturnAdvertismentSerializer(all_ads, many=True)
+        serializer = ReturnAdvertismentNoDescriptionSerializer(all_ads, many=True)
         image_serializer = ImageSerializer(all_images, many=True)
 
         # get formatted expiry data for frontend for each ad returned
@@ -277,7 +287,12 @@ def retrieve_all_advertisments():
                     expiry_date = datetime.strptime(ad_data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
                     expiry.append(get_expiry_formatted(expiry_date))
         else:
-            expiry = get_expiry_formatted(serializer.data['expiry'])
+            # get formatted expiry for single ad
+            if type(serializer.data['expiry']) is str:
+                expiry_date = datetime.strptime(serializer.data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
+            else:
+                expiry_date = serializer.data['expiry']
+                expiry = get_expiry_formatted(expiry_date)
 
         # send response, 200 ok
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
@@ -293,18 +308,18 @@ def get_expiry_formatted(expiry):
     To be passed the expiry of the ad as datetime or None
     '''
     if expiry is None:
-        return {'color': ['#0E5B53', '#288F61', '#91C974'], 'expiry': '2 weeks'}
+        return {'color': 'expiry_long', 'expiry': '2 weeks'}
     today = date.today()
     delta = expiry - today
     # >9 days will show as 2 weeks (long color)
     if delta.days > 9:
-        return {'color': ['#0E5B53', '#288F61', '#91C974'], 'expiry': '2 weeks'}
+        return {'color': 'expiry_long', 'expiry': '2 weeks'}
     # >6 days will show as 1 week (mid color)
     elif delta.days > 6:
-        return {'color': ['#291859', '#71408B', '#DFBDE1'], 'expiry': '1 week'}
+        return {'color': 'expiry_mid', 'expiry': '1 week'}
     # 1 day or less will show as 1 day (short color)
     elif delta.days <= 1:
-        return {'color': ['#9E3452', '#E73742', '#FF6950'], 'expiry': '1 day'}
+        return {'color': 'expiry_short', 'expiry': '1 day'}
     # 1 to 6 days will show as 'n' days (short color)
     else:
-        return {'color': ['#9E3452', '#E73742', '#FF6950'], 'expiry': str(delta.days) + ' days'}
+        return {'color': 'expiry_short', 'expiry': str(delta.days) + ' days'}
