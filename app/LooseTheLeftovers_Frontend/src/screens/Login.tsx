@@ -3,6 +3,11 @@ import { SafeAreaView } from 'react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import styles from '../styles/loginStyle';
+import { loginReq } from '../common/NetworkRequest';
+import {
+  removeUserSession,
+  storeUserSession,
+} from '../common/EncryptedSession';
 
 import Logo from '../components/Logo';
 import Title from '../components/Title';
@@ -33,12 +38,14 @@ const Login = ({ navigation }: { navigation: any }) => {
 
   const handleButtonOnPress = async () => {
     if (validateInputs()) {
-      // If both data fields are filled, proceed to API call
-      const responseData = await loginUser();
-      if (responseData) {
-        // If response is OK, store JWT and proceed
-        await storeJWT(responseData.token);
+      try {
+        await loginReq(username, password);
         navigation.navigate('Instruction');
+      } catch (error) {
+        setErrorMessage(
+          `${error instanceof Error ? error.message : String(error)}`,
+        );
+        //console.log(errorMessage);
       }
     }
   };
@@ -60,38 +67,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     setErrorMessage(''); // Clear any existing error messages
     return true; // Inputs are valid
   };
-
-  // Make an API call
-  const loginUser = async () => {
-    const apiUrl = 'http://10.0.2.2:8000/users/token';
-    try {
-      const response = await axios.post(apiUrl, {
-        username: username,
-        password: password,
-      });
-
-      if (response.status === 200 && response.data.token) {
-        return response.data; // Return the response data for successful login
-      } else {
-        setErrorMessage('Failed to login or retrieve token.');
-        return null; // Indicate an unsuccessful login attempt
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to retrieve data.'); // Invalid credentials
-      console.log(error);
-      return null; // Indicate an error occurred
-    }
-  };
-
-  // Store JWT token
-  async function storeJWT(token: string) {
-    try {
-      await EncryptedStorage.setItem('user_token', token);
-    } catch (error) {
-      // error on the native side
-      setErrorMessage('Failed to store the token securely.');
-    }
-  }
 
   // Handle input text from the InputFields for username and password.
   // Update their respective states and clear any existing error messages.
