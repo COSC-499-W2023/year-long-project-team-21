@@ -7,7 +7,9 @@ import Header from '../components/UpperBar';
 import TabBar from '../components/TabBar';
 import Icon from '../components/Icon';
 
-import chatData from '../assets/chat_placeholder.json';
+// import chatData from '../assets/chat_placeholder.json';
+// import noData from '../assets/empty_chats.json';
+// Page sends an error, because FlatList gets no data
 
 type ChatType = {
   id: number;
@@ -27,6 +29,16 @@ const ChatListItem: React.FC<{ chat: ChatType }> = ({ chat }) => {
       <Text style={styles.chatItemName}>{chat.name}</Text>
       <Text style={styles.chatItemMessage}>{chat.lastMessage}</Text>
     </TouchableOpacity>
+  );
+};
+
+// EmptyListMessage component
+// Bugged is added to the FlatList
+const EmptyListMessage: React.FC = () => {
+  return (
+    <View style={styles.emptyListContainer}>
+      <Text style={styles.emptyListText}>No messages yet.</Text>
+    </View>
   );
 };
 
@@ -51,9 +63,10 @@ const ChatList = () => {
 
       {/* FlatList */}
       <FlatList
-        data={chatData}
+        data={}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
+        style={styles.listcontainer}
       />
 
       {/* TabBar */}

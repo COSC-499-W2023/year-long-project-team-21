@@ -7,10 +7,12 @@ const styles = StyleSheet.create({
       backgroundColor: global.background,
     },
     tabcontainer: {
-        paddingBottom: 15,
-        paddingTop: 15,
-        borderTopColor: '#ccc',
-        borderTopWidth: 1,
+      paddingTop: 15,
+      paddingBottom: 15,
+      borderTopColor: '#ccc',
+      borderTopWidth: 1,
+    },
+    listcontainer: {
     },
     chatItem: {
       backgroundColor: global.background,
@@ -28,6 +30,10 @@ const styles = StyleSheet.create({
     chatItemMessage: {
       color: '#fff',
       fontSize: 15,
+    },
+    emptyListContainer: {
+    },
+    emptyListText: {
     },
 });
 
