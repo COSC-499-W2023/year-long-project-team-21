@@ -74,8 +74,6 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
-    longitude = serializers.FloatField(required=False)
-    latitude = serializers.FloatField(required=False)
 
 class ReturnAdvertismentNoDescriptionSerializer(serializers.Serializer):
     '''
@@ -86,5 +84,3 @@ class ReturnAdvertismentNoDescriptionSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=50)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
-    longitude = serializers.FloatField(required=False)
-    latitude = serializers.FloatField(required=False)
