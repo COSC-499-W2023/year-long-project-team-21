@@ -18,6 +18,8 @@ class AdvertismentSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
+    longitude = serializers.FloatField(required=False)
+    latitude = serializers.FloatField(required=False)
     
     def create(self, validated_data):
         '''
@@ -72,3 +74,5 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
+    longitude = serializers.FloatField(required=False)
+    latitude = serializers.FloatField(required=False)
