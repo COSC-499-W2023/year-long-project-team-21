@@ -18,8 +18,9 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
-    imageUri: '',
+    category: '',
     expiry: 1,
+    imageUri: '',
   });
 
   // Update the title in ad data
@@ -44,10 +45,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     }
 
     const url = 'create-ad';
-    const formData = createFormData(adData)
+    const formData = createFormData(adData);
 
     const result = await sendPostRequest(url, formData, jwtToken);
-    if (true) {
+    if (result.success) {
       // Navigate to Home screen
     } else {
       // Handle error
@@ -70,11 +71,18 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         console.log('Success:', response.data);
         return { success: true, data: response.data };
       } else {
-        console.error('Request completed, but failed:', response);
+        console.error('Request failed:', response);
+        if (response.status === 401) {
+          console.error('Unauthorized');
+        } else if (response.status === 405) {
+          console.error('Not a POST request');
+        } else if (response.status === 400) {
+          console.error('Could not validate data');
+        }
         return { success: false, error: response };
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error('Network or server error occurred:', error);
       return { success: false, error };
     }
   };
@@ -95,24 +103,28 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   const createFormData = (adData: AdDataProps) => {
     const formData = new FormData();
-  
+
     // Text fields
     formData.append('title', adData.title);
     formData.append('description', adData.description);
     formData.append('category', 'Food'); // Will be added as a field later
     formData.append('expiry', convertExpiryToDatetime(adData.expiry)); // Convert expiry to datetime
-  
+
     // Adding image if it exists
     if (adData.imageUri) {
       const filename = adData.imageUri.split('/').pop();
       const match = /\.(\w+)$/.exec(filename ?? '');
       const type = match ? `image/${match[1]}` : `image`;
 
-      console.log("Filename", filename)
-      console.log("Type", type)
-      formData.append('image', { uri: adData.imageUri, name: filename ?? 'upload.jpg', type });
+      console.log('Filename', filename);
+      console.log('Type', type);
+      formData.append('image', {
+        uri: adData.imageUri,
+        name: filename ?? 'upload.jpg',
+        type,
+      });
     }
-  
+
     return formData;
   };
 
