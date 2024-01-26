@@ -30,7 +30,6 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ onImagePicked }) 
 
     // Check if the uri is not undefined before updating the state
     if (result.assets && result.assets[0].uri) {
-      console.log(result.assets[0].uri);
       setImageUri(result.assets[0].uri);
       onImagePicked(result.assets[0].uri);
     }

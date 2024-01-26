@@ -220,7 +220,7 @@ interface UpperBarProps {
 interface AdDataProps {
   title: string;
   description: string;
-  imageUri: string | null;
+  imageUri?: string;
   expiry: number;
 }
 

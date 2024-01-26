@@ -18,7 +18,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
-    imageUri: null,
+    imageUri: '',
     expiry: 1,
   });
 
@@ -30,7 +30,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     setAdData(prevAdData => ({ ...prevAdData, description: newDescription }));
   // Update the image URI in ad data
   const handleSetImageUri = (newImageUri: string | null) =>
-    setAdData(prevAdData => ({ ...prevAdData, imageUri: newImageUri }));
+    setAdData(prevAdData => ({ ...prevAdData, imageUri: newImageUri ?? '' }));
   // Update the expiry date in ad data
   const handleSetExpiry = (newExpiry: number) =>
     setAdData(prevAdData => ({ ...prevAdData, expiry: newExpiry }));
@@ -43,12 +43,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       return;
     }
 
-    const url = 'create_ad_url';
-    const adDataToSubmit = composeAdData(adData);
+    const url = 'create-ad';
+    const formData = createFormData(adData)
 
-    const result = await sendPostRequest(url, adDataToSubmit, jwtToken);
-    if (result.success) {
-      // Cache to DB
+    const result = await sendPostRequest(url, formData, jwtToken);
+    if (true) {
       // Navigate to Home screen
     } else {
       // Handle error
@@ -57,20 +56,13 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   const sendPostRequest = async (
     url: string,
-    data: {
-      title: string;
-      description: string;
-      category: string;
-      expiry_datetime: string;
-      image: string | null;
-    },
+    formData: FormData,
     token: string,
   ) => {
     try {
-      const response = await axios.post(url, data, {
+      const response = await axios.post(url, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
       });
 
@@ -101,27 +93,34 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const createFormData = (adData: AdDataProps) => {
+    const formData = new FormData();
+  
+    // Text fields
+    formData.append('title', adData.title);
+    formData.append('description', adData.description);
+    formData.append('category', 'Food'); // Will be added as a field later
+    formData.append('expiry', convertExpiryToDatetime(adData.expiry)); // Convert expiry to datetime
+  
+    // Adding image if it exists
+    if (adData.imageUri) {
+      const filename = adData.imageUri.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename ?? '');
+      const type = match ? `image/${match[1]}` : `image`;
+
+      console.log("Filename", filename)
+      console.log("Type", type)
+      formData.append('image', { uri: adData.imageUri, name: filename ?? 'upload.jpg', type });
+    }
+  
+    return formData;
+  };
+
   // Convert Slider Value into future expiry date
   const convertExpiryToDatetime = (expiry: number) => {
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + expiry);
     return expiryDate.toISOString();
-  };
-
-  // Compose JSON
-  const composeAdData = (adData: {
-    title: string;
-    description: string;
-    expiry: number;
-    imageUri: string | null;
-  }) => {
-    return {
-      title: adData.title,
-      description: adData.description,
-      category: 'Food',
-      expiry_datetime: convertExpiryToDatetime(adData.expiry),
-      image: adData.imageUri, // Implement encoding later
-    };
   };
 
   // Placeholder function for header onPress
