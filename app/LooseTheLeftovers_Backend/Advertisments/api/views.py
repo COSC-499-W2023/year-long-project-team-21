@@ -293,7 +293,7 @@ def get_expiry_formatted(expiry):
     To be passed the expiry of the ad as datetime or None
     '''
     if expiry is None:
-        return {'color': 'option_1', 'expiry': '2 weeks'}
+        return {'color': ['#0E5B53', '#288F61', '#91C974'], 'expiry': '2 weeks'}
     today = date.today()
     delta = expiry - today
     # >9 days will show as 2 weeks (long color)
