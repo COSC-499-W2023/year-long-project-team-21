@@ -6,6 +6,7 @@ import {
   storeUserSession,
 } from '../../src/common/EncryptedSession';
 import { BASE_URL, refEndpoint, loginEndpoint } from '../common/API';
+import * as NavigationService from '../navigation/NavigationService';
 
 /**
  * Function to configure Axios request defaults.
@@ -116,11 +117,11 @@ export class SecureAPIReq {
    * @param {any} session - The user's session information.
    * @param {string} [baseUrl] - The base URL for API requests. Defaults to BASE_URL.
    */
-  constructor(session: any, navigation:any, baseUrl?: string) {
+  constructor(session: any, baseUrl?: string) {
     // this should change to redirecting the user to login or something fine for now
     if (session === null){
-      console.log(navigation);
-      navigation.navigate('Login');
+      // console.log(navigation);
+      NavigationService.navigate("Login");
     } 
     // assign session to object so we have reference to it
     this.currentSesh = session;
@@ -144,9 +145,9 @@ export class SecureAPIReq {
    * @param {string} [baseUrl] - The base URL for API requests. Optional.
    * @returns {Promise<SecureAPIReq>} - An instance of SecureAPIReq.
    */
-  public static async createInstance(navigation:any, baseUrl?: string) {
+  public static async createInstance(baseUrl?: string) {
     const session = await retrieveUserSession();
-    return new SecureAPIReq(session, navigation, baseUrl);
+    return new SecureAPIReq(session, baseUrl);
   }
 
   /**

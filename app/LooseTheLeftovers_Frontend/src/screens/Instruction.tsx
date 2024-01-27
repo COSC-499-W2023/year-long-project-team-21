@@ -16,7 +16,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     try{
       console.log("instructions");
       await removeUserSession();
-      const newReq:SecureAPIReq = await SecureAPIReq.createInstance(navigation);
+      const newReq:SecureAPIReq = await SecureAPIReq.createInstance();
   }
   catch(e){
       console.log(e);
