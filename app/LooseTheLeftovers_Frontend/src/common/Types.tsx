@@ -178,13 +178,20 @@ interface ImageTextProps {
   text: string;
   textSize?: number;
 }
+// interface UserInfoProps {
+//  userInfoKeys: (keyof UserInfoData)[];
+// }
+
+// interface UserInfoData {
+//   username: string;
+//   email: string;
+// }
+
 interface UserInfoProps {
-  userInfoKeys: (keyof UserInfoData)[];
+  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfoKeys: string[];
 }
-interface UserInfoData {
-  username: string;
-  email: string;
-}
+
 export {
   type ButtonProps,
   type HeaderProps,
