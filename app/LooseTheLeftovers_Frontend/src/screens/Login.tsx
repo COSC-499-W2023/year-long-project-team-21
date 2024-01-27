@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import axios from 'axios';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
-import {
-  removeUserSession,
-  storeUserSession,
-} from '../common/EncryptedSession';
-
 import Logo from '../components/Logo';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
@@ -40,7 +33,8 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        navigation.navigate('Instruction');
+        //navigation.navigate('Instruction');
+        navigation.goBack();
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,

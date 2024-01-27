@@ -7,10 +7,21 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
 import { SecureAPIReq } from '../common/NetworkRequest';
+import { removeUserSession } from '../common/EncryptedSession';
 import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {};
+  const handleButtonOnPress = async () => {
+    console.log("what the fuck");
+    try{
+      console.log("instructions");
+      await removeUserSession();
+      const newReq:SecureAPIReq = await SecureAPIReq.createInstance(navigation);
+  }
+  catch(e){
+      console.log(e);
+  }
+  };
   // Creates an array of the instructions and images
   const instructions = [
     {

@@ -19,8 +19,8 @@ const AppNavigator = () => {
         component={Login}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Register"
+     <Stack.Screen
+        name="Registration"
         component={Registration}
         options={{ headerShown: false }}
       />
