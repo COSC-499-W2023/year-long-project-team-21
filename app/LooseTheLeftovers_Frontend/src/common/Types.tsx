@@ -189,6 +189,19 @@ interface ImageTextProps {
   text: string;
   textSize?: number;
 }
+// interface UserInfoProps {
+//  userInfoKeys: (keyof UserInfoData)[];
+// }
+
+// interface UserInfoData {
+//   username: string;
+//   email: string;
+// }
+
+interface UserInfoProps {
+  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfoKeys: string[];
+}
 
 /**
  * UpperBarProps (Header) interface for the UpperBar component.
@@ -266,4 +279,5 @@ export {
   type AdDataProps,
   type ImagePickerButtonProps,
   type ExpirySliderProps,
+  type UserInfoProps,
 };

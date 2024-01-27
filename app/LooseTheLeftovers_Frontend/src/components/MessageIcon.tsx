@@ -25,7 +25,7 @@ type RootStackParamList = {
 };
 
 //uses all icon prop for the interface
-const MessageIcon: React.FC<AllIconProps> = ({ size = 45 }) => {
+const MessageIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
   //creates a navigation hook
   const navigation =
     useNavigation<
