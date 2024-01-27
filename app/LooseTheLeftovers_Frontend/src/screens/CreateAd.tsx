@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
 import { AdDataProps } from '../common/Types';
+import { retrieveUserSession } from '../common/EncryptedSession';
 
 import Header from '../components/UpperBar';
 import Texts from '../components/Text';
@@ -31,20 +31,21 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     setAdData(prevAdData => ({ ...prevAdData, description: newDescription }));
   // Update the image URI in ad data
   const handleSetImageUri = (newImageUri: string | null) =>
-    setAdData(prevAdData => ({ ...prevAdData, imageUri: newImageUri ?? '' }));
+    setAdData(prevAdData => ({ ...prevAdData, imageUri: newImageUri ?? '' }));  
   // Update the expiry date in ad data
   const handleSetExpiry = (newExpiry: number) =>
     setAdData(prevAdData => ({ ...prevAdData, expiry: newExpiry }));
 
   // Handle Submit press
   const handleSubmit = async () => {
-    const jwtToken = await retrieveJWTToken(); // Get JWT from encrypted storage
-    if (!jwtToken) {
+    const session = await retrieveUserSession();
+    if (!session || !session.token) {
       console.error('No token found');
       return;
     }
-
-    const url = 'create-ad';
+  
+    const jwtToken = session.token;
+    const url = 'http://10.0.2.2:8000/ads/';
     const formData = createFormData(adData);
 
     const result = await sendPostRequest(url, formData, jwtToken);
@@ -87,20 +88,6 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  const retrieveJWTToken = async () => {
-    try {
-      const jwtToken = await EncryptedStorage.getItem('user_token');
-      if (!jwtToken) {
-        console.error('No JWT token found');
-        return null;
-      }
-      return jwtToken;
-    } catch (error) {
-      console.error('Error retrieving JWT token:', error);
-      return null;
-    }
-  };
-
   const createFormData = (adData: AdDataProps) => {
     const formData = new FormData();
 
@@ -116,8 +103,6 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       const match = /\.(\w+)$/.exec(filename ?? '');
       const type = match ? `image/${match[1]}` : `image`;
 
-      console.log('Filename', filename);
-      console.log('Type', type);
       formData.append('image', {
         uri: adData.imageUri,
         name: filename ?? 'upload.jpg',
