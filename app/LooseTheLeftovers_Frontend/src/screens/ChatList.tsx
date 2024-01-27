@@ -33,7 +33,7 @@ const ChatListItem: React.FC<{ chat: ChatType }> = ({ chat }) => {
 };
 
 // EmptyListMessage component
-// Bugged is added to the FlatList
+// Bugged if added to the FlatList
 const EmptyListMessage: React.FC = () => {
   return (
     <View style={styles.emptyListContainer}>

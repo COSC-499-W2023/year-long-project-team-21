@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
 import Instruction from '../screens/Instruction';
-import CreateAd from '../screens/CreateAd';
+import ChatList from '../screens/ChatList';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,8 +17,8 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CreateAd"
-        component={CreateAd}
+        name="ChatList"
+        component={ChatList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
