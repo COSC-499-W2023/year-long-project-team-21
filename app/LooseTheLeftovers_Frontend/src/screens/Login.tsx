@@ -3,11 +3,12 @@ import Texts from '../components/Text';
 import { SafeAreaView, Text, View } from 'react-native';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
-
+import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../components/Logo';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
+import { global } from '../common/global_styles';
 
 /**
  * Login component.
@@ -77,7 +78,10 @@ const Login = ({ navigation }: { navigation: any }) => {
 
   return (
     <>
-      <SafeAreaView style={styles.LoginContainer}>
+      <LinearGradient
+        style={styles.LoginContainer}
+        colors={['#251D3A', global.background]}
+        start={{ x: 1, y: 0 }}>
         <Logo size={200} />
         <Title title="Login" titleSize={30} testID="loginTitle" />
         <InputField
@@ -114,7 +118,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         />
         <Text style={{ marginTop: 30 }}>
           <Texts
-            texts="No account?"
+            texts="Not a member?"
             textsColor="white"
             textsSize={18}
             onPress={() => handleRegistrationNavigation()}
@@ -125,7 +129,7 @@ const Login = ({ navigation }: { navigation: any }) => {
             onPress={() => handleRegistrationNavigation()}
           />
         </Text>
-      </SafeAreaView>
+      </LinearGradient>
     </>
   );
 };

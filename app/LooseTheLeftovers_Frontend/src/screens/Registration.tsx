@@ -137,7 +137,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
   return (
     <LinearGradient
       style={styles.RegistrationContainer}
-      colors={['#555555', global.background]}
+      colors={['#251D3A', global.background]}
       start={{ x: 1, y: 0 }}>
       <View style={styles.container}>
         <View style={styles.logo}>
