@@ -5,7 +5,7 @@ import { global } from '../common/global_styles';
 import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
-
+import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../components/Logo';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
@@ -135,7 +135,10 @@ const Registration = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-    <SafeAreaView style={styles.RegistrationContainer}>
+    <LinearGradient
+      style={styles.RegistrationContainer}
+      colors={['#555555', global.background]}
+      start={{ x: 1, y: 0 }}>
       <View style={styles.container}>
         <View style={styles.logo}>
           <Logo size={200} />
@@ -236,7 +239,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           </Text>
         </View>
       </View>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 

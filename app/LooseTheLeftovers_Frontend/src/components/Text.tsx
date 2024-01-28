@@ -24,6 +24,7 @@ const Texts: React.FC<TextsProps> = ({
   textsSize,
   textsColor,
   position,
+  //positionBottom
   onPress,
   testID,
 }) => {
