@@ -7,7 +7,7 @@ export const global = {
   // background: '#FFFFFF',//white
 
   //darkmode
-  primary: '#FFB700', //yellow
+  primary: '#2CAF55',
   secondary: '#FFFFFF', //white
   tertiary: '#2e2e2e', //dark grey
   background: '#222222',
