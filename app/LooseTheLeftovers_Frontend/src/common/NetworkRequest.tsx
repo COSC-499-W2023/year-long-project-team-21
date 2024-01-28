@@ -118,11 +118,6 @@ export class SecureAPIReq {
    * @param {string} [baseUrl] - The base URL for API requests. Defaults to BASE_URL.
    */
   constructor(session: any, baseUrl?: string) {
-    // this should change to redirecting the user to login or something fine for now
-    if (session === null){
-      // console.log(navigation);
-      NavigationService.navigate("Login");
-    } 
     // assign session to object so we have reference to it
     this.currentSesh = session;
     // init instance
@@ -147,6 +142,9 @@ export class SecureAPIReq {
    */
   public static async createInstance(baseUrl?: string) {
     const session = await retrieveUserSession();
+    // this should change to redirecting the user to login or something fine for now
+    if (session === null) NavigationService.navigate("Login");
+    // @todo this should check if session is null, not the other methods I feel...
     return new SecureAPIReq(session, baseUrl);
   }
 
@@ -269,20 +267,21 @@ export class SecureAPIReq {
    * @throws {Error} - Throws an error if unable to refresh token.
    */
   private async handleExpirey() {
+    //@Todo instead of throwing error if token is not in storage, get them to login... 
+  
     // check if auth token is expired
     const token_nExpired = this.checkToken(this.TOKEN_EXPIREY);
     // if not expired, return the auth token
     if (token_nExpired) return this.currentSesh['token'];
-    // refresh authentication token or throw an error if refresh is expired.
-    const ref_nExpired = this.checkToken(this.REFRESH_EXPIREY);
-    if (ref_nExpired) {
-      // Refresh token is still valid, generate a new auth token
-      const new_token: string = await this.getNewToken();
-      return new_token;
-    } else {
-      // refresh token is not valid, get the user to re-authenticate
-      throw new Error('Authentication failed. Must log back in again');
+    // refresh authentication token or throw an error if refresh is expired
+    const expirey = this.checkToken(this.REFRESH_EXPIREY);
+    // Refresh token is not valid, reauthenticate
+    if(!expirey){
+      NavigationService.navigate("Login");
     }
+    // Refresh token is still valid, generate a new auth token
+    const new_token: string = await this.getNewToken();
+    return new_token;
   }
 
   /**
@@ -295,7 +294,7 @@ export class SecureAPIReq {
   private checkToken(threshold: number) {
     // throw error if session is null
     if (this.currentSesh == null) {
-      throw new Error('No tokens in storage');
+      NavigationService.navigate("Login");
     }
     // retrieve token_creation timestamp
     const creationTime = this.currentSesh['token_creation'];
