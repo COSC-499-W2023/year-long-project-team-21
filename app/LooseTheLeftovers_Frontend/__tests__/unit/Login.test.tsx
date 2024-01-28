@@ -87,6 +87,10 @@ describe('Login component', () => {
       data: { token: 'fake_token' },
     });
 
+    const navigation = {
+      goBack: jest.fn(),
+    };
+
     const { getByPlaceholderText, getByTestId } = render(
       <Login navigation={navigation} />,
     );
@@ -98,7 +102,7 @@ describe('Login component', () => {
 
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
-      expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
+      expect(navigation.goBack).toHaveBeenCalled();
     });
   });
 

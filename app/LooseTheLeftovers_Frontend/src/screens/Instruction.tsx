@@ -11,17 +11,7 @@ import { removeUserSession } from '../common/EncryptedSession';
 import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {
-    console.log("what the fuck");
-    try{
-      console.log("instructions");
-      await removeUserSession();
-      const newReq:SecureAPIReq = await SecureAPIReq.createInstance();
-  }
-  catch(e){
-      console.log(e);
-  }
-  };
+  const handleButtonOnPress = async () => {};
   // Creates an array of the instructions and images
   const instructions = [
     {

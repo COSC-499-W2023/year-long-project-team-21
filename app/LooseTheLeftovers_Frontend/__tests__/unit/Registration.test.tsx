@@ -83,7 +83,7 @@ describe('Registration Component', () => {
         token: 'FakeToken',
       },
     });
-
+    
     // Simulate button press
     fireEvent.press(getByTestId('register-button'));
 
@@ -99,9 +99,8 @@ describe('Registration Component', () => {
           verify_password: 'Test444test!',
         },
       );
-      //console.log("do we make it here\n");
       // Check if the expected success/failure message is displayed
-      expect(navigation.navigate).toHaveBeenCalledWith('Instruction');
+      expect(navigation.navigate).toHaveBeenCalledWith('Login');
     });
   });
 

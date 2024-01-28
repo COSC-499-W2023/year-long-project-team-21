@@ -303,7 +303,7 @@ export class SecureAPIReq {
     // compare with creation
     let result = currentTime - creationTime < threshold;
     // return result based on truthiness
-    return result ? true : false;
+    return result;
   }
 
   /**
