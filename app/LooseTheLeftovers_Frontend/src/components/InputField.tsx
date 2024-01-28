@@ -61,7 +61,7 @@ const InputField: React.FC<InputFieldProps> = ({
         <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
           <MaterialCommunityIcons
             name={isSecure ? 'eye-outline' : 'eye-off-outline'}
-            size={24}
+            size={30}
             color="white"
           />
         </TouchableOpacity>

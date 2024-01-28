@@ -137,10 +137,12 @@ const Registration = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={styles.RegistrationContainer}>
       <View style={styles.container}>
-        <Logo LogoSize={40} />
+        <View style={styles.logo}>
+          <Logo size={200} />
+        </View>
         <Title title="Register" titleSize={30} />
         <InputField
-          placeholder="+Email"
+          placeholder="Email"
           onChangeText={input => handleEmail(input)}
           value={email}
         />
@@ -152,7 +154,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           </Text>
         )}
         <InputField
-          placeholder="+Username"
+          placeholder="Username"
           onChangeText={input => handleUsername(input)}
           value={username}
         />
@@ -163,13 +165,13 @@ const Registration = ({ navigation }: { navigation: any }) => {
           </Text>
         )}
         <InputField
-          placeholder="+Password"
+          placeholder="Password"
           onChangeText={input => handlePassword1(input)}
           value={password1}
           secureTextEntry={true}
         />
         <InputField
-          placeholder="+Confirm Password"
+          placeholder="Confirm Password"
           onChangeText={input => handlePassword2(input)}
           value={password2}
           secureTextEntry={true}
@@ -211,18 +213,28 @@ const Registration = ({ navigation }: { navigation: any }) => {
             </Text>
           </Text>
         )}
-        <View style={styles.button}>
-          <Button
-            testID="register-button"
-            title="Register"
-            onPress={() => handleButtonOnPress()}
-          />
+        <View>
+          <View style={styles.button}>
+            <Button
+              testID="register-button"
+              title="Register"
+              onPress={() => handleButtonOnPress()}
+            />
+          </View>
+          <Text style={styles.login}>
+            <Texts
+              textsColor="white"
+              texts="     Already a member?"
+              textsSize={18}
+              onPress={() => handleLoginNavigation()}
+            />
+            <Texts
+              texts="  Sign in"
+              textsSize={18}
+              onPress={() => handleLoginNavigation()}
+            />
+          </Text>
         </View>
-        <Texts
-          texts="Login"
-          textsSize={18}
-          onPress={() => handleLoginNavigation()}
-        />
       </View>
     </SafeAreaView>
   );

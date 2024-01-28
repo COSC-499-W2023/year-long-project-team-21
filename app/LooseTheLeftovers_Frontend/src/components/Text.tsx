@@ -32,7 +32,7 @@ const Texts: React.FC<TextsProps> = ({
   const textsStyles = {
     fontSize: textsSize || 25,
     color: textsColor || global.primary,
-    marginTop: position == 'top' ? 150 : 0,
+    marginTop: position == 'top' ? '10%' : 0,
   };
 
   return (

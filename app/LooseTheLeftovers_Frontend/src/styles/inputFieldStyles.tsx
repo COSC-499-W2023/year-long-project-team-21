@@ -8,8 +8,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //borderWidth: 0.75,
     backgroundColor: global.tertiary,
+    height: 50,
     //borderColor: global.primary,
     borderRadius: 15,
+    // width: '40%',4
     width: 280,
     marginVertical: 10,
   },

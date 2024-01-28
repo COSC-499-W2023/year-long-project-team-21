@@ -26,18 +26,18 @@ const style = StyleSheet.create({
   textimage: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 0.5,
+    flex: 0.3,
     justifyContent: 'center',
   },
   text: {
-    flex: 0.8,
+    flex: 0.3,
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
   },
   textColor: { color: global.primary },
   button: {
-    flex: 0.15,
+    flex: 0.5,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
