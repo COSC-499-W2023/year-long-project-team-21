@@ -32,7 +32,7 @@ const Icon: React.FC<IconProps> = ({
   imageStyle,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} testID={testID} style={containerStyle}>
+    <TouchableOpacity activeOpacity={1} onPress={onPress} testID={testID} style={containerStyle}>
       <Image
         source={source}
         style={[{ width: size, height: size }, imageStyle]}
