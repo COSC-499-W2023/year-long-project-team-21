@@ -32,7 +32,7 @@ This week our team
 ### Test Report
 
 #### Test for modules (frontend)
-![スクリーンショット 2024-01-25 190454](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/b71c1fe8-d44d-46da-906f-78d2666a47bc)
+![スクリーンショット 2024-01-28 183220](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/5b3f4453-5e9c-47bc-ac01-49590aedba45)
 
 #### Test for modules (backend)
 ![backend test 16](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/231822be-f0b9-4ff6-963c-978e72a1404e)
