@@ -156,7 +156,7 @@ const Post: React.FC<PostProps> = ({
 
   const colors = assignRandomColor();
   const cardStyles = generateHomeScreenCardStyles(
-    0.5 * screenWidth, //height
+    0.4 * screenWidth, //height
     0.8 * screenWidth, //width
     screenWidth,
     colors,

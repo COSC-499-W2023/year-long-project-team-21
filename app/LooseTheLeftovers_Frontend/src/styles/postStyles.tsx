@@ -1,5 +1,5 @@
 import { Animated, StyleSheet } from 'react-native';
-import {global} from '../common/global_styles'
+import { global } from '../common/global_styles';
 const generateHomeScreenCardStyles = (
   card_height: number,
   card_width: number,
@@ -25,7 +25,7 @@ const generateHomeScreenCardStyles = (
       backgroundColor: colors.lightColor,
       zIndex: -3,
       marginLeft: 0.01 * screenWidth, // margin from left side screen
-      elevation:5,
+      elevation: 5,
     },
     card_middle: {
       height: card_height,
@@ -34,7 +34,7 @@ const generateHomeScreenCardStyles = (
       backgroundColor: colors.middleColor,
       zIndex: -2,
       marginLeft: -0.75 * screenWidth, // Slightly overlapping the previous card
-      elevation:5,
+      elevation: 5,
     },
     card_front: {
       height: card_height,
@@ -44,14 +44,14 @@ const generateHomeScreenCardStyles = (
       zIndex: -1,
       flexDirection: 'column',
       marginLeft: -0.75 * screenWidth, // No overlap for the front card
-      elevation:5,
-      position:'relative'
+      elevation: 5,
+      position: 'relative',
     },
     front_container: {
       justifyContent: 'space-between', // Center content vertically
-      flexDirection:'column',
-      height: card_height*0.8,
-      zIndex:-1
+      flexDirection: 'column',
+      height: card_height * 0.8,
+      zIndex: -1,
     },
     card_title_style: {
       color: global.secondary, // could be black in light mode
@@ -63,28 +63,27 @@ const generateHomeScreenCardStyles = (
     },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
-      width: card_width*0.4,
-      justifyContent:'flex-start',
+      width: card_width * 0.4,
+      justifyContent: 'flex-start',
     },
     card_image_wrapper_style: {
       position: 'absolute',
-      backgroundColor:'white',
-      height: card_height*0.6,
-      zIndex:-2,
-      right:0,
-      bottom:0,
-      justifyContent:'flex-end',
+      backgroundColor: 'white',
+      height: card_height * 0.6,
+      zIndex: -2,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'flex-end',
     },
     dietary_icon_style: {
-      height: card_height*0.2,
-      width:card_height*0.2, 
-      marginRight:10
+      height: card_height * 0.2,
+      width: card_height * 0.2,
+      marginRight: 10,
     },
     post_image_style: {
-      width: card_width*0.4, 
-      height: card_height*0.6 ,
-    }
-
+      width: card_width * 0.4,
+      height: card_height * 0.6,
+    },
   });
 
 export default generateHomeScreenCardStyles;
