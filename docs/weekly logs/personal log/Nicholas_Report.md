@@ -1,24 +1,23 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-1/14 to 1/21
+1/21 to 1/28
 
 Username: n3c777
 
 ## My Features For This Week
 
--create profile screen
+-create profile screen and re design UI
 
 ## Completed Features For This Week
 
--reading mock data successfully
--tests are done
--design for profile
--redesigned tab bar
+-completed retrieving users profile info
+-completed redesigning login and registration
 
 ## Features in progress
 
-profile screen is almost completed. Within the next few days it should be done.
+-the rest of UI redesign
+-Navigation redesign
 
 ## Types of Tasks Worked On
 
-![individual log week 2 t2](https://i.postimg.cc/SR3KM28X/jan-21.png)
+![individual log week 3 t2](https://i.postimg.cc/RCs8Qz30/jan-28.png)
