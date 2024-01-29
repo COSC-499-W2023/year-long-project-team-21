@@ -7,11 +7,33 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
 import { SecureAPIReq } from '../common/NetworkRequest';
-import { removeUserSession } from '../common/EncryptedSession';
+import { removeUserSession, retrieveUserSession } from '../common/EncryptedSession';
 import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {};
+
+  const thisisafunction = async () => {
+    await removeUserSession();
+    console.log("logged out");
+  }
+
+
+
+  const handleButtonOnPress = async () => {
+    try{
+      const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
+      const userSesh: any = await retrieveUserSession();
+      console.log(userSesh);
+      const user_id: string = userSesh['user_id'];
+
+      const res: any = await newReq.get(`users/${user_id}`);
+      console.log(res.data);
+
+  }
+  catch(e){
+      console.log(e);
+  }
+  };
   // Creates an array of the instructions and images
   const instructions = [
     {
@@ -84,6 +106,13 @@ const Instruction = ({ navigation }: { navigation: any }) => {
           title="Get Started"
           buttonSize={200}
         />
+      </View>
+      <View style={style.button}>
+        <Button
+          onPress={thisisafunction}
+          title="Logout"
+          buttonSize={200}
+          />
       </View>
     </View>
   );

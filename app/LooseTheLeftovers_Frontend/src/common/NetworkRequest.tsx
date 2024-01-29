@@ -144,7 +144,6 @@ export class SecureAPIReq {
     const session = await retrieveUserSession();
     // this should change to redirecting the user to login or something fine for now
     if (session === null) NavigationService.navigate("Login");
-    // @todo this should check if session is null, not the other methods I feel...
     return new SecureAPIReq(session, baseUrl);
   }
 
@@ -267,17 +266,15 @@ export class SecureAPIReq {
    * @throws {Error} - Throws an error if unable to refresh token.
    */
   private async handleExpirey() {
-    //@Todo instead of throwing error if token is not in storage, get them to login... 
-  
     // check if auth token is expired
     const token_nExpired = this.checkToken(this.TOKEN_EXPIREY);
     // if not expired, return the auth token
     if (token_nExpired) return this.currentSesh['token'];
-    // refresh authentication token or throw an error if refresh is expired
-    const expirey = this.checkToken(this.REFRESH_EXPIREY);
-    // Refresh token is not valid, reauthenticate
-    if(!expirey){
-      NavigationService.navigate("Login");
+    // refresh authentication token or reauth if expired
+    const hasValidToken = this.checkToken(this.REFRESH_EXPIREY);
+    // Refresh token is not valid, return null;
+    if(!hasValidToken){
+      return null;
     }
     // Refresh token is still valid, generate a new auth token
     const new_token: string = await this.getNewToken();
@@ -294,7 +291,7 @@ export class SecureAPIReq {
   private checkToken(threshold: number) {
     // throw error if session is null
     if (this.currentSesh == null) {
-      NavigationService.navigate("Login");
+      return null;
     }
     // retrieve token_creation timestamp
     const creationTime = this.currentSesh['token_creation'];

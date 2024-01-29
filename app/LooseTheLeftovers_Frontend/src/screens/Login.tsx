@@ -33,7 +33,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        //navigation.navigate('Instruction');
         navigation.goBack();
       } catch (error) {
         setErrorMessage(
