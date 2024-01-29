@@ -9,7 +9,7 @@ const globalscreenstyles = StyleSheet.create({
     backgroundColor: global.background,
   },
   body: {
-      flex: 14,
+      flex: 12,
   },
 });
 

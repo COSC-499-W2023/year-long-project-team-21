@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { Dimensions, StyleProp, Text, View, ViewStyle } from 'react-native';
 import TabBar from '../components/TabBar';
 import globalscreenstyles from '../common/global_ScreenStyles';
@@ -6,7 +6,6 @@ import { ViewPostProps } from '../common/Types';
 import Logo from '../components/Logo';
 import { Card, Title } from 'react-native-paper';
 import {
-  renderHiddenIcon,
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
@@ -17,12 +16,10 @@ import { global } from '../common/global_styles';
 import generateViewPostStyles from '../styles/view_postStyles';
 import Button from '../components/Button';
 
-const View_Post: React.FC<ViewPostProps> = ({ route }) => {
-  const { postId } = route.params;
-  const post_color = global.post_color.expiry_long
-  const styles = generateViewPostStyles(
-    getCardColors(post_color),
-  );
+const View_Post = ({navigation }: {navigation:any}) => {
+  //const { postId } = route.params;
+  const post_color = global.post_color.expiry_long;
+  const styles = generateViewPostStyles(getCardColors(post_color));
   // useEffect(() => {
   //   // Make a POST request to the backend API
   //   const fetchData = async () => {
@@ -63,7 +60,7 @@ const View_Post: React.FC<ViewPostProps> = ({ route }) => {
           <Title style={styles.expiry}>2days</Title>
           <Text style={styles.description}>
             Fresh salmon fillet grilled to perfection, served with lemon and
-            herbs.  
+            herbs.
           </Text>
           {render_Icons(
             styles.dietary_icons_wrapper,
@@ -79,9 +76,9 @@ const View_Post: React.FC<ViewPostProps> = ({ route }) => {
                 console.log('hi');
               }}
               borderRadius={0.05 * Dimensions.get('window').width}
-              color= {post_color[1]}
+              color={post_color[1]}
               borderColor={post_color[1]}
-              textColor= {global.secondary}
+              textColor={global.secondary}
             />
           </View>
         </Card.Content>
