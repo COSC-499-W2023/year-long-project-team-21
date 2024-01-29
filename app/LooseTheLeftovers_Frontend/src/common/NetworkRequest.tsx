@@ -31,6 +31,7 @@ export function djangoConfig(): AxiosRequestConfig {
  * @param {Record<string, string>} customErrorMessages - A map of HTTP status codes to custom error messages.
  * @throws {Error} Throws a more descriptive error based on the Axios error or a general error message.
  */
+
 export function handleAxiosError(
   error: unknown,
   customErrorMessages: Record<string, string>,
@@ -143,7 +144,7 @@ export class SecureAPIReq {
   public static async createInstance(baseUrl?: string) {
     const session = await retrieveUserSession();
     // this should change to redirecting the user to login or something fine for now
-    if (session === null) NavigationService.navigate("Login");
+    if (session === null) return NavigationService.navigate('Login');
     return new SecureAPIReq(session, baseUrl);
   }
 
@@ -157,7 +158,8 @@ export class SecureAPIReq {
   public async get(endpoint: string, params?: { [key: string]: any }) {
     try {
       const headers = await this.createSecureHeader();
-      return this.instance.get(endpoint, { params, headers });
+      if (headers) return this.instance.get(endpoint, { params, headers });
+      return NavigationService.navigate('Login');
     } catch (e) {
       throw new Error(`${(e as Error).message}`);
     }
@@ -180,6 +182,7 @@ export class SecureAPIReq {
   ) {
     try {
       const headers = await this.createSecureHeader();
+      if (headers === null) return NavigationService.navigate('Login');
       const options = { params, headers };
       // encode post body message if asFormEnced is true
       if (asFormEncoded && body) {
@@ -210,7 +213,9 @@ export class SecureAPIReq {
   ) {
     try {
       const headers = await this.createSecureHeader();
-      return this.instance.put(endpoint, body, { params, headers });
+      if (headers)
+        return this.instance.put(endpoint, body, { params, headers });
+      return NavigationService.navigate('Login');
     } catch (e) {
       throw new Error(`${(e as Error).message}`);
     }
@@ -226,7 +231,8 @@ export class SecureAPIReq {
   public async delete(endpoint: string, params?: { [key: string]: any }) {
     try {
       const headers = await this.createSecureHeader();
-      return this.instance.delete(endpoint, { params, headers });
+      if (headers) return this.instance.delete(endpoint, { params, headers });
+      return NavigationService.navigate('Login');
     } catch (e) {
       throw new Error(`${(e as Error).message}`);
     }
@@ -244,15 +250,13 @@ export class SecureAPIReq {
     try {
       // retrieve header from handleExpirey
       const token: string = await this.handleExpirey();
-      // if token is truthy, assign header
-      if (token) {
-        headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        return headers;
-      }
-      // else, throw an error
-      throw new Error('Errror in createSecureHeader: blank token');
+      // return null token
+      if (token === null) return null;
+      // return valid header
+      headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      return headers;
     } catch (e) {
       // throw an error if any problems arise.
       throw new Error(`Error in createSecureHeader: ${(e as Error).message}`);
@@ -273,7 +277,7 @@ export class SecureAPIReq {
     // refresh authentication token or reauth if expired
     const hasValidToken = this.checkToken(this.REFRESH_EXPIREY);
     // Refresh token is not valid, return null;
-    if(!hasValidToken){
+    if (!hasValidToken) {
       return null;
     }
     // Refresh token is still valid, generate a new auth token

@@ -133,7 +133,7 @@ describe('Test if helper methods are working correctly for Network Requests', ()
       );
     }
   });
-  it('check if handleExpirey() raises an excpetion if both auth token and refresh token is expired', async () => {
+  it('check if handleExpirey() returns null if both auth token and refresh token is expired', async () => {
     // retrieve 24 hours ago
     const token_expirey = Date.now() - 86400000;
     // remock current mock
@@ -146,15 +146,15 @@ describe('Test if helper methods are working correctly for Network Requests', ()
         }),
       );
     });
+    const getNewToken = jest.fn();
     try {
       const newReq = await SecureAPIReq.createInstance();
       const result = await (newReq as any).handleExpirey();
-      // Fail test if above expression doesn't throw anything.
-      expect(true).toBe(false);
+      expect(result).toBe(null);
+      expect(getNewToken).not.toHaveBeenCalled();
     } catch (e) {
-      expect((e as Error).message).toBe(
-        'Authentication failed. Must log back in again',
-      );
+      // fail test iff an exception arises
+      expect(true).toBe(false);
     }
   });
   it('Check if createNewToken() returns a new authentication token', async () => {
@@ -303,11 +303,9 @@ describe('Test if helper methods are working correctly for Network Requests', ()
       const result = await (newReq as any).createSecureHeader();
       // test if token is retrieved from mock storage
       expect(mockStorage.getItem).toHaveBeenCalledTimes(1);
-      expect(false).toBe(true);
+      expect(result).toBe(null);
     } catch (e) {
-      expect((e as Error).message).toBe(
-        'Error in createSecureHeader: Authentication failed. Must log back in again',
-      );
+      expect(false).toBe(true);
     }
   });
 });
