@@ -2,31 +2,15 @@
 
 ## Overview
 
-This week, our team achieved several milestones:
 
-- Successfully implemented the **ChatList** screen.
-- Enabled network requests on the **CreateAd** screen, including image uploads.
-- Managed scheduled meetings and effectively led team discussions.
-- Provided assistance to Nicholas in overcoming challenges.
-- Engaged in thorough code reviews for ongoing projects.
+This week our team finished several key tasks, enhancing both frontend and backend aspects of our projects. Highlights include successfully implementing the **ChatList** screen and enabling network requests on the **CreateAd** screen, allowing for smooth image uploads. We efficiently managed scheduled meetings, led team discussions, and conducted thorough code reviews for ongoing projects.
 
-**Authentication Challenges:**
-While making progress, we encountered a challenge with authentication. We aimed to allow users access to secure endpoints by implementing a session storage that stores tokens and user information. Currently, we've achieved successful user logins, but the process involves several asynchronous operations. Concerns were raised about potential issues in the event loop due to multiple 'await' keywords. We're exploring solutions, considering options like wrapping requests in promises or utilizing try-catch blocks.
+While making notable progress, we encountered challenges with authentication. Despite achieving successful user logins, concerns arose due to asynchronous operations potentially causing issues in the event loop. Solutions are being explored, including options like wrapping requests in promises or using try-catch blocks.
 
-**Navigation Enhancements:**
-Additionally, we implemented stack navigation to seamlessly transfer parameters between the **Home** screen and the **View post** screen.
+The implementation of stack navigation ensures seamless parameter transfer between the **Home** and **View post** screens. Focused frontend development efforts were dedicated to both screens, involving tasks such as retrieving user profile information and refining the login and registration processes.
 
-**Frontend Development:**
-The frontend development for both the **Home** screen and the **View post** screen has been a focus, involving tasks such as retrieving user profile information, completing the redesign of the login and registration processes, and ensuring a polished user interface.
+Additionally, we achieved significant milestones in the backend, including successful refresh token authentication, user profile retrieval from the backend, and robust functionality for storing ads with images in the database.
 
-**Backend Implementation - Ad Retrieval and Frontend Communication:**
-
-In parallel with frontend development, significant progress was made on the backend:
-
-- Implemented robust functionality for retrieving ads from the server.
-- Established a seamless communication channel between the backend and frontend to efficiently send ad data.
-
-This backend enhancement ensures that the frontend receives up-to-date ad information, contributing to a cohesive and dynamic user experience. The integration of these features aligns with our goal of creating a fully functional and responsive application.
 
 
 ## Quick reminder for usernames
@@ -39,16 +23,23 @@ This backend enhancement ensures that the frontend receives up-to-date ad inform
 
 ## Completed tasks for this week
 
-- Refresh token authentication
-- Retrieve user profile from backend
-- Store ads with image in database
+- Successfully implemented the **ChatList** screen.
+- Enabled network requests on the **CreateAd** screen, facilitating image uploads.
+- Effectively managed scheduled meetings and led team discussions.
+- Engaged in thorough code reviews for ongoing projects.
+- Addressed authentication challenges during progress, achieving successful logins with asynchronous operations. Explored solutions for potential event loop issues.
+- Implemented stack navigation, ensuring seamless parameter transfer between the **Home** and **View post** screens.
+- Focused on frontend development for both the **Home** and **View post** screens, involving tasks such as retrieving user profile information, completing the redesign of the login and registration processes, and ensuring a polished user interface.
+- In parallel with frontend development, implemented robust functionality for retrieving ads from the server, including image storage.
   
 ## Tasks in progress
 
 - Frontend & backend connection for Home screen page and View ad page
 - View Profile page for frontend
-- Design refinement for tab bar, colors, etc.
-  
+- Adjust UI elements for optimal user experience.
+- Conduct thorough testing to identify and resolve bugs.
+- Complete the remaining UI redesign tasks to enhance the overall visual appeal.
+- Implement changes to the navigation structure for improved user navigation within the app.
 
 ## Burn Up Chart
 ![スクリーンショット 2024-01-28 182033](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/9898f13a-c442-4177-bf9d-902a2440c794)
