@@ -1,8 +1,9 @@
 import React, { memo, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import generateSelectRangeBarStyles from '../styles/SelectRangeBarStyles';
 import { SelectRangeBarProps } from '../common/Types';
+
 /**
  * SelectRangeBar Component
  *
@@ -20,6 +21,7 @@ import { SelectRangeBarProps } from '../common/Types';
  */
 const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
   const screenWidth = Dimensions.get('window').width;
+
   /**
    * SelectRangeBar State
    * @type {Object}
@@ -61,7 +63,8 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
   return (
     <DropDownPicker
       testID="select-radius-dropdown"
-      placeholder={value !=='' ? value : "Select Radius"}      open={open}
+      placeholder={value !== '' ? value : 'Select Radius'}
+      open={open}
       value={value}
       items={item}
       setOpen={setOpen}

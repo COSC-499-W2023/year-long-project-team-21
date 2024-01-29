@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
 import postData from '../assets/fake_post_data.json';
@@ -73,6 +73,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     }));
     return filteredPosts;
   };
+
   /**
    * @function
    * @description

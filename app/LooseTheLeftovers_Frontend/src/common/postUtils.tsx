@@ -29,53 +29,41 @@ export const renderHiddenIcon = (
   ) : null;
 };
 
-  /**
-   * Renders dietary icons based on the color mode.
-   *
-   * @function
-   * @private
-   * @returns {JSX.Element} The rendered dietary icons.
-   */
- export const render_Icons = (
-    dietary_wrapper_style: StyleProp<ViewStyle>,
-    icon_style: StyleProp<ImageStyle>,
-    showNutIcon: boolean,
-    showGlutenFreeIcon: boolean,
-    showVeganIcon: boolean
-  ) => {
-    const icons = {
-      dark: [
-        require('../assets/nut_dark.png'),
-        require('../assets/gluten-free_dark.png'),
-        require('../assets/vegan_dark.png'),
-      ],
-      light: [
-        require('../assets/nut.png'),
-        require('../assets/gluten-free.png'),
-        require('../assets/vegan.png'),
-      ],
-    };
-
-    return (
-      <View style={dietary_wrapper_style}>
-        {renderHiddenIcon(
-          showNutIcon,
-          icons.light[0],
-          icon_style,
-        )}
-        {renderHiddenIcon(
-          showGlutenFreeIcon,
-          icons.light[1],
-          icon_style,
-        )}
-        {renderHiddenIcon(
-          showVeganIcon,
-          icons.light[2],
-          icon_style,
-        )}
-      </View>
-    );
+/**
+ * Renders dietary icons based on the color mode.
+ *
+ * @function
+ * @private
+ * @returns {JSX.Element} The rendered dietary icons.
+ */
+export const render_Icons = (
+  dietary_wrapper_style: StyleProp<ViewStyle>,
+  icon_style: StyleProp<ImageStyle>,
+  showNutIcon: boolean,
+  showGlutenFreeIcon: boolean,
+  showVeganIcon: boolean,
+) => {
+  const icons = {
+    dark: [
+      require('../assets/nut_dark.png'),
+      require('../assets/gluten-free_dark.png'),
+      require('../assets/vegan_dark.png'),
+    ],
+    light: [
+      require('../assets/nut.png'),
+      require('../assets/gluten-free.png'),
+      require('../assets/vegan.png'),
+    ],
   };
+
+  return (
+    <View style={dietary_wrapper_style}>
+      {renderHiddenIcon(showNutIcon, icons.light[0], icon_style)}
+      {renderHiddenIcon(showGlutenFreeIcon, icons.light[1], icon_style)}
+      {renderHiddenIcon(showVeganIcon, icons.light[2], icon_style)}
+    </View>
+  );
+};
 
 /**
  * Calculates different shades of a color for the post card.
@@ -110,9 +98,17 @@ export const getCardColors = (color: string[]) => {
  * @private
  * @returns {JSX.Element} The rendered image component.
  */
-export const renderPostImage = (imageStyle: StyleProp<ImageStyle>, size?: number, source?:ImageSourcePropType) => {
+export const renderPostImage = (
+  imageStyle: StyleProp<ImageStyle>,
+  size?: number,
+  source?: ImageSourcePropType,
+) => {
   return (
-    <Icon source={require('../assets/banana.png')} imageStyle={imageStyle} size={size} />
+    <Icon
+      source={require('../assets/banana.png')}
+      imageStyle={imageStyle}
+      size={size}
+    />
   );
 };
 

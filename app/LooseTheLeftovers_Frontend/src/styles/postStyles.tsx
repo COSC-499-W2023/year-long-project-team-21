@@ -44,40 +44,45 @@ const generateHomeScreenCardStyles = (
       zIndex: -1,
       flexDirection: 'column',
       marginLeft: -0.75 * screenWidth, // No overlap for the front card
-      justifyContent: 'center', // Center content vertically
       elevation:5,
+      position:'relative'
     },
     front_container: {
-      justifyContent: 'space-evenly', // Center content vertically
+      justifyContent: 'space-between', // Center content vertically
       flexDirection:'column',
-      height: card_height*0.9,
+      height: card_height*0.8,
+      zIndex:-1
     },
     card_title_style: {
       color: global.secondary, // could be black in light mode
-      fontSize: 0.07 * screenWidth,
+      fontSize: 0.06 * screenWidth,
     },
     card_expiry_style: {
-      color: colors.middleColor, // could be black in light mode
-      fontSize: 0.06 * screenWidth,
-      opacity: 1,
+      color: colors.lightColor, // could be black in light mode
+      fontSize: 0.05 * screenWidth,
     },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
-      width: card_width*0.45,
-      justifyContent:'flex-start'
+      width: card_width*0.4,
+      justifyContent:'flex-start',
     },
     card_image_wrapper_style: {
       position: 'absolute',
-      right: card_width*0.05,
-      top: card_height*0.3,
+      backgroundColor:'white',
+      height: card_height*0.6,
+      zIndex:-2,
+      right:0,
+      bottom:0,
+      justifyContent:'flex-end',
     },
     dietary_icon_style: {
       height: card_height*0.2,
-      paddingLeft: card_width*0.15
+      width:card_height*0.2, 
+      marginRight:10
     },
     post_image_style: {
-      width: card_width*0.35, 
-      height: card_height*0.5 
+      width: card_width*0.4, 
+      height: card_height*0.6 ,
     }
 
   });

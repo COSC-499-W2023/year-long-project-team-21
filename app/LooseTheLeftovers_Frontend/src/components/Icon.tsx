@@ -25,14 +25,18 @@ import { type IconProps } from '../common/Types';
  */
 const Icon: React.FC<IconProps> = ({
   source,
-  size = 24,
+  size,
   onPress,
   testID,
   containerStyle,
   imageStyle,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} testID={testID} style={containerStyle}>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={onPress}
+      testID={testID}
+      style={containerStyle}>
       <Image
         source={source}
         style={[{ width: size, height: size }, imageStyle]}
