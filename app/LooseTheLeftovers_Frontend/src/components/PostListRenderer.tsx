@@ -3,7 +3,6 @@ import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
 import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
-import LocationService from '../common/LocationService';
 import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
@@ -13,7 +12,7 @@ let stopFetchMore = true;
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
-  locationPermission,
+  // locationPermission,
   navigation,
 }) => {
   const screenWidth = Dimensions.get('window').width;
@@ -33,29 +32,29 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @function
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
-  const server = async () => {
-    try {
-      const apiUrl = locationPermission
-        ? 'backend-api-endpoint-for-post'
-        : 'backend-api-endpoint-for-get';
+  // const server = async () => {
+  //   try {
+  //     const apiUrl = locationPermission
+  //       ? 'backend-api-endpoint-for-post'
+  //       : 'backend-api-endpoint-for-get';
 
-      const requestBody = locationPermission
-        ? { range } // Include range data in the POST request body
-        : null; // No request body for GET request
+  //     const requestBody = locationPermission
+  //       ? { range } // Include range data in the POST request body
+  //       : null; // No request body for GET request
 
-      // Make the request based on locationPermission
-      const response = await fetch(apiUrl, {
-        method: locationPermission ? 'POST' : 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add other headers if needed
-        },
-        body: locationPermission ? JSON.stringify(requestBody) : null,
-      });
+  //     // Make the request based on locationPermission
+  //     const response = await fetch(apiUrl, {
+  //       method: locationPermission ? 'POST' : 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // Add other headers if needed
+  //       },
+  //       body: locationPermission ? JSON.stringify(requestBody) : null,
+  //     });
 
-      const data = await response.json();
-    } catch (error) {}
-  };
+  //     const data = await response.json();
+  //   } catch (error) {}
+  // };
 
   /**
    * Filters and transforms raw data into a specific format.

@@ -13,16 +13,16 @@ import PostListRenderer from '../components/PostListRenderer';
 import LocationService from '../common/LocationService';
 import View_Post from './View_Post';
 const Home = ({ navigation }: { navigation: any }) => {
-  const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
-  const checkLocationPermission = async () => {
-    try {
-      const instance = await LocationService.CreateAndInitialize();
-      setHasLocationPermission(instance.hasPermission);
-    } catch (error) {
-      console.error('Error checking location permission:', error);
-      setHasLocationPermission(false); // Assume no permission in case of an error
-    }
-  };
+  // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
+  // const checkLocationPermission = async () => {
+  //   try {
+  //     const instance = await LocationService.CreateAndInitialize();
+  //     setHasLocationPermission(instance.hasPermission);
+  //   } catch (error) {
+  //     console.error('Error checking location permission:', error);
+  //     setHasLocationPermission(false); // Assume no permission in case of an error
+  //   }
+  // };
   
   return (
     <View style={globalscreenstyles.container}>
