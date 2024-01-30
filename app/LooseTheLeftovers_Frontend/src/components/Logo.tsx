@@ -19,7 +19,7 @@ import { type AllIconProps } from '../common/Types';
  */
 
 //uses all icon prop for the interface
-const Logo: React.FC<AllIconProps> = ({ size = 40 }) => {
+const Logo: React.FC<AllIconProps> = ({ size = 63 }) => {
   //creates a navigation hook
 
   //link to image

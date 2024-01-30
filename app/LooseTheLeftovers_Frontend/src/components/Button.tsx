@@ -40,7 +40,7 @@ const Button: React.FC<ButtonProps> = ({
   // Set Default/Custom Button style
   const textStyles = {
     color: textColor || global.secondary, // Use the provided textColor or a default value
-    fontSize: textSize || 25, // Use the provided textSize or a default value
+    fontSize: textSize || 21, // Use the provided textSize or a default value
   };
 
   return (

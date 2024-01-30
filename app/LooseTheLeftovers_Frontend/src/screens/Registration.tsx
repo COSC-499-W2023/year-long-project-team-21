@@ -11,6 +11,7 @@ import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
+import Icon from '../components/Icon';
 
 /**
  * Registration page
@@ -141,7 +142,10 @@ const Registration = ({ navigation }: { navigation: any }) => {
       start={{ x: 1, y: 0 }}>
       <View style={styles.container}>
         <View style={styles.logo}>
-          <Logo size={200} />
+          {/* <Logo size={200} /> */}
+          <Icon
+            source={require('../assets/logo-with-name.png')}
+            size={200}></Icon>
         </View>
         <Title title="Register" titleSize={30} />
         <InputField

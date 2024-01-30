@@ -8,7 +8,9 @@ import TextImage from '../components/TextImage';
 import { global } from '../common/global_styles';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {};
+  const handleButtonOnPress = async () => {
+    navigation.navigate('Home');
+  };
   // Creates an array of the instructions and images
   const instructions = [
     {

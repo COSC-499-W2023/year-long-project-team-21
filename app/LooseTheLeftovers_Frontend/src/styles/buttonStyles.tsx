@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     //borderWidth: 2,
     margin: 10,
     borderRadius: 40,
-    height: 75,
+    height: 65,
     justifyContent: 'center',
     alignItems: 'center',
   },
