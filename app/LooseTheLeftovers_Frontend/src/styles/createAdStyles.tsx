@@ -14,15 +14,16 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   imagePickerContainer: {
-    alignSelf: 'flex-start', // Align ImagePicker to the left
+    alignSelf: 'flex-start',
     paddingTop: 15,
   },
   expirySliderContainer: {
     paddingTop: 15,
   },
   buttonContainer: {
-    alignItems: 'center', // Center align Submit button
-    paddingVertical: 15,
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 30,
   },
   doneButton: {
     width: '50%',
@@ -32,8 +33,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingTop: 15,
   },
-  errorMessage: {
-    paddingTop: 25,
+  networkError: {
+    paddingTop: 20,
+    paddingBottom: 0,
   }
 });
 

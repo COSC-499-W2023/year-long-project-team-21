@@ -15,7 +15,12 @@ import ExpirySlider from '../components/ExpirySlider';
 import Button from '../components/Button';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [networkError, setNetworkError] = useState('');
+  const [fieldError, setFieldError] = useState({
+    titleError: '',
+    categoryError: '',
+    imageError: '',
+  });
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
@@ -32,52 +37,60 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       ...prevAdData,
       [field]: field === 'imageUri' && value === null ? '' : value, // Handle imageUri null case
     }));
-    setErrorMessage('');
+
+    // Reset error for the field edited
+    setFieldError(prevErrors => ({
+      ...prevErrors,
+      [`${field}Error`]: '',
+    }));
   };
 
   const validateInputs = () => {
-    if (adData.title === '' || adData.category === '' || adData.imageUri === '') {
-      // Check each field individually to provide specific messages
-      if (adData.title === '') {
-        setErrorMessage('Please provide a title for your ad.');
-        return false;
-      }
-      if (adData.category === '') {
-        setErrorMessage('Please select a category for your ad.');
-        return false;
-      }
-      if (adData.imageUri === '') {
-        setErrorMessage('Please add an image for your ad.');
-        return false;
-      }
-      return false;
+    let isValid = true;
+    const errors = {
+      titleError: '',
+      categoryError: '',
+      imageError: '',
+    };
+  
+    if (adData.title === '') {
+      errors.titleError = 'Please provide a title for your ad.';
+      isValid = false;
     }
-    setErrorMessage(''); // Clear any existing error messages
-    return true; // Inputs are valid
+    if (adData.category === '') {
+      errors.categoryError = 'Please select a category for your ad.';
+      isValid = false;
+    }
+    if (adData.imageUri === '') {
+      errors.imageError = 'Please add an image for your ad.';
+      isValid = false;
+    }
+  
+    setFieldError(errors);
+    return isValid;
   };
 
   // Handle Submit press
   const handleSubmit = async () => {
     if (validateInputs()) {
       const formData = createFormData(adData);
+      setNetworkError('');
 
       SecureAPIReq.createInstance()
         .then(async newReq => {
-        const res = await newReq.post(createAd, formData);
-        statusHandler(res.status);
-      })
+          const res = await newReq.post(createAd, formData);
+          statusHandler(res.status);
+        })
         .catch(e => {
           if (e.response?.status) {
             // If a status code is available
             statusHandler(e.response?.status);
           } else {
             // General error
-            // console.error('An error occurred:', e.message);
-            setErrorMessage(e.message);
+            setNetworkError(e.message || 'An unexpected error occurred.');
           }
-      });
+        });
     }
-    
   };
 
   const statusHandler = (status: number) => {
@@ -87,13 +100,13 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         // Navigate to profile or success page
         break;
       case 401:
-        setErrorMessage('Unauthorized, force user to login.');
+        setNetworkError('Unauthorized, force user to login.');
         break;
       case 400:
-        setErrorMessage('Bad request - Check the submitted data.');
+        setNetworkError('Bad request - Check the submitted data.');
         break;
       default:
-        setErrorMessage(`Network error: ${status}`);
+        setNetworkError(`Network error: ${status}`);
         break;
     }
   };
@@ -146,106 +159,131 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       <Header
         onLeftPress={handleBackPress}
         leftIconSource={require('../assets/plus_white.png')}
+        title='Create Post'
       />
-      <ScrollView contentContainerStyle={styles.formContainer}>
-        {/* Title */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Food Name"
-            textsSize={22}
-            textsColor={global.secondary}
-            textsWeight="bold"
-          />
-        </View>
-        <InputField
-          placeholder="Title"
-          onChangeText={newTitle => handleFieldChange('title', newTitle)}
-          value={adData.title}
-          width="100%"
-        />
-
-        {/* Description */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Description (optional)"
-            textsSize={22}
-            textsColor={global.secondary}
-            textsWeight="bold"
-          />
-        </View>
-        <InputField
-          placeholder="Description"
-          onChangeText={newDescription =>
-            handleFieldChange('description', newDescription)
-          }
-          value={adData.description}
-          multiline={true}
-          width="100%"
-        />
-
-        {/* Category */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Category"
-            textsSize={22}
-            textsColor={global.secondary}
-            textsWeight="bold"
-          />
-        </View>
-        <InputField
-          placeholder="Category"
-          onChangeText={newCategory =>
-            handleFieldChange('category', newCategory)
-          }
-          value={adData.category}
-          width="100%"
-        />
-
-        {/* ImagePicker */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Pick an image of the food"
-            textsSize={22}
-            textsColor={global.secondary}
-            textsWeight="bold"
-          />
-        </View>
-        <View style={styles.imagePickerContainer}>
-          <ImagePickerButton
-            onImagePicked={newImageUri =>
-              handleFieldChange('imageUri', newImageUri)
-            }
-          />
-        </View>
-
-        {/* Slider */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Set an expiry range"
-            textsSize={22}
-            textsColor={global.secondary}
-            textsWeight="bold"
-          />
-        </View>
-        <View style={styles.expirySliderContainer}>
-          <ExpirySlider onExpiryChange={handleExpiryChange} />
-        </View>
-
-        {/* Error message */}
-        {errorMessage !== '' && (
-          <View style={styles.errorMessage}>
+      <ScrollView>
+        <View style={styles.formContainer}>
+          {/* Title */}
+          <View style={styles.leftAlignedText}>
             <Texts
-              texts={errorMessage} // Pass error message
-              textsSize={14}
-              textsColor="red"
-              testID="error-msg"
+              texts="Food Name"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
             />
           </View>
-        )}
+          <InputField
+            placeholder="Title"
+            onChangeText={newTitle => handleFieldChange('title', newTitle)}
+            value={adData.title}
+            width="100%"
+          />
+          {fieldError.titleError !== '' && (
+              <Texts
+                texts={fieldError.titleError} // Pass error message
+                textsSize={14}
+                textsColor="red"
+                testID="error-msg"
+              />
+          )}
 
-        {/* Submit Button */}
-        <View style={styles.buttonContainer}>
-          <Button title="Submit" onPress={handleSubmit} />
+          {/* Description */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Description (optional)"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <InputField
+            placeholder="Description"
+            onChangeText={newDescription =>
+              handleFieldChange('description', newDescription)
+            }
+            value={adData.description}
+            multiline={true}
+            width="100%"
+          />
+
+          {/* Category */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Category"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <InputField
+            placeholder="Category"
+            onChangeText={newCategory =>
+              handleFieldChange('category', newCategory)
+            }
+            value={adData.category}
+            width="100%"
+          />
+          {fieldError.categoryError !== '' && (
+              <Texts
+                texts={fieldError.categoryError} // Pass error message
+                textsSize={14}
+                textsColor="red"
+                testID="error-msg"
+              />
+          )}
+
+          {/* ImagePicker */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Pick an image of the food"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <View style={styles.imagePickerContainer}>
+            <ImagePickerButton
+              onImagePicked={newImageUri =>
+                handleFieldChange('imageUri', newImageUri)
+              }
+            />
+          </View>
+          {fieldError.imageError !== '' && (
+              <Texts
+                texts={fieldError.imageError} // Pass error message
+                textsSize={14}
+                textsColor="red"
+                testID="error-msg"
+              />
+          )}
+
+          {/* Slider */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Set an expiry range"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <View style={styles.expirySliderContainer}>
+            <ExpirySlider onExpiryChange={handleExpiryChange} />
+          </View>
+
+          {/* Submit Button */}
+          <View style={styles.buttonContainer}>
+            {networkError !== '' && (
+              <View style={styles.networkError}>
+                <Texts
+                  texts={networkError} // Pass error message
+                  textsSize={14}
+                  textsColor="red"
+                  testID="error-msg"
+                />
+              </View>
+            )}
+            <Button title="Submit" onPress={handleSubmit} />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

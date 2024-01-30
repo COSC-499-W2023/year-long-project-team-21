@@ -222,6 +222,7 @@ interface UserInfoProps {
  * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
  * @property {ImageSourcePropType} leftIconSource - The image source for the left icon.
  * @property {ImageSourcePropType} rightIconSource - The image source for the right icon.
+ * @property {string} title - The prop to pass title.
  */
 
 interface UpperBarProps {
@@ -229,6 +230,7 @@ interface UpperBarProps {
   onRightPress?: () => void;
   leftIconSource?: ImageSourcePropType;
   rightIconSource?: ImageSourcePropType;
+  title?: string;
 }
 
 /**
