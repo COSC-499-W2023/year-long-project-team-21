@@ -197,9 +197,9 @@ def retrieve_single_advertisment(ad_id):
 
         # return response data of both serializers and 200 OK response
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
         # send problem response and server error
-        response = {"message": "Error retrieving ad"}
+        response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def retrieve_advertisments_for_user(user_id):
@@ -234,9 +234,9 @@ def retrieve_advertisments_for_user(user_id):
         # return response data of both serializers and 200 OK response
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
 
-    except:
+    except Exception as e:
         # send problem response and server error
-        response = {"message": "Error retrieving user's ads"}
+        response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def retrieve_all_advertisments():
@@ -273,9 +273,9 @@ def retrieve_all_advertisments():
         # send response, 200 ok
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
     
-    except:
+    except Exception as e:
         # send problem response and server error
-        response = {"message": "Error retrieving all ads"}
+        response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 def get_expiry_formatted(expiry):
@@ -290,7 +290,10 @@ def get_expiry_formatted(expiry):
     
     # if expiry was passed as a string, cast it to a date object
     if type(expiry) is str:
-        expiry = datetime.strptime(expiry, '%Y-%m-%dT%H:%M:%SZ').date()
+        if len(expiry) > 20:
+            expiry = datetime.strptime(expiry, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+        else:
+            expiry = datetime.strptime(expiry, '%Y-%m-%dT%H:%M:%SZ').date()
 
     today = date.today()
     delta = expiry - today
