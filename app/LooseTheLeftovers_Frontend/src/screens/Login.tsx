@@ -40,7 +40,8 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        navigation.navigate('Instruction');
+        console.log('testing console');
+        navigation.navigate('Home');
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,

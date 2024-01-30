@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import globalscreenstyles from '../common/global_ScreenStyles';
 import tabBarStyles from '../styles/tabBarStyles';
 import { TabBarProps } from '../common/Types';
 
@@ -16,22 +15,24 @@ import { TabBarProps } from '../common/Types';
  * <Texts texts="Words" />
  */
 
-const TabBar: React.FC<TabBarProps> = ({ LeftIcon, RightIcon, MiddleIcon }) => {
+const TabBarTop: React.FC<TabBarProps> = ({
+  LeftIcon,
+  RightIcon,
+  MiddleIcon,
+}) => {
   return (
-    <View testID="TabBarTest" style={globalscreenstyles.container}>
-      <View style={tabBarStyles.container}>
-        <View testID="TabBarLeftIconTest" style={tabBarStyles.left}>
-          {LeftIcon}
-        </View>
-        <View testID="TabBarMiddleIconTest" style={tabBarStyles.middle}>
-          {MiddleIcon}
-        </View>
-        <View testID="TabBarRightIconTest" style={tabBarStyles.right}>
-          {RightIcon}
-        </View>
+    <View style={tabBarStyles.containerTop}>
+      <View testID="TabBarLeftIconTest" style={tabBarStyles.left}>
+        {LeftIcon}
+      </View>
+      <View testID="TabBarMiddleIconTest" style={tabBarStyles.middle}>
+        {MiddleIcon}
+      </View>
+      <View testID="TabBarRightIconTest" style={tabBarStyles.right}>
+        {RightIcon}
       </View>
     </View>
   );
 };
 
-export default TabBar;
+export default TabBarTop;
