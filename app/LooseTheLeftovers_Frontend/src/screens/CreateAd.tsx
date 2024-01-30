@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import axios from 'axios';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
 import { AdDataProps } from '../common/Types';
-import { retrieveUserSession } from '../common/EncryptedSession';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import { createAd } from '../common/API';
 
 import Header from '../components/UpperBar';
 import Texts from '../components/Text';
@@ -23,68 +23,54 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     imageUri: '',
   });
 
-  // Update the title in ad data
-  const handleSetTitle = (newTitle: string) =>
-    setAdData(prevAdData => ({ ...prevAdData, title: newTitle }));
-  // Update the description in ad data
-  const handleSetDescription = (newDescription: string) =>
-    setAdData(prevAdData => ({ ...prevAdData, description: newDescription }));
-  // Update the image URI in ad data
-  const handleSetImageUri = (newImageUri: string | null) =>
-    setAdData(prevAdData => ({ ...prevAdData, imageUri: newImageUri ?? '' }));  
-  // Update the expiry date in ad data
-  const handleSetExpiry = (newExpiry: number) =>
-    setAdData(prevAdData => ({ ...prevAdData, expiry: newExpiry }));
+  const handleFieldChange = (
+    field: keyof AdDataProps,
+    value: string | number | null,
+  ) => {
+    setAdData(prevAdData => ({
+      ...prevAdData,
+      [field]: field === 'imageUri' && value === null ? '' : value, // Handle imageUri null case
+    }));
+  };
 
   // Handle Submit press
   const handleSubmit = async () => {
-    const session = await retrieveUserSession();
-    if (!session || !session.token) {
-      console.error('No token found');
-      return;
-    }
-  
-    const jwtToken = session.token;
-    const url = 'http://10.0.2.2:8000/ads/';
     const formData = createFormData(adData);
 
-    const result = await sendPostRequest(url, formData, jwtToken);
-    if (result.success) {
-      // Navigate to Home screen
-    } else {
-      // Handle error
-    }
+    SecureAPIReq.createInstance()
+      .then(async newReq => {
+        const res = await newReq.post(createAd, formData);
+        statusHandler(res.status);
+      })
+      .catch(e => {
+        if (e.response?.status) {
+          // If a status code is available
+          statusHandler(e.response?.status);
+        } else {
+          // General error
+          console.error('An error occurred:', e.message);
+        }
+      });
   };
 
-  const sendPostRequest = async (
-    url: string,
-    formData: FormData,
-    token: string,
-  ) => {
-    try {
-      const response = await axios.post(url, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 201) {
-        console.log('Success:', response.data);
-        return { success: true, data: response.data };
-      } else {
-        console.error('Request failed:', response);
-        if (response.status === 401) {
-          console.error('Unauthorized');
-        } else if (response.status === 405) {
-          console.error('Not a POST request');
-        } else if (response.status === 400) {
-          console.error('Could not validate data');
-        }
-        return { success: false, error: response };
-      }
-    } catch (error) {
-      console.error('Network or server error occurred:', error);
-      return { success: false, error };
+  const statusHandler = (status: number) => {
+    switch (status) {
+      case 201:
+        console.log('Ad created successfully.');
+        // Navigate to profile or success page
+        break;
+      case 401:
+        console.error('Unauthorized, force user to login.');
+        // Handle unauthorized access
+        break;
+      case 400:
+        console.error('Bad request - Check the submitted data.');
+        // Handle bad request
+        break;
+      default:
+        console.error(`Network error: ${status}`);
+        // Other statuses or general error
+        break;
     }
   };
 
@@ -95,7 +81,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     formData.append('title', adData.title);
     formData.append('description', adData.description);
     formData.append('category', 'Food'); // Will be added as a field later
-    formData.append('expiry', convertExpiryToDatetime(adData.expiry)); // Convert expiry to datetime
+    formData.append('expiry', adData.expiry);
 
     // Adding image if it exists
     if (adData.imageUri) {
@@ -111,6 +97,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     }
 
     return formData;
+  };
+
+  const handleExpiryChange = (expiryValue: number) => {
+    const expiryDate = convertExpiryToDatetime(expiryValue);
+    handleFieldChange('expiry', expiryDate);
   };
 
   // Convert Slider Value into future expiry date
@@ -144,7 +135,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         </View>
         <InputField
           placeholder="Title"
-          onChangeText={newTitle => handleSetTitle(newTitle)}
+          onChangeText={newTitle => handleFieldChange('title', newTitle)}
           value={adData.title}
           width="100%"
         />
@@ -160,7 +151,9 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         </View>
         <InputField
           placeholder="Description"
-          onChangeText={newDescription => handleSetDescription(newDescription)}
+          onChangeText={newDescription =>
+            handleFieldChange('description', newDescription)
+          }
           value={adData.description}
           multiline={true}
           width="100%"
@@ -176,7 +169,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           />
         </View>
         <View style={styles.imagePickerContainer}>
-          <ImagePickerButton onImagePicked={handleSetImageUri} />
+          <ImagePickerButton
+            onImagePicked={newImageUri =>
+              handleFieldChange('imageUri', newImageUri)
+            }
+          />
         </View>
 
         {/* Slider */}
@@ -189,7 +186,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           />
         </View>
         <View style={styles.expirySliderContainer}>
-          <ExpirySlider onExpiryChange={handleSetExpiry} />
+          <ExpirySlider onExpiryChange={handleExpiryChange} />
         </View>
 
         {/* Submit Button */}
