@@ -6,6 +6,7 @@ import styles from '../styles/createAdStyles';
 import { AdDataProps } from '../common/Types';
 import { SecureAPIReq } from '../common/NetworkRequest';
 import { createAd } from '../common/API';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 import Header from '../components/UpperBar';
 import Texts from '../components/Text';
@@ -13,6 +14,7 @@ import ImagePickerButton from '../components/ImagePicker';
 import InputField from '../components/InputField';
 import ExpirySlider from '../components/ExpirySlider';
 import Button from '../components/Button';
+import Icon from '../components/Icon';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
   const [networkError, setNetworkError] = useState('');
@@ -28,6 +30,13 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     expiry: 1,
     imageUri: '',
   });
+
+  const categories = [
+    { key: 'none', value: 'None' },
+    { key: 'vegan', value: 'Vegan' },
+    { key: 'gluten free', value: 'Gluten Free' },
+    { key: 'peanut free', value: 'Peanut Free' },
+  ];
 
   const handleFieldChange = (
     field: keyof AdDataProps,
@@ -52,7 +61,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       categoryError: '',
       imageError: '',
     };
-  
+
     if (adData.title === '') {
       errors.titleError = 'Please provide a title for your ad.';
       isValid = false;
@@ -65,7 +74,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       errors.imageError = 'Please add an image for your ad.';
       isValid = false;
     }
-  
+
     setFieldError(errors);
     return isValid;
   };
@@ -159,7 +168,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       <Header
         onLeftPress={handleBackPress}
         leftIconSource={require('../assets/plus_white.png')}
-        title='Create Post'
+        title="Create Post"
       />
       <ScrollView>
         <View style={styles.formContainer}>
@@ -179,12 +188,12 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             width="100%"
           />
           {fieldError.titleError !== '' && (
-              <Texts
-                texts={fieldError.titleError} // Pass error message
-                textsSize={14}
-                textsColor="red"
-                testID="error-msg"
-              />
+            <Texts
+              texts={fieldError.titleError} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
           )}
 
           {/* Description */}
@@ -215,21 +224,29 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsWeight="bold"
             />
           </View>
-          <InputField
-            placeholder="Category"
-            onChangeText={newCategory =>
+          <SelectList
+            setSelected={(newCategory: string) =>
               handleFieldChange('category', newCategory)
             }
-            value={adData.category}
-            width="100%"
+            data={categories}
+            save="value"
+            search={false}
+            placeholder="Select category"
+            boxStyles={styles.boxStyles}
+            inputStyles={styles.inputStyles}
+            dropdownStyles={styles.dropdownStyles}
+            dropdownTextStyles={styles.dropdownTextStyles}
+            arrowicon={
+              <Icon source={require('../assets/drop_3.png')} size={13} />
+            }
           />
           {fieldError.categoryError !== '' && (
-              <Texts
-                texts={fieldError.categoryError} // Pass error message
-                textsSize={14}
-                textsColor="red"
-                testID="error-msg"
-              />
+            <Texts
+              texts={fieldError.categoryError} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
           )}
 
           {/* ImagePicker */}
@@ -249,12 +266,12 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           </View>
           {fieldError.imageError !== '' && (
-              <Texts
-                texts={fieldError.imageError} // Pass error message
-                textsSize={14}
-                textsColor="red"
-                testID="error-msg"
-              />
+            <Texts
+              texts={fieldError.imageError} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
           )}
 
           {/* Slider */}

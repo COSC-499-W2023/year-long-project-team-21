@@ -35,8 +35,26 @@ const styles = StyleSheet.create({
   },
   networkError: {
     paddingTop: 20,
-    paddingBottom: 0,
-  }
+  },
+  boxStyles: {
+    height: 50,
+    borderColor: global.primary,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  inputStyles: {
+    color: global.secondary, // Text color inside the box
+  },
+  dropdownStyles: {
+    borderColor: global.primary, // Border color for dropdown
+    borderWidth: 1, // Border width for dropdown
+    paddingVertical: 6,
+    marginBottom: 10,
+  },
+  dropdownTextStyles: {
+    color: global.secondary, // Text color for dropdown items
+  },
 });
 
 export default styles;
