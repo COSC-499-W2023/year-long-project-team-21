@@ -15,22 +15,22 @@ const styles = StyleSheet.create({
   },
   imagePickerContainer: {
     alignSelf: 'flex-start', // Align ImagePicker to the left
-    paddingTop: 15, // Add padding between the ImagePicker and other elements
+    paddingTop: 15,
   },
   expirySliderContainer: {
-    paddingTop: 15, // Add padding between the ExpirySlider and other elements
+    paddingTop: 15,
   },
   buttonContainer: {
-    alignItems: 'center', // Center align the Done button
-    paddingVertical: 30, // Add padding above the Done button
+    alignItems: 'center', // Center align Submit button
+    paddingVertical: 30,
   },
   doneButton: {
-    width: '50%', // Make the Done button narrower
-    alignSelf: 'center', // Ensure the button is centered
+    width: '50%',
+    alignSelf: 'center',
   },
   leftAlignedText: {
     alignSelf: 'flex-start',
-    paddingTop: 15, // Add padding above the Done button
+    paddingTop: 15,
   },
 });
 

@@ -80,7 +80,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     // Text fields
     formData.append('title', adData.title);
     formData.append('description', adData.description);
-    formData.append('category', 'Food'); // Will be added as a field later
+    formData.append('category', adData.category);
     formData.append('expiry', adData.expiry);
 
     // Adding image if it exists
@@ -156,6 +156,24 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           }
           value={adData.description}
           multiline={true}
+          width="100%"
+        />
+
+        {/* Category */}
+        <View style={styles.leftAlignedText}>
+          <Texts
+            texts="Category"
+            textsSize={22}
+            textsColor={global.secondary}
+            textsWeight="bold"
+          />
+        </View>
+        <InputField
+          placeholder="Category"
+          onChangeText={newCategory =>
+            handleFieldChange('category', newCategory)
+          }
+          value={adData.category}
           width="100%"
         />
 
