@@ -13,7 +13,7 @@ const generateHomeScreenCardStyles = (
       flexDirection: 'row',
     },
     animation_style: {
-      borderRadius: 0.1 * screenWidth, //animation with tap will repspond only on the card
+      borderRadius: 0.06 * screenWidth, //animation with tap will repspond only on the card
       position: 'relative',
       flexDirection: 'row',
       transform: [{ scale: scaleValue }],
@@ -21,7 +21,7 @@ const generateHomeScreenCardStyles = (
     card_back: {
       height: card_height,
       width: card_width,
-      borderRadius: 0.1 * screenWidth,
+      borderRadius: 0.06 * screenWidth,
       backgroundColor: colors.lightColor,
       zIndex: -3,
       marginLeft: 0.01 * screenWidth, // margin from left side screen
@@ -30,7 +30,7 @@ const generateHomeScreenCardStyles = (
     card_middle: {
       height: card_height,
       width: card_width,
-      borderRadius: 0.1 * screenWidth,
+      borderRadius: 0.06 * screenWidth,
       backgroundColor: colors.middleColor,
       zIndex: -2,
       marginLeft: -0.75 * screenWidth, // Slightly overlapping the previous card
@@ -39,7 +39,7 @@ const generateHomeScreenCardStyles = (
     card_front: {
       height: card_height,
       width: card_width,
-      borderRadius: 0.1 * screenWidth,
+      borderRadius: 0.06 * screenWidth,
       backgroundColor: colors.originalColor,
       zIndex: -1,
       flexDirection: 'column',
@@ -68,11 +68,13 @@ const generateHomeScreenCardStyles = (
     },
     card_image_wrapper_style: {
       position: 'absolute',
+      paddingTop: '-40%',
       backgroundColor: 'white',
       height: card_height * 0.6,
       zIndex: -2,
       right: 0,
       bottom: 0,
+      borderRadius: screenWidth * 0.04,
       justifyContent: 'flex-end',
     },
     dietary_icon_style: {
