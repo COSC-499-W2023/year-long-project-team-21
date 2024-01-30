@@ -15,6 +15,7 @@ import ExpirySlider from '../components/ExpirySlider';
 import Button from '../components/Button';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
+  const [errorMessage, setErrorMessage] = useState('');
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
@@ -31,26 +32,52 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       ...prevAdData,
       [field]: field === 'imageUri' && value === null ? '' : value, // Handle imageUri null case
     }));
+    setErrorMessage('');
+  };
+
+  const validateInputs = () => {
+    if (adData.title === '' || adData.category === '' || adData.imageUri === '') {
+      // Check each field individually to provide specific messages
+      if (adData.title === '') {
+        setErrorMessage('Please provide a title for your ad.');
+        return false;
+      }
+      if (adData.category === '') {
+        setErrorMessage('Please select a category for your ad.');
+        return false;
+      }
+      if (adData.imageUri === '') {
+        setErrorMessage('Please add an image for your ad.');
+        return false;
+      }
+      return false;
+    }
+    setErrorMessage(''); // Clear any existing error messages
+    return true; // Inputs are valid
   };
 
   // Handle Submit press
   const handleSubmit = async () => {
-    const formData = createFormData(adData);
+    if (validateInputs()) {
+      const formData = createFormData(adData);
 
-    SecureAPIReq.createInstance()
-      .then(async newReq => {
+      SecureAPIReq.createInstance()
+        .then(async newReq => {
         const res = await newReq.post(createAd, formData);
         statusHandler(res.status);
       })
-      .catch(e => {
-        if (e.response?.status) {
-          // If a status code is available
-          statusHandler(e.response?.status);
-        } else {
-          // General error
-          console.error('An error occurred:', e.message);
-        }
+        .catch(e => {
+          if (e.response?.status) {
+            // If a status code is available
+            statusHandler(e.response?.status);
+          } else {
+            // General error
+            // console.error('An error occurred:', e.message);
+            setErrorMessage(e.message);
+          }
       });
+    }
+    
   };
 
   const statusHandler = (status: number) => {
@@ -60,16 +87,13 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         // Navigate to profile or success page
         break;
       case 401:
-        console.error('Unauthorized, force user to login.');
-        // Handle unauthorized access
+        setErrorMessage('Unauthorized, force user to login.');
         break;
       case 400:
-        console.error('Bad request - Check the submitted data.');
-        // Handle bad request
+        setErrorMessage('Bad request - Check the submitted data.');
         break;
       default:
-        console.error(`Network error: ${status}`);
-        // Other statuses or general error
+        setErrorMessage(`Network error: ${status}`);
         break;
     }
   };
@@ -206,6 +230,18 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         <View style={styles.expirySliderContainer}>
           <ExpirySlider onExpiryChange={handleExpiryChange} />
         </View>
+
+        {/* Error message */}
+        {errorMessage !== '' && (
+          <View style={styles.errorMessage}>
+            <Texts
+              texts={errorMessage} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
+          </View>
+        )}
 
         {/* Submit Button */}
         <View style={styles.buttonContainer}>

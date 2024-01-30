@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center', // Center align Submit button
-    paddingVertical: 30,
+    paddingVertical: 15,
   },
   doneButton: {
     width: '50%',
@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingTop: 15,
   },
+  errorMessage: {
+    paddingTop: 25,
+  }
 });
 
 export default styles;
