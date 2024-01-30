@@ -69,7 +69,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
         <Texts // Displays the first text
           textsSize={20}
           texts="This is an app to share left over food to others in need"
-          textsColor={global.primary}
+          textsColor={global.secondary}
           // The list below displays the entire instruction and images
         />
 

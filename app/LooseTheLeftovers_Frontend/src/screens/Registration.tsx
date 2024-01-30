@@ -226,12 +226,12 @@ const Registration = ({ navigation }: { navigation: any }) => {
           </View>
           <Text style={styles.login}>
             <Texts
-              textsColor="white"
               texts="     Already a member?"
               textsSize={18}
               onPress={() => handleLoginNavigation()}
             />
             <Texts
+              textsColor={global.secondary}
               texts="  Sign in"
               textsSize={18}
               onPress={() => handleLoginNavigation()}
