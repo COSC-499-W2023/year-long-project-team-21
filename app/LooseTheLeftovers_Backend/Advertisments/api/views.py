@@ -22,6 +22,9 @@ class AdvertismentHandler(APIView):
     ads from the database.
     """
 
+    user_max_pages = 3
+    all_ad_max_pages = 3
+
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests to create a new ad. Requires authentication so valid token must
@@ -88,7 +91,7 @@ class AdvertismentHandler(APIView):
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
 
-            return retrieve_advertisments_for_user(user_id)
+            return retrieve_advertisments_for_user(request, user_id)
 
         # ad_id and user_id not provided: get all ads in database
         return retrieve_all_advertisments(request)
@@ -189,7 +192,7 @@ def retrieve_single_advertisment(ad_id):
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def retrieve_advertisments_for_user(user_id):
+def retrieve_advertisments_for_user(request, user_id):
     """
     GET request to handle retrieving ads from the database. No authentication required.
 
@@ -204,28 +207,28 @@ def retrieve_advertisments_for_user(user_id):
         return Response(response, status=status.HTTP_204_NO_CONTENT)
 
     try:
-        # send to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(user_ads, many=True)
-        image_serializer = ImageSerializer(user_ad_images, many=True)
+        # put query results into pages
+        ad_paginator = Paginator(user_ads, 3)
+        image_paginator = Paginator(user_ad_images, 3)
 
-        # get formatted expiry data for frontend for each ad returned
-        #   if serializer data is ReturnList multiple ads were returned (single ad is ReturnDict)
-        if type(serializer.data) is ReturnList:
-            combined_data = []
-            for ad, image in zip(serializer.data, image_serializer.data):
-                combined = {**ad, **image}  # Merge two dictionaries
-                combined_data.append(combined)
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        ad_page = ad_paginator.get_page(page_number)
+        image_page = image_paginator.get_page(page_number)
 
-            return Response(
-                combined_data,
-                status=status.HTTP_200_OK,
-            )
+        # send each page to serializer to package data
+        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        image_serializer = ImageSerializer(image_page, many=True)
 
-        combined = {**serializer.data, **image_serializer.data}  # Merge two dictionaries
+        # merge results into one data structure
+        combined_data = []
+        for ad, image in zip(serializer.data, image_serializer.data):
+            combined = {**ad, **image}  # Merge two dictionaries
+            combined_data.append(combined)
 
-        # return response data of both serializers and 200 OK response
         return Response(
-            combined, status=status.HTTP_200_OK
+            combined_data,
+            status=status.HTTP_200_OK,
         )
 
     except Exception as e:
@@ -252,8 +255,8 @@ def retrieve_all_advertisments(request):
     
     try:
         # put query results into pages
-        ad_paginator = Paginator(all_ads, 8)
-        image_paginator = Paginator(all_images, 8)
+        ad_paginator = Paginator(all_ads, 3)
+        image_paginator = Paginator(all_images, 3)
 
         # gets data for the current page
         page_number = request.GET.get("page")
