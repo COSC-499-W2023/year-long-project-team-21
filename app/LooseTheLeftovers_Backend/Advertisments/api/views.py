@@ -198,16 +198,13 @@ def retrieve_single_advertisment(ad_id):
 
     try:
         # send to serializers to package data
-        serializer = ReturnAdvertismentSerializer(ad)
-        image_serializer = ImageSerializer(ad_image)
-
-        # get formatted expiry data for frontend
-        expiry = get_expiry_formatted(serializer.data["expiry"])
+        ser_data = ReturnAdvertismentSerializer(ad).data
+        im_data = ImageSerializer(ad_image).data
+        # combine dictionaries
+        res = {**ser_data, **im_data}
 
         # return response data of both serializers and 200 OK response
-        return Response(
-            [serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK
-        )
+        return Response([res], status=status.HTTP_200_OK)
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
