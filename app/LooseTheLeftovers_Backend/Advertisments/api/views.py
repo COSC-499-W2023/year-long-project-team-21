@@ -193,17 +193,13 @@ def retrieve_single_advertisment(ad_id):
         image_serializer = ImageSerializer(ad_image)
 
         # get formatted expiry data for frontend
-        if type(serializer.data['expiry']) is str:
-            expiry_date = datetime.strptime(serializer.data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
-        else:
-            expiry_date = serializer.data['expiry']
-        expiry = get_expiry_formatted(expiry_date)
+        expiry = get_expiry_formatted(serializer.data['expiry'])
 
         # return response data of both serializers and 200 OK response
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
         # send problem response and server error
-        response = {"message": "Error retrieving ad"}
+        response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def retrieve_advertisments_for_user(user_id):
@@ -230,27 +226,17 @@ def retrieve_advertisments_for_user(user_id):
         if type(serializer.data) is ReturnList:
             expiry = []
             for ad_data in serializer.data:
-                # If expiry is None call method, else it has to be converted to date
-                #   (for some reason ReturnList converts expiries to strings)
-                if ad_data['expiry'] is None:
-                    expiry.append(get_expiry_formatted(expiry_date))
-                else:
-                    expiry_date = datetime.strptime(ad_data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
-                    expiry.append(get_expiry_formatted(expiry_date))
+                expiry.append(get_expiry_formatted(ad_data['expiry']))
         else:
             # get formatted expiry for single ad
-            if type(serializer.data['expiry']) is str:
-                expiry_date = datetime.strptime(serializer.data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
-            else:
-                expiry_date = serializer.data['expiry']
-                expiry = get_expiry_formatted(expiry_date)
+            expiry = get_expiry_formatted(serializer.data['expiry'])
 
         # return response data of both serializers and 200 OK response
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
 
-    except:
+    except Exception as e:
         # send problem response and server error
-        response = {"message": "Error retrieving user's ads"}
+        response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def retrieve_all_advertisments():
@@ -279,27 +265,17 @@ def retrieve_all_advertisments():
         if type(serializer.data) is ReturnList:
             expiry = []
             for ad_data in serializer.data:
-                # If expiry is None call method, else it has to be converted to date
-                #   (for some reason ReturnList converts expiries to strings)
-                if ad_data['expiry'] is None:
-                    expiry.append(get_expiry_formatted(expiry_date))
-                else:
-                    expiry_date = datetime.strptime(ad_data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
-                    expiry.append(get_expiry_formatted(expiry_date))
+                expiry.append(get_expiry_formatted(ad_data['expiry']))
         else:
             # get formatted expiry for single ad
-            if type(serializer.data['expiry']) is str:
-                expiry_date = datetime.strptime(serializer.data['expiry'], '%Y-%m-%dT%H:%M:%SZ').date()
-            else:
-                expiry_date = serializer.data['expiry']
-                expiry = get_expiry_formatted(expiry_date)
+            expiry = get_expiry_formatted(serializer.data['expiry'])
 
         # send response, 200 ok
         return Response([serializer.data, image_serializer.data, expiry], status=status.HTTP_200_OK)
     
-    except:
+    except Exception as e:
         # send problem response and server error
-        response = {"message": "Error retrieving all ads"}
+        response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 def get_expiry_formatted(expiry):
@@ -307,8 +283,18 @@ def get_expiry_formatted(expiry):
     returns dict with two items: color and expiry. Both items are formatted to how front end needs them.
     To be passed the expiry of the ad as datetime or None
     '''
+
+    # if expiry is blank default to show as 2 weeks
     if expiry is None:
         return {'color': 'expiry_long', 'expiry': '2 weeks'}
+    
+    # if expiry was passed as a string, cast it to a date object
+    if type(expiry) is str:
+        if len(expiry) > 20:
+            expiry = datetime.strptime(expiry, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+        else:
+            expiry = datetime.strptime(expiry, '%Y-%m-%dT%H:%M:%SZ').date()
+
     today = date.today()
     delta = expiry - today
     # >9 days will show as 2 weeks (long color)
