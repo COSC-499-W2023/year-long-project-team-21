@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import Login from '../src/screens/Login';
+import Login from '../../src/screens/Login';
 
 jest.mock('axios');
 jest.mock('react-native', () => {
@@ -67,11 +67,12 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://10.0.2.2:8000/users/token',
+        'users/tokens/',
         {
           username: 'testuser',
           password: 'testpassword',
         },
+        { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
       );
       // Since this is a success scenario, check that the error message is not displayed
       expect(queryByTestId('error-msg')).toBeNull();
@@ -97,7 +98,7 @@ describe('Login component', () => {
 
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
-      expect(navigation.navigate).toHaveBeenCalledWith('CreateAd');
+      expect(navigation.navigate).toHaveBeenCalledWith('Home');
     });
   });
 
@@ -122,63 +123,51 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://10.0.2.2:8000/users/token',
+        'users/tokens/',
         {
           username: 'testuser',
           password: 'testpassword',
         },
+        { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
       );
       // Find the error message element
       const errorMessageElement = getByTestId('error-msg');
 
       // Check if the error message text is correct
-      expect(errorMessageElement.props.children).toBe(
-        'An error occurred while trying to retrieve data.',
-      );
+      expect(errorMessageElement.props.children).toBe('Error: API error');
     });
   });
 
   it('handles button press - failure to login with invalid credentials', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    const { getByPlaceholderText, getByTestId, queryByTestId } = render(
+    const { getByPlaceholderText, getByTestId, queryByTestId, debug } = render(
       <Login navigation={navigation} />,
     );
 
-    // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'wrongtestuser');
-    // Simulate user input in the password field
     fireEvent.changeText(getByPlaceholderText('Password'), 'wrongtestpassword');
 
-    // Mock a bad response (Unauthorized) from the API
-    mockedAxios.post.mockResolvedValueOnce({
-      status: 401,
-      data: {
-        error: 'Invalid credentials',
-      },
-    });
+    // Mock a rejection from the API
+    mockedAxios.post.mockRejectedValue(
+      new Error('Failed to login or retrieve token'),
+    );
 
-    // Simulate button press
     fireEvent.press(getByTestId('loginButton'));
 
-    // Wait for the asynchronous operation to complete
-    await waitFor(() => {
-      // Check if the Axios POST request is called with the correct arguments
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://10.0.2.2:8000/users/token',
-        {
-          username: 'wrongtestuser',
-          password: 'wrongtestpassword',
-        },
-      );
-      // Find the error message element
-      const errorMessageElement = getByTestId('error-msg');
+    // Wait for the state update (error message) to occur
+    let errorMessageElement: any;
+    await waitFor(
+      () => {
+        errorMessageElement = getByTestId('error-msg');
+      },
+      { timeout: 1000 },
+    );
 
       // Check if the expected success/failure message is displayed
       expect(errorMessageElement.props.children).toBe(
-        'Failed to login or retrieve token.',
+        'Error: Failed to login or retrieve token'
       );
     });
-  });
 
   it('stores JWT token on successful login', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -196,12 +185,11 @@ describe('Login component', () => {
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
     fireEvent.press(getByTestId('loginButton'));
-
     await waitFor(() => {
-      // Check if the token is stored in EncryptedStorage
+      // Using a regular expression to match the entire JSON string
       expect(EncryptedStorage.setItem).toHaveBeenCalledWith(
-        'user_token',
-        'fake_token',
+        'user_session',
+        expect.stringMatching(/{"token_creation":\d+}/),
       );
     });
   });

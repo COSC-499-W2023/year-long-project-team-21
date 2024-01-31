@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react-native';
-import Header from '../src/components/Header';
+import Header from '../../src/components/Header';
 import React = require('react');
 describe('Header component', () => {
   it('renders correctly with provided image', () => {

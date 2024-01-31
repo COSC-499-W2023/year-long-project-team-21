@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import TabBar from '../components/TabBar';
-
 import globalscreenstyles from '../common/global_ScreenStyles';
 
 import Logo from '../components/Logo';
@@ -12,6 +10,8 @@ import AccountIcon from '../components/AccountIcon';
 import PostListRenderer from '../components/PostListRenderer';
 import LocationService from '../common/LocationService';
 import View_Post from './View_Post';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   // const checkLocationPermission = async () => {
@@ -23,21 +23,19 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
-  
+
   return (
     <View style={globalscreenstyles.container}>
-      <TabBar
-        LeftIcon={<Logo LogoSize={15}></Logo>}
-        RightIcon={<MessageIcon></MessageIcon>}></TabBar>
+      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
 
       <View style={globalscreenstyles.body}>
-        <PostListRenderer isHeaderInNeed={true}  navigation={navigation}/>
+        <PostListRenderer isHeaderInNeed={true} navigation={navigation} />
       </View>
 
-      <TabBar
+      <TabBarBottom
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBar>
+        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
     </View>
   );
 };
