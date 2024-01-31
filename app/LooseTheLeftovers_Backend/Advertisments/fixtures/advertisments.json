@@ -1,0 +1,96 @@
+[
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 1,
+        "fields": {
+            "user_id": 2,
+            "title": "Bananas",
+            "description": "There are 3 bananas",
+            "expiry": "2024-02-09T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 1,
+        "fields": {
+            "ad_id": 1,
+            "image": "images/Bananas.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 2,
+        "fields": {
+            "user_id": 2,
+            "title": "Fried Rice",
+            "description": "Leftover rice from restaurant",
+            "expiry": "2024-02-05T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 2,
+        "fields": {
+            "ad_id": 2,
+            "image": "images/Fried-Rice.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 3,
+        "fields": {
+            "user_id": 2,
+            "title": "Pasta",
+            "description": "Homemade pasta",
+            "expiry": "2024-02-03T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 3,
+        "fields": {
+            "ad_id": 3,
+            "image": "images/Pasta.PNG"
+        }
+    }
+    ,{
+        "model": "Advertisments.Advertisment",
+        "pk": 4,
+        "fields": {
+            "user_id": 2,
+            "title": "Sandwich",
+            "description": "Sanwiches leftover from a party",
+            "expiry": "2024-02-06T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 4,
+        "fields": {
+            "ad_id": 4,
+            "image": "images/Sandwich.PNG"
+        }
+    }
+    ,{
+        "model": "Advertisments.Advertisment",
+        "pk": 5,
+        "fields": {
+            "user_id": 3,
+            "title": "Beans",
+            "description": "Bought canned beans but don't really like them.",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 5,
+        "fields": {
+            "ad_id": 5,
+            "image": "images/Beans.PNG"
+        }
+    }
+]
