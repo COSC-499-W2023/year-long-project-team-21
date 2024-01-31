@@ -76,7 +76,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       // send API call to the backend
       const response = await axios.get(getAdsEndpoint, djangoConfig());
       // properly index data for filterData
-      const adData = response.data[0];
+      const adData = response.data;
       // unsure why we need this tbh.
       const filteredPosts = filterData(adData);
       // not sure the point of this
@@ -140,13 +140,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
+        <View style={postListStyles.dropdownHeader}>
+          <SelectRangeBar onSelectRange={handleSelectRange} />
+        </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
             Showing Posts Nearby
           </Title>
-        </View>
-        <View style={postListStyles.dropdownHeader}>
-          <SelectRangeBar onSelectRange={handleSelectRange} />
         </View>
       </View>
     );

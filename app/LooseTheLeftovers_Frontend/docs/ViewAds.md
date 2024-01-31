@@ -38,16 +38,36 @@ Looks like this component does a few things.
 
 Then it returns a flatList - onEndReached calls handleLoadMore - renderItem? post - data = {posts} - This is the aray of data that the list will display
 
-## Post component
+## Post
 
 This component represents a post card containing information about a post.
 
 Renders the image with this function coming from ../common/postUtils - renderPostImage
+
+assignColor - takes in color from the backend and displays it - calls getCardColors which is from postUtils - getCardColors generates the 3 colors for you
+
+handlePressIn()  
+ - makes an animation for pressing in
+
+handleCardClick() - handles navigation to View_Post, sends in a id as the prop
 
 ## postUtils
 
 I am not sure where this class is being called
 
 - renderPostImage
+
   - this is where the hardcoding of the image comes from.
   - takes in imageStyle, size, and source....
+
+- render_Icons
+  - This can be fixed so it intakes a string and then will render the icon based on the string I guess
+
+## View_Post
+
+- Lots of work needs to be done here, maybe I'll do this tomorrow.
+
+- renderPostImage
+
+- render_Card_Front
+  - this is where the magic happens baby

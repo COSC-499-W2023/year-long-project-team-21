@@ -9,13 +9,13 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import generateHomeScreenCardStyles from '../styles/postStyles';
-import { global } from '../common/global_styles';
 import {
   getCardColors,
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
   render_Icons,
+  assignColor,
 } from '../common/postUtils';
 /**
  * Post Component
@@ -128,7 +128,6 @@ const Post: React.FC<PostProps> = ({
               showVeganIcon,
               showGlutenFreeIcon,
             )}
-
             <View style={cardStyles.card_image_wrapper_style}>
               {renderPostImage(cardStyles.post_image_style, image, 40)}
             </View>
@@ -138,30 +137,12 @@ const Post: React.FC<PostProps> = ({
     );
   };
 
-  /**
-   * Retrieves color settings for a card based on the specified expiry term.
-   * Each term corresponds to a different color, indicating the proximity of the expiry date.
-   *
-   * @param {string} [color] - The expiry term coming from the backend ('expiry_short', 'expiry_mid', 'expiry_long').
-   * @returns {Object} An object containing the color configuration for the card.
-   * @todo Review documentation and consider adding color configuration for two-week expiry.
-   */
-  const assignColor = color => {
-    const colorMapping = {
-      expiry_short: global.post_color.expiry_short,
-      expiry_mid: global.post_color.expiry_mid,
-      expiry_long: global.post_color.expiry_long,
-    };
-
-    return color ? getCardColors(colorMapping[color]) : undefined;
-  };
-
-  const assignedColor = assignColor(color);
+  const whichColor = assignColor(whichColor);
   const cardStyles = generateHomeScreenCardStyles(
     0.4 * screenWidth, //height
     0.8 * screenWidth, //width
     screenWidth,
-    assignedColor,
+    whichColor,
     scaleValue,
   );
   return (

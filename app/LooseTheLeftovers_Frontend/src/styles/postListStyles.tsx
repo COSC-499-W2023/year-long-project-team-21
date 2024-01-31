@@ -6,9 +6,11 @@ const generatePostListStyles = (screenWidth: number) =>
       marginBottom: screenWidth * 0.05,
     },
     listHeder: {},
+
     titleContainer: {
-      alignSelf: 'center',
-      marginTop: screenWidth * 0.07,
+      alignSelf: 'flex-start',
+      paddingLeft: '8%',
+      paddingBottom: '5%',
     },
     title: {
       color: global.secondary,

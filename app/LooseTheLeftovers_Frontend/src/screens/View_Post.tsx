@@ -34,6 +34,7 @@ import axios from 'axios';
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const { postId } = route.params;
   const post_color = global.post_color.expiry_long;
+  console.log(post_color);
   const styles = generateViewPostStyles(getCardColors(post_color));
   const [adData, setAdData] = useState({
     category: '',
@@ -74,7 +75,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   }, []);
 
   useEffect(() => {
-    console.log(adData.image);
+    //console.log(adData.image);
   }, [adData]);
 
   /**
@@ -124,11 +125,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.body}>
         <View style={styles.image_container}>
-          {renderPostImage(
-            styles.image,
-            adData.image,
-            Dimensions.get('window').width * 0.9,
-          )}
+          {renderPostImage(styles.image, adData.image, 40)}
         </View>
         <View style={styles.info_container}>
           {render_Card_Back(styles.card_back)}
