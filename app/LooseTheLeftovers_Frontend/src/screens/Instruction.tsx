@@ -10,7 +10,8 @@ import { SecureAPIReq } from '../common/NetworkRequest';
 import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {
+  const handleButtonOnPress = () => {
+    console.log('hello world\n');
     navigation.navigate('Home');
   };
   // Creates an array of the instructions and images

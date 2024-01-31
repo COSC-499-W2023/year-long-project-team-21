@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   View,
+  ImageSourcePropType,
 } from 'react-native';
 import generateHomeScreenCardStyles from '../styles/postStyles';
 import { global } from '../common/global_styles';
@@ -113,7 +114,7 @@ const Post: React.FC<PostProps> = ({
    * @private
    * @returns {JSX.Element} The rendered front card component.
    */
-  const render_Card_Front = () => {
+  const render_Card_Front = (image: ImageSourcePropType) => {
     return (
       <Card style={cardStyles.card_front}>
         <Card.Content>
@@ -127,11 +128,11 @@ const Post: React.FC<PostProps> = ({
               showVeganIcon,
               showGlutenFreeIcon,
             )}
-          
+
             <View style={cardStyles.card_image_wrapper_style}>
-              {renderPostImage(cardStyles.post_image_style, 40)}
+              {renderPostImage(cardStyles.post_image_style, image, 40)}
             </View>
-            </View>
+          </View>
         </Card.Content>
       </Card>
     );
@@ -171,7 +172,7 @@ const Post: React.FC<PostProps> = ({
         <Animated.View style={cardStyles.animation_style}>
           {render_Card_Back(cardStyles.card_back)}
           {render_Card_Middle(cardStyles.card_middle)}
-          {render_Card_Front()}
+          {render_Card_Front(image)}
         </Animated.View>
       </View>
     </TouchableWithoutFeedback>
