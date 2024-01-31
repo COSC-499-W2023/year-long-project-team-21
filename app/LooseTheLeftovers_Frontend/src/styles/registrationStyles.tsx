@@ -9,41 +9,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 20,
   },
-  logo: {
-    marginBottom: 10,
-  },
+  logo: { marginBottom: '-5%' },
   container: {
-    flex: 1,
+    flex: 0.3,
     paddingHorizontal: 20,
     justifyContent: 'center', // Center items along the main axis within the form
     alignItems: 'center', // Stretch items to fill the cross-axis within the form
   },
   button: {
-    marginBottom: 150,
     alignItems: 'center',
+    marginBottom: '10%',
   },
-  passwordContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: global.primary,
-    borderRadius: 8,
-    width: 280,
-    marginVertical: 10,
-    color: global.primary,
-  },
+
   input: {
-    flex: 1,
+    flex: 0.5,
     paddingVertical: 1,
     color: global.secondary,
-    padding: 10,
   },
   icon: {
     padding: 10,
   },
   hiddenText: {
     alignItems: 'center',
+  },
+  login: {
+    marginBottom: '20%',
+    // textAlign: 'center',
+    justifyContent: 'center',
   },
 });
 

@@ -4,7 +4,6 @@ import { global } from '../common/global_styles';
 const style = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
     backgroundColor: global.background,
@@ -12,34 +11,38 @@ const style = StyleSheet.create({
   },
 
   title: {
-    flex: 0.2,
+    flex: 0.4,
   },
   instruction: {
-    borderRadius: 10,
-    borderColor: global.secondary,
+    borderRadius: 30,
+    backgroundColor: global.tertiary,
     alignItems: 'center',
     justifyContent: 'space-around',
-    flex: 0.8,
-    borderWidth: 2,
+    flex: 1.25,
     padding: '8%',
   },
   textimage: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 0.5,
+    flex: 0.3,
     justifyContent: 'center',
   },
   text: {
-    flex: 0.8,
+    flex: 0.6,
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    color: 'white',
+    fontSize: 17,
   },
   textColor: { color: global.primary },
   button: {
-    flex: 0.15,
+    flex: 0.5,
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+  },
+  margin: {
+    // marginBottom: '5%',
   },
 });
 
