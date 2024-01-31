@@ -26,7 +26,7 @@ describe('CreateAdIcon Component', () => {
     fireEvent.press(getByTestId('CreateAdIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Registration', {
+    expect(mockNavigate).toHaveBeenCalledWith('Instruction', {
       name: 'CreateAdIcon',
     });
   });
