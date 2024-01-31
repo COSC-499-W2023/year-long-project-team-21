@@ -8,7 +8,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('AccountIcon Component', () => {
-  it('navigates to Instruction screen when clicked', () => {
+  it('navigates to Profile screen when clicked', () => {
     // Mock the navigation object
     const mockNavigate = jest.fn();
     jest
@@ -26,7 +26,7 @@ describe('AccountIcon Component', () => {
     fireEvent.press(getByTestId('AccountIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Instruction', {
+    expect(mockNavigate).toHaveBeenCalledWith('Profile', {
       name: 'AccountIcon',
     });
   });

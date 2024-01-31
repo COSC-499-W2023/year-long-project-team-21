@@ -11,7 +11,7 @@ export const global = {
   primary: '#1D8352', //yellow
   secondary: '#FFFFFF', //white
   tertiary: '#2e2e2e', //dark grey
-  background: '#222222', //dark grey
+  background: '#222222',
 
   error: 'red',
   //08282B, 0D183044

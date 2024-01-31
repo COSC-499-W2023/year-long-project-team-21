@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import TabBar from '../components/TabBar';
-
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
 import Logo from '../components/Logo';
@@ -13,6 +11,8 @@ import PostListRenderer from '../components/PostListRenderer';
 import LocationService from '../common/LocationService';
 import View_Post from './View_Post';
 import LinearGradient from 'react-native-linear-gradient';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
 
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
@@ -35,18 +35,18 @@ const Home = ({ navigation }: { navigation: any }) => {
         global.background,
       ]}
       start={{ x: 0, y: 0 }}>
-      <TabBar
+      <TabBarTop
         LeftIcon={<Logo LogoSize={15}></Logo>}
-        RightIcon={<MessageIcon></MessageIcon>}></TabBar>
+        RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
 
-      <View style={globalscreenstyles.body}>
+      <View style={globalscreenstyles.middle}>
         <PostListRenderer isHeaderInNeed={true} navigation={navigation} />
       </View>
 
-      <TabBar
+      <TabBarBottom
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBar>
+        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
     </LinearGradient>
   );
 };

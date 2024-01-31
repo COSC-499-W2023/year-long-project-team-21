@@ -144,13 +144,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
+        <View style={postListStyles.dropdownHeader}>
+          <SelectRangeBar onSelectRange={handleSelectRange} />
+        </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
             Showing Posts Nearby
           </Title>
-        </View>
-        <View style={postListStyles.dropdownHeader}>
-          <SelectRangeBar onSelectRange={handleSelectRange} />
         </View>
       </View>
     );

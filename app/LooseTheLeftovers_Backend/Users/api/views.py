@@ -1,14 +1,82 @@
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated
+from Users.models import CustomUser
 
-# import serializers
 from Users.api.serializers import RegistrationSerializer
+from Users.api.serializers import TokenObtainPairSerializerUserId
+from Users.api.serializers import UserSerializer
 
 
-@api_view(["POST"])
+class TokenObtainPairSerializerUserId(TokenObtainPairView):
+    """
+    A custom view for token obtainment that uses TokenObtainPairSerializerUserId.
+
+    This view extends TokenObtainPairView from Django Rest Framework SimpleJWT
+    to use a custom serializer (TokenObtainPairSerializerUserId) for handling
+    the token creation logic.
+
+    Attributes:
+    serializer_class: The serializer class to be used for token obtainment.
+                        Should be set to TokenObtainPairSerializerUserId or
+                        another custom serializer extending TokenObtainPairSerializer.
+    """
+
+    serializer_class = TokenObtainPairSerializerUserId
+
+
+class UsersHandler(APIView):
+    """
+    API View for handling user-related requests.
+
+    This view handles creating new users with POST requests and retrieving
+    specific users or all users with GET requests.
+    """
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handle POST requests to create a new user.
+
+        Args:
+        request (HttpRequest): The request object containing the user data.
+
+        Returns:
+        Response: DRF Response object with the creation status.
+        """
+        return register_user(request)
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests to retrieve a specific user or all users.
+
+        Retrieves a specific user if a user_id is provided in the URL,
+        otherwise retrieves all users. Requires authentication.
+
+        Args:
+            request (HttpRequest): The request object.
+            user_id (int, optional): The ID of the user to retrieve, passed as a URL keyword argument.
+
+        Returns:
+            Response: DRF Response object with the user data and HTTP status dependent on user auth and sucess
+        """
+
+        # retrieve user_id from keyword argument
+        user_id = kwargs.get("user_id", None)
+        # create instance of isAuthenticated, use to check if incoming request has permission
+        permission = IsAuthenticated()
+        # Manually check if the incoming request has permission to resource
+        if not permission.has_permission(request, self):
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        # return user(s) data
+        return retrieve_user(user_id)
+
+
 def register_user(request):
     """
     POST request to handle user creation. Returns a authentication token
@@ -39,14 +107,54 @@ def register_user(request):
         user = serializer.save()
         # retrieve user's newly created token
         try:
-            token = Token.objects.get(user_id=user.id)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
 
         except:
             # return a 500 if there is an error retrieving token
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     else:
         # if the user is not valid, place errors inside token placeholder
         error = serializer.errors
         return Response(error, status=status.HTTP_400_BAD_REQUEST)
+
+
+def retrieve_user(user_id):
+    """
+    Retrieve a specific user by their ID or all users if no ID is provided.
+
+    Args:
+    user_id (int, optional): The ID of the user to retrieve. If None, retrieves all users.
+
+    Returns:
+    Response: DRF Response object containing the user data and HTTP status.
+
+    If a user_id is provided, the function attempts to retrieve the specific user.
+    If no user_id is provided, it retrieves all users. In case of any exceptions,
+    an appropriate error message is included in the response with a server error status.
+    """
+
+    if user_id is None:
+        try:
+            # query users
+            users = CustomUser.objects.all()
+            # send to serializer to package data
+            serializer = UserSerializer(users, many=True)
+            # send response, 200 ok
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            # send problem response and server error
+            response = {"message": "Error retrieving users"}
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    else:
+        try:
+            # query user by id
+            user = CustomUser.objects.get(pk=user_id)
+            # send to serializer to package data
+            serializer = UserSerializer(user)
+            # send response, 200 ok
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            # send problem response and server error
+            response = {"message": "Error retrieving users: user does not exist"}
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

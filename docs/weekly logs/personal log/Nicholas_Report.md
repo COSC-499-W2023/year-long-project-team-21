@@ -1,27 +1,21 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-11/12 to 11/26
+12/03 to 1/14
 
 Username: n3c777
 
 ## My Features For This Week
 
--Instructions Screen
--Tabar Screen
+-update UI
+-create profile screen
 
 ## Completed Features For This Week
 
--completed Instructions Screen
--Instructions component
--added Global styles for color
--Global types (for all interfaces)
-
 ## Features in progress
 
-These are very close to being done, just being reviewed
--tab bar component
--home icon, message icon, account icon, create ad icon
+-UI is mostly updated. There were many things that changed, and the new design themes are pretty much set in place. But ony the home screen(which was arguably the biggest task), and the profile screens have been updated.
+-the profile is still in the works as it relies on parts of the app that haven't been completed
 
 ## Types of Tasks Worked On
 
-![individual log week 12](https://i.postimg.cc/CKLZ4sNZ/nov-26.png)
+![individual log week 1 t2](https://i.postimg.cc/hjhJqsys/Jan-14.png)
