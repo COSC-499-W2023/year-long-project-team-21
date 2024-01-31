@@ -67,12 +67,12 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "users/tokens/",
+        'users/tokens/',
         {
           username: 'testuser',
           password: 'testpassword',
         },
-        {"baseURL": "http://10.0.2.2:8000/", "timeout": 1500}
+        { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
       );
       // Since this is a success scenario, check that the error message is not displayed
       expect(queryByTestId('error-msg')).toBeNull();
@@ -127,21 +127,19 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        "users/tokens/",
+        'users/tokens/',
         {
           username: 'testuser',
           password: 'testpassword',
         },
-        {"baseURL": "http://10.0.2.2:8000/", "timeout": 1500}
+        { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
       );
 
       // Find the error message element
       const errorMessageElement = getByTestId('error-msg');
 
       // Check if the error message text is correct
-      expect(errorMessageElement.props.children).toBe(
-        'Error: API error',
-      );
+      expect(errorMessageElement.props.children).toBe('Error: API error');
     });
   });
 
@@ -150,25 +148,30 @@ describe('Login component', () => {
     const { getByPlaceholderText, getByTestId, queryByTestId, debug } = render(
       <Login navigation={navigation} />,
     );
-  
+
     fireEvent.changeText(getByPlaceholderText('Username'), 'wrongtestuser');
     fireEvent.changeText(getByPlaceholderText('Password'), 'wrongtestpassword');
-  
+
     // Mock a rejection from the API
-    mockedAxios.post.mockRejectedValue(new Error('Failed to login or retrieve token'));
-  
+    mockedAxios.post.mockRejectedValue(
+      new Error('Failed to login or retrieve token'),
+    );
+
     fireEvent.press(getByTestId('loginButton'));
-  
+
     // Wait for the state update (error message) to occur
-    let errorMessageElement:any;
-    await waitFor(() => {
-      errorMessageElement = getByTestId('error-msg');
-    }, { timeout: 1000 });
-  
+    let errorMessageElement: any;
+    await waitFor(
+      () => {
+        errorMessageElement = getByTestId('error-msg');
+      },
+      { timeout: 1000 },
+    );
+
     expect(errorMessageElement.props.children).toBe(
       'Error: Failed to login or retrieve token',
     );
-  
+
     // ... rest of your test
   });
 
@@ -192,7 +195,7 @@ describe('Login component', () => {
       // Using a regular expression to match the entire JSON string
       expect(EncryptedStorage.setItem).toHaveBeenCalledWith(
         'user_session',
-        expect.stringMatching(/{"token_creation":\d+}/)
+        expect.stringMatching(/{"token_creation":\d+}/),
       );
     });
   });

@@ -1,6 +1,9 @@
 from django.urls import path
-from . import views
+from Advertisments.api.views import AdvertismentHandler
 
 urlpatterns = [
-    path("", views.create_advertisment, name="create-ad"),
+    path("", AdvertismentHandler.as_view(), name="all-ads"),
+    path("<int:ad_id>/", AdvertismentHandler.as_view(), name="specific-ad"),
+    path("users/<int:user_id>/", AdvertismentHandler.as_view(), name="user-ads"),
+    path("", AdvertismentHandler.as_view(), name="create-ad")
 ]

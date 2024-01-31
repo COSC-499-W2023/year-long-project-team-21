@@ -17,6 +17,7 @@ import {
  * @property {string} textColor - Choose text color.
  * @property {number} buttonSize - Choose button size (width).
  * @property {number} textSize - Choose text size.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface ButtonProps {
@@ -70,6 +71,7 @@ interface IconProps {
  * @property {(input: string) => void} onChangeText - Callback function to notify parent components when the text changes.
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
+ * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
  */
 
 interface InputFieldProps {
@@ -78,6 +80,8 @@ interface InputFieldProps {
   value: string | number;
   secureTextEntry?: boolean;
   placeholderTextColor?: string;
+  multiline?: boolean;
+  width?: string | number;
 }
 
 /**
@@ -86,9 +90,11 @@ interface InputFieldProps {
  * @interface
  * @param {number} props.LogoSize - Change the size of the Logo.
  */
+
 interface LogoProps {
   LogoSize?: number;
 }
+
 /**
  * TextProps interface for the Text component.
  *
@@ -96,12 +102,25 @@ interface LogoProps {
  * @property {string} texts - Displays the Text.
  * @property {number} textxSize - Changes the Text size.
  * @property {() => void} onPress - Callback function executed when the button is pressed.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface TextsProps {
   texts: string;
   textsSize?: number;
   textsColor?: string;
+  textsWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
   position?: string;
   onPress?: () => void;
   testID?: string;
@@ -115,7 +134,9 @@ interface TextsProps {
  * @property {number} titleSize - Text size for the title.
  * @property {string} titleColor - Text color for the title
  * @property {string} position - Text position for the title
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
+
 interface TitleProps {
   title: string;
   titleSize?: number;
@@ -140,6 +161,7 @@ interface AllIconProps {
   onPress?: void;
   testID?: string;
 }
+
 /**
  * TabBar interface for the TabBar.
  *
@@ -178,6 +200,83 @@ interface ImageTextProps {
   text: string;
   textSize?: number;
 }
+// interface UserInfoProps {
+//  userInfoKeys: (keyof UserInfoData)[];
+// }
+
+// interface UserInfoData {
+//   username: string;
+//   email: string;
+// }
+
+interface UserInfoProps {
+  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfoKeys: string[];
+}
+
+/**
+ * UpperBarProps (Header) interface for the UpperBar component.
+ *
+ * @interface
+ * @property {() => void} onLeftPress - Callback function to execute when the left icon is pressed.
+ * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
+ * @property {ImageSourcePropType} leftIconSource - The image source for the left icon.
+ * @property {ImageSourcePropType} rightIconSource - The image source for the right icon.
+ * @property {string} title - The prop to pass title.
+ */
+
+interface UpperBarProps {
+  onLeftPress?: () => void;
+  onRightPress?: () => void;
+  leftIconSource?: ImageSourcePropType;
+  rightIconSource?: ImageSourcePropType;
+  title?: string;
+}
+
+/**
+ * AdDataProps interface for the CreateAd screen.
+ *
+ * @interface
+ * @property {string} title - The title of the ad.
+ * @property {string} description - The description of the ad.
+ * @property {string} category - The category of the ad, will be added as a field later.
+ * @property {number} expiry - The number of days until the ad expires.
+ * @property {string} imageUri - The URI of the image associated with the ad, optional.
+ */
+
+interface AdDataProps {
+  title: string;
+  description: string;
+  category: string;
+  expiry: number;
+  imageUri?: string;
+}
+
+/**
+ * ImagePickerButtonProps interface for ImagePicker component.
+ *
+ * @interface
+ * @property {function} onImagePicked - A callback function that gets triggered when an image is selected.
+ *                                      Receives the URI of the picked image as a string, or null if no image is selected.
+ */
+
+interface ImagePickerButtonProps {
+  onImagePicked: (imageUri: string | null) => void;
+  testID?: string;
+}
+
+/**
+ * ExpirySliderProps interface for ExpirySlider component.
+ *
+ * @interface
+ * @property {function} onExpiryChange - A callback function that gets triggered when the slider value changes.
+ *                                       Receives the new expiry value as a number representing the number of days until expiry.
+ */
+
+interface ExpirySliderProps {
+  onExpiryChange: (expiry: number) => void;
+  testID?: string;
+}
 
 export {
   type ButtonProps,
@@ -190,4 +289,9 @@ export {
   type AllIconProps,
   type TabBarProps,
   type ImageTextProps,
+  type UpperBarProps,
+  type AdDataProps,
+  type ImagePickerButtonProps,
+  type ExpirySliderProps,
+  type UserInfoProps,
 };

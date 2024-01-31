@@ -25,3 +25,24 @@ and Advertisments
 | id          | int           | primary key         |
 | ad_id       | int           | FK to Advertisments |
 | image       | imag          |                     |
+
+### GET Advertisments
+
+A GET request can be made in three different ways to /ads/:
+
+    1. '/ads/<int>' will return a single ad
+    2. '/ads/users/<int>' will return all ads created by a user
+    3. '/ads/' will return all ads
+
+Getting ads does not require authentication.
+
+### POST Advertisments
+
+A POST request can be made in to /ads/ to create a new ad. This requires authentication.
+The POST request should contain the following data passed as a multipart JSON:
+
+    title
+    description
+    category
+    expiry
+    image

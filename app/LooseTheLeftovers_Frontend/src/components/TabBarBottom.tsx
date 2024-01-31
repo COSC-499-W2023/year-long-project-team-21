@@ -16,22 +16,24 @@ import { TabBarProps } from '../common/Types';
  * <Texts texts="Words" />
  */
 
-const TabBar: React.FC<TabBarProps> = ({ LeftIcon, RightIcon, MiddleIcon }) => {
+const TabBarBottom: React.FC<TabBarProps> = ({
+  LeftIcon,
+  RightIcon,
+  MiddleIcon,
+}) => {
   return (
-    <View testID="TabBarTest" style={globalscreenstyles.container}>
-      <View style={tabBarStyles.container}>
-        <View testID="TabBarLeftIconTest" style={tabBarStyles.left}>
-          {LeftIcon}
-        </View>
-        <View testID="TabBarMiddleIconTest" style={tabBarStyles.middle}>
-          {MiddleIcon}
-        </View>
-        <View testID="TabBarRightIconTest" style={tabBarStyles.right}>
-          {RightIcon}
-        </View>
+    <View style={tabBarStyles.containerBottom}>
+      <View testID="TabBarLeftIconTest" style={tabBarStyles.leftBottom}>
+        {LeftIcon}
+      </View>
+      <View testID="TabBarMiddleIconTest" style={tabBarStyles.middleBottom}>
+        {MiddleIcon}
+      </View>
+      <View testID="TabBarRightIconTest" style={tabBarStyles.rightBottom}>
+        {RightIcon}
       </View>
     </View>
   );
 };
 
-export default TabBar;
+export default TabBarBottom;

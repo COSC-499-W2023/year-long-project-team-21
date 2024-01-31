@@ -18,6 +18,8 @@ class AdvertismentSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
+    longitude = serializers.FloatField(required=False)
+    latitude = serializers.FloatField(required=False)
     
     def create(self, validated_data):
         '''
@@ -32,7 +34,7 @@ class AdvertismentSerializer(serializers.Serializer):
             **validated_data
         )
         return ad
-    
+
 class ImageSerializer(serializers.Serializer):
     '''
     Serializer to validate data fields for the AdvertismentImage model.
@@ -62,12 +64,23 @@ class ImageSerializer(serializers.Serializer):
         )
         return image
     
+class ReturnAdvertismentSerializer(serializers.Serializer):
+    '''
+    Serializer to serialize data when retrieving ads from the database. 
+    This serializer will also return the primary key when an ad is retrieved.
+    '''
+    id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
+    title = serializers.CharField(max_length=50)
+    description = serializers.CharField(max_length=1000, required=False)
+    category = serializers.CharField(max_length=30)
+    expiry = serializers.DateTimeField(required=False)
 
-
-    
-
-
-    
-
-    
-    
+class ReturnAdvertismentNoDescriptionSerializer(serializers.Serializer):
+    '''
+    Serializer to serialize data when retrieving ads from the database. 
+    This serializer will also return the primary key when an ad is retrieved.
+    '''
+    id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
+    title = serializers.CharField(max_length=50)
+    category = serializers.CharField(max_length=30)
+    expiry = serializers.DateTimeField(required=False)
