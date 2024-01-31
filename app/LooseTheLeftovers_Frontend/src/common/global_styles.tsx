@@ -8,9 +8,11 @@ export const global = {
   // error: 'red',
 
   //darkmode
-  primary: '#FFB700', //yellow
+  primary: '#1D8352', //yellow
   secondary: '#FFFFFF', //white
+  tertiary: '#2e2e2e', //dark grey
   background: '#222222', //dark grey
+
   error: 'red',
   //08282B, 0D183044
 
@@ -26,6 +28,7 @@ export const global = {
   //home screen dropdown colors
   dropdown_color: {
     light_border: '#CCF6CB',
+    medium_border: '#1D8352',
     dark_border: '#0D270C',
     background: 'white',
     light_text: 'white',

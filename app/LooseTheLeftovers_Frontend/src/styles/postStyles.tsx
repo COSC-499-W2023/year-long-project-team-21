@@ -63,7 +63,7 @@ const generateHomeScreenCardStyles = (
     },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
-      width: card_width * 0.4,
+      width: card_width * 0.1,
       justifyContent: 'flex-start',
     },
     card_image_wrapper_style: {
@@ -78,8 +78,8 @@ const generateHomeScreenCardStyles = (
       justifyContent: 'flex-end',
     },
     dietary_icon_style: {
-      height: card_height * 0.2,
-      width: card_height * 0.2,
+      height: card_height * 0.15,
+      width: card_height * 0.15,
       marginRight: 10,
     },
     post_image_style: {
