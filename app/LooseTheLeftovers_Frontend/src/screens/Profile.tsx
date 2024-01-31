@@ -11,7 +11,7 @@ import MessageIcon from '../components/MessageIcon';
 import { retrieveUserSession } from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
 import PostListRenderer from '../components/PostListRenderer';
-import { adEndpoint } from '../common/API';
+import { adEndpoint, usersAds, users } from '../common/API';
 
 const Profile = () => {
   const [userID, setUserId] = useState('');
@@ -22,15 +22,22 @@ const Profile = () => {
       // Retrieve session data
       const userSesh: Record<string, string> = await retrieveUserSession();
       // Gets user id from session data
+      const userId: string = userSesh['user_id'];
+
+      // set user id state
       setUserId(userSesh['user_id']);
 
       // Retrieves user data using userid
       const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
-      const res: any = await newReq.get(`users/${userID}/`);
-
-      const data = res.data;
-
+      const res: any = await newReq.get(`users/${userId}/`);
+      let data = res.data;
       setUserInfo({ username: data.username, email: data.email });
+
+      // now I need to get ads made by the user
+      const endpoint: string = usersAds + userID;
+      const payload: any = await newReq.get(endpoint);
+      data = payload.data;
+      console.log(data);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
     }

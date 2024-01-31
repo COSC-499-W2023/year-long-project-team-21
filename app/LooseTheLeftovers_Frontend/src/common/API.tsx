@@ -12,3 +12,5 @@ export const adEndpoint: string = '/ads/';
 
 // endpoint for individual user's ad
 export const usersAds: string = '/ads/users/';
+
+export const users: string = '/users/';
