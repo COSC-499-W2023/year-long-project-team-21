@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
+from django.core.paginator import Paginator
 from Advertisments.api.serializers import (
     AdvertismentSerializer,
     ImageSerializer,
@@ -20,6 +21,9 @@ class AdvertismentHandler(APIView):
     This view handles creating ads with POST requests as well as retrieving
     ads from the database.
     """
+
+    user_max_pages = 3
+    all_ad_max_pages = 3
 
     def post(self, request, *args, **kwargs):
         """
@@ -60,33 +64,8 @@ class AdvertismentHandler(APIView):
             request (HttpRequest): The request object. (optional) ad_id or (optional) user_id
 
         Returns:
-            Response: Response object with the ad(s) and ad image(s)
-
-        Detail on the response data structure:
-
-            Data contained in the response is returned as two OrderedDicts in a list,
-            where response.data[0] is the ad data and response.data[1] contains the image path,
-            and response.data[2] contains the expiry colors and days/weeks as a string
-
-            If more than 1 ad is returned, another list is nested inside which means:
-            response.data[0] holds data for all ads, response.data[1] holds all image paths, and
-            response data[2] holds all expiry information.
-            To select data for the first add use response.data[0][0], first image response.data[0][1],
-            and first expiry response.data[0][2]
-
-            Some examples to get specific data from response.data:
-
-                One ad returned
-                    title = response.data[0]['title']
-                    description = response.data[0]['description']
-                    image_path = response.data[1]['image']
-                    expiry_color = response.data[1]['color']
-
-                Multiple ads returned
-                    id = response.data[0][0]['id']                # id of first ad
-                    expiry = response.data[0][2]['expiry']        # expiry of third ad
-                    image_path = response.data[1][5]['image']     # image path of sixth ad
-                    expiry_string = response.data[2][1]['expiry'] # expiry of second ad
+            Response: Response object with the ad data and image path as json
+                      If multiple ads are returned they will be returned as a list
 
         """
         # if request to create-ads endpoint was made via GET, return 405 response
@@ -112,10 +91,10 @@ class AdvertismentHandler(APIView):
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
 
-            return retrieve_advertisments_for_user(user_id)
+            return retrieve_advertisments_for_user(request, user_id)
 
         # ad_id and user_id not provided: get all ads in database
-        return retrieve_all_advertisments()
+        return retrieve_all_advertisments(request)
 
 
 def create_advertisment(request):
@@ -198,20 +177,22 @@ def retrieve_single_advertisment(ad_id):
 
     try:
         # send to serializers to package data
-        ser_data = ReturnAdvertismentSerializer(ad).data
-        im_data = ImageSerializer(ad_image).data
-        # combine dictionaries
-        res = {**ser_data, **im_data}
+        serializer = ReturnAdvertismentSerializer(ad)
+        image_serializer = ImageSerializer(ad_image)
+
+        combined = {**serializer.data, **image_serializer.data}  # Merge two dictionaries
 
         # return response data of both serializers and 200 OK response
-        return Response([res], status=status.HTTP_200_OK)
+        return Response(
+            combined, status=status.HTTP_200_OK
+        )
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def retrieve_advertisments_for_user(user_id):
+def retrieve_advertisments_for_user(request, user_id):
     """
     GET request to handle retrieving ads from the database. No authentication required.
 
@@ -226,57 +207,18 @@ def retrieve_advertisments_for_user(user_id):
         return Response(response, status=status.HTTP_204_NO_CONTENT)
 
     try:
-        # send to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(user_ads, many=True)
-        image_serializer = ImageSerializer(user_ad_images, many=True)
+        # put query results into pages
+        ad_paginator = Paginator(user_ads, 3)
+        image_paginator = Paginator(user_ad_images, 3)
 
-        # get formatted expiry data for frontend for each ad returned
-        #   if serializer data is ReturnList multiple ads were returned (single ad is ReturnDict)
-        if type(serializer.data) is ReturnList:
-            combined_data = []
-            for ad, image in zip(serializer.data, image_serializer.data):
-                combined = {**ad, **image}  # Merge two dictionaries
-                combined_data.append(combined)
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        ad_page = ad_paginator.get_page(page_number)
+        image_page = image_paginator.get_page(page_number)
 
-            return Response(
-                combined_data,
-                status=status.HTTP_200_OK,
-            )
-
-        combined = {
-            **serializer.data,
-            **image_serializer.data,
-        }  # Merge two dictionaries
-
-        # return response data of both serializers and 200 OK response
-        return Response(combined, status=status.HTTP_200_OK)
-
-    except Exception as e:
-        # send problem response and server error
-        response = {"message": "Error retrieving all ads", "error": str(e)}
-        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-def retrieve_all_advertisments():
-    """
-    GET request to handle retrieving ads from the database. No authentication required.
-
-    This method will return all ads in the database
-    """
-    #   TODO: add pagination to only return a certain number of ads at a time
-
-    try:
-        # query all ads and their images
-        all_ads = Advertisment.objects.all()
-        all_images = AdvertismentImage.objects.all()
-    except:
-        response = {"message": "No ad found"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
-
-    try:
-        # send to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(all_ads, many=True)
-        image_serializer = ImageSerializer(all_images, many=True)
+        # send each page to serializer to package data
+        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        image_serializer = ImageSerializer(image_page, many=True)
 
         # merge results into one data structure
         combined_data = []
@@ -295,24 +237,69 @@ def retrieve_all_advertisments():
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def get_expiry_formatted(expiry):
+def retrieve_all_advertisments(request):
     """
+    GET request to handle retrieving ads from the database. No authentication required.
+
+    This method will return all ads in the database. It uses pagination so it will split
+    the result into pages and return a page of results at a time (a page currently set to 
+    include 8 ads)
+    """
+    try:
+        # query all ads and their images
+        all_ads = Advertisment.objects.all()
+        all_images = AdvertismentImage.objects.all()
+    except:
+        response = {"message": "No ad found"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
+    
+    try:
+        # put query results into pages
+        ad_paginator = Paginator(all_ads, 3)
+        image_paginator = Paginator(all_images, 3)
+
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        ad_page = ad_paginator.get_page(page_number)
+        image_page = image_paginator.get_page(page_number)
+
+        # send each page to serializer to package data
+        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        image_serializer = ImageSerializer(image_page, many=True)
+
+        # merge results into one data structure
+        combined_data = []
+        for ad, image in zip(serializer.data, image_serializer.data):
+            combined = {**ad, **image}  # Merge two dictionaries
+            combined_data.append(combined)
+
+        return Response(
+            combined_data,
+            status=status.HTTP_200_OK,
+        )
+
+    except Exception as e:
+        response = {"message": "Error retrieving all ads", "error": str(e)}
+        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def get_expiry_formatted(expiry):
+    '''
     returns dict with two items: color and expiry. Both items are formatted to how front end needs them.
     To be passed the expiry of the ad as datetime or None
-    """
+    '''
     if expiry is None:
-        return {"color": "expiry_long", "expiry": "2 weeks"}
+        return {'color': 'expiry_long', 'expiry': '2 weeks'}
     today = date.today()
     delta = expiry - today
     # >9 days will show as 2 weeks (long color)
     if delta.days > 9:
-        return {"color": "expiry_long", "expiry": "2 weeks"}
+        return {'color': 'expiry_long', 'expiry': '2 weeks'}
     # >6 days will show as 1 week (mid color)
     elif delta.days > 6:
-        return {"color": "expiry_mid", "expiry": "1 week"}
+        return {'color': 'expiry_mid', 'expiry': '1 week'}
     # 1 day or less will show as 1 day (short color)
     elif delta.days <= 1:
-        return {"color": "expiry_short", "expiry": "1 day"}
+        return {'color': 'expiry_short', 'expiry': '1 day'}
     # 1 to 6 days will show as 'n' days (short color)
     else:
-        return {"color": "expiry_short", "expiry": str(delta.days) + " days"}
+        return {'color': 'expiry_short', 'expiry': str(delta.days) + ' days'}
