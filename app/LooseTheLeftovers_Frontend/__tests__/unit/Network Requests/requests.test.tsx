@@ -1,6 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { SecureAPIReq } from '../../../src/common/NetworkRequest';
+import mockStorage from '../../../__mocks__/react-native-encrypted-storage';
 
 jest.mock('axios', () => {
   return {
@@ -21,7 +22,7 @@ describe('Test API requests', () => {
     const fakeResponse = { data: 'test' };
     mockAdapter.onGet('test-endpoint').reply(200, fakeResponse);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.get('test-endpoint');
 
     expect(response.data).toEqual(fakeResponse);
@@ -29,7 +30,7 @@ describe('Test API requests', () => {
   it('GET should handle 404 not found', async () => {
     mockAdapter.onGet('nonexistent-endpoint').reply(404);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
 
     await expect(api.get('nonexistent-endpoint')).rejects.toThrow(
       'Request failed with status code 404',
@@ -38,7 +39,7 @@ describe('Test API requests', () => {
   it('GET should handle network errors', async () => {
     mockAdapter.onGet('test-endpoint').networkError();
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
 
     await expect(api.get('test-endpoint')).rejects.toThrow('Network Error');
   });
@@ -51,7 +52,7 @@ describe('Test API requests', () => {
       return [200, fakeResponse];
     });
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.get('/test-endpoint', params);
 
     expect(response.data).toEqual(fakeResponse);
@@ -64,7 +65,7 @@ describe('Test API requests', () => {
       return [200, fakeResponse];
     });
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.get('auth-endpoint');
 
     expect(response.data).toEqual(fakeResponse);
