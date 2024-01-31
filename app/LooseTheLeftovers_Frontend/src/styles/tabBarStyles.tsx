@@ -3,35 +3,47 @@ import { global } from '../common/global_styles';
 
 const tabBarStyles = StyleSheet.create({
   containerTop: {
-    flex: 0.1,
+    flex: 0.075,
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: global.tertiary,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
   containerBottom: {
-    flex: 0.1,
+    flex: 0.075,
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: global.tertiary,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
-  left: {
+  leftBottom: {
     flex: 1 / 3,
     paddingTop: '5%',
     alignItems: 'center',
   },
-  middle: {
+  middleBottom: {
     flex: 1 / 3,
-    paddingTop: '5%',
-    //backgroundColor: 'blue',
+    paddingTop: '2%',
     alignItems: 'center',
   },
-  right: {
-    paddingTop: '5%',
-    //backgroundColor: 'green',
+  rightBottom: {
+    paddingTop: '4%',
+
+    alignItems: 'center',
+    flex: 1 / 3,
+  },
+  leftTop: {
+    flex: 1 / 3,
+    alignItems: 'center',
+  },
+  middleTop: {
+    flex: 1 / 3,
+    paddingTop: '3%',
+    alignItems: 'center',
+  },
+  rightTop: {
+    paddingTop: '4%',
+
     alignItems: 'center',
     flex: 1 / 3,
   },

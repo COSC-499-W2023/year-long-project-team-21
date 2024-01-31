@@ -73,9 +73,10 @@ export const render_Icons = (
  *
  * @param {string} [color] - The expiry term coming from the backend ('expiry_short', 'expiry_mid', 'expiry_long').
  * @returns {Object} An object containing the color configuration for the card.
- * @todo Review documentation and consider adding color configuration for two-week expiry.
+ * @todo Review documentation and consider adding color configuration for two-week expiry
+ * @todo figure out the correct type for color.
  */
-export const assignColor = color => {
+export const assignColor = (color: any) => {
   const colorMapping = {
     expiry_short: global.post_color.expiry_short,
     expiry_mid: global.post_color.expiry_mid,

@@ -9,6 +9,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import generateHomeScreenCardStyles from '../styles/postStyles';
+import { global } from '../common/global_styles';
 import {
   getCardColors,
   renderPostImage,
@@ -35,6 +36,7 @@ import {
  */
 const Post: React.FC<PostProps> = ({
   id,
+  endpoint,
   title,
   image,
   expiryDate,
@@ -76,7 +78,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
-    navigation.navigate('View_Post', { postId: id });
+    navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 
   /**
@@ -128,6 +130,7 @@ const Post: React.FC<PostProps> = ({
               showVeganIcon,
               showGlutenFreeIcon,
             )}
+
             <View style={cardStyles.card_image_wrapper_style}>
               {renderPostImage(cardStyles.post_image_style, image, 40)}
             </View>
@@ -137,12 +140,12 @@ const Post: React.FC<PostProps> = ({
     );
   };
 
-  const whichColor = assignColor(whichColor);
+  const assignedColor = assignColor(color);
   const cardStyles = generateHomeScreenCardStyles(
     0.4 * screenWidth, //height
     0.8 * screenWidth, //width
     screenWidth,
-    whichColor,
+    assignedColor,
     scaleValue,
   );
   return (

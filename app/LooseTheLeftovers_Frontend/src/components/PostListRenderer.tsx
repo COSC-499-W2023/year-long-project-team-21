@@ -7,7 +7,7 @@ import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
-import { getAdsEndpoint, BASE_URL } from '../common/API';
+import { BASE_URL } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
 
@@ -17,6 +17,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   // locationPermission,
   navigation,
+  endpoint,
 }) => {
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
@@ -44,14 +45,17 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @Todo replace the base URL here and make it come from ./api
    */
   const filterData = (data: any[]) => {
-    const filteredPosts = data.map(post => ({
-      id: post.id,
-      title: post.title,
-      image: 'http://10.0.2.2:8000' + post.image,
-      expiryDate: post.expiry,
-      category: post.category,
-      color: post.color,
-    }));
+    const filteredPosts = data.map(post => {
+      return {
+        id: post.id,
+        title: post.title,
+        image: BASE_URL + post.image,
+        expiryDate: post.expiry,
+        category: post.category,
+        color: post.color,
+      };
+    });
+
     return filteredPosts;
   };
 
@@ -74,9 +78,9 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       setPosts([]);
 
       // send API call to the backend
-      const response = await axios.get(getAdsEndpoint, djangoConfig());
+      const response = await axios.get(endpoint, djangoConfig());
       // properly index data for filterData
-      const adData = response.data;
+      const adData: [] = response.data;
       // unsure why we need this tbh.
       const filteredPosts = filterData(adData);
       // not sure the point of this
@@ -86,7 +90,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       setPosts(prevPosts => [...prevPosts, ...filteredPosts]);
       // no longer loading
       setIsLoading(false);
-      // not sure what this does
+      // boolean flag for stopping lazy loading
       stopFetchMore = true;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -107,6 +111,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         <View style={postListStyles.postContainer}>
           <Post
             id={item.id}
+            endpoint={endpoint}
             title={item.title}
             image={item.image}
             expiryDate={item.expiryDate}
@@ -176,14 +181,14 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * Triggered when the end of the list is reached, loading more data by incrementing the `pagecurrent` state.
    */
   const handleLoadMore = async () => {
+    /*
     setIsLoading(true);
-    console.log(stopFetchMore);
     if (!stopFetchMore) {
       console.log('Loading more data...');
       await fetchData(lastItemIndex);
       stopFetchMore = true;
     }
-    setIsLoading(false);
+    setIsLoading(false);*/
   };
 
   const keyExtractor = useCallback(

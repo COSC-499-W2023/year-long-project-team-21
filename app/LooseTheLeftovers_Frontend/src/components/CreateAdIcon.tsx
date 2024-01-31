@@ -25,19 +25,17 @@ type RootStackParamList = {
 };
 
 //uses all icon prop for the interface
-const CreateAdIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
+const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
   //creates a navigation hook
   const navigation =
-    useNavigation<
-      NativeStackNavigationProp<RootStackParamList, 'Registration'>
-    >();
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'CreateAd'>>();
 
   //link to image
-  const image = '../assets/ad.png';
+  const image = '../assets/Ad.png';
 
   //navigates to instruction and sends parameters
   const goToHomeScreen = () => {
-    navigation.navigate('Registration', { name: 'CreateAdIcon' });
+    navigation.navigate('CreateAd', { name: 'CreateAd' });
   };
 
   //call this to display and icon image. No need to input anything to the component, will automatically

@@ -13,6 +13,7 @@ import View_Post from './View_Post';
 import LinearGradient from 'react-native-linear-gradient';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
+import { adEndpoint } from '../common/API';
 
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
@@ -25,6 +26,8 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
+
+  const getAds: string = adEndpoint;
 
   return (
     <LinearGradient
@@ -40,7 +43,11 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
 
       <View style={globalscreenstyles.middle}>
-        <PostListRenderer isHeaderInNeed={true} navigation={navigation} />
+        <PostListRenderer
+          isHeaderInNeed={true}
+          endpoint={adEndpoint}
+          navigation={navigation}
+        />
       </View>
 
       <TabBarBottom

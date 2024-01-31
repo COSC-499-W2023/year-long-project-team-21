@@ -27,6 +27,9 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
 
   return (
     <>
+      <Text style={styles.currentValueText}>
+        {`${sliderValue} day${sliderValue > 1 ? 's' : ''}`}
+      </Text>
       <Slider
         style={styles.slider}
         minimumValue={1}
@@ -46,5 +49,6 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
     </>
   );
 };
+
 
 export default ExpirySlider;

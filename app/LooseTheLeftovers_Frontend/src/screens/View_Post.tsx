@@ -28,11 +28,12 @@ import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import { djangoConfig } from '../common/NetworkRequest';
-import { BASE_URL, getAdsEndpoint } from '../common/API';
+import { BASE_URL, adEndpoint } from '../common/API';
 import axios from 'axios';
 
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
-  const { postId } = route.params;
+  // retrieve endpoint and postId from Post.tsx
+  const { postId, endpoint } = route.params;
   const post_color = global.post_color.expiry_long;
   console.log(post_color);
   const styles = generateViewPostStyles(getCardColors(post_color));
@@ -48,35 +49,31 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   const fetchBackend = async () => {
     try {
-      const endpoint: string = getAdsEndpoint + postId;
-      const response: any = await axios.get(endpoint, djangoConfig());
-      let data = response.data[0];
+      const viewAds: string = endpoint + postId + '/';
+      const payload: any = await axios.get(viewAds, djangoConfig());
+      let data: JSON = payload.data[0];
       return data;
     } catch (e) {
+      // display error?
       console.log(e);
+      return undefined;
     }
   };
 
   useEffect(() => {
     const populateState = async () => {
       const data: any = await fetchBackend();
-      if (data) {
-        // ensure that data.image gets updated to contain the URL
-        if (data.image) {
-          const modifiedBaseUrl = BASE_URL.slice(0, -1);
-          data.image = modifiedBaseUrl + data.image;
-        }
+      if (data && data.image) {
+        data.image = BASE_URL + data.image;
         setAdData(data);
         setIsLoading(false);
+      } else {
+        // exit
+        console.log('error retrieving payload');
       }
     };
-
     populateState();
   }, []);
-
-  useEffect(() => {
-    //console.log(adData.image);
-  }, [adData]);
 
   /**
    * Renders the front part of the post card.

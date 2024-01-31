@@ -10,8 +10,11 @@ import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
 import { retrieveUserSession } from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
+import PostListRenderer from '../components/PostListRenderer';
+import { adEndpoint } from '../common/API';
 
 const Profile = () => {
+  const [userID, setUserId] = useState('');
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
 
   const fetchUserInfo = async () => {
@@ -19,12 +22,11 @@ const Profile = () => {
       // Retrieve session data
       const userSesh: Record<string, string> = await retrieveUserSession();
       // Gets user id from session data
-      const userId: string = userSesh['user_id'];
-      console.log(userId);
+      setUserId(userSesh['user_id']);
 
       // Retrieves user data using userid
       const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
-      const res: any = await newReq.get(`users/${userId}`);
+      const res: any = await newReq.get(`users/${userID}/`);
 
       const data = res.data;
 
@@ -36,6 +38,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchUserInfo();
+    console.log('this is userId', userID);
   }, []);
 
   return (
@@ -44,6 +47,10 @@ const Profile = () => {
 
       <View style={globalscreenstyles.middle}>
         <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
+      </View>
+
+      <View style={globalscreenstyles.middle}>
+        <PostListRenderer isHeaderInNeed={false} endpoint={adEndpoint} />
       </View>
 
       <TabBarBottom
