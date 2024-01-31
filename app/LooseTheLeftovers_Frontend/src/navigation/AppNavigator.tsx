@@ -22,7 +22,7 @@ const AppNavigator = () => {
       <Stack.Screen
         name="View_Post"
         component={View_Post}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Home"
