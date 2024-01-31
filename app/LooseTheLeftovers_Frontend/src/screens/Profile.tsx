@@ -8,23 +8,49 @@ import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
-import { retrieveUserSession } from '../../src/common/EncryptedSession';
+import {
+  removeUserSession,
+  retrieveUserSession,
+} from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
+import Button from '../components/Button';
+import profileStyles from '../styles/profileStyles';
 
-const Profile = () => {
+const Profile = ({ navigation }: { navigation: any }) => {
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+
+  const handleButtonOnPress = async () => {
+    try {
+      // Retrieve the current user session
+      const session = await retrieveUserSession();
+
+      if (session) {
+        // Remove the user session
+        await removeUserSession();
+        navigation.navigate('Registration');
+      } else {
+        throw new Error('No active user session found');
+      }
+    } catch (error) {
+      // Handle errors
+      console.error('Error during logout:', error);
+    }
+  };
 
   const fetchUserInfo = async () => {
     try {
       // Retrieve session data
       const userSesh: Record<string, string> = await retrieveUserSession();
+
+      const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
+
       // Gets user id from session data
       const userId: string = userSesh['user_id'];
       console.log(userId);
 
-      // Retrieves user data using userid
-      const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
       const res: any = await newReq.get(`users/${userId}`);
+
+      // Retrieves user data using userid
 
       const data = res.data;
 
@@ -41,11 +67,15 @@ const Profile = () => {
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon />} />
-
       <View style={globalscreenstyles.middle}>
-        <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
-      </View>
+        <View style={profileStyles.userinfocontainer}>
+          <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
+        </View>
 
+        <View style={profileStyles.button}>
+          <Button onPress={handleButtonOnPress} title="Logout"></Button>
+        </View>
+      </View>
       <TabBarBottom
         LeftIcon={<HomeIcon />}
         MiddleIcon={<CreateAdIcon />}

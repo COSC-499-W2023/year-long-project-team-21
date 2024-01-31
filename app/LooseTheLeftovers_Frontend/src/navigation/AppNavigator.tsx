@@ -15,6 +15,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Registration"
+        component={Registration}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="CreateAd"
         component={CreateAd}
         options={{ headerShown: false }}
@@ -24,11 +29,7 @@ const AppNavigator = () => {
         component={DoneScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Registration"
-        component={Registration}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen
         name="Login"
         component={Login}
