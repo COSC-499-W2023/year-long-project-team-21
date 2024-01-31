@@ -23,13 +23,13 @@ const TabBarBottom: React.FC<TabBarProps> = ({
 }) => {
   return (
     <View style={tabBarStyles.containerBottom}>
-      <View testID="TabBarLeftIconTest" style={tabBarStyles.left}>
+      <View testID="TabBarLeftIconTest" style={tabBarStyles.leftBottom}>
         {LeftIcon}
       </View>
-      <View testID="TabBarMiddleIconTest" style={tabBarStyles.middle}>
+      <View testID="TabBarMiddleIconTest" style={tabBarStyles.middleBottom}>
         {MiddleIcon}
       </View>
-      <View testID="TabBarRightIconTest" style={tabBarStyles.right}>
+      <View testID="TabBarRightIconTest" style={tabBarStyles.rightBottom}>
         {RightIcon}
       </View>
     </View>

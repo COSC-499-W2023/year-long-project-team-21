@@ -26,6 +26,7 @@ const Texts: React.FC<TextsProps> = ({
   textsColor,
   textsWeight,
   position,
+  //positionBottom
   onPress,
   testID,
 }) => {
@@ -35,7 +36,7 @@ const Texts: React.FC<TextsProps> = ({
     fontSize: textsSize || 25,
     color: textsColor || global.primary,
     fontWeight: textsWeight || 'normal',
-    marginTop: position == 'top' ? 150 : 0,
+    marginTop: position == 'top' ? '10%' : 0,
   };
 
   return (

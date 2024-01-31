@@ -7,11 +7,14 @@ import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import MessageIcon from '../components/MessageIcon';
+import Logo from '../components/Logo';
 
 const Home = () => {
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+      <TabBarTop
+        LeftIcon={<Logo></Logo>}
+        RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.middle}></View>
       <TabBarBottom
         LeftIcon={<HomeIcon></HomeIcon>}

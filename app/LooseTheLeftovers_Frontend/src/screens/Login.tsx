@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native';
-import axios from 'axios';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import Texts from '../components/Text';
+import { SafeAreaView, Text, View } from 'react-native';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
-import {
-  removeUserSession,
-  storeUserSession,
-} from '../common/EncryptedSession';
-
+import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../components/Logo';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
-import Text from '../components/Text';
 import Button from '../components/Button';
+import { global } from '../common/global_styles';
+import Icon from '../components/Icon';
 
 /**
  * Login component.
@@ -83,8 +79,13 @@ const Login = ({ navigation }: { navigation: any }) => {
 
   return (
     <>
-      <SafeAreaView style={styles.LoginContainer}>
-        <Logo LogoSize={40} />
+      <LinearGradient
+        style={styles.LoginContainer}
+        colors={['#251D3A', global.background]}
+        start={{ x: 1, y: 0 }}>
+        <Icon
+          source={require('../assets/logo-with-name.png')}
+          size={200}></Icon>
         <Title title="Login" titleSize={30} testID="loginTitle" />
         <InputField
           placeholder="Username"
@@ -99,7 +100,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         />
         {/* Conditionally render the error message */}
         {errorMessage !== '' && (
-          <Text
+          <Texts
             texts={errorMessage} // Pass error message
             textsSize={14}
             textsColor="red"
@@ -111,14 +112,27 @@ const Login = ({ navigation }: { navigation: any }) => {
           onPress={() => handleButtonOnPress()}
           testID="loginButton"
         />
-        <Text texts="Forgot password?" textsSize={18} />
-        <Text
-          texts="Sign Up"
-          textsSize={18}
-          onPress={() => handleRegistrationNavigation()}
+
+        <Texts
           position="top"
+          textsColor="white"
+          texts="Forgot password?"
+          textsSize={14}
         />
-      </SafeAreaView>
+        <Text style={{ marginTop: 30 }}>
+          <Texts
+            texts="Not a member?"
+            textsColor="white"
+            textsSize={18}
+            onPress={() => handleRegistrationNavigation()}
+          />
+          <Texts
+            texts=" Sign Up"
+            textsSize={18}
+            onPress={() => handleRegistrationNavigation()}
+          />
+        </Text>
+      </LinearGradient>
     </>
   );
 };
