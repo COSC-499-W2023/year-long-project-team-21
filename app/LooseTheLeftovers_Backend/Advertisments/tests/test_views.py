@@ -242,14 +242,14 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # assert 5 ads returned 
-        self.assertEqual(len(response.data), 5)
+        # assert 3 ads returned (max 3 per page)
+        self.assertEqual(len(response.data), 3)
 
-        # assert 5 images returned
-        self.assertEqual(len(response.data), 5)
+        # assert 3 images returned (max 3 per page)
+        self.assertEqual(len(response.data), 3)
 
         # assert expiries included
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data), 3)
 
     def test_get_ad_that_does_not_exist(self):
         """
