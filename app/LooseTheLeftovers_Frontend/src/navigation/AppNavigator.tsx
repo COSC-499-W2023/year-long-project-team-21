@@ -5,6 +5,9 @@ import Registration from '../screens/Registration';
 import Login from '../screens/Login';
 import Instruction from '../screens/Instruction';
 import CreateAd from '../screens/CreateAd';
+import Home from '../screens/Home';
+import Profile from '../screens/Profile';
+import DoneScreen from '../screens/Done';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,13 +15,18 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Registration"
-        component={Registration}
+        name="CreateAd"
+        component={CreateAd}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CreateAd"
-        component={CreateAd}
+        name="Done"
+        component={DoneScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Registration"
+        component={Registration}
         options={{ headerShown: false }}
       />
       <Stack.Screen

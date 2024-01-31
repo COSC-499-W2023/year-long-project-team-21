@@ -105,8 +105,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   const statusHandler = (status: number) => {
     switch (status) {
       case 201:
-        console.log('Ad created successfully.');
-        // Navigate to profile or success page
+        navigation.navigate('Done'); // Navigate to profile or success page
         break;
       case 401:
         setNetworkError('Unauthorized, force user to login.');
