@@ -1,5 +1,12 @@
-import React from 'react';
-import { Dimensions, StyleProp, Text, View, ViewStyle } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Dimensions,
+  StyleProp,
+  Text,
+  View,
+  ViewStyle,
+  ActivityIndicator,
+} from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { ViewPostProps } from '../common/Types';
 import Logo from '../components/Logo';
@@ -20,35 +27,55 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
+import { djangoConfig } from '../common/NetworkRequest';
+import { BASE_URL, getAdsEndpoint } from '../common/API';
+import axios from 'axios';
 
-const View_Post = ({ navigation }: { navigation: any }) => {
-  //const { postId } = route.params;
+const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
+  const { postId } = route.params;
   const post_color = global.post_color.expiry_long;
   const styles = generateViewPostStyles(getCardColors(post_color));
-  // useEffect(() => {
-  //   // Make a POST request to the backend API
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('backend-api-endpoint', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           // Add other headers if needed
-  //         },
-  //         body: JSON.stringify({ id: postId }),
-  //       });
+  const [adData, setAdData] = useState({
+    category: '',
+    description: '',
+    expiry: '',
+    title: '',
+    image: null,
+    color: '',
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  //       const data = await response.json();
+  const fetchBackend = async () => {
+    try {
+      const endpoint: string = getAdsEndpoint + postId;
+      const response: any = await axios.get(endpoint, djangoConfig());
+      let data = response.data[0];
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  //       // Handle the data as needed
-  //       console.log('Fetched data:', data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const populateState = async () => {
+      const data: any = await fetchBackend();
+      if (data) {
+        // ensure that data.image gets updated to contain the URL
+        if (data.image) {
+          const modifiedBaseUrl = BASE_URL.slice(0, -1);
+          data.image = modifiedBaseUrl + data.image;
+        }
+        setAdData(data);
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchData();
-  // }, []); // Empty dependency array to run the effect only once
+    populateState();
+  }, []);
+
+  useEffect(() => {
+    console.log(adData.image);
+  }, [adData]);
 
   /**
    * Renders the front part of the post card.
@@ -61,12 +88,9 @@ const View_Post = ({ navigation }: { navigation: any }) => {
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
-          <Title style={styles.title}>title</Title>
-          <Title style={styles.expiry}>2days</Title>
-          <Text style={styles.description}>
-            Fresh salmon fillet grilled to perfection, served with lemon and
-            herbs.
-          </Text>
+          <Title style={styles.title}>{adData.title}</Title>
+          <Title style={styles.expiry}>{adData.expiry}</Title>
+          <Text style={styles.description}>{adData.description}</Text>
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
@@ -91,12 +115,20 @@ const View_Post = ({ navigation }: { navigation: any }) => {
     );
   };
 
+  if (isLoading) {
+    return <ActivityIndicator size="large" />;
+  }
+
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.body}>
         <View style={styles.image_container}>
-          {renderPostImage(styles.image, Dimensions.get('window').width * 0.9)}
+          {renderPostImage(
+            styles.image,
+            adData.image,
+            Dimensions.get('window').width * 0.9,
+          )}
         </View>
         <View style={styles.info_container}>
           {render_Card_Back(styles.card_back)}

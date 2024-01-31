@@ -35,35 +35,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @function
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
-  // const server = async () => {
-  //   try {
-  //     const apiUrl = locationPermission
-  //       ? 'backend-api-endpoint-for-post'
-  //       : 'backend-api-endpoint-for-get';
-
-  //     const requestBody = locationPermission
-  //       ? { range } // Include range data in the POST request body
-  //       : null; // No request body for GET request
-
-  //     // Make the request based on locationPermission
-  //     const response = await fetch(apiUrl, {
-  //       method: locationPermission ? 'POST' : 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         // Add other headers if needed
-  //       },
-  //       body: locationPermission ? JSON.stringify(requestBody) : null,
-  //     });
-
-  //     const data = await response.json();
-  //   } catch (error) {}
-  // };
 
   /**
    * Filters and transforms raw data into a specific format.
    * @function
    * @param {any[]} data - The raw data to be filtered.
    * @returns {Object[]} The filtered and transformed data.
+   * @Todo replace the base URL here and make it come from ./api
    */
   const filterData = (data: any[]) => {
     const filteredPosts = data.map(post => ({
@@ -72,6 +50,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       image: 'http://10.0.2.2:8000' + post.image,
       expiryDate: post.expiry,
       category: post.category,
+      color: post.color,
     }));
     return filteredPosts;
   };
@@ -124,7 +103,6 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const renderPostItem = useCallback(
     ({ item }: { item: PostProps }) => {
-      console.log(item);
       return (
         <View style={postListStyles.postContainer}>
           <Post
@@ -133,6 +111,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
             image={item.image}
             expiryDate={item.expiryDate}
             category={item.category}
+            color={item.color}
             navigation={navigation}
           />
         </View>
