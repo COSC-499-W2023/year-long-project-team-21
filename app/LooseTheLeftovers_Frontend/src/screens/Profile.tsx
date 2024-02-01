@@ -8,6 +8,7 @@ import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
+import { global } from '../common/global_styles';
 import {
   removeUserSession,
   retrieveUserSession,
@@ -86,19 +87,19 @@ const Profile = ({ navigation }: { navigation: any }) => {
       <View style={globalscreenstyles.middle}>
         <View style={profileStyles.userinfocontainer}>
           <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
+          <View style={profileStyles.button}>
+            <Button onPress={handleButtonOnPress} title="Logout"></Button>
+          </View>
         </View>
 
-        <View style={profileStyles.button}>
-          <Button onPress={handleButtonOnPress} title="Logout"></Button>
+        <View style={profileStyles.viewPost}>
+          <PostListRenderer
+            isHeaderInNeed={false}
+            endpoint={adEndpoint}
+            getData={fetchAds}
+            navigation={navigation}
+          />
         </View>
-      </View>
-      <View style={globalscreenstyles.middle}>
-        <PostListRenderer
-          isHeaderInNeed={false}
-          endpoint={adEndpoint}
-          getData={fetchAds}
-          navigation={navigation}
-        />
       </View>
 
       <TabBarBottom

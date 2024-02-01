@@ -120,9 +120,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
-      <View style={globalscreenstyles.body}>
+      <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
-          {renderPostImage(styles.image, adData.image, 40)}
+          {renderPostImage(styles.image, adData.image, 400)}
         </View>
         <View style={styles.info_container}>
           {render_Card_Back(styles.card_back)}
