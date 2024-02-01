@@ -26,7 +26,7 @@ describe('AccountIcon Component', () => {
     fireEvent.press(getByTestId('AccountIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Instruction', {
+    expect(mockNavigate).toHaveBeenCalledWith('Profile', {
       name: 'AccountIcon',
     });
   });
