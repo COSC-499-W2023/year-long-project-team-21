@@ -4,10 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
 import Instruction from '../screens/Instruction';
-
-import Home from '../screens/Home';
-import View_Post from '../screens/View_Post';
 import CreateAd from '../screens/CreateAd';
+import Home from '../screens/Home';
+import Profile from '../screens/Profile';
+import DoneScreen from '../screens/Done';
+import View_Post from '../screens/View_Post';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,7 @@ const AppNavigator = () => {
       <Stack.Screen
         name="View_Post"
         component={View_Post}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Home"
@@ -35,6 +36,11 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Done"
+        component={DoneScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Registration"
         component={Registration}
         options={{ headerShown: false }}
@@ -42,6 +48,12 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -15,13 +15,17 @@ import Icon from '../components/Icon';
  * @param {() => void} props.onRightPress - Callback function to execute when the right icon is pressed.
  * @param {ImageSourcePropType} props.leftIconSource - The image source for the left icon.
  * @param {ImageSourcePropType} props.rightIconSource - The image source for the right icon.
+ * @param {string} props.title - The prop to pass title.
  */
 const Header: React.FC<UpperBarProps> = ({
   onLeftPress,
   onRightPress,
   leftIconSource,
   rightIconSource,
+  title,
 }) => {
+  const testID = 'upperbar-test';
+
   return (
     <View style={styles.header}>
       {leftIconSource ? (
@@ -31,11 +35,14 @@ const Header: React.FC<UpperBarProps> = ({
           onPress={onLeftPress}
           containerStyle={styles.iconContainer}
           imageStyle={styles.icon}
+          testID='left-icon'
         />
       ) : (
         <View style={styles.placeholderIcon} />
       )}
-      <Text style={styles.title}>Create an Ad</Text>
+      <Text style={styles.title} testID={testID}>
+        {title}
+      </Text>
       {rightIconSource ? (
         <Icon
           source={rightIconSource}
@@ -43,6 +50,7 @@ const Header: React.FC<UpperBarProps> = ({
           onPress={onRightPress}
           containerStyle={styles.iconContainer}
           imageStyle={styles.icon}
+          testID='right-icon'
         />
       ) : (
         <View style={styles.placeholderIcon} />

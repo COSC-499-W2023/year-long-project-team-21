@@ -1,6 +1,7 @@
 import {
   ImageSourcePropType,
   ImageStyle,
+  Image,
   StyleProp,
   View,
   ViewStyle,
@@ -9,6 +10,7 @@ import {
 import Icon from '../components/Icon';
 import React, { useState } from 'react';
 import { Card, Title } from 'react-native-paper';
+import { global } from '../common/global_styles';
 
 /**
  * Renders a hidden icon based on visibility and source.
@@ -66,6 +68,24 @@ export const render_Icons = (
 };
 
 /**
+ * Retrieves color settings for a card based on the specified expiry term.
+ * Each term corresponds to a different color, indicating the proximity of the expiry date.
+ *
+ * @param {string} [color] - The expiry term coming from the backend ('expiry_short', 'expiry_mid', 'expiry_long').
+ * @returns {Object} An object containing the color configuration for the card.
+ * @todo Review documentation and consider adding color configuration for two-week expiry
+ * @todo figure out the correct type for color.
+ */
+export const assignColor = (color: any) => {
+  const colorMapping = {
+    expiry_short: global.post_color.expiry_short,
+    expiry_mid: global.post_color.expiry_mid,
+    expiry_long: global.post_color.expiry_long,
+  };
+  return color ? getCardColors(colorMapping[color]) : undefined;
+};
+
+/**
  * Calculates different shades of a color for the post card.
  *
  * @function
@@ -100,14 +120,17 @@ export const getCardColors = (color: string[]) => {
  */
 export const renderPostImage = (
   imageStyle: StyleProp<ImageStyle>,
+  source: ImageSourcePropType,
   size?: number,
-  source?: ImageSourcePropType,
 ) => {
+  const imageSize = size ? { width: size, height: size } : {};
+  console.log(source);
+  // @TODO fix the type-error for source
   return (
-    <Icon
-      source={require('../assets/banana.png')}
-      imageStyle={imageStyle}
-      size={size}
+    <Image
+      source={{ uri: source }}
+      style={[imageStyle, imageSize]}
+      resizeMode="contain" // You can adjust the resizeMode if needed
     />
   );
 };

@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import TabBar from '../components/TabBar';
-
 import globalscreenstyles from '../common/global_ScreenStyles';
-
+import { global } from '../common/global_styles';
 import Logo from '../components/Logo';
 import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
@@ -12,6 +10,13 @@ import AccountIcon from '../components/AccountIcon';
 import PostListRenderer from '../components/PostListRenderer';
 import LocationService from '../common/LocationService';
 import View_Post from './View_Post';
+import LinearGradient from 'react-native-linear-gradient';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import { adEndpoint } from '../common/API';
+import { djangoConfig } from '../common/NetworkRequest';
+import axios from 'axios';
+
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   // const checkLocationPermission = async () => {
@@ -23,22 +28,41 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
-  
-  return (
-    <View style={globalscreenstyles.container}>
-      <TabBar
-        LeftIcon={<Logo LogoSize={15}></Logo>}
-        RightIcon={<MessageIcon></MessageIcon>}></TabBar>
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState('');
 
-      <View style={globalscreenstyles.body}>
-        <PostListRenderer isHeaderInNeed={true}  navigation={navigation}/>
+  async function fetchAds() {
+    const payload = await axios.get(adEndpoint, djangoConfig());
+    return payload.data;
+  }
+
+  return (
+    <LinearGradient
+      style={globalscreenstyles.container}
+      colors={[
+        global.background,
+        global.post_color.expiry_mid[0],
+        global.background,
+      ]}
+      start={{ x: 0, y: 0 }}>
+      <TabBarTop
+        LeftIcon={<Logo LogoSize={15}></Logo>}
+        RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+
+      <View style={globalscreenstyles.middle}>
+        <PostListRenderer
+          isHeaderInNeed={true}
+          endpoint={adEndpoint}
+          navigation={navigation}
+          getData={fetchAds}
+        />
       </View>
 
-      <TabBar
+      <TabBarBottom
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBar>
-    </View>
+        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
+    </LinearGradient>
   );
 };
 

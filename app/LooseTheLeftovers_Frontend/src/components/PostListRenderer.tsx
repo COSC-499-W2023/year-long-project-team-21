@@ -1,17 +1,21 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
-import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
 import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
+import { BASE_URL, adEndpoint } from '../common/API';
+import { djangoConfig } from '../common/NetworkRequest';
+import axios from 'axios';
 
 let stopFetchMore = true;
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
+  endpoint,
+  getData,
   // locationPermission,
   navigation,
 }) => {
@@ -32,44 +36,26 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @function
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
-  // const server = async () => {
-  //   try {
-  //     const apiUrl = locationPermission
-  //       ? 'backend-api-endpoint-for-post'
-  //       : 'backend-api-endpoint-for-get';
-
-  //     const requestBody = locationPermission
-  //       ? { range } // Include range data in the POST request body
-  //       : null; // No request body for GET request
-
-  //     // Make the request based on locationPermission
-  //     const response = await fetch(apiUrl, {
-  //       method: locationPermission ? 'POST' : 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         // Add other headers if needed
-  //       },
-  //       body: locationPermission ? JSON.stringify(requestBody) : null,
-  //     });
-
-  //     const data = await response.json();
-  //   } catch (error) {}
-  // };
 
   /**
    * Filters and transforms raw data into a specific format.
    * @function
    * @param {any[]} data - The raw data to be filtered.
    * @returns {Object[]} The filtered and transformed data.
+   * @Todo replace the base URL here and make it come from ./api
    */
   const filterData = (data: any[]) => {
-    const filteredPosts = postData.map(post => ({
-      id: post.id,
-      title: post.title,
-      image: post.image,
-      expiryDate: post.expiryDate,
-      category: post.category,
-    }));
+    const filteredPosts = data.map(post => {
+      return {
+        id: post.id,
+        title: post.title,
+        image: BASE_URL + post.image,
+        expiryDate: post.expiry,
+        category: post.category,
+        color: post.color,
+      };
+    });
+
     return filteredPosts;
   };
 
@@ -85,14 +71,21 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const fetchData = async (startIndex: number) => {
     try {
-      //const data = server(lastItemIndex);
+      // const data = server(lastItemIndex);
       // Update lastItemIndex with the new value
+
+      // not sure the point of setPosts empty
       setPosts([]);
-      const filteredPosts = filterData(postData);
-      setLastItemIndex(lastItemIndex + filteredPosts.length);
+      // retrieve data from passing from function passed down as prop (this is for either get Ads or get user/ads)
+      const data = await getData();
+      // filter data @TODO is this even nec?
+      const filteredPosts = filterData(data);
+      // set state
       setPosts(prevPosts => [...prevPosts, ...filteredPosts]);
+      // no longer loading
       setIsLoading(false);
-      stopFetchMore = false;
+      // boolean flag for stopping lazy loading
+      stopFetchMore = true;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -112,10 +105,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         <View style={postListStyles.postContainer}>
           <Post
             id={item.id}
+            endpoint={endpoint}
             title={item.title}
             image={item.image}
             expiryDate={item.expiryDate}
             category={item.category}
+            color={item.color}
             navigation={navigation}
           />
         </View>
@@ -144,13 +139,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
+        <View style={postListStyles.dropdownHeader}>
+          <SelectRangeBar onSelectRange={handleSelectRange} />
+        </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
             Showing Posts Nearby
           </Title>
-        </View>
-        <View style={postListStyles.dropdownHeader}>
-          <SelectRangeBar onSelectRange={handleSelectRange} />
         </View>
       </View>
     );
@@ -181,7 +176,6 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const handleLoadMore = async () => {
     setIsLoading(true);
-    console.log(stopFetchMore);
     if (!stopFetchMore) {
       console.log('Loading more data...');
       await fetchData(lastItemIndex);

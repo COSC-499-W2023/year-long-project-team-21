@@ -1,6 +1,12 @@
-import React from 'react';
-import { Dimensions, StyleProp, Text, View, ViewStyle } from 'react-native';
-import TabBar from '../components/TabBar';
+import React, { useEffect, useState } from 'react';
+import {
+  Dimensions,
+  StyleProp,
+  Text,
+  View,
+  ViewStyle,
+  ActivityIndicator,
+} from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { ViewPostProps } from '../common/Types';
 import Logo from '../components/Logo';
@@ -15,35 +21,59 @@ import {
 import { global } from '../common/global_styles';
 import generateViewPostStyles from '../styles/view_postStyles';
 import Button from '../components/Button';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import CreateAdIcon from '../components/CreateAdIcon';
+import MessageIcon from '../components/MessageIcon';
+import HomeIcon from '../components/HomeIcon';
+import AccountIcon from '../components/AccountIcon';
+import { djangoConfig } from '../common/NetworkRequest';
+import { BASE_URL } from '../common/API';
+import axios from 'axios';
 
-const View_Post = ({navigation }: {navigation:any}) => {
-  //const { postId } = route.params;
+const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
+  // retrieve endpoint and postId from Post.tsx
+  const { postId, endpoint } = route.params;
   const post_color = global.post_color.expiry_long;
+  console.log(post_color);
   const styles = generateViewPostStyles(getCardColors(post_color));
-  // useEffect(() => {
-  //   // Make a POST request to the backend API
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('backend-api-endpoint', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           // Add other headers if needed
-  //         },
-  //         body: JSON.stringify({ id: postId }),
-  //       });
+  const [adData, setAdData] = useState({
+    category: '',
+    description: '',
+    expiry: '',
+    title: '',
+    image: null,
+    color: '',
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  //       const data = await response.json();
+  const fetchBackend = async () => {
+    try {
+      const viewAds: string = endpoint + postId + '/';
+      const payload: any = await axios.get(viewAds, djangoConfig());
+      let data: JSON = payload.data;
+      return data;
+    } catch (e) {
+      // display error on a screen would be nice.
+      console.log(e);
+      return undefined;
+    }
+  };
 
-  //       // Handle the data as needed
-  //       console.log('Fetched data:', data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []); // Empty dependency array to run the effect only once
+  useEffect(() => {
+    const populateState = async () => {
+      const data: any = await fetchBackend();
+      if (data && data.image) {
+        data.image = BASE_URL + data.image;
+        setAdData(data);
+        setIsLoading(false);
+      } else {
+        // exit or show a screen
+        console.log('error retrieving payload');
+      }
+    };
+    populateState();
+  }, []);
 
   /**
    * Renders the front part of the post card.
@@ -56,12 +86,9 @@ const View_Post = ({navigation }: {navigation:any}) => {
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
-          <Title style={styles.title}>title</Title>
-          <Title style={styles.expiry}>2days</Title>
-          <Text style={styles.description}>
-            Fresh salmon fillet grilled to perfection, served with lemon and
-            herbs.
-          </Text>
+          <Title style={styles.title}>{adData.title}</Title>
+          <Title style={styles.expiry}>{adData.expiry}</Title>
+          <Text style={styles.description}>{adData.description}</Text>
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
@@ -86,13 +113,16 @@ const View_Post = ({navigation }: {navigation:any}) => {
     );
   };
 
+  if (isLoading) {
+    return <ActivityIndicator size="large" />;
+  }
+
   return (
     <View style={globalscreenstyles.container}>
-      <TabBar MiddleIcon={<Logo LogoSize={15}></Logo>}></TabBar>
-
+      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.body}>
         <View style={styles.image_container}>
-          {renderPostImage(styles.image, Dimensions.get('window').width * 0.9)}
+          {renderPostImage(styles.image, adData.image, 40)}
         </View>
         <View style={styles.info_container}>
           {render_Card_Back(styles.card_back)}
@@ -100,6 +130,10 @@ const View_Post = ({navigation }: {navigation:any}) => {
           {render_Card_Front(styles.card_front)}
         </View>
       </View>
+      <TabBarBottom
+        LeftIcon={<HomeIcon></HomeIcon>}
+        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
+        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
     </View>
   );
 };

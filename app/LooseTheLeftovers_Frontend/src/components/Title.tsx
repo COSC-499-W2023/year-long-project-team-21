@@ -28,7 +28,7 @@ const Title: React.FC<TitleProps> = ({
   //Default/Custom styles for Text component
   const titleStyles = {
     fontSize: titleSize || 25,
-    color: titleColor || global.primary,
+    color: titleColor || global.secondary,
     marginTop: position == 'top' ? 150 : 0,
 
   };

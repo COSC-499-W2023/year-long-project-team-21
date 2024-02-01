@@ -5,29 +5,29 @@ const generateSelectRangeBarStyles = (screenWidth: number) =>
   StyleSheet.create({
     picker: {
       width: screenWidth / 2,
-      borderWidth: 2,
-      borderColor: global.dropdown_color.light_border,
-      borderRadius: 0.1 * screenWidth,
-      //minHeight:0.05 * screenWidth,
-      backgroundColor: global.dropdown_color.background,
+      borderWidth: 4,
+      borderColor: global.dropdown_color.medium_border,
+      borderRadius: 0.06 * screenWidth,
+      backgroundColor: global.primary,
       elevation: 5,
     },
     text: {
-      fontSize: 15,
+      fontSize: 18,
       fontWeight: '500',
       textAlign: 'center',
+      color: global.secondary,
     },
     dropDown: {
-      borderColor: global.dropdown_color.light_border,
+      borderColor: global.dropdown_color.medium_border,
       width: screenWidth / 2,
-      borderRadius: 0.1 * screenWidth,
+      borderRadius: 0.06 * screenWidth,
       borderWidth: 2,
       textAlign: 'center',
       elevation: 5,
-      backgroundColor: global.dropdown_color.background,
+      backgroundColor: global.tertiary,
     },
     separater: {
-      backgroundColor: 'black',
+      backgroundColor: 'white',
     },
   });
 
