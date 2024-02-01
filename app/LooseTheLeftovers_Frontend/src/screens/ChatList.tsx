@@ -4,11 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
 
 import Header from '../components/UpperBar';
-import TabBar from '../components/TabBar';
+import TabBar from '../components/TabBarBottom';
 import Icon from '../components/Icon';
 
-// import chatData from '../assets/chat_placeholder.json';
-// import noData from '../assets/empty_chats.json';
+import chatData from '../assets/chat_placeholder.json';
+import noData from '../assets/empty_chats.json';
 // Page sends an error, because FlatList gets no data
 
 type ChatType = {
@@ -63,7 +63,7 @@ const ChatList = () => {
 
       {/* FlatList */}
       <FlatList
-        data={}
+        data={noData}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         style={styles.listcontainer}
