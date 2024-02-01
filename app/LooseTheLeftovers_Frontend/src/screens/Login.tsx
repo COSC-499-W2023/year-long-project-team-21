@@ -28,7 +28,7 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const handleRegistrationNavigation = () => {
-    navigation.navigate('Registration');
+    navigation.navigate('Home');
   };
 
   const handleButtonOnPress = async () => {

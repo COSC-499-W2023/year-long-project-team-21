@@ -70,7 +70,8 @@ const generateHomeScreenCardStyles = (
       position: 'absolute',
       paddingTop: '-40%',
       backgroundColor: 'white',
-      height: card_height * 0.6,
+      height: card_height * 0.8,
+      width: card_width * 0.3,
       zIndex: -2,
       right: 0,
       bottom: 0,
@@ -83,7 +84,7 @@ const generateHomeScreenCardStyles = (
       marginRight: 10,
     },
     post_image_style: {
-      width: card_width * 0.4,
+      width: card_width * 0.8,
       height: card_height * 0.6,
     },
   });
