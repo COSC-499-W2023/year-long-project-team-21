@@ -180,12 +180,13 @@ def retrieve_single_advertisment(ad_id):
         serializer = ReturnAdvertismentSerializer(ad)
         image_serializer = ImageSerializer(ad_image)
 
-        combined = {**serializer.data, **image_serializer.data}  # Merge two dictionaries
+        combined = {
+            **serializer.data,
+            **image_serializer.data,
+        }  # Merge two dictionaries
 
         # return response data of both serializers and 200 OK response
-        return Response(
-            combined, status=status.HTTP_200_OK
-        )
+        return Response(combined, status=status.HTTP_200_OK)
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
@@ -242,7 +243,7 @@ def retrieve_all_advertisments(request):
     GET request to handle retrieving ads from the database. No authentication required.
 
     This method will return all ads in the database. It uses pagination so it will split
-    the result into pages and return a page of results at a time (a page currently set to 
+    the result into pages and return a page of results at a time (a page currently set to
     include 8 ads)
     """
     try:
@@ -252,7 +253,7 @@ def retrieve_all_advertisments(request):
     except:
         response = {"message": "No ad found"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
-    
+
     try:
         # put query results into pages
         ad_paginator = Paginator(all_ads, 3)
@@ -281,25 +282,3 @@ def retrieve_all_advertisments(request):
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-def get_expiry_formatted(expiry):
-    '''
-    returns dict with two items: color and expiry. Both items are formatted to how front end needs them.
-    To be passed the expiry of the ad as datetime or None
-    '''
-    if expiry is None:
-        return {'color': 'expiry_long', 'expiry': '2 weeks'}
-    today = date.today()
-    delta = expiry - today
-    # >9 days will show as 2 weeks (long color)
-    if delta.days > 9:
-        return {'color': 'expiry_long', 'expiry': '2 weeks'}
-    # >6 days will show as 1 week (mid color)
-    elif delta.days > 6:
-        return {'color': 'expiry_mid', 'expiry': '1 week'}
-    # 1 day or less will show as 1 day (short color)
-    elif delta.days <= 1:
-        return {'color': 'expiry_short', 'expiry': '1 day'}
-    # 1 to 6 days will show as 'n' days (short color)
-    else:
-        return {'color': 'expiry_short', 'expiry': str(delta.days) + ' days'}
