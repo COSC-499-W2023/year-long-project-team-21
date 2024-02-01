@@ -27,15 +27,16 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const handleRegistrationNavigation = () => {
-    navigation.navigate('Home');
+
+  const handleRegisterNav = () => {
+    navigation.navigate('Registration');
   };
 
   const handleButtonOnPress = async () => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        navigation.goBack();
+        navigation.navigate('Home');
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,
@@ -123,12 +124,12 @@ const Login = ({ navigation }: { navigation: any }) => {
             texts="Not a member?"
             textsColor="white"
             textsSize={18}
-            onPress={() => handleRegistrationNavigation()}
+            onPress={() => handleRegisterNav()}
           />
           <Texts
             texts=" Sign Up"
             textsSize={18}
-            onPress={() => handleRegistrationNavigation()}
+            onPress={() => handleRegisterNav()}
           />
         </Text>
       </LinearGradient>
