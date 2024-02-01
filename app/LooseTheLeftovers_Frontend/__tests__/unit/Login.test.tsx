@@ -134,7 +134,6 @@ describe('Login component', () => {
         },
         { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
       );
-
       // Find the error message element
       const errorMessageElement = getByTestId('error-msg');
 
@@ -168,12 +167,11 @@ describe('Login component', () => {
       { timeout: 1000 },
     );
 
-    expect(errorMessageElement.props.children).toBe(
-      'Error: Failed to login or retrieve token',
-    );
-
-    // ... rest of your test
-  });
+      // Check if the expected success/failure message is displayed
+      expect(errorMessageElement.props.children).toBe(
+        'Error: Failed to login or retrieve token'
+      );
+    });
 
   it('stores JWT token on successful login', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
