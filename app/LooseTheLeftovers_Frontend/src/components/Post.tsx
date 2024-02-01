@@ -132,7 +132,7 @@ const Post: React.FC<PostProps> = ({
             )}
 
             <View style={cardStyles.card_image_wrapper_style}>
-              {renderPostImage(cardStyles.post_image_style, image, 40)}
+              {renderPostImage(cardStyles.post_image_style, image, 100)}
             </View>
           </View>
         </Card.Content>

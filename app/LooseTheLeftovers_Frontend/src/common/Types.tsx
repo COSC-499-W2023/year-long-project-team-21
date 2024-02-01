@@ -31,6 +31,7 @@ interface ButtonProps {
   testID?: string;
   borderRadius?: number;
   color?: string;
+  backgroundcolor?: string;
 }
 
 /**
