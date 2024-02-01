@@ -1,8 +1,6 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
-import CreateAd from '../src/screens/CreateAd';
-import axios from 'axios';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import CreateAd from '../../src/screens/CreateAd';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 jest.mock('axios');
