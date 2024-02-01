@@ -14,6 +14,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
 import { adEndpoint } from '../common/API';
+import { djangoConfig } from '../common/NetworkRequest';
+import axios from 'axios';
 
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
@@ -26,8 +28,13 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState('');
 
-  const getAds: string = adEndpoint;
+  async function fetchAds() {
+    const payload = await axios.get(adEndpoint, djangoConfig());
+    return payload.data;
+  }
 
   return (
     <LinearGradient
@@ -47,6 +54,7 @@ const Home = ({ navigation }: { navigation: any }) => {
           isHeaderInNeed={true}
           endpoint={adEndpoint}
           navigation={navigation}
+          getData={fetchAds}
         />
       </View>
 

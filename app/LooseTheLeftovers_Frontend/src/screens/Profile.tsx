@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import UserInfo from '../components/UserInfo';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
@@ -15,7 +15,9 @@ import { adEndpoint, usersAds, users } from '../common/API';
 
 const Profile = () => {
   const [userID, setUserId] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+  const [data, setData] = useState('');
 
   const fetchUserInfo = async () => {
     try {
@@ -23,30 +25,37 @@ const Profile = () => {
       const userSesh: Record<string, string> = await retrieveUserSession();
       // Gets user id from session data
       const userId: string = userSesh['user_id'];
-
-      // set user id state
-      setUserId(userSesh['user_id']);
+      setUserId(userId);
 
       // Retrieves user data using userid
       const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
       const res: any = await newReq.get(`users/${userId}/`);
-      let data = res.data;
-      setUserInfo({ username: data.username, email: data.email });
+      //let data = res.data;
+      setUserInfo({ username: res.data.username, email: res.data.email });
 
-      // now I need to get ads made by the user
-      const endpoint: string = usersAds + userID;
-      const payload: any = await newReq.get(endpoint);
-      data = payload.data;
-      console.log(data);
+      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
     }
   };
 
+  // function passed down as a prop to handle retrieivng ads
+  async function fetchAds() {
+    console.log('this is userId =', userID);
+    const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
+    const endpoint: string = usersAds + userID;
+    const payload: any = await newReq.get(endpoint);
+    return payload.data;
+  }
+
   useEffect(() => {
     fetchUserInfo();
-    console.log('this is userId', userID);
   }, []);
+
+  if (isLoading) {
+    // @ todo find one that is not so intruisvie.
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <View style={globalscreenstyles.container}>
@@ -57,7 +66,12 @@ const Profile = () => {
       </View>
 
       <View style={globalscreenstyles.middle}>
-        <PostListRenderer isHeaderInNeed={false} endpoint={adEndpoint} />
+        <PostListRenderer
+          isHeaderInNeed={false}
+          endpoint={adEndpoint}
+          getData={fetchAds}
+          userId={userID}
+        />
       </View>
 
       <TabBarBottom

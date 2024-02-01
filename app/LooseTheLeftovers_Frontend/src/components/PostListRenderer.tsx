@@ -1,7 +1,6 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
-// import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
 import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
@@ -15,9 +14,10 @@ let stopFetchMore = true;
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
+  endpoint,
+  getData,
   // locationPermission,
   navigation,
-  endpoint,
 }) => {
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
@@ -71,22 +71,17 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const fetchData = async (startIndex: number) => {
     try {
-      //const data = server(lastItemIndex);
+      // const data = server(lastItemIndex);
       // Update lastItemIndex with the new value
 
       // not sure the point of setPosts
       setPosts([]);
 
-      // send API call to the backend
-      const response = await axios.get(endpoint, djangoConfig());
-      // properly index data for filterData
-      const adData: [] = response.data;
-      // unsure why we need this tbh.
-      const filteredPosts = filterData(adData);
-      // not sure the point of this
-      // setLastItemIndex(lastItemIndex + filteredPosts.length);
-
-      // I think this sets the post
+      // retrieve data from passing from function passed down as prop (this is for either get Ads or get user/ads)
+      const data = await getData();
+      // filter data @TODO is this even nec?
+      const filteredPosts = filterData(data);
+      // set state
       setPosts(prevPosts => [...prevPosts, ...filteredPosts]);
       // no longer loading
       setIsLoading(false);
