@@ -28,7 +28,7 @@ import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import { djangoConfig } from '../common/NetworkRequest';
-import { BASE_URL, adEndpoint } from '../common/API';
+import { BASE_URL } from '../common/API';
 import axios from 'axios';
 
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
@@ -51,10 +51,10 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     try {
       const viewAds: string = endpoint + postId + '/';
       const payload: any = await axios.get(viewAds, djangoConfig());
-      let data: JSON = payload.data[0];
+      let data: JSON = payload.data;
       return data;
     } catch (e) {
-      // display error?
+      // display error on a screen would be nice.
       console.log(e);
       return undefined;
     }
@@ -68,7 +68,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         setAdData(data);
         setIsLoading(false);
       } else {
-        // exit
+        // exit or show a screen
         console.log('error retrieving payload');
       }
     };

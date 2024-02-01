@@ -74,9 +74,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       // const data = server(lastItemIndex);
       // Update lastItemIndex with the new value
 
-      // not sure the point of setPosts
+      // not sure the point of setPosts empty
       setPosts([]);
-
       // retrieve data from passing from function passed down as prop (this is for either get Ads or get user/ads)
       const data = await getData();
       // filter data @TODO is this even nec?
@@ -176,14 +175,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * Triggered when the end of the list is reached, loading more data by incrementing the `pagecurrent` state.
    */
   const handleLoadMore = async () => {
-    /*
     setIsLoading(true);
     if (!stopFetchMore) {
       console.log('Loading more data...');
       await fetchData(lastItemIndex);
       stopFetchMore = true;
     }
-    setIsLoading(false);*/
+    setIsLoading(false);
   };
 
   const keyExtractor = useCallback(
