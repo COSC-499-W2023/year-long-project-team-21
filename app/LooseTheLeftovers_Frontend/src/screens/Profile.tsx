@@ -15,6 +15,8 @@ import {
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
 import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
+import profileStyles from '../styles/profileStyles';
+import Button from '../components/Button';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
@@ -42,15 +44,19 @@ const Profile = ({ navigation }: { navigation: any }) => {
 
   const fetchUserInfo = async () => {
     try {
+      // init class for new request
+      const newReq: any = await SecureAPIReq.createInstance();
       // Retrieve session data
       const userSesh: Record<string, string> = await retrieveUserSession();
-
-      const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
-
       // Gets user id from session data
       const userId: string = userSesh['user_id'];
+      // set state appropriately
       setUserId(userId);
-
+      // call backend to retrieve
+      const res: any = await newReq.get(`users/${userId}`);
+      // set state
+      setUserInfo({ username: res.data.username, email: res.data.email });
+      // no longer loading (wonder if nec?)
       setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch user info:', error);

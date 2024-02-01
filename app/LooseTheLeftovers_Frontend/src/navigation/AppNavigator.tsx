@@ -40,6 +40,16 @@ const AppNavigator = () => {
         component={DoneScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Registration"
+        component={Registration}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
 
       <Stack.Screen
         name="Profile"
