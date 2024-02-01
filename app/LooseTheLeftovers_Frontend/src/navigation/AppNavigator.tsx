@@ -16,6 +16,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Instruction"
+        component={Instruction}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="CreateAd"
         component={CreateAd}
         options={{ headerShown: false }}

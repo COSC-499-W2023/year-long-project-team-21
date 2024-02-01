@@ -26,7 +26,7 @@ describe('HomeIcon Component', () => {
     fireEvent.press(getByTestId('HomeIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Instruction', {
+    expect(mockNavigate).toHaveBeenCalledWith('Home', {
       name: 'HomeIcon',
     });
   });
