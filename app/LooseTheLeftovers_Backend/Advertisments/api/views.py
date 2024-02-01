@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from Advertisments.api.serializers import (
     AdvertismentSerializer,
     ImageSerializer,
@@ -10,8 +10,7 @@ from Advertisments.api.serializers import (
     ReturnAdvertismentNoDescriptionSerializer,
 )
 from Advertisments.models import Advertisment, AdvertismentImage
-from rest_framework.utils.serializer_helpers import ReturnList
-from datetime import date, datetime
+from datetime import date
 
 
 class AdvertismentHandler(APIView):
@@ -213,8 +212,10 @@ def retrieve_advertisments_for_user(request, user_id):
 
         # gets data for the current page
         page_number = request.GET.get("page")
-        ad_page = ad_paginator.get_page(page_number)
-        image_page = image_paginator.get_page(page_number)
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+        image_page = image_paginator.page(page_number)
 
         # send each page to serializer to package data
         serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
@@ -225,11 +226,18 @@ def retrieve_advertisments_for_user(request, user_id):
         for ad, image in zip(serializer.data, image_serializer.data):
             combined = {**ad, **image}  # Merge two dictionaries
             combined_data.append(combined)
-
+        
         return Response(
             combined_data,
             status=status.HTTP_200_OK,
         )
+
+    # when index for page is out of bounds return 204 response       
+    except EmptyPage as e:
+        response = {"message": "Last page reached"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
+
+
 
     except Exception as e:
         # send problem response and server error
@@ -260,8 +268,10 @@ def retrieve_all_advertisments(request):
 
         # gets data for the current page
         page_number = request.GET.get("page")
-        ad_page = ad_paginator.get_page(page_number)
-        image_page = image_paginator.get_page(page_number)
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+        image_page = image_paginator.page(page_number)
 
         # send each page to serializer to package data
         serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
@@ -277,6 +287,11 @@ def retrieve_all_advertisments(request):
             combined_data,
             status=status.HTTP_200_OK,
         )
+    
+    # when index for page is out of bounds return 204 response 
+    except EmptyPage as e:
+        response = {"message": "Last page reached"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
