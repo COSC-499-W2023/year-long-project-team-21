@@ -67,3 +67,6 @@ yarn-error.log
 
 # Environment vars
 .env
+
+#env folder
+app/env/

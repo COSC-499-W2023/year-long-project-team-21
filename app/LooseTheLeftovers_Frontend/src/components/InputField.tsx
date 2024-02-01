@@ -32,7 +32,7 @@ const InputField: React.FC<InputFieldProps> = ({
   secureTextEntry = false,
   multiline,
   width,
-}) => {
+}: InputFieldProps) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 

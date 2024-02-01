@@ -25,10 +25,9 @@ const Texts: React.FC<TextsProps> = ({
   textsSize,
   textsColor,
   textsWeight,
-  position,
-  //positionBottom
   onPress,
   testID,
+  position,
 }) => {
   // Default/Custom styles for Text component
   // If any custom values are passed as props, apply them, default otherwise
