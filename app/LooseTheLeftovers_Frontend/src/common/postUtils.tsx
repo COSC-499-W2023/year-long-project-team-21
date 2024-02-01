@@ -1,6 +1,7 @@
 import {
   ImageSourcePropType,
   ImageStyle,
+  Image,
   StyleProp,
   View,
   ViewStyle,
@@ -100,14 +101,16 @@ export const getCardColors = (color: string[]) => {
  */
 export const renderPostImage = (
   imageStyle: StyleProp<ImageStyle>,
+  source: ImageSourcePropType,
   size?: number,
-  source?: ImageSourcePropType,
 ) => {
+  const imageSize = size ? { width: size, height: size } : {};
+  // @TODO fix the type-error for source
   return (
-    <Icon
-      source={require('../assets/banana.png')}
-      imageStyle={imageStyle}
-      size={size}
+    <Image
+      source={{ uri: source }}
+      style={[imageStyle, imageSize]}
+      resizeMode="contain" // You can adjust the resizeMode if needed
     />
   );
 };

@@ -1,26 +1,33 @@
 # Egor Bezriadin Personal Weekly Log
 
-11/13 to 11/26
+11/27 to 12/03
 
 Username: rogeonee
 
 ## My Features For This Week
 
-1. Review PR for merge into master
-2. Research (+ implementation) on tech for client side caching with SQLite
-3. Research on consice way to structure Create Ad sequence
+1. CreateAd page implementation
+2. CreateAd business logic
+3. ExpirySlider component
+4. ImagePicker component
+5. Other component updates as needed
+6. Research SQLite caching
 
 ## Completed Features For This Week
 
-1. Implemented secure JWT storage after login
-2. Code review to merge into master
-3. Minor changes and fixes here and there
+1. CreateAd page implemented
+2. CreateAd basic business logic ready
+3. ExpirySlider component
+4. ImagePicker component
+5. InputField, UpperBar (Header) component updates
 
 ## Tasks In Progress
 
-- Research (+ implementation) on tech for client side caching with SQLite
-- Research on consice way to structure Create Ad sequence
+- CreateAd logic revision and enhancement
+- Research SQLite caching
+- Tests for new components
 
 ## Types of Tasks Worked On
 
-![report 12](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/ffd41812-6fb8-4db8-ab6c-a31e45626497)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/68e6c46a-d395-460b-a352-4e99da13198f)
+

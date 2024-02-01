@@ -1,12 +1,15 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Dimensions, Text } from 'react-native';
 import Post from '../components/Post'; // Replace with the correct path to your Post component
-import postData from '../assets/fake_post_data.json';
+// import postData from '../assets/fake_post_data.json';
 import { PostProps } from '../common/Types';
 import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
+import { getAdsEndpoint, BASE_URL } from '../common/API';
+import { djangoConfig } from '../common/NetworkRequest';
+import axios from 'axios';
 
 let stopFetchMore = true;
 
@@ -63,11 +66,11 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @returns {Object[]} The filtered and transformed data.
    */
   const filterData = (data: any[]) => {
-    const filteredPosts = postData.map(post => ({
+    const filteredPosts = data.map(post => ({
       id: post.id,
       title: post.title,
-      image: post.image,
-      expiryDate: post.expiryDate,
+      image: 'http://10.0.2.2:8000' + post.image,
+      expiryDate: post.expiry,
       category: post.category,
     }));
     return filteredPosts;
@@ -87,12 +90,25 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     try {
       //const data = server(lastItemIndex);
       // Update lastItemIndex with the new value
+
+      // not sure the point of setPosts
       setPosts([]);
-      const filteredPosts = filterData(postData);
-      setLastItemIndex(lastItemIndex + filteredPosts.length);
+
+      // send API call to the backend
+      const response = await axios.get(getAdsEndpoint, djangoConfig());
+      // properly index data for filterData
+      const adData = response.data[0];
+      // unsure why we need this tbh.
+      const filteredPosts = filterData(adData);
+      // not sure the point of this
+      // setLastItemIndex(lastItemIndex + filteredPosts.length);
+
+      // I think this sets the post
       setPosts(prevPosts => [...prevPosts, ...filteredPosts]);
+      // no longer loading
       setIsLoading(false);
-      stopFetchMore = false;
+      // not sure what this does
+      stopFetchMore = true;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -108,6 +124,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const renderPostItem = useCallback(
     ({ item }: { item: PostProps }) => {
+      console.log(item);
       return (
         <View style={postListStyles.postContainer}>
           <Post

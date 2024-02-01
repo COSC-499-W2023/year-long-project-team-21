@@ -1,6 +1,5 @@
 import React from 'react';
 import { Dimensions, StyleProp, Text, View, ViewStyle } from 'react-native';
-import TabBar from '../components/TabBar';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { ViewPostProps } from '../common/Types';
 import Logo from '../components/Logo';
@@ -15,8 +14,14 @@ import {
 import { global } from '../common/global_styles';
 import generateViewPostStyles from '../styles/view_postStyles';
 import Button from '../components/Button';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import CreateAdIcon from '../components/CreateAdIcon';
+import MessageIcon from '../components/MessageIcon';
+import HomeIcon from '../components/HomeIcon';
+import AccountIcon from '../components/AccountIcon';
 
-const View_Post = ({navigation }: {navigation:any}) => {
+const View_Post = ({ navigation }: { navigation: any }) => {
   //const { postId } = route.params;
   const post_color = global.post_color.expiry_long;
   const styles = generateViewPostStyles(getCardColors(post_color));
@@ -88,8 +93,7 @@ const View_Post = ({navigation }: {navigation:any}) => {
 
   return (
     <View style={globalscreenstyles.container}>
-      <TabBar MiddleIcon={<Logo LogoSize={15}></Logo>}></TabBar>
-
+      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.body}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, Dimensions.get('window').width * 0.9)}
@@ -100,6 +104,10 @@ const View_Post = ({navigation }: {navigation:any}) => {
           {render_Card_Front(styles.card_front)}
         </View>
       </View>
+      <TabBarBottom
+        LeftIcon={<HomeIcon></HomeIcon>}
+        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
+        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
     </View>
   );
 };

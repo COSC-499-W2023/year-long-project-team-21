@@ -114,7 +114,8 @@ const Registration = ({ navigation }: { navigation: any }) => {
         const { data } = response;
 
         // Check response successful
-        if (response.status === 200 && data.token) {
+        if (response.status === 200) {
+          setApiRequestError(false);
           setUsername('');
           setEmail('');
           setPassword1('');
@@ -124,7 +125,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           //red text error produced by server
           setServerError(true);
         }
-      } catch (error) {
+      } catch (error: any) {
         //red text error produced by requesting error
         setApiRequestError(true);
         console.log(error);

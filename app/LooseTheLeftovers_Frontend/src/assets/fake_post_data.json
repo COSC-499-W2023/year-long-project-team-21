@@ -1,214 +1,243 @@
 [
-    {
-      "id": 1,
-      "title": "Classic Spaghetti Bolgnese",
-      "description": "Spaghetti pasta with a rich and flavorful Bolognese sauce.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-12-31"
-      
-,"category": "nut"},
-    {
-      "id": 2,
-      "title": "Grilled Salmon",
-      "description": "Fresh salmon fillet grilled to perfection, served with lemon and herbs.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-11-15"
-,"category": "gluten-free"},
-    {
-      "id": 3,
-      "title": "Vegetarian Stir-Fry",
-      "description": "Colorful mix of vegetables stir-fried in a savory sauce, served over rice.",
-      "image":"/banana.png", 
-      "expiryDate": "2025-01-10"
-,"category": "vegan"},
-    {
-      "id": 4,
-      "title": "Margherita Pizza",
-      "description": "Classic Margherita pizza with tomato sauce, mozzarella, and fresh basil.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-12-20"
-,"category": "nut, vegan"},
-    {
-      "id": 5,
-      "title": "Chicken Caesar Salad",
-      "description": "Crispy romaine lettuce, grilled chicken, croutons, and Caesar dressing.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-12-05"
-,"category": "gluten-free"},
-    {
-      "id": 6,
-      "title": "Taco Tuesday",
-      "description": "Assorted tacos with your choice of fillings, salsa, and guacamole.",
-      "image":"/banana.png", 
-      "expiryDate": "2025-02-01"
-,"category": "nut, vegan, gluten-free"},
-    {
-      "id": 7,
-      "title": "Homemade Lasagna",
-      "description": "Layers of pasta, rich meat sauce, creamy béchamel, and melted cheese.",
-      "image":"/banana.png", 
-      "expiryDate": "2025-02-15"
-,"category": "nut"},
-    {
-      "id": 8,
-      "title": "Fresh Fruit Smoothie",
-      "description": "Refreshing smoothie with a blend of fresh fruits and yogurt.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-11-30"
-,"category": "nut"},
-    {
-      "id": 9,
-      "title": "BBQ Pulled Pork Sandwich",
-      "description": "Slow-cooked pulled pork in BBQ sauce, served in a soft bun.",
-      "image":"/banana.png", 
-      "expiryDate": "2025-03-01"
-,"category": "nut"},
-    {
-      "id": 10,
-      "title": "Caprese Salad",
-      "description": "Tomatoes, mozzarella, and basil drizzled with balsamic glaze.",
-      "image":"/banana.png", 
-      "expiryDate": "2025-03-15"
-,"category": "nut"},
-    {
-      "id": 11,
-      "title": "Delicious Pizza",
-      "description": "A mouthwatering pizza with assorted toppings.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-06-30"
-,"category": "nut"},
-    {
-      "id": 12,
-      "title": "Fresh Salad",
-      "description": "Crunchy green salad with a zesty dressing.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-07-15"
-,"category": "nut"},
-    {
-      "id": 13,
-      "title": "Savory Sushi",
-      "description": "Assorted sushi rolls with soy sauce and wasabi.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-07-10"
-,"category": "nut"},
-    {
-      "id": 14,
-      "title": "Grilled Salmon",
-      "description": "Juicy grilled salmon fillet with lemon and herbs.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-07-05"
-,"category": "nut"},
-    {
-      "id": 15,
-      "title": "Chocolate Brownie",
-      "description": "Rich and gooey chocolate brownie for dessert.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-07-20"
-,"category": "nut"},
-    {
-      "id": 16,
-      "title": "Refreshing Smoothie",
-      "description": "A tropical fruit smoothie to beat the heat.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-01"
-,"category": "nut"},
-    {
-      "id": 17,
-      "title": "Homemade Tacos",
-      "description": "Tasty tacos with seasoned meat and fresh toppings.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-07-25"
-,"category": "nut"},
-    {
-      "id": 18,
-      "title": "Creamy Pasta",
-      "description": "Creamy Alfredo pasta with parmesan and black pepper.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-07-30"
-,"category": "nut"},
-    {
-      "id": 19,
-      "title": "Fruit Parfait",
-      "description": "Layered parfait with yogurt and assorted fresh fruits.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-05"
-,"category": "nut"},
-    {
-      "id": 20,
-      "title": "Vegetarian Stir-Fry",
-      "description": "Healthy and colorful vegetable stir-fry.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-10"
-,"category": "nut"},
-    {
-      "id": 21,
-      "title": "Classic Margherita Pizza",
-      "description": "Traditional Margherita pizza with tomato and mozzarella.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-15"
-,"category": "nut"},
-    {
-      "id": 22,
-      "title": "Grilled Chicken Salad",
-      "description": "Grilled chicken breast on a bed of fresh greens.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-20"
-,"category": "nut"},
-    {
-      "id": 23,
-      "title": "Teriyaki Chicken Bowl",
-      "description": "Teriyaki-glazed chicken served over rice with vegetables.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-25"
-,"category": "nut"},
-    {
-      "id": 24,
-      "title": "Mango Sorbet",
-      "description": "Chilled mango sorbet for a sweet treat.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-08-30"
-,"category": "nut"},
-    {
-      "id": 25,
-      "title": "Caprese Salad",
-      "description": "Caprese salad with fresh tomatoes, mozzarella, and basil.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-09-05"
-,"category": "nut"},
-    {
-      "id": 26,
-      "title": "Spaghetti Bolognese",
-      "description": "Classic spaghetti with hearty Bolognese sauce.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-09-10"
-,"category": "nut"},
-    {
-      "id": 27,
-      "title": "Blueberry Pancakes",
-      "description": "Fluffy blueberry pancakes for a delightful breakfast.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-09-15"
-,"category": "nut"},
-    {
-      "id": 28,
-      "title": "Vegetable Curry",
-      "description": "Spicy and aromatic vegetable curry with rice.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-09-20"
-,"category": "nut"},
-    {
-      "id": 29,
-      "title": "Crispy Fish Tacos",
-      "description": "Crispy fish tacos with slaw and chipotle mayo.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-09-25"
-,"category": "nut"},
-    {
-      "id": 30,
-      "title": "Peach Cobbler",
-      "description": "Warm and gooey peach cobbler for dessert.",
-      "image":"/banana.png", 
-      "expiryDate": "2024-09-30"
-,"category": "nut"}
-  ]
-  
+  {
+    "id": 1,
+    "title": "Classic Spaghetti Bolgnese",
+    "description": "Spaghetti pasta with a rich and flavorful Bolognese sauce.",
+    "image": "/banana.png",
+    "expiryDate": "2024-12-31",
+
+    "category": "nut"
+  },
+  {
+    "id": 2,
+    "title": "Grilled Salmon",
+    "description": "Fresh salmon fillet grilled to perfection, served with lemon and herbs.",
+    "image": "/banana.png",
+    "expiryDate": "2024-11-15",
+    "category": "gluten-free"
+  },
+  {
+    "id": 3,
+    "title": "Vegetarian Stir-Fry",
+    "description": "Colorful mix of vegetables stir-fried in a savory sauce, served over rice.",
+    "image": "/banana.png",
+    "expiryDate": "2025-01-10",
+    "category": "vegan"
+  },
+  {
+    "id": 4,
+    "title": "Margherita Pizza",
+    "description": "Classic Margherita pizza with tomato sauce, mozzarella, and fresh basil.",
+    "image": "/banana.png",
+    "expiryDate": "2024-12-20",
+    "category": "nut, vegan"
+  },
+  {
+    "id": 5,
+    "title": "Chicken Caesar Salad",
+    "description": "Crispy romaine lettuce, grilled chicken, croutons, and Caesar dressing.",
+    "image": "/banana.png",
+    "expiryDate": "2024-12-05",
+    "category": "gluten-free"
+  },
+  {
+    "id": 6,
+    "title": "Taco Tuesday",
+    "description": "Assorted tacos with your choice of fillings, salsa, and guacamole.",
+    "image": "/banana.png",
+    "expiryDate": "2025-02-01",
+    "category": "nut, vegan, gluten-free"
+  },
+  {
+    "id": 7,
+    "title": "Homemade Lasagna",
+    "description": "Layers of pasta, rich meat sauce, creamy béchamel, and melted cheese.",
+    "image": "/banana.png",
+    "expiryDate": "2025-02-15",
+    "category": "nut"
+  },
+  {
+    "id": 8,
+    "title": "Fresh Fruit Smoothie",
+    "description": "Refreshing smoothie with a blend of fresh fruits and yogurt.",
+    "image": "/banana.png",
+    "expiryDate": "2024-11-30",
+    "category": "nut"
+  },
+  {
+    "id": 9,
+    "title": "BBQ Pulled Pork Sandwich",
+    "description": "Slow-cooked pulled pork in BBQ sauce, served in a soft bun.",
+    "image": "/banana.png",
+    "expiryDate": "2025-03-01",
+    "category": "nut"
+  },
+  {
+    "id": 10,
+    "title": "Caprese Salad",
+    "description": "Tomatoes, mozzarella, and basil drizzled with balsamic glaze.",
+    "image": "/banana.png",
+    "expiryDate": "2025-03-15",
+    "category": "nut"
+  },
+  {
+    "id": 11,
+    "title": "Delicious Pizza",
+    "description": "A mouthwatering pizza with assorted toppings.",
+    "image": "/banana.png",
+    "expiryDate": "2024-06-30",
+    "category": "nut"
+  },
+  {
+    "id": 12,
+    "title": "Fresh Salad",
+    "description": "Crunchy green salad with a zesty dressing.",
+    "image": "/banana.png",
+    "expiryDate": "2024-07-15",
+    "category": "nut"
+  },
+  {
+    "id": 13,
+    "title": "Savory Sushi",
+    "description": "Assorted sushi rolls with soy sauce and wasabi.",
+    "image": "/banana.png",
+    "expiryDate": "2024-07-10",
+    "category": "nut"
+  },
+  {
+    "id": 14,
+    "title": "Grilled Salmon",
+    "description": "Juicy grilled salmon fillet with lemon and herbs.",
+    "image": "/banana.png",
+    "expiryDate": "2024-07-05",
+    "category": "nut"
+  },
+  {
+    "id": 15,
+    "title": "Chocolate Brownie",
+    "description": "Rich and gooey chocolate brownie for dessert.",
+    "image": "/banana.png",
+    "expiryDate": "2024-07-20",
+    "category": "nut"
+  },
+  {
+    "id": 16,
+    "title": "Refreshing Smoothie",
+    "description": "A tropical fruit smoothie to beat the heat.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-01",
+    "category": "nut"
+  },
+  {
+    "id": 17,
+    "title": "Homemade Tacos",
+    "description": "Tasty tacos with seasoned meat and fresh toppings.",
+    "image": "/banana.png",
+    "expiryDate": "2024-07-25",
+    "category": "nut"
+  },
+  {
+    "id": 18,
+    "title": "Creamy Pasta",
+    "description": "Creamy Alfredo pasta with parmesan and black pepper.",
+    "image": "/banana.png",
+    "expiryDate": "2024-07-30",
+    "category": "nut"
+  },
+  {
+    "id": 19,
+    "title": "Fruit Parfait",
+    "description": "Layered parfait with yogurt and assorted fresh fruits.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-05",
+    "category": "nut"
+  },
+  {
+    "id": 20,
+    "title": "Vegetarian Stir-Fry",
+    "description": "Healthy and colorful vegetable stir-fry.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-10",
+    "category": "nut"
+  },
+  {
+    "id": 21,
+    "title": "Classic Margherita Pizza",
+    "description": "Traditional Margherita pizza with tomato and mozzarella.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-15",
+    "category": "nut"
+  },
+  {
+    "id": 22,
+    "title": "Grilled Chicken Salad",
+    "description": "Grilled chicken breast on a bed of fresh greens.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-20",
+    "category": "nut"
+  },
+  {
+    "id": 23,
+    "title": "Teriyaki Chicken Bowl",
+    "description": "Teriyaki-glazed chicken served over rice with vegetables.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-25",
+    "category": "nut"
+  },
+  {
+    "id": 24,
+    "title": "Mango Sorbet",
+    "description": "Chilled mango sorbet for a sweet treat.",
+    "image": "/banana.png",
+    "expiryDate": "2024-08-30",
+    "category": "nut"
+  },
+  {
+    "id": 25,
+    "title": "Caprese Salad",
+    "description": "Caprese salad with fresh tomatoes, mozzarella, and basil.",
+    "image": "/banana.png",
+    "expiryDate": "2024-09-05",
+    "category": "nut"
+  },
+  {
+    "id": 26,
+    "title": "Spaghetti Bolognese",
+    "description": "Classic spaghetti with hearty Bolognese sauce.",
+    "image": "/banana.png",
+    "expiryDate": "2024-09-10",
+    "category": "nut"
+  },
+  {
+    "id": 27,
+    "title": "Blueberry Pancakes",
+    "description": "Fluffy blueberry pancakes for a delightful breakfast.",
+    "image": "/banana.png",
+    "expiryDate": "2024-09-15",
+    "category": "nut"
+  },
+  {
+    "id": 28,
+    "title": "Vegetable Curry",
+    "description": "Spicy and aromatic vegetable curry with rice.",
+    "image": "/banana.png",
+    "expiryDate": "2024-09-20",
+    "category": "nut"
+  },
+  {
+    "id": 29,
+    "title": "Crispy Fish Tacos",
+    "description": "Crispy fish tacos with slaw and chipotle mayo.",
+    "image": "/banana.png",
+    "expiryDate": "2024-09-25",
+    "category": "nut"
+  },
+  {
+    "id": 30,
+    "title": "Peach Cobbler",
+    "description": "Warm and gooey peach cobbler for dessert.",
+    "image": "/banana.png",
+    "expiryDate": "2024-09-30",
+    "category": "nut"
+  }
+]

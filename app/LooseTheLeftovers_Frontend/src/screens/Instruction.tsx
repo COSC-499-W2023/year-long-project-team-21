@@ -6,9 +6,12 @@ import Title from '../components/Title';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {
+  const handleButtonOnPress = () => {
+    console.log('hello world\n');
     navigation.navigate('Home');
   };
   // Creates an array of the instructions and images

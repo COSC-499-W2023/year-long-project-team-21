@@ -8,7 +8,6 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import MessageIcon from '../components/MessageIcon';
 import PostListRenderer from '../components/PostListRenderer';
-
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   // const checkLocationPermission = async () => {
@@ -20,11 +19,13 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
+
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+
       <View style={globalscreenstyles.body}>
-        <PostListRenderer isHeaderInNeed={true}  navigation={navigation}/>
+        <PostListRenderer isHeaderInNeed={true} navigation={navigation} />
       </View>
       <TabBarBottom
         LeftIcon={<HomeIcon></HomeIcon>}
