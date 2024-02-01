@@ -38,31 +38,31 @@
   {
     "id": 7,
     "name": "Rick",
-    "lastMessage": "Test",
+    "lastMessage": "Do you have green crystals instead of red?",
     "timestamp": "2024-01-14T13:31:00Z"
   },
   {
     "id": 8,
     "name": "Beth",
-    "lastMessage": "Another test",
+    "lastMessage": "Grab another bottle of wine",
     "timestamp": "2024-01-13T21:54:00Z"
   },
   {
     "id": 9,
     "name": "Cosmo Beth",
-    "lastMessage": "Test from the deep space",
+    "lastMessage": "I'll catch you up around Moon, that works?",
     "timestamp": "2024-01-12T14:24:00Z"
   },
   {
     "id": 10,
     "name": "Jerry Smith",
-    "lastMessage": "What is a test?",
+    "lastMessage": "m an expert in app naming!",
     "timestamp": "2024-01-11T14:30:00Z"
   },
   {
     "id": 11,
     "name": "Morty",
-    "lastMessage": "Let's meet on a Boob planet",
+    "lastMessage": "Mountain Dew instead of portal liquid? I'm in.",
     "timestamp": "2024-01-10T12:32:00Z"
   }
 ]
