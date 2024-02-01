@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
       backgroundColor: global.background,
     },
     tabcontainer: {
-      paddingTop: 15,
+      height: 75,
+      paddingTop: 0,
       paddingBottom: 15,
       borderTopColor: '#ccc',
       borderTopWidth: 1,

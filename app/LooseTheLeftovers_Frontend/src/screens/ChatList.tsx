@@ -42,7 +42,7 @@ const EmptyListMessage: React.FC = () => {
   );
 };
 
-const ChatList = () => {
+const ChatList = ({ navigation }: { navigation: any }) => {
   function handleLeftPress(): void {
     console.log('back pressed');
   }
@@ -63,7 +63,7 @@ const ChatList = () => {
 
       {/* FlatList */}
       <FlatList
-        data={noData}
+        data={chatData}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         style={styles.listcontainer}
@@ -76,14 +76,14 @@ const ChatList = () => {
             <Icon
               source={require('../assets/home-white.png')}
               size={40}
-              onPress={() => console.log('home pressed')}
+              onPress={() => navigation.navigate('Home')}
             />
           }
           RightIcon={
             <Icon
               source={require('../assets/profile-white.png')}
               size={40}
-              onPress={() => console.log('profile pressed')}
+              onPress={() => navigation.navigate('Profile')}
             />
           }
         />

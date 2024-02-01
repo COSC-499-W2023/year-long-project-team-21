@@ -58,11 +58,6 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Instruction"
-        component={Instruction}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="ChatList"
         component={ChatList}
         options={{ headerShown: false }}
