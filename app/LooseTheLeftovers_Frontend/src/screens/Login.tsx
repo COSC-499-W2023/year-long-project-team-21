@@ -27,7 +27,6 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
   const handleRegistrationNavigation = () => {
     navigation.navigate('Registration');
   };
@@ -36,8 +35,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        console.log('testing console');
-        navigation.navigate('Home');
+        navigation.goBack();
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,
@@ -76,7 +74,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
-
   return (
     <>
       <LinearGradient
@@ -91,12 +88,14 @@ const Login = ({ navigation }: { navigation: any }) => {
           placeholder="Username"
           onChangeText={input => handleUsername(input)}
           value={username}
+          width={280}
         />
         <InputField
           placeholder="Password"
           onChangeText={input => handlePassword(input)}
           value={password}
           secureTextEntry={true}
+          width={280}
         />
         {/* Conditionally render the error message */}
         {errorMessage !== '' && (

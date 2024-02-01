@@ -8,6 +8,7 @@ import CreateAd from '../screens/CreateAd';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
+import View_Post from '../screens/View_Post';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +16,18 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Registration"
-        component={Registration}
+        name="Instruction"
+        component={Instruction}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="View_Post"
+        component={View_Post}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={Home}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -31,23 +42,8 @@ const AppNavigator = () => {
       />
 
       <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Instruction"
-        component={Instruction}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

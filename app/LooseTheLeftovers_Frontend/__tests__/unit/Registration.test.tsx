@@ -26,10 +26,10 @@ describe('Registration Component', () => {
     );
 
     // Check if key input fileds are rendered
-    expect(getByPlaceholderText('+Email')).toBeTruthy();
-    expect(getByPlaceholderText('+Username')).toBeTruthy();
-    expect(getByPlaceholderText('+Password')).toBeTruthy();
-    expect(getByPlaceholderText('+Confirm Password')).toBeTruthy();
+    expect(getByPlaceholderText('Email')).toBeTruthy();
+    expect(getByPlaceholderText('Username')).toBeTruthy();
+    expect(getByPlaceholderText('Password')).toBeTruthy();
+    expect(getByPlaceholderText('Confirm Password')).toBeTruthy();
 
     // Check if Register button is rendered
     expect(getByTestId('register-button')).toBeTruthy();
@@ -41,19 +41,19 @@ describe('Registration Component', () => {
     );
 
     // Simulate input changes
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
-    fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'password123!');
+    fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'password123!');
     fireEvent.changeText(
-      getByPlaceholderText('+Confirm Password'),
+      getByPlaceholderText('Confirm Password'),
       'password123!',
     );
 
     // Check if input values are updated
-    expect(getByPlaceholderText('+Email').props.value).toBe('test@example.com');
-    expect(getByPlaceholderText('+Username').props.value).toBe('testuser');
-    expect(getByPlaceholderText('+Password').props.value).toBe('password123!');
-    expect(getByPlaceholderText('+Confirm Password').props.value).toBe(
+    expect(getByPlaceholderText('Email').props.value).toBe('test@example.com');
+    expect(getByPlaceholderText('Username').props.value).toBe('testuser');
+    expect(getByPlaceholderText('Password').props.value).toBe('password123!');
+    expect(getByPlaceholderText('Confirm Password').props.value).toBe(
       'password123!',
     );
   });
@@ -65,14 +65,14 @@ describe('Registration Component', () => {
     );
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
+    fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
     // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'Test444test!');
     // Simulate user input in the confirm password field
     fireEvent.changeText(
-      getByPlaceholderText('+Confirm Password'),
+      getByPlaceholderText('Confirm Password'),
       'Test444test!',
     );
 
@@ -83,7 +83,7 @@ describe('Registration Component', () => {
         token: 'FakeToken',
       },
     });
-
+    
     // Simulate button press
     fireEvent.press(getByTestId('register-button'));
 
@@ -99,7 +99,6 @@ describe('Registration Component', () => {
           verify_password: 'Test444test!',
         },
       );
-      //console.log("do we make it here\n");
       // Check if the expected success/failure message is displayed
       expect(navigation.navigate).toHaveBeenCalledWith('Login');
     });
@@ -114,14 +113,14 @@ describe('Registration Component', () => {
     );
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
+    fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
     // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'Test444test!');
     // Simulate user input in the password field
     fireEvent.changeText(
-      getByPlaceholderText('+Confirm Password'),
+      getByPlaceholderText('Confirm Password'),
       'Test444test!',
     );
     // Simulate button press
@@ -150,14 +149,14 @@ describe('Registration Component', () => {
     );
 
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Email'), 'test@example.com');
+    fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
     // Simulate user input in the password field
-    fireEvent.changeText(getByPlaceholderText('+Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
     // Simulate user input in the username field
-    fireEvent.changeText(getByPlaceholderText('+Password'), 'Test444test!');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'Test444test!');
     // Simulate user input in the password field
     fireEvent.changeText(
-      getByPlaceholderText('+Confirm Password'),
+      getByPlaceholderText('Confirm Password'),
       'Test444test!',
     );
 

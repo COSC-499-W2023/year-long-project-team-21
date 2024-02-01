@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import ImagePickerButton from '../src/components/ImagePicker';
+import ImagePickerButton from '../../src/components/ImagePicker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 // Mocking the launchImageLibrary function

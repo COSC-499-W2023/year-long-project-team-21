@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import MessageIcon from '../src/components/HomeIcon';
+import MessageIcon from '../../src/components/HomeIcon';
 
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
@@ -8,7 +8,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('HomeIcon Component', () => {
-  it('navigates to Home screen when clicked', () => {
+  it('navigates to Instruction screen when clicked', () => {
     // Mock the navigation object
     const mockNavigate = jest.fn();
     jest

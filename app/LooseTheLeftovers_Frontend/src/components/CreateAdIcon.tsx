@@ -31,11 +31,11 @@ const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'CreateAd'>>();
 
   //link to image
-  const image = '../assets/ad.png';
+  const image = '../assets/Ad.png';
 
   //navigates to instruction and sends parameters
   const goToHomeScreen = () => {
-    navigation.navigate('CreateAd', { name: 'CreateAdIcon' });
+    navigation.navigate('CreateAd', { name: 'CreateAd' });
   };
 
   //call this to display and icon image. No need to input anything to the component, will automatically

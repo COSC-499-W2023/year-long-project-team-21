@@ -5,10 +5,15 @@ import Title from '../components/Title';
 import Texts from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
-import { global } from '../common/global_styles';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import {
+  removeUserSession,
+  retrieveUserSession,
+} from '../common/EncryptedSession';
+import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {
+  const handleButtonOnPress = () => {
     navigation.navigate('Home');
   };
   // Creates an array of the instructions and images
@@ -34,12 +39,12 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     {
       id: 4,
       txt: 'Create your own food ads',
-      image: require('../assets/ad.png'),
+      image: require('../assets/Ad.png'),
       size: 40,
     },
     {
       id: 5,
-      txt: 'edit and delete ads with your account',
+      txt: 'Edit and delete posts with your account',
       image: require('../assets/account.png'),
       size: 40,
     },
@@ -65,6 +70,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
           titleSize={50}
           titleColor={global.secondary}
           title="Welcome!"
+          testID="instruction"
         />
       </View>
       <View style={style.instruction}>
@@ -83,6 +89,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
           onPress={handleButtonOnPress}
           title="Get Started"
           buttonSize={200}
+          testID="register-button"
         />
       </View>
     </View>

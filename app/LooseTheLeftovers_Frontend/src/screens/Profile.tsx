@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import UserInfo from '../components/UserInfo';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
@@ -13,11 +13,14 @@ import {
   retrieveUserSession,
 } from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
-import Button from '../components/Button';
-import profileStyles from '../styles/profileStyles';
+import PostListRenderer from '../components/PostListRenderer';
+import { adEndpoint, usersAds } from '../common/API';
 
 const Profile = ({ navigation }: { navigation: any }) => {
+  const [userID, setUserId] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+  const [data, setData] = useState('');
 
   const handleButtonOnPress = async () => {
     try {
@@ -46,23 +49,30 @@ const Profile = ({ navigation }: { navigation: any }) => {
 
       // Gets user id from session data
       const userId: string = userSesh['user_id'];
-      console.log(userId);
+      setUserId(userId);
 
-      const res: any = await newReq.get(`users/${userId}`);
-
-      // Retrieves user data using userid
-
-      const data = res.data;
-
-      setUserInfo({ username: data.username, email: data.email });
+      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
     }
   };
 
+  // function passed down as a prop to handle retrieivng ads for users
+  async function fetchAds() {
+    const req: SecureAPIReq = await SecureAPIReq.createInstance();
+    const endpoint: string = usersAds + userID + '/';
+    const payload: any = await req.get(endpoint);
+    return payload.data;
+  }
+
   useEffect(() => {
     fetchUserInfo();
   }, []);
+
+  if (isLoading) {
+    // @ todo find one that is not so intruisvie.
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <View style={globalscreenstyles.container}>
@@ -76,6 +86,15 @@ const Profile = ({ navigation }: { navigation: any }) => {
           <Button onPress={handleButtonOnPress} title="Logout"></Button>
         </View>
       </View>
+      <View style={globalscreenstyles.middle}>
+        <PostListRenderer
+          isHeaderInNeed={false}
+          endpoint={adEndpoint}
+          getData={fetchAds}
+          navigation={navigation}
+        />
+      </View>
+
       <TabBarBottom
         LeftIcon={<HomeIcon />}
         MiddleIcon={<CreateAdIcon />}

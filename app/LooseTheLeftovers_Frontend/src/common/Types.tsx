@@ -1,3 +1,4 @@
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { ReactNode } from 'react';
 import {
   ImageSourcePropType,
@@ -28,6 +29,8 @@ interface ButtonProps {
   buttonSize?: number;
   textSize?: number;
   testID?: string;
+  borderRadius?: number;
+  color?: string;
 }
 
 /**
@@ -278,6 +281,94 @@ interface ExpirySliderProps {
   testID?: string;
 }
 
+/**
+ * PostProps interface for Post component.
+ *
+ * @interface
+ * @property {id} - id for the ad
+ * @property {title} - title for the ad
+ * @property {image} - image for the ad
+ * @property {expiryDate} - expiry date for the ad
+ * @property {category} - category for the ad
+ */
+
+interface PostProps {
+  id: number;
+  endpoint: string;
+  title?: string;
+  image?: string; // Assuming image is a string representing the path or URL
+  expiryDate?: string;
+  category: string;
+  navigation?: any;
+  color: string;
+}
+
+/**
+ * Defines the parameter structure for the 'View_Post' screen.
+ *
+ * @typedef {Object} PostStackParamList
+ * @property {Object} View_Post - Parameters for the 'View_Post' screen.
+ * @property {number} View_Post.postId - The post identifier.
+ */
+type PostStackParamList = {
+  View_Post: { postId: number };
+};
+
+/**
+ * Type representing the route props for the 'View_Post' screen.
+ *
+ * @typedef {RouteProp<PostStackParamList, 'View_Post'>} ViewPostScreenRouteProp
+ */
+type ViewPostScreenRouteProp = RouteProp<PostStackParamList, 'View_Post'>;
+
+/**
+ * Type representing the navigation props for the 'View_Post' screen.
+ *
+ * @typedef {NavigationProp<PostStackParamList, 'View_Post'>} ViewPostScreenNavigationProp
+ */
+type ViewPostScreenNavigationProp = NavigationProp<
+  PostStackParamList,
+  'View_Post'
+>;
+
+/**
+ * Props type for the 'View_Post' screen.
+ *
+ * @typedef {Object} ViewPostProps
+ * @property {ViewPostScreenRouteProp} route - Route props for navigation.
+ * @property {ViewPostScreenNavigationProp} navigation - Navigation props for navigation.
+ */
+interface ViewPostProps {
+  route: ViewPostScreenRouteProp;
+  // navigation: ViewPostScreenNavigationProp;
+  navigation: any;
+}
+/**
+ * PostListRendererProps interface for PostListRenderer component.
+ *
+ * @interface
+ * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
+ */
+interface PostListRendererProps {
+  isHeaderInNeed: boolean;
+  endpoint: string;
+  getData: () => any;
+  location?: [];
+  locationPermission?: boolean | null;
+  navigation?: any;
+}
+
+/**
+ * PostProps interface for Post component.
+ *
+ * @interface
+ * @property {function} selectedRange - get range selected and send it back to the home
+ */
+
+interface SelectRangeBarProps {
+  onSelectRange: (selectedRange: string) => void;
+}
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -293,5 +384,9 @@ export {
   type AdDataProps,
   type ImagePickerButtonProps,
   type ExpirySliderProps,
+  type PostProps,
+  type PostListRendererProps,
+  type SelectRangeBarProps,
+  type ViewPostProps,
   type UserInfoProps,
 };

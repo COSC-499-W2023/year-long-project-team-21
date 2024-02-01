@@ -5,7 +5,7 @@ import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
 import { AdDataProps } from '../common/Types';
 import { SecureAPIReq } from '../common/NetworkRequest';
-import { createAd } from '../common/API';
+import { adEndpoint } from '../common/API';
 import { SelectList } from 'react-native-dropdown-select-list';
 
 import Header from '../components/UpperBar';
@@ -87,7 +87,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
       SecureAPIReq.createInstance()
         .then(async newReq => {
-          const res = await newReq.post(createAd, formData);
+          const res = await newReq.post(adEndpoint, formData);
           statusHandler(res.status);
         })
         .catch(e => {
@@ -158,7 +158,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   // Placeholder function for header onPress
   const handleBackPress = () => {
-    console.log('Back button pressed');
+    navigation.goBack();
   }; // Go back to previous screen
 
   return (

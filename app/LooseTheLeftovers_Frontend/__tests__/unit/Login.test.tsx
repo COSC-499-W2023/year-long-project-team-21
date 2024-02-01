@@ -87,6 +87,10 @@ describe('Login component', () => {
       data: { token: 'fake_token' },
     });
 
+    const navigation = {
+      goBack: jest.fn(),
+    };
+
     const { getByPlaceholderText, getByTestId } = render(
       <Login navigation={navigation} />,
     );
@@ -98,7 +102,7 @@ describe('Login component', () => {
 
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
-      expect(navigation.navigate).toHaveBeenCalledWith('Home');
+      expect(navigation.goBack).toHaveBeenCalled();
     });
   });
 
@@ -130,7 +134,6 @@ describe('Login component', () => {
         },
         { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
       );
-
       // Find the error message element
       const errorMessageElement = getByTestId('error-msg');
 
@@ -164,12 +167,11 @@ describe('Login component', () => {
       { timeout: 1000 },
     );
 
-    expect(errorMessageElement.props.children).toBe(
-      'Error: Failed to login or retrieve token',
-    );
-
-    // ... rest of your test
-  });
+      // Check if the expected success/failure message is displayed
+      expect(errorMessageElement.props.children).toBe(
+        'Error: Failed to login or retrieve token'
+      );
+    });
 
   it('stores JWT token on successful login', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
