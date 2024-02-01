@@ -8,7 +8,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('CreateAdIcon Component', () => {
-  it('navigates to Instruction screen when clicked', () => {
+  it('navigates to Createad screen when clicked', () => {
     // Mock the navigation object
     const mockNavigate = jest.fn();
     jest
@@ -26,7 +26,7 @@ describe('CreateAdIcon Component', () => {
     fireEvent.press(getByTestId('CreateAdIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Registration', {
+    expect(mockNavigate).toHaveBeenCalledWith('CreateAd', {
       name: 'CreateAdIcon',
     });
   });

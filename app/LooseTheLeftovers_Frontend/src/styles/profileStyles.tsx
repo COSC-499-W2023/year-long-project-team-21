@@ -24,6 +24,17 @@ const profileStyles = StyleSheet.create({
     fontSize: 25,
     color: global.secondary,
   },
+  button: {
+    flex: 0.2,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  userinfocontainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
 });
 
 export default profileStyles;

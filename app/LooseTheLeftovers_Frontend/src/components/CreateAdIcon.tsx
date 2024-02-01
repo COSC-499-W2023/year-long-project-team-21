@@ -21,7 +21,7 @@ import { type AllIconProps } from '../common/Types';
 
 //creates the parameters we're sending
 type RootStackParamList = {
-  Registration: { name: string };
+  CreateAd: { name: string };
 };
 
 //uses all icon prop for the interface
