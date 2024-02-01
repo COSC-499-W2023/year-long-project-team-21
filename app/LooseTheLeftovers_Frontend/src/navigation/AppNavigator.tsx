@@ -16,13 +16,18 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Instruction"
-        component={Instruction}
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="View_Post"
-        component={View_Post}
+        name="Registration"
+        component={Registration}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Instruction"
+        component={Instruction}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -30,6 +35,12 @@ const AppNavigator = () => {
         component={Home}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="View_Post"
+        component={View_Post}
+        options={{ headerShown: false }}
+      />
+
       <Stack.Screen
         name="CreateAd"
         component={CreateAd}
@@ -40,17 +51,6 @@ const AppNavigator = () => {
         component={DoneScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Registration"
-        component={Registration}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-
       <Stack.Screen
         name="Profile"
         component={Profile}
