@@ -25,7 +25,7 @@ type RootStackParamList = {
 };
 
 //uses all icon prop for the interface
-const HomeIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
+const HomeIcon: React.FC<AllIconProps> = ({ size = 25 }) => {
   //creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();

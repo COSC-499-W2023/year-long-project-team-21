@@ -8,10 +8,10 @@ const globalscreenstyles = StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: global.background,
   },
-  body: {
-    flex: 0.8,
-    // flexDirection: 'column',
-    // justifyContent: 'flex-start',
+  middle: {
+    flex: 0.85,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
 });
 

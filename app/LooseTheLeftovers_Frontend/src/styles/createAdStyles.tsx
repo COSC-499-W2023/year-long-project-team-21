@@ -14,23 +14,46 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   imagePickerContainer: {
-    alignSelf: 'flex-start', // Align ImagePicker to the left
-    paddingTop: 15, // Add padding between the ImagePicker and other elements
+    alignSelf: 'flex-start',
+    paddingTop: 15,
   },
   expirySliderContainer: {
-    paddingTop: 15, // Add padding between the ExpirySlider and other elements
+    paddingTop: 15,
   },
   buttonContainer: {
-    alignItems: 'center', // Center align the Done button
-    paddingVertical: 30, // Add padding above the Done button
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 30,
   },
   doneButton: {
-    width: '50%', // Make the Done button narrower
-    alignSelf: 'center', // Ensure the button is centered
+    width: '50%',
+    alignSelf: 'center',
   },
   leftAlignedText: {
     alignSelf: 'flex-start',
-    paddingTop: 15, // Add padding above the Done button
+    paddingTop: 15,
+  },
+  networkError: {
+    paddingTop: 20,
+  },
+  boxStyles: {
+    height: 50,
+    borderColor: global.primary,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  inputStyles: {
+    color: global.secondary, // Text color inside the box
+  },
+  dropdownStyles: {
+    borderColor: global.primary, // Border color for dropdown
+    borderWidth: 1, // Border width for dropdown
+    paddingVertical: 6,
+    marginBottom: 10,
+  },
+  dropdownTextStyles: {
+    color: global.secondary, // Text color for dropdown items
   },
 });
 

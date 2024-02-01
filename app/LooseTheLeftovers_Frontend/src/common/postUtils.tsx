@@ -10,6 +10,7 @@ import {
 import Icon from '../components/Icon';
 import React, { useState } from 'react';
 import { Card, Title } from 'react-native-paper';
+import { global } from '../common/global_styles';
 
 /**
  * Renders a hidden icon based on visibility and source.
@@ -67,6 +68,24 @@ export const render_Icons = (
 };
 
 /**
+ * Retrieves color settings for a card based on the specified expiry term.
+ * Each term corresponds to a different color, indicating the proximity of the expiry date.
+ *
+ * @param {string} [color] - The expiry term coming from the backend ('expiry_short', 'expiry_mid', 'expiry_long').
+ * @returns {Object} An object containing the color configuration for the card.
+ * @todo Review documentation and consider adding color configuration for two-week expiry
+ * @todo figure out the correct type for color.
+ */
+export const assignColor = (color: string) => {
+  const colorMapping : { [key: string]: string[] } = {
+    expiry_short: global.post_color.expiry_short,
+    expiry_mid: global.post_color.expiry_mid,
+    expiry_long: global.post_color.expiry_long,
+  };
+  return getCardColors(colorMapping[color]) ;
+};
+
+/**
  * Calculates different shades of a color for the post card.
  *
  * @function
@@ -74,14 +93,37 @@ export const render_Icons = (
  * @param {string} color - The base color.
  * @returns {Object} Object containing lightColor, originalColor, and middleColor.
  */
-export const getCardColors = (color: string[]) => {
+// export const getCardColors = (color: string[]|undefined) => {
+//   let swapBuffer = '';
+//   // Original Color
+//   let originalColor = color[0];
+//   // Darker Shade
+//   const middleColor = color[1];
+//   // Lighter Shade
+//   let lightColor = color[2];
+
+//   if (useColorScheme() === 'dark') {
+//     swapBuffer = originalColor;
+//     originalColor = lightColor;
+//     lightColor = swapBuffer;
+//   }
+
+//   return { lightColor, originalColor, middleColor };
+// };
+
+export const getCardColors = (color: string[]|undefined): {
+  lightColor: string;
+  originalColor: string;
+  middleColor: string;
+} | undefined => {
+  if (!color) {
+    return undefined;
+  }
+
   let swapBuffer = '';
-  // Original Color
-  let originalColor = color[0];
-  // Darker Shade
-  const middleColor = color[1];
-  // Lighter Shade
-  let lightColor = color[2];
+  let originalColor = (color as any)['expiry_short'][0];
+  const middleColor = (color as any)['expiry_short'][1];
+  let lightColor = (color as any)['expiry_short'][2];
 
   if (useColorScheme() === 'dark') {
     swapBuffer = originalColor;
@@ -105,6 +147,7 @@ export const renderPostImage = (
   size?: number,
 ) => {
   const imageSize = size ? { width: size, height: size } : {};
+  console.log(source);
   // @TODO fix the type-error for source
   return (
     <Image

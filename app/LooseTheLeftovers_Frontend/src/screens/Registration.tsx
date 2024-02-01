@@ -5,12 +5,13 @@ import { global } from '../common/global_styles';
 import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
-
+import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../components/Logo';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
+import Icon from '../components/Icon';
 
 /**
  * Registration page
@@ -134,12 +135,20 @@ const Registration = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-    <SafeAreaView style={styles.RegistrationContainer}>
+    <LinearGradient
+      style={styles.RegistrationContainer}
+      colors={['#251D3A', global.background]}
+      start={{ x: 1, y: 0 }}>
       <View style={styles.container}>
-        <Logo LogoSize={40} />
+        <View style={styles.logo}>
+          {/* <Logo size={200} /> */}
+          <Icon
+            source={require('../assets/logo-with-name.png')}
+            size={200}></Icon>
+        </View>
         <Title title="Register" titleSize={30} />
         <InputField
-          placeholder="+Email"
+          placeholder="Email"
           onChangeText={input => handleEmail(input)}
           value={email}
           width={280}
@@ -152,7 +161,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           </Text>
         )}
         <InputField
-          placeholder="+Username"
+          placeholder="Username"
           onChangeText={input => handleUsername(input)}
           value={username}
           width={280}
@@ -164,14 +173,14 @@ const Registration = ({ navigation }: { navigation: any }) => {
           </Text>
         )}
         <InputField
-          placeholder="+Password"
+          placeholder="Password"
           onChangeText={input => handlePassword1(input)}
           value={password1}
           secureTextEntry={true}
           width={280}
         />
         <InputField
-          placeholder="+Confirm Password"
+          placeholder="Confirm Password"
           onChangeText={input => handlePassword2(input)}
           value={password2}
           secureTextEntry={true}
@@ -214,20 +223,30 @@ const Registration = ({ navigation }: { navigation: any }) => {
             </Text>
           </Text>
         )}
-        <View style={styles.button}>
-          <Button
-            testID="register-button"
-            title="Register"
-            onPress={() => handleButtonOnPress()}
-          />
+        <View>
+          <View style={styles.button}>
+            <Button
+              testID="register-button"
+              title="Register"
+              onPress={() => handleButtonOnPress()}
+            />
+          </View>
+          <Text style={styles.login}>
+            <Texts
+              texts="     Already a member?"
+              textsSize={18}
+              onPress={() => handleLoginNavigation()}
+            />
+            <Texts
+              textsColor={global.secondary}
+              texts="  Sign in"
+              textsSize={18}
+              onPress={() => handleLoginNavigation()}
+            />
+          </Text>
         </View>
-        <Texts
-          texts="Sign In"
-          textsSize={18}
-          onPress={() => handleLoginNavigation()}
-        />
       </View>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 

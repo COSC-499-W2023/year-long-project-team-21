@@ -16,6 +16,7 @@ import {
   render_Card_Back,
   render_Card_Middle,
   render_Icons,
+  assignColor,
 } from '../common/postUtils';
 /**
  * Post Component
@@ -35,10 +36,12 @@ import {
  */
 const Post: React.FC<PostProps> = ({
   id,
+  endpoint,
   title,
   image,
   expiryDate,
   category,
+  color,
   navigation,
 }: PostProps): JSX.Element => {
   const screenWidth = Dimensions.get('window').width;
@@ -75,8 +78,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
-    console.log('tapped:', id);
-    navigation.navigate('View_Post', { postId: id });
+    navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 
   /**
@@ -138,29 +140,12 @@ const Post: React.FC<PostProps> = ({
     );
   };
 
-  /**
-   * Assigns a random color scheme for the post card.
-   *
-   * @function
-   * @private
-   * @returns {Object} Object containing lightColor, originalColor, and middleColor.
-   */
-  const assignRandomColor = () => {
-    const colors = [
-      global.post_color.expiry_mid,
-      global.post_color.expiry_long,
-      global.post_color.expiry_short,
-    ];
-    const randomInd = Math.floor(Math.random() * 3);
-    return getCardColors(colors[randomInd]);
-  };
-
-  const colors = assignRandomColor();
+  const assignedColor = assignColor(color);
   const cardStyles = generateHomeScreenCardStyles(
     0.4 * screenWidth, //height
     0.8 * screenWidth, //width
     screenWidth,
-    colors,
+    assignedColor,
     scaleValue,
   );
   return (

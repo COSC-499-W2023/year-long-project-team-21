@@ -163,13 +163,13 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert ad matching primary key is returned
-        self.assertEqual(response.data[0]['id'], 18)
+        self.assertEqual(response.data['id'], 18)
 
         # assert path to image is included
-        self.assertEqual(response.data[1]['image'], '/media/app/LooseTheLeftovers_Backend/media/images/12345.PNG')
+        self.assertEqual(response.data['image'], '/media/app/LooseTheLeftovers_Backend/media/images/12345.PNG')
 
         # assert expiry in correct format is included
-        self.assertEqual(response.data[2]['expiry'], '2 weeks')
+        self.assertEqual(response.data['expiry'], '2 weeks')
 
     def test_get_users_ads(self):
         """
@@ -197,13 +197,13 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert 3 ads returned 
-        self.assertEqual(len(response.data[0]), 3)
+        self.assertEqual(len(response.data), 3)
 
         # assert 3 images returned
-        self.assertEqual(len(response.data[1]), 3)
+        self.assertEqual(len(response.data), 3)
 
         # assert expiries included
-        self.assertEqual(len(response.data[2]), 3)
+        self.assertEqual(len(response.data), 3)
 
     def test_get_users_ads_no_authentication(self):
         """
@@ -242,14 +242,14 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # assert 5 ads returned 
-        self.assertEqual(len(response.data[0]), 5)
+        # assert 3 ads returned (max 3 per page)
+        self.assertEqual(len(response.data), 3)
 
-        # assert 5 images returned
-        self.assertEqual(len(response.data[1]), 5)
+        # assert 3 images returned (max 3 per page)
+        self.assertEqual(len(response.data), 3)
 
         # assert expiries included
-        self.assertEqual(len(response.data[2]), 5)
+        self.assertEqual(len(response.data), 3)
 
     def test_get_ad_that_does_not_exist(self):
         """
