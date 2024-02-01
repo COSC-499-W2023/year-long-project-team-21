@@ -6,7 +6,7 @@
             "user_id": 2,
             "title": "Bananas",
             "description": "There are 3 bananas",
-            "category": "Vegan",
+            "category": "vegan",
             "expiry": "2024-02-09T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z"
         }
@@ -46,7 +46,7 @@
             "user_id": 2,
             "title": "Pasta",
             "description": "Homemade pasta",
-            "category": "",
+            "category": "nut",
             "expiry": "2024-02-03T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z"
         }
@@ -66,7 +66,7 @@
             "user_id": 2,
             "title": "Sandwich",
             "description": "Sanwiches leftover from a party",
-            "category": "none",
+            "category": "None",
             "expiry": "2024-02-01T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z"
         }
@@ -86,7 +86,7 @@
             "user_id": 3,
             "title": "Beans",
             "description": "Bought canned beans but don't really like them.",
-            "category": "Vegetarian",
+            "category": "vegan",
             "created": "2024-01-30T12:30:00.000000Z"
         }
     },
@@ -105,7 +105,7 @@
             "user_id": 3,
             "title": "Canned Fruit",
             "description": "Free",
-            "category": "Vegan",
+            "category": "vegan",
             "created": "2024-01-30T12:30:00.000000Z"
         }
     },
@@ -123,7 +123,7 @@
         "fields": {
             "user_id": 3,
             "title": "Bread",
-            "category": "Vegan",
+            "category": "vegan, gluten-free",
             "description": "Bread baked today with cranberries",
             "created": "2024-01-30T12:30:00.000000Z",
             "expiry": "2024-02-15T12:34:56.000000Z"
@@ -184,7 +184,7 @@
             "user_id": 3,
             "title": "Chocolate Chip Cookies",
             "description": "Home backed. Gluten free",
-            "category": "Gluten-Free",
+            "category": "nut, vegan, gluten-free",
             "created": "2024-01-30T12:30:00.000000Z",
             "expiry": "2024-02-08T12:34:56.000000Z"
         }
