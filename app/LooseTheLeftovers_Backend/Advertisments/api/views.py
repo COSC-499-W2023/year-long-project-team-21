@@ -21,9 +21,6 @@ class AdvertismentHandler(APIView):
     ads from the database.
     """
 
-    user_max_pages = 3
-    all_ad_max_pages = 3
-
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests to create a new ad. Requires authentication so valid token must
