@@ -25,7 +25,7 @@ type RootStackParamList = {
 };
 
 //uses all icon prop for the interface
-const CreateAdIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
+const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
   //creates a navigation hook
   const navigation =
     useNavigation<

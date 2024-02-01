@@ -6,3 +6,6 @@ export const loginEndpoint: string = 'users/tokens/';
 
 // endpoint for refresh token 
 export const refEndpoint: string = 'users/tokens/refresh/';
+
+// endpoint for create ad
+export const createAd: string = 'ads/';

@@ -109,7 +109,18 @@ interface TextsProps {
   texts: string;
   textsSize?: number;
   textsColor?: string;
-  textsWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+  textsWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
   position?: string;
   onPress?: () => void;
   testID?: string;
@@ -205,12 +216,13 @@ interface UserInfoProps {
 
 /**
  * UpperBarProps (Header) interface for the UpperBar component.
- * 
+ *
  * @interface
  * @property {() => void} onLeftPress - Callback function to execute when the left icon is pressed.
  * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
  * @property {ImageSourcePropType} leftIconSource - The image source for the left icon.
  * @property {ImageSourcePropType} rightIconSource - The image source for the right icon.
+ * @property {string} title - The prop to pass title.
  */
 
 interface UpperBarProps {
@@ -223,24 +235,26 @@ interface UpperBarProps {
 
 /**
  * AdDataProps interface for the CreateAd screen.
- * 
+ *
  * @interface
  * @property {string} title - The title of the ad.
  * @property {string} description - The description of the ad.
- * @property {string | null} imageUri - The URI of the image associated with the ad. Can be null if no image is selected.
+ * @property {string} category - The category of the ad, will be added as a field later.
  * @property {number} expiry - The number of days until the ad expires.
+ * @property {string} imageUri - The URI of the image associated with the ad, optional.
  */
 
 interface AdDataProps {
   title: string;
   description: string;
-  imageUri: string | null;
+  category: string;
   expiry: number;
+  imageUri?: string;
 }
 
 /**
  * ImagePickerButtonProps interface for ImagePicker component.
- * 
+ *
  * @interface
  * @property {function} onImagePicked - A callback function that gets triggered when an image is selected.
  *                                      Receives the URI of the picked image as a string, or null if no image is selected.
@@ -253,7 +267,7 @@ interface ImagePickerButtonProps {
 
 /**
  * ExpirySliderProps interface for ExpirySlider component.
- * 
+ *
  * @interface
  * @property {function} onExpiryChange - A callback function that gets triggered when the slider value changes.
  *                                       Receives the new expiry value as a number representing the number of days until expiry.

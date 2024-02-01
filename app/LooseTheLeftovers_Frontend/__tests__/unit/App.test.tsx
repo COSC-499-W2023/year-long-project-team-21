@@ -13,6 +13,6 @@ jest.mock('@react-navigation/native', () => {
 describe('<App />', () => {
   it('renders without crashing', () => {
     const { getByTestId } = render(<App />);
-    expect(getByTestId('register-button')).toBeTruthy();
+    expect(getByTestId('instruction')).toBeTruthy();
   });
 });
