@@ -11,9 +11,9 @@ import MessageIcon from '../components/MessageIcon';
 import { retrieveUserSession } from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
 import PostListRenderer from '../components/PostListRenderer';
-import { adEndpoint, usersAds, users } from '../common/API';
+import { adEndpoint, usersAds } from '../common/API';
 
-const Profile = () => {
+const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
@@ -39,11 +39,10 @@ const Profile = () => {
     }
   };
 
-  // function passed down as a prop to handle retrieivng ads
+  // function passed down as a prop to handle retrieivng ads for users
   async function fetchAds() {
-    console.log('this is userId =', userID);
     const newReq: SecureAPIReq = await SecureAPIReq.createInstance();
-    const endpoint: string = usersAds + userID;
+    const endpoint: string = usersAds + userID + '/';
     const payload: any = await newReq.get(endpoint);
     return payload.data;
   }
@@ -70,7 +69,7 @@ const Profile = () => {
           isHeaderInNeed={false}
           endpoint={adEndpoint}
           getData={fetchAds}
-          userId={userID}
+          navigation={navigation}
         />
       </View>
 

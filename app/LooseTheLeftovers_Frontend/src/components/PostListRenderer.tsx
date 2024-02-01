@@ -6,7 +6,7 @@ import SelectRangeBar from './SelectRangeBar';
 import { Title } from 'react-native-paper';
 import generatePostListStyles from '../styles/postListStyles';
 import { PostListRendererProps } from '../common/Types';
-import { BASE_URL } from '../common/API';
+import { BASE_URL, adEndpoint } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
 

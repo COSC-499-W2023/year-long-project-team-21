@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import MessageIcon from '../src/components/CreateAdIcon';
+import MessageIcon from '../../src/components/AccountIcon';
 
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
   useNavigation: jest.fn(),
 }));
 
-describe('CreateAdIcon Component', () => {
+describe('AccountIcon Component', () => {
   it('navigates to Instruction screen when clicked', () => {
     // Mock the navigation object
     const mockNavigate = jest.fn();
@@ -19,15 +19,15 @@ describe('CreateAdIcon Component', () => {
 
     // Render the component
     const { getByTestId } = render(
-      <MessageIcon size={45} testID="CreateAdIconTest" />,
+      <MessageIcon size={45} testID="AccountIconTest" />,
     );
 
     // Simulate a click on the image
-    fireEvent.press(getByTestId('CreateAdIconTest'));
+    fireEvent.press(getByTestId('AccountIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Registration', {
-      name: 'CreateAdIcon',
+    expect(mockNavigate).toHaveBeenCalledWith('Profile', {
+      name: 'AccountIcon',
     });
   });
 });

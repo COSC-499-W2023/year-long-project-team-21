@@ -35,8 +35,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        console.log('testing console');
-        navigation.navigate('Home');
+        navigation.goBack();
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,

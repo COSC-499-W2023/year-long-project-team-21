@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import UpperBar from '../src/components/UpperBar';
+import UpperBar from '../../src/components/UpperBar';
 import { ImageSourcePropType } from 'react-native';
 
 describe('UpperBar component', () => {
-  const mockLeftIconSource: ImageSourcePropType = require('../src/assets/plus.png');
-  const mockRightIconSource: ImageSourcePropType = require('../src/assets/plus_white.png');
+  const mockLeftIconSource: ImageSourcePropType = require('../../src/assets/plus.png');
+  const mockRightIconSource: ImageSourcePropType = require('../../src/assets/plus_white.png');
 
   it('renders correctly with both icons and title', () => {
     const onLeftPressMock = jest.fn();
@@ -17,11 +17,12 @@ describe('UpperBar component', () => {
         onRightPress={onRightPressMock}
         leftIconSource={mockLeftIconSource}
         rightIconSource={mockRightIconSource}
+        title='test-title'
       />,
     );
 
     expect(getByTestId('upperbar-test')).toBeDefined();
-    expect(getByText('Create an Ad')).toBeDefined();
+    expect(getByText('test-title')).toBeDefined();
   });
 
   it('calls onLeftPress function when the left icon is pressed', () => {

@@ -17,7 +17,7 @@ import { type ExpirySliderProps } from '../common/Types';
  *   <ExpirySlider />
  * )
  */
-const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
+const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange, testID }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
   const handleValueChange = (value: number) => {
@@ -40,6 +40,7 @@ const ExpirySlider: React.FC<ExpirySliderProps> = ({ onExpiryChange }) => {
         minimumTrackTintColor={global.secondary}
         maximumTrackTintColor="#d3d3d3"
         thumbTintColor={global.primary}
+        testID={testID}
       />
       <View style={styles.sliderLabels}>
         <Text style={styles.sliderLabel}>1 day</Text>
