@@ -1,10 +1,9 @@
-# Team 21 - 01/15 to 01/21
+# Team 21 - 01/28 to 02/04
 
 ## Overview
 
-This week our team is focused on the features we want to complete for the first round of peer testing. This includes finishing off several pages on the front end: 
-the home screen, view ad page, and the user profile page. On the backend we are creating the views that will handle requests from the front end to 
-provide them with what they need from the backend. 
+Lots of work was done this week connecting all of our components together to form our actual app. It works pretty good, but we have a bug or two that we will post on our bug board (mostly considering Lazy Loading). This next week, we are going to change our prodecure to administer PR's into development/master before we begin any new feature. We will also be deciding on whether or not to divide our team between bug fixes and new features since there are so many of us. The next big features we need to work on are location, messages, and editing either account or a user's own ads. 
+
 
 ## Quick reminder for usernames
 
@@ -16,16 +15,19 @@ provide them with what they need from the backend.
 
 ## Completed tasks for this week
 
-- Refresh token authentication
-- Retrieve user profile from backend
-- Store ads with image in database
+- Get ads front end and back end completed
+- Get users/ads front end and back end completed
+- Authentication
+- Styling
+- Create ad
+- Front end messages. 
   
 ## Tasks in progress
 
-- View profile page
-- Home screen page
-- View ad page
-- Retrieve ad from backend
+- Pagination for the backend and front end (lazy loading)
+- Messages for the backend
+- Editing ads
+- bugs 
 
 ## Burn Up Chart
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/daf9300a-3d4e-4f03-b95b-dacfb2a70441)
