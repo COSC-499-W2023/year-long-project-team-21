@@ -1,6 +1,6 @@
 # Gerren Hunter Personal Weekly Log
 
-11/26 to 12/03
+12/28 -> 02/04
 
 Username: CookiedOutMonster
 
