@@ -27,10 +27,11 @@ Lots of work was done this week connecting all of our components together to for
 - Pagination for the backend and front end (lazy loading)
 - Messages for the backend
 - Editing ads
+- Location (backend) 
 - bugs 
 
 ## Burn Up Chart
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/daf9300a-3d4e-4f03-b95b-dacfb2a70441)
+![burnup](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/1b9cd84f-0415-4538-8edc-50aa10e4871b)
 
 
 ### Test Report
@@ -43,7 +44,8 @@ Lots of work was done this week connecting all of our components together to for
 
 
 ### Project Board
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/296392a8-78e0-47d6-8097-5cca51af57c7)
+
+![board](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/710aced5-f740-4266-b963-fa8a5caa52d7)
 
 
 ## Individual Reports
