@@ -4,8 +4,6 @@ import { global } from '../common/global_styles';
 import styles from '../styles/textStyles';
 import { type TextsProps } from '../common/Types';
 
-
-
 /**
  * Text component.
  *
@@ -30,7 +28,6 @@ const Texts: React.FC<TextsProps> = ({
   position,
   onPress,
   testID,
-  position
 }) => {
   // Default/Custom styles for Text component
   // If any custom values are passed as props, apply them, default otherwise
