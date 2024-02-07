@@ -77,6 +77,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
               source={require('../assets/home-white.png')}
               size={40}
               onPress={() => navigation.navigate('Home')}
+              testID='left-test'
             />
           }
           RightIcon={
@@ -84,6 +85,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
               source={require('../assets/profile-white.png')}
               size={40}
               onPress={() => navigation.navigate('Profile')}
+              testID='right-test'
             />
           }
         />
