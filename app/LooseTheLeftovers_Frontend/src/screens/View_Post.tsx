@@ -37,7 +37,7 @@ interface AdDataState {
   description: string;
   expiry: string;
   title: string;
-  image: ImageSourcePropType | null;
+  image: string;
   color: string;
 }
 
@@ -52,7 +52,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     description: '',
     expiry: '',
     title: '',
-    image: null,
+    image: require('../assets/logo.png'),
     color: '',
   });
   const [isLoading, setIsLoading] = useState(true);

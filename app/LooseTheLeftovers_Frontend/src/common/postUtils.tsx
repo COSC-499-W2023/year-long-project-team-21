@@ -82,7 +82,7 @@ export const assignColor = (color: string) => {
     expiry_mid: global.post_color.expiry_mid,
     expiry_long: global.post_color.expiry_long,
   };
-  return getCardColors(colorMapping[color]) ;
+  return color ? getCardColors(colorMapping[color]) : undefined;
 };
 
 /**
@@ -93,37 +93,14 @@ export const assignColor = (color: string) => {
  * @param {string} color - The base color.
  * @returns {Object} Object containing lightColor, originalColor, and middleColor.
  */
-// export const getCardColors = (color: string[]|undefined) => {
-//   let swapBuffer = '';
-//   // Original Color
-//   let originalColor = color[0];
-//   // Darker Shade
-//   const middleColor = color[1];
-//   // Lighter Shade
-//   let lightColor = color[2];
-
-//   if (useColorScheme() === 'dark') {
-//     swapBuffer = originalColor;
-//     originalColor = lightColor;
-//     lightColor = swapBuffer;
-//   }
-
-//   return { lightColor, originalColor, middleColor };
-// };
-
-export const getCardColors = (color: string[]|undefined): {
-  lightColor: string;
-  originalColor: string;
-  middleColor: string;
-} | undefined => {
-  if (!color) {
-    return undefined;
-  }
-
+export const getCardColors = (color: string[]) => {
   let swapBuffer = '';
-  let originalColor = (color as any)['expiry_short'][0];
-  const middleColor = (color as any)['expiry_short'][1];
-  let lightColor = (color as any)['expiry_short'][2];
+  // Original Color
+  let originalColor = color[0];
+  // Darker Shade
+  const middleColor = color[1];
+  // Lighter Shade
+  let lightColor = color[2];
 
   if (useColorScheme() === 'dark') {
     swapBuffer = originalColor;
@@ -134,6 +111,29 @@ export const getCardColors = (color: string[]|undefined): {
   return { lightColor, originalColor, middleColor };
 };
 
+// export const getCardColors = (color: string[]): {
+//   lightColor: string;
+//   originalColor: string;
+//   middleColor: string;
+// } | undefined => {
+//   if (!color) {
+//     return undefined;
+//   }
+
+//   let swapBuffer = '';
+//   let originalColor = (color as any)['expiry_short'][0];
+//   const middleColor = (color as any)['expiry_short'][1];
+//   let lightColor = (color as any)['expiry_short'][2];
+
+//   if (useColorScheme() === 'dark') {
+//     swapBuffer = originalColor;
+//     originalColor = lightColor;
+//     lightColor = swapBuffer;
+//   }
+
+//   return { lightColor, originalColor, middleColor };
+// };
+
 /**
  * Renders the main image for the post.
  *
@@ -143,7 +143,7 @@ export const getCardColors = (color: string[]|undefined): {
  */
 export const renderPostImage = (
   imageStyle: StyleProp<ImageStyle>,
-  source: ImageSourcePropType,
+  source: string,
   size?: number,
 ) => {
   const imageSize = size ? { width: size, height: size } : {};
@@ -151,7 +151,7 @@ export const renderPostImage = (
   // @TODO fix the type-error for source
   return (
     <Image
-      source={{ uri: source }}
+      source={{uri:source}}
       style={[imageStyle, imageSize]}
       resizeMode="contain" // You can adjust the resizeMode if needed
     />

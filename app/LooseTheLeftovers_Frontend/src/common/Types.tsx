@@ -296,8 +296,8 @@ interface ExpirySliderProps {
 interface PostProps {
   id: number;
   endpoint: string;
-  title?: string;
-  image?: string; // Assuming image is a string representing the path or URL
+  title: string;
+  image: string; // Assuming image is a string representing the path or URL
   expiryDate?: string;
   category: string;
   navigation?: any;

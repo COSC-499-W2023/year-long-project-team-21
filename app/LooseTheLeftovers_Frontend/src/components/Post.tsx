@@ -116,7 +116,7 @@ const Post: React.FC<PostProps> = ({
    * @private
    * @returns {JSX.Element} The rendered front card component.
    */
-  const render_Card_Front = (image: ImageSourcePropType) => {
+  const render_Card_Front = (image: string) => {
     return (
       <Card style={cardStyles.card_front}>
         <Card.Content>
