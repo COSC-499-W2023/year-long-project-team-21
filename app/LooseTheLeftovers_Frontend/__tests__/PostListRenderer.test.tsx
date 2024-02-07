@@ -11,7 +11,9 @@ import PostListRenderer from '../src/components/PostListRenderer';
 
 describe('PostListRenderer Component', () => {
   it('renders correctly', async () => {
-    const { getByTestId, getByText } = render(<PostListRenderer isHeaderInNeed={true} locationPermission={true} navigation={{}} />);
+    const { getByTestId, getByText } = render(<PostListRenderer isHeaderInNeed={true} locationPermission={true} navigation={{}} endpoint={''} getData={function () {
+      throw new Error('Function not implemented.');
+    } } />);
 
     // Wait for the component to render
     await waitFor(() => expect(getByTestId('header title')).toBeTruthy());

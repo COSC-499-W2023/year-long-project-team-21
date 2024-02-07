@@ -6,12 +6,9 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   View,
-  ImageSourcePropType,
 } from 'react-native';
 import generateHomeScreenCardStyles from '../styles/postStyles';
-import { global } from '../common/global_styles';
 import {
-  getCardColors,
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
@@ -138,6 +135,7 @@ const Post: React.FC<PostProps> = ({
       </Card>
     );
   };
+
 
   const assignedColor = assignColor(color);
   const cardStyles = generateHomeScreenCardStyles(

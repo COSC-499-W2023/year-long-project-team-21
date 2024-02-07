@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Texts from '../components/Text';
-import { SafeAreaView, Text, View } from 'react-native';
+import {Text} from 'react-native';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
 import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../components/Logo';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
 import Button from '../components/Button';

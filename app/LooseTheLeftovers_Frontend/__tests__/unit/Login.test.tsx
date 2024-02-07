@@ -88,6 +88,7 @@ describe('Login component', () => {
     });
 
     const navigation = {
+      navigate: jest.fn(),
       goBack: jest.fn(),
     };
 
@@ -102,7 +103,7 @@ describe('Login component', () => {
 
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
-      expect(navigation.goBack).toHaveBeenCalled();
+      expect(navigation.navigate).toHaveBeenCalled();
     });
   });
 
