@@ -13,7 +13,7 @@ describe('Post Component', () => {
   };
 
   it('renders without crashing', () => {
-    const { getByText, getByTestId } = render(<Post {...mockPost} />);
+    const { getByText, getByTestId } = render(<Post endpoint={''} color={''} {...mockPost} />);
     
     // Check if the title is rendered
     const titleElement = getByText(mockPost.title);

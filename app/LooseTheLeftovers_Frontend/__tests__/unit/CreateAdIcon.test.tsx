@@ -26,12 +26,9 @@ describe('CreateAdIcon Component', () => {
     fireEvent.press(getByTestId('CreateAdIconTest'));
 
     // Check if navigate was called with the correct parameters
-<<<<<<< HEAD:app/LooseTheLeftovers_Frontend/__tests__/CreateAdIcon.test.tsx
-    expect(mockNavigate).toHaveBeenCalledWith('Instruction', {
-=======
+
     expect(mockNavigate).toHaveBeenCalledWith('CreateAd', {
->>>>>>> d219b2d383011d5225867faf2f9dd67ebaf99da2:app/LooseTheLeftovers_Frontend/__tests__/unit/CreateAdIcon.test.tsx
-      name: 'CreateAdIcon',
+      name: 'CreateAd',
     });
   });
 });

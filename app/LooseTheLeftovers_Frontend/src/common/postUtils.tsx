@@ -82,7 +82,7 @@ export const assignColor = (color: string) => {
     expiry_mid: global.post_color.expiry_mid,
     expiry_long: global.post_color.expiry_long,
   };
-  return color ? getCardColors(colorMapping[color]) : undefined;
+  return getCardColors(colorMapping[color])
 };
 
 /**

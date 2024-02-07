@@ -47,6 +47,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const post_color = global.post_color.expiry_long;
   console.log(post_color);
   const styles = generateViewPostStyles(getCardColors(post_color));
+  //put default image instead of image type at this point. Confusing and giving error. itll be overwritten anyway. 
   const [adData, setAdData] = useState<AdDataState>({
     category: '',
     description: '',
