@@ -6,7 +6,6 @@ import {
   View,
   ViewStyle,
   ActivityIndicator,
-  ImageSourcePropType,
 } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { ViewPostProps } from '../common/Types';
@@ -18,6 +17,7 @@ import {
   render_Card_Middle,
   getCardColors,
   render_Icons,
+  assignColor,
 } from '../common/postUtils';
 import { global } from '../common/global_styles';
 import generateViewPostStyles from '../styles/view_postStyles';
@@ -44,19 +44,18 @@ interface AdDataState {
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
-  const post_color = global.post_color.expiry_long;
-  console.log(post_color);
-  const styles = generateViewPostStyles(getCardColors(post_color));
-  //put default image instead of image type at this point. Confusing and giving error. itll be overwritten anyway. 
+  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway. 
   const [adData, setAdData] = useState<AdDataState>({
     category: '',
     description: '',
     expiry: '',
     title: '',
     image: require('../assets/logo.png'),
-    color: '',
+    color: 'expiry_long',
   });
   const [isLoading, setIsLoading] = useState(true);
+  const card_color_dict = assignColor(adData.color);
+  const styles = generateViewPostStyles(card_color_dict);
 
   const fetchBackend = async () => {
     try {
@@ -114,8 +113,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
                 console.log('hi');
               }}
               borderRadius={0.05 * Dimensions.get('window').width}
-              color={post_color[1]}
-              borderColor={post_color[1]}
+              color={card_color_dict.middleColor}
+              borderColor={card_color_dict.middleColor}
               textColor={global.secondary}
             />
           </View>
