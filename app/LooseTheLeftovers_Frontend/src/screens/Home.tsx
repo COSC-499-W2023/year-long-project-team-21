@@ -30,8 +30,9 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState('');
 
-  async function fetchAds() {
-    const payload = await axios.get(adEndpoint, djangoConfig());
+  async function fetchAds(pageNumber:number) {
+    const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;
+    const payload = await axios.get(adEndpointWithPage, djangoConfig());
     return payload.data;
   }
 

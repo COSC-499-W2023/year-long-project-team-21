@@ -353,7 +353,7 @@ interface ViewPostProps {
 interface PostListRendererProps {
   isHeaderInNeed: boolean;
   endpoint: string;
-  getData: () => any;
+  getData: (pagenumber: number) => any;
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
