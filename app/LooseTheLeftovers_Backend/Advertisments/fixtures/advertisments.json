@@ -1,0 +1,200 @@
+[
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 1,
+        "fields": {
+            "user_id": 2,
+            "title": "Bananas",
+            "description": "There are 3 bananas",
+            "category": "vegan",
+            "expiry": "2024-02-09T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 1,
+        "fields": {
+            "ad_id": 1,
+            "image": "images/Bananas.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 2,
+        "fields": {
+            "user_id": 2,
+            "title": "Fried Rice",
+            "description": "Leftover rice from restaurant",
+            "category": "None",
+            "expiry": "2024-02-05T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 2,
+        "fields": {
+            "ad_id": 2,
+            "image": "images/Fried-Rice.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 3,
+        "fields": {
+            "user_id": 2,
+            "title": "Pasta",
+            "description": "Homemade pasta",
+            "category": "nut",
+            "expiry": "2024-02-03T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 3,
+        "fields": {
+            "ad_id": 3,
+            "image": "images/Pasta.PNG"
+        }
+    }
+    ,{
+        "model": "Advertisments.Advertisment",
+        "pk": 4,
+        "fields": {
+            "user_id": 2,
+            "title": "Sandwich",
+            "description": "Sanwiches leftover from a party",
+            "category": "None",
+            "expiry": "2024-02-01T12:34:56.000000Z",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 4,
+        "fields": {
+            "ad_id": 4,
+            "image": "images/Sandwich.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 5,
+        "fields": {
+            "user_id": 3,
+            "title": "Beans",
+            "description": "Bought canned beans but don't really like them.",
+            "category": "vegan",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 5,
+        "fields": {
+            "ad_id": 5,
+            "image": "images/Beans.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 6,
+        "fields": {
+            "user_id": 3,
+            "title": "Canned Fruit",
+            "description": "Free",
+            "category": "vegan",
+            "created": "2024-01-30T12:30:00.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 6,
+        "fields": {
+            "ad_id": 6,
+            "image": "images/Canned-Fruit.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 7,
+        "fields": {
+            "user_id": 3,
+            "title": "Bread",
+            "category": "vegan, gluten-free",
+            "description": "Bread baked today with cranberries",
+            "created": "2024-01-30T12:30:00.000000Z",
+            "expiry": "2024-02-15T12:34:56.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 7,
+        "fields": {
+            "ad_id": 7,
+            "image": "images/Bread.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 8,
+        "fields": {
+            "user_id": 3,
+            "title": "Candy",
+            "category": "None",
+            "description": "Leftover from halloween. Please take my children have had enough",
+            "created": "2024-01-30T12:30:00.000000Z",
+            "expiry": "2024-01-07T12:34:56.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 8,
+        "fields": {
+            "ad_id": 8,
+            "image": "images/Candy.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 9,
+        "fields": {
+            "user_id": 3,
+            "title": "Homemade Casserole",
+            "description": "Lots leftover from family dinner",
+            "category": "None",
+            "created": "2024-01-30T12:30:00.000000Z",
+            "expiry": "2024-02-02T12:34:56.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 9,
+        "fields": {
+            "ad_id": 9,
+            "image": "images/Casserole.PNG"
+        }
+    },
+    {
+        "model": "Advertisments.Advertisment",
+        "pk": 10,
+        "fields": {
+            "user_id": 3,
+            "title": "Chocolate Chip Cookies",
+            "description": "Home backed. Gluten free",
+            "category": "nut, vegan, gluten-free",
+            "created": "2024-01-30T12:30:00.000000Z",
+            "expiry": "2024-02-08T12:34:56.000000Z"
+        }
+    },
+    {
+        "model": "Advertisments.AdvertismentImage",
+        "pk": 10,
+        "fields": {
+            "ad_id": 10,
+            "image": "images/Cookies.PNG"
+        }
+    }
+]

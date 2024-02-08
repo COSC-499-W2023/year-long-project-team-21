@@ -17,6 +17,7 @@ import { type ImageTextProps } from '../common/Types';
  * @param {StyleProp<ImageStyle>} [props.imageStyle] - Optional custom style for the Image element.
  * @param {string} props.text - Text to be displayed as the Text.
  * @param {number} props.textSize - Text size.
+ * @param {string} props.textColor
  * @example
  *
  */
@@ -29,9 +30,9 @@ const ImageText: React.FC<ImageTextProps> = ({
 }) => {
   return (
     <View style={style.textimage}>
-      <View style={style.text}>
+      <Text style={style.text}>
         <Text>{text}</Text>
-      </View>
+      </Text>
       <View style={style.textimage}>
         <Image
           source={source}

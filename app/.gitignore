@@ -1,0 +1,8 @@
+# Ignore Python compiled files
+*.pyc
+
+# Ignore the 'node_modules' directory
+node_modules/
+
+# Ignore package-lock.json
+package-lock.json

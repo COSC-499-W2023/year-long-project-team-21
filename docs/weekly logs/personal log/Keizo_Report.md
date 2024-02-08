@@ -1,26 +1,22 @@
 # Keizo Kato Personal Weekly Log
 
-11/13 to 11/26
+11/27 to 12/03
 
 Username: Keizo410
 
 ## My Features For This Week
 
-- Adjusting Registration/Login screen with global variable.
-- Research&Implementing Location Service for prompting the location service permission and other logics.
-- Implementing Create ads sequence.
+- Recoding Location service
 
 ## Completed Features For This Week
 
-- Debuging Registration/Login screen for global variable.
-- Implementing the Location Service. (first version, as component)
-- Implementing the Location Service. (second version, as class)
-- Writing & setting up the test for geo-location-permission for react native. 
+- Finishing location service class implementation. 
 
 ## Features in progress
 
--  Implementing create ads sequence or helping it. 
+-  Restructuring registration component. 
 
 ## Types of Tasks Worked On
 
-![スクリーンショット 2023-11-26 202254](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/fa9e046e-673c-459a-bbea-034e2452a701)
+![スクリーンショット 2023-12-03 192620](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/629bd055-edd1-4e35-a317-9cd203f79eb0)
+

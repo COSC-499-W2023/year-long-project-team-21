@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import axios from 'axios';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
 import { AdDataProps } from '../common/Types';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import { adEndpoint } from '../common/API';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 import Header from '../components/UpperBar';
 import Texts from '../components/Text';
@@ -13,95 +14,139 @@ import ImagePickerButton from '../components/ImagePicker';
 import InputField from '../components/InputField';
 import ExpirySlider from '../components/ExpirySlider';
 import Button from '../components/Button';
+import Icon from '../components/Icon';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
+  const [networkError, setNetworkError] = useState('');
+  const [fieldError, setFieldError] = useState({
+    titleError: '',
+    categoryError: '',
+    imageError: '',
+  });
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
-    imageUri: null,
+    category: '',
     expiry: 1,
+    imageUri: '',
   });
 
-  // Update the title in ad data
-  const handleSetTitle = (newTitle: string) =>
-    setAdData(prevAdData => ({ ...prevAdData, title: newTitle }));
-  // Update the description in ad data
-  const handleSetDescription = (newDescription: string) =>
-    setAdData(prevAdData => ({ ...prevAdData, description: newDescription }));
-  // Update the image URI in ad data
-  const handleSetImageUri = (newImageUri: string | null) =>
-    setAdData(prevAdData => ({ ...prevAdData, imageUri: newImageUri }));
-  // Update the expiry date in ad data
-  const handleSetExpiry = (newExpiry: number) =>
-    setAdData(prevAdData => ({ ...prevAdData, expiry: newExpiry }));
+  const categories = [
+    { key: 'none', value: 'None' },
+    { key: 'vegan', value: 'Vegan' },
+    { key: 'gluten free', value: 'gluten-free' },
+    { key: 'peanut free', value: 'peanut free' },
+  ];
+
+  const handleFieldChange = (
+    field: keyof AdDataProps,
+    value: string | number | null,
+  ) => {
+    setAdData(prevAdData => ({
+      ...prevAdData,
+      [field]: field === 'imageUri' && value === null ? '' : value, // Handle imageUri null case
+    }));
+
+    // Reset error for the field edited
+    setFieldError(prevErrors => ({
+      ...prevErrors,
+      [`${field}Error`]: '',
+    }));
+  };
+
+  const validateInputs = () => {
+    let isValid = true;
+    const errors = {
+      titleError: '',
+      categoryError: '',
+      imageError: '',
+    };
+
+    if (adData.title === '') {
+      errors.titleError = 'Please provide a title for your ad.';
+      isValid = false;
+    }
+    if (adData.category === '') {
+      errors.categoryError = 'Please select a category for your ad.';
+      isValid = false;
+    }
+    if (adData.imageUri === '') {
+      errors.imageError = 'Please add an image for your ad.';
+      isValid = false;
+    }
+
+    setFieldError(errors);
+    return isValid;
+  };
 
   // Handle Submit press
   const handleSubmit = async () => {
-    const jwtToken = true;
-    // await retrieveJWTToken(); // Get JWT from encrypted storage
-    if (!jwtToken) {
-      console.error('No token found');
-      return;
-    }
+    if (validateInputs()) {
+      const formData = createFormData(adData);
+      setNetworkError('');
 
-    const url = 'create_ad_url';
-    const adDataToSubmit = composeAdData(adData);
-
-    const result = true;
-    // await sendPostRequest(url, adDataToSubmit, jwtToken);
-    // if (result.success) {
-    if (result) {
-      // Cache to DB
-      // Navigate to Home screen
-    } else {
-      // Handle error
+      SecureAPIReq.createInstance()
+        .then(async newReq => {
+          const res = await newReq.post(adEndpoint, formData);
+          statusHandler(res.status);
+        })
+        .catch(e => {
+          if (e.response?.status) {
+            // If a status code is available
+            statusHandler(e.response?.status);
+          } else {
+            // General error
+            setNetworkError(e.message || 'An unexpected error occurred.');
+          }
+        });
     }
   };
 
-  const sendPostRequest = async (
-    url: string,
-    data: {
-      title: string;
-      description: string;
-      category: string;
-      expiry_datetime: string;
-      image: string | null;
-    },
-    token: string,
-  ) => {
-    try {
-      const response = await axios.post(url, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+  const statusHandler = (status: number) => {
+    switch (status) {
+      case 201:
+        navigation.navigate('Done'); // Navigate to profile or success page
+        break;
+      case 401:
+        setNetworkError('Unauthorized, force user to login.');
+        break;
+      case 400:
+        setNetworkError('Bad request - Check the submitted data.');
+        break;
+      default:
+        setNetworkError(`Network error: ${status}`);
+        break;
+    }
+  };
+
+  const createFormData = (adData: AdDataProps) => {
+    const formData = new FormData();
+
+    // Text fields
+    formData.append('title', adData.title);
+    formData.append('description', adData.description);
+    formData.append('category', adData.category);
+    formData.append('expiry', adData.expiry);
+
+    // Adding image if it exists
+    if (adData.imageUri) {
+      const filename = adData.imageUri.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename ?? '');
+      const type = match ? `image/${match[1]}` : `image`;
+
+      formData.append('image', {
+        uri: adData.imageUri,
+        name: filename ?? 'upload.jpg',
+        type,
       });
-
-      if (response.status === 201) {
-        console.log('Success:', response.data);
-        return { success: true, data: response.data };
-      } else {
-        console.error('Request completed, but failed:', response);
-        return { success: false, error: response };
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-      return { success: false, error };
     }
+
+    return formData;
   };
 
-  const retrieveJWTToken = async () => {
-    try {
-      const jwtToken = await EncryptedStorage.getItem('user_token');
-      if (!jwtToken) {
-        console.error('No JWT token found');
-        return null;
-      }
-      return jwtToken;
-    } catch (error) {
-      console.error('Error retrieving JWT token:', error);
-      return null;
-    }
+  const handleExpiryChange = (expiryValue: number) => {
+    const expiryDate = convertExpiryToDatetime(expiryValue);
+    handleFieldChange('expiry', expiryDate);
   };
 
   // Convert Slider Value into future expiry date
@@ -111,25 +156,9 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
-  // Compose JSON
-  const composeAdData = (adData: {
-    title: string;
-    description: string;
-    expiry: number;
-    imageUri: string | null;
-  }) => {
-    return {
-      title: adData.title,
-      description: adData.description,
-      category: 'Food',
-      expiry_datetime: convertExpiryToDatetime(adData.expiry),
-      image: adData.imageUri, // Implement encoding later
-    };
-  };
-
   // Placeholder function for header onPress
   const handleBackPress = () => {
-    console.log('Back button pressed');
+    navigation.goBack();
   }; // Go back to previous screen
 
   return (
@@ -137,71 +166,140 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <Header
         onLeftPress={handleBackPress}
-        leftIconSource={require('../assets/plus.png')}
+        leftIconSource={require('../assets/plus_white.png')}
+        title="Create Post"
       />
-      <ScrollView contentContainerStyle={styles.formContainer}>
-        {/* Title */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Food Name"
-            textsSize={22}
-            textsColor={global.primary}
-            textsWeight="bold"
+      <ScrollView>
+        <View style={styles.formContainer}>
+          {/* Title */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Food Name"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <InputField
+            placeholder="Title"
+            onChangeText={newTitle => handleFieldChange('title', newTitle)}
+            value={adData.title}
+            width="100%"
           />
-        </View>
-        <InputField
-          placeholder="Title"
-          onChangeText={newTitle => handleSetTitle(newTitle)}
-          value={adData.title}
-          width="100%"
-        />
+          {fieldError.titleError !== '' && (
+            <Texts
+              texts={fieldError.titleError} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
+          )}
 
-        {/* Description */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Description (optional)"
-            textsSize={22}
-            textsColor={global.primary}
-            textsWeight="bold"
+          {/* Description */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Description (optional)"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <InputField
+            placeholder="Description"
+            onChangeText={newDescription =>
+              handleFieldChange('description', newDescription)
+            }
+            value={adData.description}
+            multiline={true}
+            width="100%"
           />
-        </View>
-        <InputField
-          placeholder="Description"
-          onChangeText={newDescription => handleSetDescription(newDescription)}
-          value={adData.description}
-          multiline={true}
-          width="100%"
-        />
 
-        {/* ImagePicker */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Pick an image of the food"
-            textsSize={22}
-            textsColor={global.primary}
-            textsWeight="bold"
+          {/* Category */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Category"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <SelectList
+            setSelected={(newCategory: string) =>
+              handleFieldChange('category', newCategory)
+            }
+            data={categories}
+            save="value"
+            search={false}
+            placeholder="Select category"
+            boxStyles={styles.boxStyles}
+            inputStyles={styles.inputStyles}
+            dropdownStyles={styles.dropdownStyles}
+            dropdownTextStyles={styles.dropdownTextStyles}
+            arrowicon={
+              <Icon source={require('../assets/drop_3.png')} size={13} />
+            }
           />
-        </View>
-        <View style={styles.imagePickerContainer}>
-          <ImagePickerButton onImagePicked={handleSetImageUri} />
-        </View>
+          {fieldError.categoryError !== '' && (
+            <Texts
+              texts={fieldError.categoryError} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
+          )}
 
-        {/* Slider */}
-        <View style={styles.leftAlignedText}>
-          <Texts
-            texts="Set an expiry range"
-            textsSize={22}
-            textsColor={global.primary}
-            textsWeight="bold"
-          />
-        </View>
-        <View style={styles.expirySliderContainer}>
-          <ExpirySlider onExpiryChange={handleSetExpiry} />
-        </View>
+          {/* ImagePicker */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Pick an image of the food"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <View style={styles.imagePickerContainer}>
+            <ImagePickerButton
+              onImagePicked={newImageUri =>
+                handleFieldChange('imageUri', newImageUri)
+              }
+            />
+          </View>
+          {fieldError.imageError !== '' && (
+            <Texts
+              texts={fieldError.imageError} // Pass error message
+              textsSize={14}
+              textsColor="red"
+              testID="error-msg"
+            />
+          )}
 
-        {/* Submit Button */}
-        <View style={styles.buttonContainer}>
-          <Button title="Submit" onPress={handleSubmit} />
+          {/* Slider */}
+          <View style={styles.leftAlignedText}>
+            <Texts
+              texts="Set an expiry range"
+              textsSize={22}
+              textsColor={global.secondary}
+              textsWeight="bold"
+            />
+          </View>
+          <View style={styles.expirySliderContainer}>
+            <ExpirySlider onExpiryChange={handleExpiryChange} />
+          </View>
+
+          {/* Submit Button */}
+          <View style={styles.buttonContainer}>
+            {networkError !== '' && (
+              <View style={styles.networkError}>
+                <Texts
+                  texts={networkError} // Pass error message
+                  textsSize={14}
+                  textsColor="red"
+                  testID="error-msg"
+                />
+              </View>
+            )}
+            <Button title="Submit" onPress={handleSubmit} />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

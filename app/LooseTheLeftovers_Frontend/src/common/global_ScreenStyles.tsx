@@ -5,13 +5,14 @@ const globalscreenstyles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: global.background,
   },
-  body: {
+  middle: {
+    flex: 0.85,
     flexDirection: 'column',
-    justifyContent: 'center',
-    flex: 8,
+    justifyContent: 'flex-start',
+    //backgroundColor: 'red'
   },
 });
 

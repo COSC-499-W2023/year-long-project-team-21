@@ -1,3 +1,4 @@
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { ReactNode } from 'react';
 import {
   ImageSourcePropType,
@@ -28,6 +29,9 @@ interface ButtonProps {
   buttonSize?: number;
   textSize?: number;
   testID?: string;
+  borderRadius?: number;
+  color?: string;
+  backgroundcolor?: string;
 }
 
 /**
@@ -109,7 +113,18 @@ interface TextsProps {
   texts: string;
   textsSize?: number;
   textsColor?: string;
-  textsWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+  textsWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
   position?: string;
   onPress?: () => void;
   testID?: string;
@@ -189,15 +204,29 @@ interface ImageTextProps {
   text: string;
   textSize?: number;
 }
+// interface UserInfoProps {
+//  userInfoKeys: (keyof UserInfoData)[];
+// }
+
+// interface UserInfoData {
+//   username: string;
+//   email: string;
+// }
+
+interface UserInfoProps {
+  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfoKeys: string[];
+}
 
 /**
  * UpperBarProps (Header) interface for the UpperBar component.
- * 
+ *
  * @interface
  * @property {() => void} onLeftPress - Callback function to execute when the left icon is pressed.
  * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
  * @property {ImageSourcePropType} leftIconSource - The image source for the left icon.
  * @property {ImageSourcePropType} rightIconSource - The image source for the right icon.
+ * @property {string} title - The prop to pass title.
  */
 
 interface UpperBarProps {
@@ -205,28 +234,31 @@ interface UpperBarProps {
   onRightPress?: () => void;
   leftIconSource?: ImageSourcePropType;
   rightIconSource?: ImageSourcePropType;
+  title?: string;
 }
 
 /**
  * AdDataProps interface for the CreateAd screen.
- * 
+ *
  * @interface
  * @property {string} title - The title of the ad.
  * @property {string} description - The description of the ad.
- * @property {string | null} imageUri - The URI of the image associated with the ad. Can be null if no image is selected.
+ * @property {string} category - The category of the ad, will be added as a field later.
  * @property {number} expiry - The number of days until the ad expires.
+ * @property {string} imageUri - The URI of the image associated with the ad, optional.
  */
 
 interface AdDataProps {
   title: string;
   description: string;
-  imageUri: string | null;
+  category: string;
   expiry: number;
+  imageUri?: string;
 }
 
 /**
  * ImagePickerButtonProps interface for ImagePicker component.
- * 
+ *
  * @interface
  * @property {function} onImagePicked - A callback function that gets triggered when an image is selected.
  *                                      Receives the URI of the picked image as a string, or null if no image is selected.
@@ -234,11 +266,12 @@ interface AdDataProps {
 
 interface ImagePickerButtonProps {
   onImagePicked: (imageUri: string | null) => void;
+  testID?: string;
 }
 
 /**
  * ExpirySliderProps interface for ExpirySlider component.
- * 
+ *
  * @interface
  * @property {function} onExpiryChange - A callback function that gets triggered when the slider value changes.
  *                                       Receives the new expiry value as a number representing the number of days until expiry.
@@ -246,6 +279,95 @@ interface ImagePickerButtonProps {
 
 interface ExpirySliderProps {
   onExpiryChange: (expiry: number) => void;
+  testID?: string;
+}
+
+/**
+ * PostProps interface for Post component.
+ *
+ * @interface
+ * @property {id} - id for the ad
+ * @property {title} - title for the ad
+ * @property {image} - image for the ad
+ * @property {expiryDate} - expiry date for the ad
+ * @property {category} - category for the ad
+ */
+
+interface PostProps {
+  id: number;
+  endpoint: string;
+  title: string;
+  image: string; // Assuming image is a string representing the path or URL
+  expiryDate?: string;
+  category: string;
+  navigation?: any;
+  color: string;
+}
+
+/**
+ * Defines the parameter structure for the 'View_Post' screen.
+ *
+ * @typedef {Object} PostStackParamList
+ * @property {Object} View_Post - Parameters for the 'View_Post' screen.
+ * @property {number} View_Post.postId - The post identifier.
+ */
+type PostStackParamList = {
+  View_Post: { postId: number };
+};
+
+/**
+ * Type representing the route props for the 'View_Post' screen.
+ *
+ * @typedef {RouteProp<PostStackParamList, 'View_Post'>} ViewPostScreenRouteProp
+ */
+type ViewPostScreenRouteProp = RouteProp<PostStackParamList, 'View_Post'>;
+
+/**
+ * Type representing the navigation props for the 'View_Post' screen.
+ *
+ * @typedef {NavigationProp<PostStackParamList, 'View_Post'>} ViewPostScreenNavigationProp
+ */
+type ViewPostScreenNavigationProp = NavigationProp<
+  PostStackParamList,
+  'View_Post'
+>;
+
+/**
+ * Props type for the 'View_Post' screen.
+ *
+ * @typedef {Object} ViewPostProps
+ * @property {ViewPostScreenRouteProp} route - Route props for navigation.
+ * @property {ViewPostScreenNavigationProp} navigation - Navigation props for navigation.
+ */
+interface ViewPostProps {
+  route: ViewPostScreenRouteProp;
+  // navigation: ViewPostScreenNavigationProp;
+  navigation: any;
+}
+/**
+ * PostListRendererProps interface for PostListRenderer component.
+ *
+ * @interface
+ * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
+ */
+interface PostListRendererProps {
+  isHeaderInNeed: boolean;
+  endpoint: string;
+  getData: () => any;
+  location?: [];
+  locationPermission?: boolean | null;
+  navigation?: any;
+}
+
+/**
+ * PostProps interface for Post component.
+ *
+ * @interface
+ * @property {function} selectedRange - get range selected and send it back to the home
+ */
+
+interface SelectRangeBarProps {
+  onSelectRange: (selectedRange: string) => void;
 }
 
 export {
@@ -263,4 +385,9 @@ export {
   type AdDataProps,
   type ImagePickerButtonProps,
   type ExpirySliderProps,
+  type PostProps,
+  type PostListRendererProps,
+  type SelectRangeBarProps,
+  type ViewPostProps,
+  type UserInfoProps,
 };

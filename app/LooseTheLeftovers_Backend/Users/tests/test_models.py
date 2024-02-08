@@ -2,6 +2,7 @@ from .test_setup import TestSetUpCreateAccount
 from Users.models import CustomUser
 from rest_framework.authtoken.models import Token
 
+
 class TestModels(TestSetUpCreateAccount):
     def test_token_creation(self):
         """

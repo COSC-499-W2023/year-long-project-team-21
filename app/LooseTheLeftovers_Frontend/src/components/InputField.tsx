@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import styles from '../styles/inputFieldStyles';
 import { global } from '../common/global_styles';
 import { type InputFieldProps } from '../common/Types';
+import style from '../styles/instructionStyles';
 
 /**
  * InputField component.
@@ -65,15 +66,15 @@ const InputField: React.FC<InputFieldProps> = ({
         secureTextEntry={isSecure} // Determine if the text should be obscured
         placeholderTextColor={global.secondary}
         multiline={multiline}
-        numberOfLines={multiline ? 3 : 1} // Default is one-line
-        textAlignVertical={multiline ? 'top' : 'center'} // Align text to the top for multiline
+        numberOfLines={multiline ? 1 : 1} // Default is one-line
       />
+
       {secureTextEntry && ( // Render if secureTextEntry is true
         <TouchableOpacity onPress={toggleSecureEntry} style={styles.icon}>
           <MaterialCommunityIcons
             name={isSecure ? 'eye-outline' : 'eye-off-outline'}
-            size={24}
-            color="grey"
+            size={30}
+            color="white"
           />
         </TouchableOpacity>
       )}

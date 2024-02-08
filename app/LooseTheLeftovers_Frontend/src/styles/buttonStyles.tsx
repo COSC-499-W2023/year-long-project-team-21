@@ -5,15 +5,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    borderWidth: 2,
+    //borderWidth: 2,
     margin: 10,
-    borderRadius: 8,
-    height: 50,
+    borderRadius: 40,
+    height: 65,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  space: {
-    height: 10,
+    elevation: 3
   },
 });
 
