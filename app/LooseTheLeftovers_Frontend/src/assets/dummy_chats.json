@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name": "Mike Brown",
+    "lastMessage": "How many brown are there?",
+    "timestamp": "2024-01-14T10:30:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Emma Leagues",
+    "lastMessage": "I'll meet you at 48°52.6'S 123°23.6'W",
+    "timestamp": "2024-01-13T15:45:00Z"
+  },
+  {
+    "id": 3,
+    "name": "John McCann",
+    "lastMessage": "Does 16:42 sound good to you?",
+    "timestamp": "2024-01-12T16:42:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Jared Smith",
+    "lastMessage": "Does 16:43 sound not bad to you?",
+    "timestamp": "2024-01-11T16:43:00Z"
+  },
+  {
+    "id": 5,
+    "name": "Becca Alexander",
+    "lastMessage": "you're not getting it I'm not actually selling grapes",
+    "timestamp": "2024-01-10T13:20:00Z"
+  },
+  {
+    "id": 6,
+    "name": "David Harris",
+    "lastMessage": "The milk expires in three days",
+    "timestamp": "2024-01-09T17:21:00Z"
+  },
+  {
+    "id": 7,
+    "name": "Rick",
+    "lastMessage": "Do you have green crystals instead of red?",
+    "timestamp": "2024-01-14T13:31:00Z"
+  },
+  {
+    "id": 8,
+    "name": "Beth",
+    "lastMessage": "Grab another bottle of wine",
+    "timestamp": "2024-01-13T21:54:00Z"
+  },
+  {
+    "id": 9,
+    "name": "Cosmo Beth",
+    "lastMessage": "I'll catch you up around Moon, that works?",
+    "timestamp": "2024-01-12T14:24:00Z"
+  },
+  {
+    "id": 10,
+    "name": "Jerry Smith",
+    "lastMessage": "m an expert in app naming!",
+    "timestamp": "2024-01-11T14:30:00Z"
+  },
+  {
+    "id": 11,
+    "name": "Morty",
+    "lastMessage": "Mountain Dew instead of portal liquid? I'm in.",
+    "timestamp": "2024-01-10T12:32:00Z"
+  }
+]
