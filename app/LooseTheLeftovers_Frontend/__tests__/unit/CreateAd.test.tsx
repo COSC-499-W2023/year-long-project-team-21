@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import CreateAd from '../../src/screens/CreateAd';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 jest.mock('axios');
 jest.mock('react-native', () => {
@@ -11,11 +11,12 @@ jest.mock('react-native', () => {
 });
 jest.mock('react-native-image-picker', () => ({
     launchImageLibrary: jest.fn(),
+    launchCamera: jest.fn(),
 }));
 
 describe('CreateAd Screen', () => {
     beforeEach(() => {
-        jest.clearAllMocks(); // Clear all mocks including axios
+        jest.clearAllMocks(); // Clear all mocks
       });
 
     it('renders the CreateAd screen correctly', () => {
@@ -53,30 +54,50 @@ describe('CreateAd Screen - InputFields', () => {
     });
 });
 
-describe('CreateAd Screen - ImagePickerButton', () => {
+describe('CreateAd Screen - ImagePicker', () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    const handleSetImageUri = jest.fn();
+    const imageUri = '../src/assets/home.png';
   
-    it('calls onImagePicked with image URI when an image is picked', async () => {
-      const imageUri = '../src/assets/home.png';
+    it('calls onImagePicked with image URI with "Open Gallery"', async () => {
       require('react-native-image-picker').launchImageLibrary.mockResolvedValueOnce({
         assets: [{ uri: imageUri }],
     });
   
       const { getByTestId } = render(<CreateAd navigation={undefined} />);
-      const imagePickerButton = getByTestId('image-picker');
+      const galleryButton = getByTestId('gallery-test');
   
       await act(async () => {
-        fireEvent.press(imagePickerButton);
+        fireEvent.press(galleryButton);
       });
   
       expect(launchImageLibrary).toHaveBeenCalled();
 
-      // Verify if the mock function is called with the correct URI
+      // Verify the mock function is called with the correct URI
       expect(launchImageLibrary).toHaveBeenCalledWith({
+        mediaType: 'photo',
+        quality: 1,
+      });
+    });
+
+    it('calls onImagePicked with image URI with "Open Camera"', async () => {
+      require('react-native-image-picker').launchCamera.mockResolvedValueOnce({
+        assets: [{ uri: imageUri }],
+    });
+  
+      const { getByTestId } = render(<CreateAd navigation={undefined} />);
+      const cameraButton = getByTestId('camera-test');
+  
+      await act(async () => {
+        fireEvent.press(cameraButton);
+      });
+  
+      expect(launchCamera).toHaveBeenCalled();
+
+      // Verify the mock function is called with the correct URI
+      expect(launchCamera).toHaveBeenCalledWith({
         mediaType: 'photo',
         quality: 1,
       });
