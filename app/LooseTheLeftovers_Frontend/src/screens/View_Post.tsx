@@ -15,7 +15,6 @@ import {
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
-  getCardColors,
   render_Icons,
   assignColor,
 } from '../common/postUtils';
@@ -44,7 +43,7 @@ interface AdDataState {
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
-  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway. 
+  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
   const [adData, setAdData] = useState<AdDataState>({
     category: '',
     description: '',
@@ -56,6 +55,29 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [isLoading, setIsLoading] = useState(true);
   const card_color_dict = assignColor(adData.color);
   const styles = generateViewPostStyles(card_color_dict);
+  const [showNutIcon, setShowNutAllergyIcon] = useState(false);
+  const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
+  const [showVeganIcon, setShowVeganIcon] = useState(false);
+
+  // Move checkDietaryOption to useEffect to avoid re-renders
+  useEffect(() => {
+    checkDietaryOption(adData.category);
+  }, [adData.category]);
+
+  /**
+   * Checks and sets dietary options based on the post category.
+   *
+   * @function
+   * @private
+   * @param {string} category - The category of the post.
+   * @returns {void}
+   */
+  const checkDietaryOption = (category: string) => {
+    const dietaryOptions = category.split(',').map(option => option.trim());
+    setShowNutAllergyIcon(dietaryOptions.includes('peanut-free'));
+    setShowGlutenFreeIcon(dietaryOptions.includes('gluten-free'));
+    setShowVeganIcon(dietaryOptions.includes('vegan'));
+  };
 
   const fetchBackend = async () => {
     try {
@@ -93,6 +115,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @returns {JSX.Element} The rendered front card component.
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
+    console.log(adData.category);
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
@@ -102,9 +125,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
-            true,
-            true,
-            true,
+            showNutIcon,
+            showVeganIcon,
+            showGlutenFreeIcon,
           )}
           <View style={styles.message_button}>
             <Button

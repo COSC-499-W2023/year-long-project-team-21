@@ -62,7 +62,7 @@ const Post: React.FC<PostProps> = ({
    */
   const checkDietaryOption = (category: string) => {
     const dietaryOptions = category.split(',').map(option => option.trim());
-    setShowNutAllergyIcon(dietaryOptions.includes('nut'));
+    setShowNutAllergyIcon(dietaryOptions.includes('peanut-free'));
     setShowGlutenFreeIcon(dietaryOptions.includes('gluten-free'));
     setShowVeganIcon(dietaryOptions.includes('vegan'));
   };
@@ -135,7 +135,6 @@ const Post: React.FC<PostProps> = ({
       </Card>
     );
   };
-
 
   const assignedColor = assignColor(color);
   const cardStyles = generateHomeScreenCardStyles(

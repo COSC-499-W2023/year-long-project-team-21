@@ -9,7 +9,7 @@ describe('Post Component', () => {
     description: 'this is sample description',
     image: '/sample-image.jpg',
     expiryDate: '2024-12-31',
-    category: 'nut',
+    category: 'peanut-free',
     endpoint: 'mock_endpoint',
   };
 

@@ -32,10 +32,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   });
 
   const categories = [
-    { key: 'none', value: 'None' },
-    { key: 'vegan', value: 'Vegan' },
+    { key: 'none', value: 'none' },
+    { key: 'vegan', value: 'vegan' },
     { key: 'gluten free', value: 'gluten-free' },
-    { key: 'peanut free', value: 'peanut free' },
+    { key: 'peanut free', value: 'peanut-free' },
   ];
 
   const handleFieldChange = (

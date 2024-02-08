@@ -77,12 +77,12 @@ export const render_Icons = (
  * @todo figure out the correct type for color.
  */
 export const assignColor = (color: string) => {
-  const colorMapping : { [key: string]: string[] } = {
+  const colorMapping: { [key: string]: string[] } = {
     expiry_short: global.post_color.expiry_short,
     expiry_mid: global.post_color.expiry_mid,
     expiry_long: global.post_color.expiry_long,
   };
-  return getCardColors(colorMapping[color])
+  return getCardColors(colorMapping[color]);
 };
 
 /**
@@ -111,29 +111,6 @@ export const getCardColors = (color: string[]) => {
   return { lightColor, originalColor, middleColor };
 };
 
-// export const getCardColors = (color: string[]): {
-//   lightColor: string;
-//   originalColor: string;
-//   middleColor: string;
-// } | undefined => {
-//   if (!color) {
-//     return undefined;
-//   }
-
-//   let swapBuffer = '';
-//   let originalColor = (color as any)['expiry_short'][0];
-//   const middleColor = (color as any)['expiry_short'][1];
-//   let lightColor = (color as any)['expiry_short'][2];
-
-//   if (useColorScheme() === 'dark') {
-//     swapBuffer = originalColor;
-//     originalColor = lightColor;
-//     lightColor = swapBuffer;
-//   }
-
-//   return { lightColor, originalColor, middleColor };
-// };
-
 /**
  * Renders the main image for the post.
  *
@@ -151,7 +128,7 @@ export const renderPostImage = (
   // @TODO fix the type-error for source
   return (
     <Image
-      source={{uri:source}}
+      source={{ uri: source }}
       style={[imageStyle, imageSize]}
       resizeMode="contain" // You can adjust the resizeMode if needed
     />
