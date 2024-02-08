@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "Messages",
     "Users",
     "Ratings",
+    'django_crontab',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,6 +47,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+]
+
+CRONJOBS = [
+    ('0 6 * * *', 'Advertisments.cron.delete_expired_ads')
 ]
 
 REST_FRAMEWORK = {
