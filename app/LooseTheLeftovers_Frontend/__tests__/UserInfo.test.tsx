@@ -65,5 +65,3 @@ describe('UserInfo Component', () => {
     });
   });
 });
-
-/

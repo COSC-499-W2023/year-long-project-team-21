@@ -15,6 +15,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Instruction"
+        component={Instruction}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="CreateAd"
         component={CreateAd}
         options={{ headerShown: false }}
@@ -42,11 +47,6 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Instruction"
-        component={Instruction}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
