@@ -153,7 +153,7 @@ export const renderPostImage = (
     <Image
       source={{uri:source}}
       style={[imageStyle, imageSize]}
-      resizeMode="contain" // You can adjust the resizeMode if needed
+      resizeMode="cover" // You can adjust the resizeMode if needed
     />
   );
 };
