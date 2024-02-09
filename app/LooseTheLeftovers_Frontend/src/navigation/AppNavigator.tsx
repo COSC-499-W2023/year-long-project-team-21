@@ -8,6 +8,7 @@ import CreateAd from '../screens/CreateAd';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
+import ChatList from '../screens/ChatList';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Profile"
         component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChatList"
+        component={ChatList}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

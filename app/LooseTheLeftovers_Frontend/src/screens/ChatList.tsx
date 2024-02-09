@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, FlatList, Text, ListRenderItem, TouchableOpacity } from 'react-native';
+import {
+  View,
+  FlatList,
+  Text,
+  ListRenderItem,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
 
@@ -9,7 +15,7 @@ import Icon from '../components/Icon';
 
 import chatData from '../assets/dummy_chats.json';
 import noData from '../assets/empty_chats.json';
-// Page sends an error, if FlatList gets no data
+// Page sends an error if FlatList gets no data
 
 type ChatType = {
   id: number;
@@ -47,7 +53,7 @@ const EmptyListMessage: React.FC = () => {
 
 const ChatList = ({ navigation }: { navigation: any }) => {
   function handleLeftPress(): void {
-    console.log('back pressed');
+    navigation.goBack();
   }
 
   const renderItem: ListRenderItem<ChatType> = ({ item }) => (
@@ -60,7 +66,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <Header
         onLeftPress={handleLeftPress}
-        leftIconSource={require('../assets/back_arrow_white.png')}
+        leftIconSource={require('../assets/back_arrow.png')}
         title="Messages"
       />
 
@@ -77,18 +83,18 @@ const ChatList = ({ navigation }: { navigation: any }) => {
         <TabBar
           LeftIcon={
             <Icon
-              source={require('../assets/home-white.png')}
-              size={40}
+              source={require('../assets/home.png')}
+              size={30}
               onPress={() => navigation.navigate('Home')}
-              testID='left-test'
+              testID="left-test"
             />
           }
           RightIcon={
             <Icon
-              source={require('../assets/profile-white.png')}
+              source={require('../assets/profile.png')}
               size={40}
               onPress={() => navigation.navigate('Profile')}
-              testID='right-test'
+              testID="right-test"
             />
           }
         />
