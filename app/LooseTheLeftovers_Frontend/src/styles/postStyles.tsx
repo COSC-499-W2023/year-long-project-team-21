@@ -4,7 +4,7 @@ const generateHomeScreenCardStyles = (
   card_height: number,
   card_width: number,
   screenWidth: number,
-  colors: { lightColor: string ; middleColor: string; originalColor: string } ,
+  colors: { lightColor: string; middleColor: string; originalColor: string },
   scaleValue: Animated.Value,
 ) =>
   StyleSheet.create({
@@ -40,6 +40,9 @@ const generateHomeScreenCardStyles = (
       height: card_height,
       width: card_width,
       borderRadius: 0.06 * screenWidth,
+      //borderBottomLeftRadius: 0.06 * screenWidth,
+      borderWidth: 2,
+      borderColor: colors.middleColor,
       backgroundColor: colors.originalColor,
       zIndex: -1,
       flexDirection: 'column',

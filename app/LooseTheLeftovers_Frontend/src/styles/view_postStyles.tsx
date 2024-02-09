@@ -38,6 +38,7 @@ const generateViewPostStyles = (colors: {
       zIndex: 3,
       borderRadius: 0.05 * Dimensions.get('window').width,
       backgroundColor: colors.originalColor,
+      borderColor: global.primary,
       marginTop: -Dimensions.get('window').height * 0.1,
       height: Dimensions.get('window').height,
       elevation: 5,

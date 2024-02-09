@@ -44,7 +44,7 @@ interface AdDataState {
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
-  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway. 
+  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
   const [adData, setAdData] = useState<AdDataState>({
     category: '',
     description: '',
@@ -113,7 +113,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
                 console.log('hi');
               }}
               borderRadius={0.05 * Dimensions.get('window').width}
-              color={card_color_dict.middleColor}
+              backgroundcolor={card_color_dict.middleColor}
               borderColor={card_color_dict.middleColor}
               textColor={global.secondary}
             />
@@ -129,7 +129,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+      <TabBarTop></TabBarTop>
       <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, adData.image, 400)}
