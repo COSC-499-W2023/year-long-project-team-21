@@ -31,6 +31,7 @@ The Django Application is running on `0.0.0.0:8000` or simply `localhost:8000`. 
 
 The postgreSQL is running on `localhost with port 5432` by default. If you wish to access with a service such as DBEAVER, the user name and password will be the same as you specified in the [.env](/env.example) file
 
+
 ### Hot Reload
 
 Aside from database changes, simply save your changes and it will be applied automatically. 
