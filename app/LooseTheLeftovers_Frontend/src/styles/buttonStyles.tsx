@@ -11,9 +11,7 @@ const styles = StyleSheet.create({
     height: 65,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  space: {
-    height: 10,
+    elevation: 3
   },
 });
 
