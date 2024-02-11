@@ -8,7 +8,7 @@ import { type ImagePickerButtonProps } from '../common/Types';
  * ImagePickerButton component.
  *
  * This component provides two buttons to trigger an image selection process. Upon pressing 'Open Gallery' button,
- * it opens the device's image library, allowing the user to choose an image. Pressing 'Open Camera' button opens 
+ * it opens the device's image library, allowing the user to choose an image. Pressing 'Open Camera' button opens
  * device's camera in app, allowing to take a single picture. The selected image is then displayed in the component.
  *
  * @component
@@ -51,8 +51,8 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
   return (
     <View style={styles.container} testID={pickerTest}>
       <View style={styles.buttonContainer}>
-        {renderButton('Open Gallery', () => handleImagePick(launchImageLibrary), galleryTest)}
-        {renderButton('Open Camera', () => handleImagePick(launchCamera), cameraTest)}
+        {renderButton('Open Gallery', openGallery, galleryTest)}
+        {renderButton('Open Camera', openCamera, cameraTest)}
       </View>
       {imageUri && (
         <Image

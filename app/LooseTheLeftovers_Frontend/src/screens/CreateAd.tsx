@@ -156,10 +156,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
-  // Placeholder function for header onPress
+  // Back button press handler
   const handleBackPress = () => {
-    console.log('Back button pressed');
-  }; // Go back to previous screen
+    navigation.goBack();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
