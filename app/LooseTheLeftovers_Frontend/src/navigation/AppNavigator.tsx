@@ -41,7 +41,6 @@ const AppNavigator = () => {
         component={View_Post}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="CreateAd"
         component={CreateAd}
@@ -55,11 +54,6 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ChatList"
-        component={ChatList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
