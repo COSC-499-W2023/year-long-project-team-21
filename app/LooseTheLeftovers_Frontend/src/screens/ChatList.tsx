@@ -66,7 +66,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <Header
         onLeftPress={handleLeftPress}
-        leftIconSource={require('../assets/back_arrow.png')}
+        leftIconSource={require('../assets/back_arrow_white.png')}
         title="Messages"
       />
 
