@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react-native';
 import TextImage from '../../src/components/TextImage';
-import React = require('react');
+import React from 'react';
 describe('TextImage component', () => {
   it('renders correctly with provided image', () => {
     //set

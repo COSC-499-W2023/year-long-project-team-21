@@ -4,8 +4,8 @@ import UpperBar from '../../src/components/UpperBar';
 import { ImageSourcePropType } from 'react-native';
 
 describe('UpperBar component', () => {
-  const mockLeftIconSource: ImageSourcePropType = require('../../src/assets/plus.png');
-  const mockRightIconSource: ImageSourcePropType = require('../../src/assets/plus_white.png');
+  const mockLeftIconSource: ImageSourcePropType = require('../../src/assets/banana.png');
+  const mockRightIconSource: ImageSourcePropType = require('../../src/assets/profile-white.png');
 
   it('renders correctly with both icons and title', () => {
     const onLeftPressMock = jest.fn();

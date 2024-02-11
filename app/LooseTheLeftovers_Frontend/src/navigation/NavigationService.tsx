@@ -10,6 +10,7 @@ import { NavigationContainerRef } from '@react-navigation/native';
  * Reference to the navigation container.
  * @type {React.RefObject<NavigationContainerRef>}
  */
+// export const navigationRef = createRef<NavigationContainerRef>();
 export const navigationRef = createRef<NavigationContainerRef>();
 
 /**

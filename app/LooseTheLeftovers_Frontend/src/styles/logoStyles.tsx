@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  greyText: {
+  primary: {
     color: global.primary,
     fontSize: 30,
     fontWeight: 'bold',
   },
-  yellowText: {
+  secondary: {
     color: global.secondary,
     fontSize: 30,
     fontWeight: '300',

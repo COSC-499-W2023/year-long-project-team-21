@@ -13,8 +13,9 @@ import {
 import axios from 'axios';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
-  const handleButtonOnPress = async () => {};
-
+  const handleButtonOnPress = () => {
+    navigation.navigate('Home');
+  };
   // Creates an array of the instructions and images
   const instructions = [
     {
@@ -37,7 +38,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     },
     {
       id: 4,
-      txt: 'Create your own food posts',
+      txt: 'Create your own food ads',
       image: require('../assets/ad.png'),
       size: 40,
     },
@@ -88,6 +89,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
           onPress={handleButtonOnPress}
           title="Get Started"
           buttonSize={200}
+          testID="register-button"
         />
       </View>
     </View>

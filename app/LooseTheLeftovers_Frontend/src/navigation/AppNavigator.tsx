@@ -8,6 +8,7 @@ import CreateAd from '../screens/CreateAd';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
+import View_Post from '../screens/View_Post';
 import ChatList from '../screens/ChatList';
 
 const Stack = createNativeStackNavigator();
@@ -16,10 +17,31 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Registration"
+        component={Registration}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Instruction"
         component={Instruction}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="View_Post"
+        component={View_Post}
+        options={{ headerShown: false }}
+      />
+
       <Stack.Screen
         name="CreateAd"
         component={CreateAd}
@@ -31,23 +53,13 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Registration"
-        component={Registration}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="Profile"
         component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChatList"
+        component={ChatList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
