@@ -42,21 +42,17 @@ const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
   const openGallery = () => handleImagePick(launchImageLibrary);
   const openCamera = () => handleImagePick(launchCamera);
 
+  const renderButton = (title: string, onPress: () => void, testID: string) => (
+    <TouchableOpacity onPress={onPress} style={styles.button} testID={testID}>
+      <Text style={styles.buttonText}>{title}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container} testID={pickerTest}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={openGallery}
-          style={styles.button}
-          testID={galleryTest}>
-          <Text style={styles.buttonText}>Open Gallery</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={openCamera}
-          style={styles.button}
-          testID={cameraTest}>
-          <Text style={styles.buttonText}>Open Camera</Text>
-        </TouchableOpacity>
+        {renderButton('Open Gallery', () => handleImagePick(launchImageLibrary), galleryTest)}
+        {renderButton('Open Camera', () => handleImagePick(launchCamera), cameraTest)}
       </View>
       {imageUri && (
         <Image
