@@ -30,6 +30,7 @@ const Title: React.FC<TitleProps> = ({
     fontSize: titleSize || 25,
     color: titleColor || global.secondary,
     marginTop: position == 'top' ? 150 : 0,
+
   };
 
   return (

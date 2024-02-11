@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Texts from '../components/Text';
-import { SafeAreaView, Text, View } from 'react-native';
+import {Text} from 'react-native';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
 import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../components/Logo';
 import Title from '../components/Title';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -28,7 +27,7 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleRegistrationNavigation = () => {
+  const handleRegisterNav = () => {
     navigation.navigate('Registration');
   };
 
@@ -36,7 +35,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        navigation.goBack();
+        navigation.navigate('Home');
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,
@@ -75,7 +74,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
-
   return (
     <>
       <LinearGradient
@@ -90,12 +88,14 @@ const Login = ({ navigation }: { navigation: any }) => {
           placeholder="Username"
           onChangeText={input => handleUsername(input)}
           value={username}
+          width={280}
         />
         <InputField
           placeholder="Password"
           onChangeText={input => handlePassword(input)}
           value={password}
           secureTextEntry={true}
+          width={280}
         />
         {/* Conditionally render the error message */}
         {errorMessage !== '' && (
@@ -123,12 +123,12 @@ const Login = ({ navigation }: { navigation: any }) => {
             texts="Not a member?"
             textsColor="white"
             textsSize={18}
-            onPress={() => handleRegistrationNavigation()}
+            onPress={() => handleRegisterNav()}
           />
           <Texts
             texts=" Sign Up"
             textsSize={18}
-            onPress={() => handleRegistrationNavigation()}
+            onPress={() => handleRegisterNav()}
           />
         </Text>
       </LinearGradient>

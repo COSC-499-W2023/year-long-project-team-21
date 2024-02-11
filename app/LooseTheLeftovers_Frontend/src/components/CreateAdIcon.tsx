@@ -34,14 +34,14 @@ const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
   const image = '../assets/ad.png';
 
   // Navigates to CreateAd and sends parameters
-  const goToHomeScreen = () => {
+  const goToCreateAd = () => {
     navigation.navigate('CreateAd', { name: 'CreateAdIcon' });
   };
 
   // Call this to display an icon image. No need to input anything to the component, will automatically
   // set the image size and navigation, good for reusability.
   return (
-    <TouchableOpacity onPress={goToHomeScreen} testID={'CreateAdIconTest'}>
+    <TouchableOpacity onPress={goToCreateAd} testID={'CreateAdIconTest'}>
       <Image
         source={require(image)}
         style={[{ width: size, height: size }]}
