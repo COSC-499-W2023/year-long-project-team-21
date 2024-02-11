@@ -47,6 +47,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return filteredPosts;
   };
 
+  const filterExistingData = (data: any[]) => {
+    return data.filter(
+      (newPost: { id: number }) =>
+        !posts.some(existingPost => existingPost.id === newPost.id),
+    );
+  };
+
   /**
    * @function
    * @description
@@ -58,12 +65,15 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
   const fetchData = async (page: number) => {
-    console.log('current page is: ', page);
+    console.log('next page is: ', page);
     try {
       let data = await getData(page);
       data = filterData(data);
-      setPosts(prevData => [...prevData, ...data]);
-      setCurrentPage(currentPage + 1);
+      data = filterExistingData(data); //only return non existing posts in post array
+      if (data.length > 0) {
+        setPosts(prevData => [...prevData, ...data]);
+        setCurrentPage(currentPage + 1);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
