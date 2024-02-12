@@ -2,40 +2,29 @@ import { StyleSheet } from 'react-native';
 import { global } from '../common/global_styles';
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: global.background,
-    },
-    tabcontainer: {
-      height: 75,
-      paddingTop: 0,
-      paddingBottom: 15,
-      borderTopColor: '#ccc',
-      borderTopWidth: 1,
-    },
-    listcontainer: {
-    },
-    chatItem: {
-      backgroundColor: global.background,
-      padding: 15,
-      borderWidth: 1,
-      borderColor: '#555',
-      borderRadius: 15,
-    },
-    chatItemName: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 18,
-      marginBottom: 5,
-    },
-    chatItemMessage: {
-      color: '#fff',
-      fontSize: 15,
-    },
-    emptyListContainer: {
-    },
-    emptyListText: {
-    },
+  chatItem: {
+    backgroundColor: global.background,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: global.tertiary,
+    borderRadius: 15,
+  },
+  chatItemName: {
+    color: global.secondary,
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  chatItemMessage: {
+    color: global.secondary,
+    fontSize: 15,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: global.primary,
+    textAlign: 'center',
+  },
 });
 
 export default styles;

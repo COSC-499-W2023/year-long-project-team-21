@@ -370,6 +370,13 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+type ChatType = {
+  id: number;
+  name: string;
+  lastMessage: string;
+  timestamp: string;
+};
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -390,4 +397,5 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type ChatType,
 };

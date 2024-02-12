@@ -8,21 +8,18 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
+import globalscreenstyles from '../common/global_ScreenStyles';
+import { ChatType } from '../common/Types';
 
-import Header from '../components/UpperBar';
-import TabBar from '../components/TabBarBottom';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
 import Icon from '../components/Icon';
+import HomeIcon from '../components/HomeIcon';
+import CreateAdIcon from '../components/CreateAdIcon';
+import AccountIcon from '../components/AccountIcon';
 
 import chatData from '../assets/dummy_chats.json';
-import noData from '../assets/empty_chats.json';
 // Page sends an error if FlatList gets no data
-
-type ChatType = {
-  id: number;
-  name: string;
-  lastMessage: string;
-  timestamp: string;
-};
 
 // ChatListItem component
 const ChatListItem: React.FC<{ chat: ChatType }> = ({ chat }) => {
@@ -38,20 +35,11 @@ const ChatListItem: React.FC<{ chat: ChatType }> = ({ chat }) => {
   );
 };
 
-/* 
-EmptyListMessage component
-Bugged if added to the FlatList
-
-const EmptyListMessage: React.FC = () => {
-  return (
-    <View style={styles.emptyListContainer}>
-      <Text style={styles.emptyListText}>No messages yet.</Text>
-    </View>
-  );
-};
-*/
-
 const ChatList = ({ navigation }: { navigation: any }) => {
+  const title = 'Messsages';
+  const testID = 'title-test';
+
+  // To be replaced with 'Back' button
   function handleLeftPress(): void {
     navigation.goBack();
   }
@@ -62,43 +50,37 @@ const ChatList = ({ navigation }: { navigation: any }) => {
   const keyExtractor = (item: ChatType) => item.id.toString();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={globalscreenstyles.container}>
       {/* Header */}
-      <Header
-        onLeftPress={handleLeftPress}
-        leftIconSource={require('../assets/back_arrow_white.png')}
-        title="Messages"
+      <TabBarTop
+        LeftIcon={
+          <Icon
+            source={require('../assets/back_arrow_white.png')}
+            onPress={handleLeftPress}
+          />
+        }
+        MiddleIcon={
+          <Text style={styles.title} testID={testID}>
+            {title}
+          </Text>
+        }
       />
 
       {/* FlatList */}
-      <FlatList
-        data={chatData}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        style={styles.listcontainer}
-      />
-
-      {/* TabBar */}
-      <View style={styles.tabcontainer}>
-        <TabBar
-          LeftIcon={
-            <Icon
-              source={require('../assets/home.png')}
-              size={30}
-              onPress={() => navigation.navigate('Home')}
-              testID="left-test"
-            />
-          }
-          RightIcon={
-            <Icon
-              source={require('../assets/profile.png')}
-              size={40}
-              onPress={() => navigation.navigate('Profile')}
-              testID="right-test"
-            />
-          }
+      <View style={globalscreenstyles.middle}>
+        <FlatList
+          data={chatData}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
         />
       </View>
+
+      {/* TabBar */}
+      <TabBarBottom
+        LeftIcon={<HomeIcon />}
+        MiddleIcon={<CreateAdIcon />}
+        RightIcon={<AccountIcon />}
+      />
     </SafeAreaView>
   );
 };
