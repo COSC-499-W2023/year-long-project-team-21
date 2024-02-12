@@ -1,28 +1,26 @@
 # Sten Korver Personal Weekly Log
 
-01/29 to 02/04
+02/05 to 02/11
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Sample data and images to be automatically loaded for peer evaluations
-* Pagination for backend for advertisments
+* Expired ads delete automatically
+* Retrieve messages from backend
+* Store messages on backend
 
 ### Completed Features For This Week:
-
-* Sample data and images to be automatically loaded for peer evaluations
-  * Created json file for Users and Ads to be loaded
-  * Found some sample images from the internet for ads
-  * Updated django.sh file that gets executed on docker compose up to load them
-* Pagination for backend for advertisments
-  * When many ads are requested it returns them in pages containing only a few at a time
-  * Updated several unit tests to pass again
+* Expired ads delete automatically
+    * Once a day a scheduled task runs to get expired ads and delete them
+* Retrieve messages from backend
+    * Backend can receive GET request to return messages belonging to a conversation between two users
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/04b7c8f1-70d3-4e6c-ae10-3af541de9ef3)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/f56bc41b-6799-4d5d-9a5a-bac6ce7ecbfe)
+
 
 
 
