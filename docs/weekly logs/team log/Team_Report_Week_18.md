@@ -1,5 +1,3 @@
-# Team 21 - 02/05 to 02/11
-
 ## Overview
 
 Last week's peer evaluation went well for us but did result in several bugs being identified. We documented these bugs in a Google Doc along with feedback for some small feature requests/changes and reviewed them as a team. We focused on getting these bug fixes done this week and most of them are resolved. The rest of our focus is going toward finishing the next two large features for our app, which are location services and messaging. These features will be split into several sub-features and will require work on both the front and back end.
@@ -36,8 +34,9 @@ Last week's peer evaluation went well for us but did result in several bugs bein
 - Location services
 - Bugs 
 
+
 ## Burn Up Chart
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/50179b1e-b5bb-4f1f-953e-47c156973909)
+![burnup](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/41297bfa-ec4a-497b-bd45-0535e9f97d9c)
 
 
 ### Test Report
@@ -45,16 +44,14 @@ Last week's peer evaluation went well for us but did result in several bugs bein
 #### Test for modules (frontend)
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/ee3fb855-b809-4599-924e-4c15a7917d35)
 
+
 #### Test for modules (backend)
-
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/d9c1e2cc-9585-4347-8709-b3f166c15f4f)
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/1bed7fa1-b7c0-4b33-9810-b911d523996a)
 
 
 ### Project Board
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/6ab55959-c50f-4024-ac6a-3ab0c8119e69)
-
+![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/042e9e3e-d7a5-42c3-8223-36d65f70d9ae)
 
 
 ## Individual Reports

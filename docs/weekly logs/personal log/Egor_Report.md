@@ -1,24 +1,27 @@
 # Egor Bezriadin Personal Weekly Log
 
-01/29 to 02/04
+02/05 to 02/11
 
 Username: rogeonee
 
 ## My Features For This Week
 
-1. Continue work on CreateAd screen (adding more fields, refactoring logic)
-2. Take part in team meetings
+1. Team meetings
+2. PR reviews
+3. InputField bug
+4. Update ChatList on the dev
 
 ## Completed Features For This Week
 
-1. Finished CreateAd screen
-2. Helped polishing the app for peer testing
+1. Several PR reviews
+2. InputField bug (PR's up)
 
 ## Tasks In Progress
 
-- Repo clean up
-- Adding more tests to ChatList and CreateAd
+- Update ChatList
+- Bug fixing
+- More PR reviews
 
 ## Types of Tasks Worked On
 
-![week 4](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/73d4311c-7544-4f76-a6a1-9ed08015a390)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/b79ac9f5-af44-45a5-83f4-7866d657bd49)
