@@ -1,8 +1,6 @@
-# Team 21 - 02/04 - 02/11
-
 ## Overview
 
-Work was done this week to close the amount of PR's that we have going in development, fix bugs from the peer review sessions, and start on features such as messaging. Cards are labeled as bugs. 
+Last week's peer evaluation went well for us but did result in several bugs being identified. We documented these bugs in a Google Doc along with feedback for some small feature requests/changes and reviewed them as a team. We focused on getting these bug fixes done this week and most of them are resolved. The rest of our focus is going toward finishing the next two large features for our app, which are location services and messaging. These features will be split into several sub-features and will require work on both the front and back end.
 
 
 ## Quick reminder for usernames
@@ -15,17 +13,26 @@ Work was done this week to close the amount of PR's that we have going in develo
 
 ## Completed tasks for this week
 
-- Create Ad back button
-- View Posts in Development
-- Create ad using camera app
-- Inputfield bug
-- Image size bug
-- 
+- bug fixes
+  - rending posts on home and profile screens
+  - view post colors showing correctly
+  - view post icons showing correctly
+  - home screen post colors updated to match user feedback (green, yellow, red)
+  - images show properly for posts (aspect ratio was sometimes off)
+  - back button added to pages that was missing it
+  - input fields width fixed
+- ads automatically delete after they expire
+- retrieve messages from backend via GET
+- Add image to create ad using phone camera
   
 ## Tasks in progress
 
-- Messages
-- Mergin PR into development.
+- Retrieving messages (backend)
+- Sending messages (storing on backend)
+- Messages (frontend)
+- Editing/deleting ads (backend)
+- Location services
+- Bugs 
 
 
 ## Burn Up Chart
