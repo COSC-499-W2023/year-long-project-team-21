@@ -12,7 +12,6 @@ const globalscreenstyles = StyleSheet.create({
     flex: 0.85,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    //backgroundColor: 'red'
   },
 });
 

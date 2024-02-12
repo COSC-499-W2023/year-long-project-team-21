@@ -166,7 +166,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <Header
         onLeftPress={handleBackPress}
-        leftIconSource={require('../assets/plus_white.png')}
+        leftIconSource={require('../assets/back_arrow_white.png')}
         title="Create Post"
       />
       <ScrollView>
