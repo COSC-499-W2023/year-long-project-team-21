@@ -25,6 +25,7 @@ Last week's peer evaluation went well for us but did result in several bugs bein
   - input fields width fixed
 - ads automatically delete after they expire
 - retrieve messages from backend via GET
+- Add image to create ad using phone camera
   
 ## Tasks in progress
 
