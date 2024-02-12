@@ -35,8 +35,8 @@ Work was done this week to close the amount of PR's that we have going in develo
 ### Test Report
 
 #### Test for modules (frontend)
-![image](![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/3e4e1e3b-25d7-4246-9982-d464f1ff7b46)
-)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/ee3fb855-b809-4599-924e-4c15a7917d35)
+
 
 #### Test for modules (backend)
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/1bed7fa1-b7c0-4b33-9810-b911d523996a)
