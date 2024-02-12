@@ -42,7 +42,7 @@ Last week's peer evaluation went well for us but did result in several bugs bein
 ### Test Report
 
 #### Test for modules (frontend)
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/ee3fb855-b809-4599-924e-4c15a7917d35)
 
 #### Test for modules (backend)
 
