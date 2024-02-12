@@ -43,9 +43,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         global.background,
       ]}
       start={{ x: 0, y: 0 }}>
-      <TabBarTop
-        LeftIcon={<Logo size={55}></Logo>}
-        RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+      <TabBarTop LeftIcon={<Logo size={55} />} RightIcon={<MessageIcon />} />
 
       <View style={globalscreenstyles.middle}>
         <PostListRenderer
@@ -57,9 +55,10 @@ const Home = ({ navigation }: { navigation: any }) => {
       </View>
 
       <TabBarBottom
-        LeftIcon={<HomeIcon></HomeIcon>}
-        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
+        LeftIcon={<HomeIcon />}
+        MiddleIcon={<CreateAdIcon />}
+        RightIcon={<AccountIcon />}
+      />
     </LinearGradient>
   );
 };
