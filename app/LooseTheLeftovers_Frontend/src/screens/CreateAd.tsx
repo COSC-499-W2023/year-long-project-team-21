@@ -33,11 +33,19 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   });
 
   const categories = [
-    { key: 'none', value: 'none' },
-    { key: 'vegan', value: 'vegan' },
-    { key: 'gluten free', value: 'gluten-free' },
-    { key: 'peanut free', value: 'peanut-free' },
+    { key: 'none', value: 'None' },
+    { key: 'vegan', value: 'Vegan' },
+    { key: 'gluten free', value: 'Gluten-free' },
+    { key: 'peanut free', value: 'Peanut-free' },
   ];
+
+  // Default RN switch won't allow to pass styles for it
+  const switchColors = {
+    trackFalse: global.tertiary,
+    trackTrue: global.tertiary,
+    thumbFalse: global.secondary,
+    thumbTrue: global.primary,
+  };
 
   const handleFieldChange = (
     field: keyof AdDataProps,
@@ -144,34 +152,23 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
     return formData;
   };
-  
-  const handleExpiryChange = (expiryValue: number) => {
-    // Directly check the expiryEnabled state to determine how to set the expiry field
-    if (expiryEnabled) {
-      const expiryDate = convertExpiryToDatetime(expiryValue);
-      handleFieldChange('expiry', expiryDate);
-      console.log('expiry:', expiryDate);
-    } else {
-      // If expiry is disabled, set the field to 'none'
-      handleFieldChange('expiry', 'none');
-      console.log('expiry: none');
-    }
-  };
 
   useEffect(() => {
-    // Automatically set expiry to 'none' when disabled, or reset it when enabled
+    // Automatically set expiry to 'none' when disabled, reset when enabled
     if (!expiryEnabled) {
       handleFieldChange('expiry', 'none');
-      console.log('expiry: none')
     } else {
-      // Optionally reset to a default value when re-enabled
-      // For example, setting it to 1 day or the minimum allowed by your slider
-      const expiryDate = convertExpiryToDatetime(1); // Assuming 1 is the minimum slider value
+      // Reset to a default value when re-enabled
+      const expiryDate = convertExpiryToDatetime(1);
       handleFieldChange('expiry', expiryDate);
-      console.log('expiry:', expiryDate);
     }
   }, [expiryEnabled]);
-  
+
+  const handleExpiryChange = (expiryValue: number) => {
+    const expiryDate = convertExpiryToDatetime(expiryValue);
+    handleFieldChange('expiry', expiryDate);
+  };
+
   // Convert Slider Value into future expiry date
   const convertExpiryToDatetime = (expiry: number) => {
     const expiryDate = new Date();
@@ -183,7 +180,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <Header title="Create Post" />
-      
+
       <ScrollView>
         <View style={styles.formContainer}>
           {/* Title */}
@@ -288,29 +285,40 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           )}
 
-          {/* Slider */}
-          <View style={styles.leftAlignedText}>
-            <Texts
-              texts="Set an expiry range"
-              textsSize={22}
-              textsColor={global.secondary}
-              textsWeight="bold"
-            />
-          </View>
-          <View style={styles.switchContainer}>
-            <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={expiryEnabled ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={() => setExpiryEnabled(prevState => !prevState)}
-              value={expiryEnabled}
-            />
-          </View>
-          {expiryEnabled && (
-            <View style={styles.expirySliderContainer}>
-              <ExpirySlider onExpiryChange={handleExpiryChange} />
+          {/* Expiry */}
+          <View style={styles.expirySection}>
+            <View style={styles.expiryTitleContainer}>
+              <Texts
+                texts="Set an expiry range"
+                textsSize={22}
+                textsColor={global.secondary}
+                textsWeight="bold"
+              />
+              <Switch
+                trackColor={{
+                  false: switchColors.trackFalse,
+                  true: switchColors.trackTrue,
+                }}
+                thumbColor={
+                  expiryEnabled
+                    ? switchColors.thumbTrue
+                    : switchColors.thumbFalse
+                }
+                onValueChange={() => setExpiryEnabled(prevState => !prevState)}
+                value={expiryEnabled}
+                style={styles.switchStyle}
+                testID="switch-test"
+              />
             </View>
-          )}
+            {expiryEnabled && (
+              <View style={styles.expirySliderContainer}>
+                <ExpirySlider
+                  onExpiryChange={handleExpiryChange}
+                  testID="slider-test"
+                />
+              </View>
+            )}
+          </View>
 
           {/* Submit Button */}
           <View style={styles.buttonContainer}>
