@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
   dropdownTextStyles: {
     color: global.secondary, // Text color for dropdown items
   },
+  switchContainer: {
+    
+  },
 });
 
 export default styles;

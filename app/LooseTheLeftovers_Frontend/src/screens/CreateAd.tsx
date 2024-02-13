@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
@@ -17,6 +17,7 @@ import Button from '../components/Button';
 import Icon from '../components/Icon';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
+  const [expiryEnabled, setExpiryEnabled] = useState(true);
   const [networkError, setNetworkError] = useState('');
   const [fieldError, setFieldError] = useState({
     titleError: '',
@@ -143,12 +144,34 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
     return formData;
   };
-
+  
   const handleExpiryChange = (expiryValue: number) => {
-    const expiryDate = convertExpiryToDatetime(expiryValue);
-    handleFieldChange('expiry', expiryDate);
+    // Directly check the expiryEnabled state to determine how to set the expiry field
+    if (expiryEnabled) {
+      const expiryDate = convertExpiryToDatetime(expiryValue);
+      handleFieldChange('expiry', expiryDate);
+      console.log('expiry:', expiryDate);
+    } else {
+      // If expiry is disabled, set the field to 'none'
+      handleFieldChange('expiry', 'none');
+      console.log('expiry: none');
+    }
   };
 
+  useEffect(() => {
+    // Automatically set expiry to 'none' when disabled, or reset it when enabled
+    if (!expiryEnabled) {
+      handleFieldChange('expiry', 'none');
+      console.log('expiry: none')
+    } else {
+      // Optionally reset to a default value when re-enabled
+      // For example, setting it to 1 day or the minimum allowed by your slider
+      const expiryDate = convertExpiryToDatetime(1); // Assuming 1 is the minimum slider value
+      handleFieldChange('expiry', expiryDate);
+      console.log('expiry:', expiryDate);
+    }
+  }, [expiryEnabled]);
+  
   // Convert Slider Value into future expiry date
   const convertExpiryToDatetime = (expiry: number) => {
     const expiryDate = new Date();
@@ -274,9 +297,20 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsWeight="bold"
             />
           </View>
-          <View style={styles.expirySliderContainer}>
-            <ExpirySlider onExpiryChange={handleExpiryChange} />
+          <View style={styles.switchContainer}>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={expiryEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() => setExpiryEnabled(prevState => !prevState)}
+              value={expiryEnabled}
+            />
           </View>
+          {expiryEnabled && (
+            <View style={styles.expirySliderContainer}>
+              <ExpirySlider onExpiryChange={handleExpiryChange} />
+            </View>
+          )}
 
           {/* Submit Button */}
           <View style={styles.buttonContainer}>
