@@ -33,25 +33,29 @@ describe('CreateAd Screen', () => {
 });
 
 describe('CreateAd Screen - InputFields', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-  
-    it('allows entering a title in the Title InputField', () => {
-      const { getByPlaceholderText } = render(<CreateAd navigation={undefined} />);
-      const titleInput = getByPlaceholderText('Title');
-  
-      fireEvent.changeText(titleInput, 'Delicious Pizza');
-      expect(titleInput.props.value).toBe('Delicious Pizza');
-    });
-  
-    it('allows entering a description in the Description InputField', () => {
-      const { getByPlaceholderText } = render(<CreateAd navigation={undefined} />);
-      const descriptionInput = getByPlaceholderText('Description');
-  
-      fireEvent.changeText(descriptionInput, 'A tasty homemade pizza');
-      expect(descriptionInput.props.value).toBe('A tasty homemade pizza');
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('allows entering a title in the Title InputField', () => {
+    const { getByPlaceholderText } = render(
+      <CreateAd navigation={undefined} />,
+    );
+    const titleInput = getByPlaceholderText('Title');
+
+    fireEvent.changeText(titleInput, 'Delicious Pizza');
+    expect(titleInput.props.value).toBe('Delicious Pizza');
+  });
+
+  it('allows entering a description in the Description InputField', () => {
+    const { getByPlaceholderText } = render(
+      <CreateAd navigation={undefined} />,
+    );
+    const descriptionInput = getByPlaceholderText('Description');
+
+    fireEvent.changeText(descriptionInput, 'A tasty homemade pizza');
+    expect(descriptionInput.props.value).toBe('A tasty homemade pizza');
+  });
 });
 
 describe('CreateAd Screen - ImagePicker', () => {
@@ -64,6 +68,14 @@ describe('CreateAd Screen - ImagePicker', () => {
     it('calls onImagePicked with image URI with "Open Gallery"', async () => {
       require('react-native-image-picker').launchImageLibrary.mockResolvedValueOnce({
         assets: [{ uri: imageUri }],
+      },
+    );
+
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
+    const imagePickerButton = getByTestId('image-picker');
+
+    await act(async () => {
+      fireEvent.press(imagePickerButton);
     });
   
       const { getByTestId } = render(<CreateAd navigation={undefined} />);
@@ -103,3 +115,4 @@ describe('CreateAd Screen - ImagePicker', () => {
       });
     });
   });
+});

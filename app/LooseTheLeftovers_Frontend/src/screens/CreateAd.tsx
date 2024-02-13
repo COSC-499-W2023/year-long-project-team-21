@@ -160,6 +160,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <Header title="Create Post" />
+      
       <ScrollView>
         <View style={styles.formContainer}>
           {/* Title */}
