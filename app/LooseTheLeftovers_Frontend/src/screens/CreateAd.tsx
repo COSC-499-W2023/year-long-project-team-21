@@ -156,19 +156,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
-  // Back button press handler
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header
-        onLeftPress={handleBackPress}
-        leftIconSource={require('../assets/plus_white.png')}
-        title="Create Post"
-      />
+      <Header title="Create Post" />
       <ScrollView>
         <View style={styles.formContainer}>
           {/* Title */}
