@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../common/global_styles';
@@ -24,6 +24,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     categoryError: '',
     imageError: '',
   });
+
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
@@ -135,7 +136,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     formData.append('title', adData.title);
     formData.append('description', adData.description);
     formData.append('category', adData.category);
-    formData.append('expiry', adData.expiry);
+
+    // Adding expiry if enabled
+    if (expiryEnabled) {
+      formData.append('expiry', adData.expiry);
+    }
 
     // Adding image if it exists
     if (adData.imageUri) {
@@ -152,17 +157,6 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
     return formData;
   };
-
-  useEffect(() => {
-    // Automatically set expiry to 'none' when disabled, reset when enabled
-    if (!expiryEnabled) {
-      handleFieldChange('expiry', 'none');
-    } else {
-      // Reset to a default value when re-enabled
-      const expiryDate = convertExpiryToDatetime(1);
-      handleFieldChange('expiry', expiryDate);
-    }
-  }, [expiryEnabled]);
 
   const handleExpiryChange = (expiryValue: number) => {
     const expiryDate = convertExpiryToDatetime(expiryValue);
