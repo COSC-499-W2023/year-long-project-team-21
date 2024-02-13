@@ -9,7 +9,7 @@ export const global = {
 
   //darkmode
   // primary: '#2CAF55',
-  primary: '#2FC956',
+  primary: '#54BD7B',
   purple: '#251D3A',
   //purple: '#2E0C22',
   secondary: '#FFFFFF', //white
@@ -40,10 +40,10 @@ export const global = {
 
   //post color [original, lighter, even lighter]
   post_color: {
-    expiry_short: ['#2e2e2e', '#E0495A', '#E07581'],
+    expiry_short: ['#2e2e2e', '#E07176', '#E0AFB1'], //red
 
-    expiry_mid: ['#2e2e2e', '#FFB72E', '#FFC8AA'], //yellow
+    expiry_mid: ['#2e2e2e', '#FFC454', '#FFDFC6'], //yellow
 
-    expiry_long: ['#2e2e2e', '#2FBD35', '#A6E4AF'],
+    expiry_long: ['#2e2e2e', '#54BD7B', '#B8E4C2'], //gren
   },
 };
