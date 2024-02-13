@@ -156,19 +156,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
-  // Placeholder function for header onPress
-  const handleBackPress = () => {
-    navigation.goBack();
-  }; // Go back to previous screen
-
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header
-        onLeftPress={handleBackPress}
-        leftIconSource={require('../assets/back_arrow_white.png')}
-        title="Create Post"
-      />
+      <Header title="Create Post" />
+      
       <ScrollView>
         <View style={styles.formContainer}>
           {/* Title */}
