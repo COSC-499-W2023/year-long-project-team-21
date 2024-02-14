@@ -43,7 +43,6 @@ const Post: React.FC<PostProps> = ({
 }: PostProps): JSX.Element => {
   const screenWidth = Dimensions.get('window').width;
   const scaleValue = useRef(new Animated.Value(1)).current;
-  const [lightMode, setLightMode] = useState('');
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {View } from 'react-native';
+import { View } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
 import Logo from '../components/Logo';
@@ -27,11 +27,10 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState('');
 
-  async function fetchAds() {
-    const payload = await axios.get(adEndpoint, djangoConfig());
+  async function fetchAds(pageNumber: number) {
+    const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;
+    const payload = await axios.get(adEndpointWithPage, djangoConfig());
     return payload.data;
   }
 
@@ -44,9 +43,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         global.background,
       ]}
       start={{ x: 0, y: 0 }}>
-      <TabBarTop
-        LeftIcon={<Logo size={55} ></Logo>}
-        RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+      <TabBarTop LeftIcon={<Logo size={55} />} RightIcon={<MessageIcon />} />
 
       <View style={globalscreenstyles.middle}>
         <PostListRenderer
@@ -58,9 +55,10 @@ const Home = ({ navigation }: { navigation: any }) => {
       </View>
 
       <TabBarBottom
-        LeftIcon={<HomeIcon></HomeIcon>}
-        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
+        LeftIcon={<HomeIcon />}
+        MiddleIcon={<CreateAdIcon />}
+        RightIcon={<AccountIcon />}
+      />
     </LinearGradient>
   );
 };
