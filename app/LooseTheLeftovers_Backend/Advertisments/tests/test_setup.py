@@ -106,6 +106,7 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
             title='Pasta',
             description='Vegetarian pasta',
             category='Vegetarian',
+            expiry='2024-01-25T12:30:00.000000Z',
         )
         self.ad_4 = Advertisment.objects.create(
             user_id=2,
