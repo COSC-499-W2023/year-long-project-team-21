@@ -13,6 +13,7 @@ export const global = {
   secondary: '#FFFFFF', //white
   tertiary: '#2e2e2e', //dark grey
   background: '#222222',
+  yellow: '#FFC454',
 
   error: 'red',
   //08282B, 0D183044
