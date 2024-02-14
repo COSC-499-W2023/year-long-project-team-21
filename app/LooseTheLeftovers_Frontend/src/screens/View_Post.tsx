@@ -8,8 +8,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
-import { ViewPostProps } from '../common/Types';
-import Logo from '../components/Logo';
 import { Card, Title } from 'react-native-paper';
 import {
   renderPostImage,
@@ -30,21 +28,14 @@ import AccountIcon from '../components/AccountIcon';
 import { djangoConfig } from '../common/NetworkRequest';
 import { BASE_URL } from '../common/API';
 import axios from 'axios';
-
-interface AdDataState {
-  category: string;
-  description: string;
-  expiry: string;
-  title: string;
-  image: string;
-  color: string;
-}
+import { AdDataProps } from '../common/Types';
+import GoBackIcon from '../components/GoBackIcon';
 
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
   //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
-  const [adData, setAdData] = useState<AdDataState>({
+  const [adData, setAdData] = useState<AdDataProps>({
     category: '',
     description: '',
     expiry: '',
@@ -152,7 +143,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop></TabBarTop>
+      <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
       <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, adData.image, 400)}
