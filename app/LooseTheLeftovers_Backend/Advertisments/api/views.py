@@ -193,6 +193,11 @@ def retrieve_advertisments_for_user(request, user_id):
 
     This method will return all ads created by the user that matches passed user_id. It uses
     pagination so it will split the result into pages and return a page of results at a time
+
+    /ads/users/<user_id>?page=2 or /ads/users/<user_id>?page=3
+
+    if no page number is supplied, the first page is returned
+    if the page number is out of bounds, a HTTP_204 response is returned
     """
     try:
         # query all ads and their images for passed user
@@ -246,6 +251,15 @@ def retrieve_all_advertisments(request):
 
     This method will return all ads in the database. It uses pagination so it will split
     the result into pages and return a page of results at a time
+
+    To get a specific page of ads, the page number has to be passed in the GET request header
+    like this:
+
+    /ads?page=2 or /ads?page=3
+
+    if no page number is supplied, the first page is returned
+    if the page number is out of bounds, a HTTP_204 response is returned
+
     """
     try:
         # query all ads and their images
