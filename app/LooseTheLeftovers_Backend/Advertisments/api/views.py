@@ -2,16 +2,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from Advertisments.api.serializers import (
     AdvertismentSerializer,
     ImageSerializer,
     ReturnAdvertismentSerializer,
-    ReturnAdvertismentNoDescriptionSerializer,
 )
 from Advertisments.models import Advertisment, AdvertismentImage
-from rest_framework.utils.serializer_helpers import ReturnList
-from datetime import date, datetime
+from datetime import date
 
 
 class AdvertismentHandler(APIView):
@@ -21,9 +19,6 @@ class AdvertismentHandler(APIView):
     This view handles creating ads with POST requests as well as retrieving
     ads from the database.
     """
-
-    user_max_pages = 3
-    all_ad_max_pages = 3
 
     def post(self, request, *args, **kwargs):
         """
@@ -174,18 +169,18 @@ def retrieve_single_advertisment(ad_id):
     except:
         response = {"message": "No ad found"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
+
     try:
         # send to serializers to package data
         serializer = ReturnAdvertismentSerializer(ad)
         image_serializer = ImageSerializer(ad_image)
 
-        combined = {
-            **serializer.data,
-            **image_serializer.data,
-        }  # Merge two dictionaries
+        combined = {**serializer.data, **image_serializer.data}  # Merge two dictionaries
 
         # return response data of both serializers and 200 OK response
-        return Response(combined, status=status.HTTP_200_OK)
+        return Response(
+            combined, status=status.HTTP_200_OK
+        )
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
@@ -194,9 +189,10 @@ def retrieve_single_advertisment(ad_id):
 
 def retrieve_advertisments_for_user(request, user_id):
     """
-    GET request to handle retrieving ads from the database. No authentication required.
+    GET request to handle retrieving ads from the database.
 
-    This method will return all ads created by the user that matches passed user_id
+    This method will return all ads created by the user that matches passed user_id. It uses
+    pagination so it will split the result into pages and return a page of results at a time
     """
     try:
         # query all ads and their images for passed user
@@ -213,11 +209,13 @@ def retrieve_advertisments_for_user(request, user_id):
 
         # gets data for the current page
         page_number = request.GET.get("page")
-        ad_page = ad_paginator.get_page(page_number)
-        image_page = image_paginator.get_page(page_number)
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+        image_page = image_paginator.page(page_number)
 
         # send each page to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        serializer = ReturnAdvertismentSerializer(ad_page, many=True)
         image_serializer = ImageSerializer(image_page, many=True)
 
         # merge results into one data structure
@@ -225,11 +223,16 @@ def retrieve_advertisments_for_user(request, user_id):
         for ad, image in zip(serializer.data, image_serializer.data):
             combined = {**ad, **image}  # Merge two dictionaries
             combined_data.append(combined)
-
+        
         return Response(
             combined_data,
             status=status.HTTP_200_OK,
         )
+
+    # when index for page is out of bounds return 204 response       
+    except EmptyPage as e:
+        response = {"message": "Last page reached"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         # send problem response and server error
@@ -242,17 +245,16 @@ def retrieve_all_advertisments(request):
     GET request to handle retrieving ads from the database. No authentication required.
 
     This method will return all ads in the database. It uses pagination so it will split
-    the result into pages and return a page of results at a time (a page currently set to
-    include 8 ads)
+    the result into pages and return a page of results at a time
     """
     try:
         # query all ads and their images
-        all_ads = Advertisment.objects.all()
+        all_ads = Advertisment.objects.all().defer('description')
         all_images = AdvertismentImage.objects.all()
     except:
         response = {"message": "No ad found"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
-
+    
     try:
         # put query results into pages
         ad_paginator = Paginator(all_ads, 3)
@@ -260,11 +262,13 @@ def retrieve_all_advertisments(request):
 
         # gets data for the current page
         page_number = request.GET.get("page")
-        ad_page = ad_paginator.get_page(page_number)
-        image_page = image_paginator.get_page(page_number)
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+        image_page = image_paginator.page(page_number)
 
         # send each page to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        serializer = ReturnAdvertismentSerializer(ad_page, many=True)
         image_serializer = ImageSerializer(image_page, many=True)
 
         # merge results into one data structure
@@ -277,6 +281,11 @@ def retrieve_all_advertisments(request):
             combined_data,
             status=status.HTTP_200_OK,
         )
+    
+    # when index for page is out of bounds return 204 response 
+    except EmptyPage as e:
+        response = {"message": "Last page reached"}
+        return Response(response, status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
