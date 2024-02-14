@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('0 6 * * *', 'Advertisments.cron.delete_expired_ads')
+    ('0 1 * * *', 'Advertisments.cron.delete_expired_ads')
 ]
 
 REST_FRAMEWORK = {
