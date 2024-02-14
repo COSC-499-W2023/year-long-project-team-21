@@ -14,21 +14,23 @@ const generateViewPostStyles = (colors: {
       position: 'relative',
     },
     image: {
-      width: Dimensions.get('window').width,
+      // width: Dimensions.get('window').width,
+      width: '100%',
       zIndex: -1,
+      marginLeft: '1.5%',
     },
     card_back: {
       zIndex: 1,
       borderRadius: 0.05 * Dimensions.get('window').width,
       backgroundColor: colors.lightColor,
-      height: Dimensions.get('window').width * 0.3,
+      height: Dimensions.get('window').width * 0.25,
       elevation: 5,
     },
     card_middle: {
       zIndex: 2,
       borderRadius: 0.05 * Dimensions.get('window').width,
       backgroundColor: colors.middleColor,
-      height: Dimensions.get('window').width * 0.3,
+      height: Dimensions.get('window').width * 0.25,
       marginTop: -Dimensions.get('window').height * 0.1,
       elevation: 5,
     },
@@ -36,6 +38,7 @@ const generateViewPostStyles = (colors: {
       zIndex: 3,
       borderRadius: 0.05 * Dimensions.get('window').width,
       backgroundColor: colors.originalColor,
+      borderColor: global.primary,
       marginTop: -Dimensions.get('window').height * 0.1,
       height: Dimensions.get('window').height,
       elevation: 5,
@@ -66,7 +69,8 @@ const generateViewPostStyles = (colors: {
     },
     message_button: {
       alignSelf: 'center',
-      elevation: 5,
+      top: '20%',
+      // elevation: 5,
     },
   });
 

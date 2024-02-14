@@ -36,14 +36,11 @@ const Home = ({ navigation }: { navigation: any }) => {
   }
 
   return (
-    <LinearGradient
-      style={globalscreenstyles.container}
-      colors={[
-        global.background,
-        global.post_color.expiry_mid[0],
-        global.background,
-      ]}
-      start={{ x: 0, y: 0 }}>
+    <View style={globalscreenstyles.container}>
+      {/* <LinearGradient
+        style={globalscreenstyles.container}
+        colors={[global.background, global.purple, global.background]}
+        start={{ x: 0, y: 0 }}> */}
       <TabBarTop
         LeftIcon={<Logo size={55} ></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
@@ -61,7 +58,8 @@ const Home = ({ navigation }: { navigation: any }) => {
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
         RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
-    </LinearGradient>
+      {/* </LinearGradient> */}
+    </View>
   );
 };
 
