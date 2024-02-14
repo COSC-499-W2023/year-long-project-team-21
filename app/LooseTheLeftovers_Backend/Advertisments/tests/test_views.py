@@ -5,7 +5,8 @@ from .test_setup import TestSetUpCreateAdvertisment, TestSetUpRetrieveAdvertisme
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-from Advertisments.api.views import get_expiry_formatted
+from Advertisments.api.serializers import ReturnAdvertismentSerializer
+from Advertisments.cron import delete_expired_ads
 
 class TestCreateAd(TestSetUpCreateAdvertisment):
 
@@ -148,7 +149,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # specific user id to get all ads for
         # this may have to be modified (also in assert statement) as more tests are added.
         # a correct primary key to use depends on how many tests run before this one
-        specific_ad_id = 18 
+        specific_ad_id = 30
 
         # create get request using kwargs
         specific_ad_url = reverse(
@@ -163,7 +164,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert ad matching primary key is returned
-        self.assertEqual(response.data['id'], 18)
+        self.assertEqual(response.data['id'], 30)
 
         # assert path to image is included
         self.assertEqual(response.data['image'], '/media/app/LooseTheLeftovers_Backend/media/images/12345.PNG')
@@ -174,7 +175,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
     def test_get_users_ads(self):
         """
         Test if all ads created by a user can be retrieved with GET request. 
-        Expect HTTP_200_OK response and the ad data and image url in returned as json
+        Expect HTTP_200_OK response and 3 ads returned as json (only 3 due to pagination)
         """
         client = APIClient()
 
@@ -199,11 +200,30 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert 3 ads returned 
         self.assertEqual(len(response.data), 3)
 
-        # assert 3 images returned
-        self.assertEqual(len(response.data), 3)
+    def test_get_users_ads_last_page(self):
+        """
+        Test if ads created by a user can be retrieved after the final page of ads with GET request. 
+        Expect HTTP_204_NO_CONTENT response
+        """
+        client = APIClient()
 
-        # assert expiries included
-        self.assertEqual(len(response.data), 3)
+        # specific user id to get all ads for
+        specific_user_id = 1
+
+        # create get request using kwargs
+        user_ad_url = reverse(
+            "user-ads", 
+            kwargs={"user_id": specific_user_id}
+        ) + "?page=2"
+
+        # send request
+        response = client.get(
+            user_ad_url,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+        )
+
+        # assert valid response
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_get_users_ads_no_authentication(self):
         """
@@ -226,10 +246,10 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_get_all_ads(self):
+    def test_get_all_ads_first_page(self):
         """
-        Test if single ad can be retrieved via GET request. Expect HTTP_200_OK response and the ad
-        information in returned as json
+        Test if all ads can be retrieved via GET request. Expect HTTP_200_OK response and three ads
+        returned as json (only 3 because of pagination)
         """
         client = APIClient()
 
@@ -245,16 +265,54 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert 3 ads returned (max 3 per page)
         self.assertEqual(len(response.data), 3)
 
-        # assert 3 images returned (max 3 per page)
-        self.assertEqual(len(response.data), 3)
+    def test_get_all_ads_second_page(self):
+        """
+        Test if the second page of ads can be retrieved with a GET request.
+        5 ads in total are created in test setup and 3 are returned per page. 
+        The second page should therefore have 2 ads on it
+        """
+        client = APIClient()
 
-        # assert expiries included
-        self.assertEqual(len(response.data), 3)
+        # create get request using kwargs
+        ad_url = reverse("all-ads") + "?page=2"
+
+        # send request
+        response = client.get(ad_url)
+
+        # assert valid response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # assert 2 ads returned
+        self.assertEqual(len(response.data), 2)
+    
+    def test_get_all_ads_page_out_of_bounds(self):
+        """
+        Test if page after final page of ads can be retrieved with a GET request.
+        5 ads in total are created in test setup and 3 are returned per page, so the 
+        third page will not exist.
+
+        Expect a 204 no content response
+        """
+        client = APIClient()
+
+        # create get request using kwargs
+        ad_url = reverse("all-ads") + "?page=3"
+        response = client.get(ad_url)
+
+        # assert valid response
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # try again with larger page number, should be same result
+        ad_url = reverse("all-ads") + "?page=8"
+        response = client.get(ad_url)
+
+        # assert valid response
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_get_ad_that_does_not_exist(self):
         """
-        Test if single ad can be retrieved via GET request. Expect HTTP_200_OK response and the ad
-        information in returned as json
+        Test if single ad can be retrieved via GET request but using a primary key that does not exist.
+        Expect 204 no content response
         """
         client = APIClient()
 
@@ -273,6 +331,28 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_delete_expired_ads(self):
+        '''
+        Test that the function that deletes expired ads is deleting them correctly.
+        Test setup ads 5 total ads of which 2 have expired dates, therefore there should be
+        3 left after the expired ones are deleted.
+        '''
+        # assert there are 5 ads (and images) before function call
+        all_ads = Advertisment.objects.all()
+        all_images = AdvertismentImage.objects.all()
+        self.assertEqual(len(all_ads), 5)
+        self.assertEqual(len(all_images), 5)
+
+        # call function; currently set to return the number of ads deleted
+        number_deleted_ads = delete_expired_ads()
+        self.assertEqual(number_deleted_ads, 2)
+
+        # assert there are now 3 ads (and images) left in the database
+        all_ads = Advertisment.objects.all()
+        all_images = AdvertismentImage.objects.all()
+        self.assertEqual(len(all_ads), 3)
+        self.assertEqual(len(all_images), 3)
+
 class ExpiryDateTests(APITestCase):
 
     def test_short_expiry(self):
@@ -281,7 +361,7 @@ class ExpiryDateTests(APITestCase):
         Expect '1 days'
         '''
         expiry = date.today() + timedelta(days=1)
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '1 day')
 
@@ -291,7 +371,7 @@ class ExpiryDateTests(APITestCase):
         Expect '1 week'
         '''
         expiry = date.today() + timedelta(days=7)
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '1 week')
 
@@ -301,7 +381,7 @@ class ExpiryDateTests(APITestCase):
         Expect '2 weeks'
         '''
         expiry = date.today() + timedelta(days=14)
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '2 weeks')
 
@@ -311,6 +391,6 @@ class ExpiryDateTests(APITestCase):
         Expect '2 weeks' (no expiry will forever show two weeks)
         '''
         expiry = None
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '2 weeks')
