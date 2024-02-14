@@ -30,8 +30,10 @@ const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'CreateAd'>>();
 
-  // Link to image
-  const image = '../assets/ad.png';
+
+  //link to image
+  const image = '../assets/create-ad.png';
+
 
   // Navigates to CreateAd and sends parameters
   const goToCreateAd = () => {

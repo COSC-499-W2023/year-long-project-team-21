@@ -78,7 +78,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     <>
       <LinearGradient
         style={styles.LoginContainer}
-        colors={['#251D3A', global.background]}
+        colors={[global.purple, global.background]}
         start={{ x: 1, y: 0 }}>
         <Icon
           source={require('../assets/logo-with-name.png')}

@@ -127,7 +127,7 @@ const Post: React.FC<PostProps> = ({
               showGlutenFreeIcon,
             )}
             <View style={cardStyles.card_image_wrapper_style}>
-              {renderPostImage(cardStyles.post_image_style, image, 100)}
+              {renderPostImage(cardStyles.post_image_style, image, 135)}
             </View>
           </View>
         </Card.Content>

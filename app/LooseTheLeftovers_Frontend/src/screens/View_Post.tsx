@@ -127,7 +127,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
                 console.log('hi');
               }}
               borderRadius={0.05 * Dimensions.get('window').width}
-              color={card_color_dict.middleColor}
+              backgroundcolor={card_color_dict.middleColor}
               borderColor={card_color_dict.middleColor}
               textColor={global.secondary}
             />
@@ -144,7 +144,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
-
       <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, adData.image, 400)}
