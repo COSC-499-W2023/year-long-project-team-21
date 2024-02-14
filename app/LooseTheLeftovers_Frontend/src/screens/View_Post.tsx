@@ -29,6 +29,7 @@ import { djangoConfig } from '../common/NetworkRequest';
 import { BASE_URL } from '../common/API';
 import axios from 'axios';
 import { AdDataProps } from '../common/Types';
+import GoBackIcon from '../components/GoBackIcon';
 
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
@@ -142,7 +143,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+      <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
+
       <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, adData.image, 400)}

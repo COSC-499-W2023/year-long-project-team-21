@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, Text } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import styles from '../styles/imagePickerStyles';
 import { type ImagePickerButtonProps } from '../common/Types';
 
 /**
  * ImagePickerButton component.
  *
- * This component provides a button to trigger an image selection process. Upon pressing the button,
- * it opens the device's image library, allowing the user to choose an image. The selected image is then displayed
- * in the component.
+ * This component provides two buttons to trigger an image selection process. Upon pressing 'Open Gallery' button,
+ * it opens the device's image library, allowing the user to choose an image. Pressing 'Open Camera' button opens
+ * device's camera in app, allowing to take a single picture. The selected image is then displayed in the component.
  *
  * @component
  * @example
@@ -17,37 +17,48 @@ import { type ImagePickerButtonProps } from '../common/Types';
  *   <ImagePickerButton />
  * )
  */
-const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({ onImagePicked }) => {
+const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
+  onImagePicked,
+}) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const testID = 'image-picker';
+  const pickerTest = 'image-picker';
+  const galleryTest = 'gallery-test';
+  const cameraTest = 'camera-test';
+  const imageTest = 'selected-image';
 
-  const handlePress = async () => {
-    // Add options for image picker
-    const result = await launchImageLibrary({
+  const handleImagePick = async (launchFunction: any) => {
+    const result = await launchFunction({
       mediaType: 'photo',
       quality: 1,
     });
 
-    // Check if the uri is not undefined before updating the state
     if (result.assets && result.assets[0].uri) {
       setImageUri(result.assets[0].uri);
       onImagePicked(result.assets[0].uri);
     }
   };
 
+  // Same handling logic, different functions to call
+  const openGallery = () => handleImagePick(launchImageLibrary);
+  const openCamera = () => handleImagePick(launchCamera);
+
+  const renderButton = (title: string, onPress: () => void, testID: string) => (
+    <TouchableOpacity onPress={onPress} style={styles.button} testID={testID}>
+      <Text style={styles.buttonText}>{title}</Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={handlePress}
-        style={styles.button}
-        testID={testID}>
-        <Text style={styles.buttonText}>Open Gallery</Text>
-      </TouchableOpacity>
+    <View style={styles.container} testID={pickerTest}>
+      <View style={styles.buttonContainer}>
+        {renderButton('Open Gallery', openGallery, galleryTest)}
+        {renderButton('Open Camera', openCamera, cameraTest)}
+      </View>
       {imageUri && (
         <Image
           source={{ uri: imageUri }}
           style={styles.image}
-          testID='selected-image'
+          testID={imageTest}
         />
       )}
     </View>
