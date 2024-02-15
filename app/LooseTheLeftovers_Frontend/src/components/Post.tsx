@@ -43,7 +43,6 @@ const Post: React.FC<PostProps> = ({
 }: PostProps): JSX.Element => {
   const screenWidth = Dimensions.get('window').width;
   const scaleValue = useRef(new Animated.Value(1)).current;
-  const [lightMode, setLightMode] = useState('');
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
@@ -128,7 +127,7 @@ const Post: React.FC<PostProps> = ({
               showGlutenFreeIcon,
             )}
             <View style={cardStyles.card_image_wrapper_style}>
-              {renderPostImage(cardStyles.post_image_style, image, 100)}
+              {renderPostImage(cardStyles.post_image_style, image, 135)}
             </View>
           </View>
         </Card.Content>
