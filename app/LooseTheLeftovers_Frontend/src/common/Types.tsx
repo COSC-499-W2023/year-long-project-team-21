@@ -363,6 +363,16 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+interface RatingProps {
+  selectedColor?: string;
+  unselectedColor?: string;
+  count?: number;
+  defaultRating?: number;
+  size?: number;
+  showRating?: boolean;
+  isDisabled?: boolean;
+  onFinishRating?: (rating: number) => void;
+}
 
 export {
   type ButtonProps,
@@ -384,4 +394,5 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type RatingProps,
 };
