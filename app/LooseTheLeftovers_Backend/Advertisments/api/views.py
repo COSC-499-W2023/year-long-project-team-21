@@ -204,8 +204,7 @@ def retrieve_advertisments_for_user(request, user_id):
         user_ads = Advertisment.objects.filter(user_id=user_id)
         user_ad_images = AdvertismentImage.objects.filter(ad_id__in=user_ads)
     except:
-        response = {"message": "No ad found"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     try:
         # put query results into pages
@@ -236,8 +235,7 @@ def retrieve_advertisments_for_user(request, user_id):
 
     # when index for page is out of bounds return 204 response       
     except EmptyPage as e:
-        response = {"message": "Last page reached"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         # send problem response and server error
@@ -266,8 +264,7 @@ def retrieve_all_advertisments(request):
         all_ads = Advertisment.objects.all().defer('description')
         all_images = AdvertismentImage.objects.all()
     except:
-        response = {"message": "No ad found"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
     try:
         # put query results into pages
@@ -298,8 +295,7 @@ def retrieve_all_advertisments(request):
     
     # when index for page is out of bounds return 204 response 
     except EmptyPage as e:
-        response = {"message": "Last page reached"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
