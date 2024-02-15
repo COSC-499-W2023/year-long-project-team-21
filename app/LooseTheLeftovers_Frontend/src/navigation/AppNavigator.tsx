@@ -10,12 +10,18 @@ import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
 import ChatList from '../screens/ChatList';
 import View_Post from '../screens/View_Post';
+import Reviews from '../screens/Reivews';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="Reviews"
+        component={Reviews}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={Login}

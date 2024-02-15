@@ -364,6 +364,7 @@ interface SelectRangeBarProps {
 }
 
 interface RatingProps {
+  testID?: string;
   selectedColor?: string;
   unselectedColor?: string;
   count?: number;
