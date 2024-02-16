@@ -21,12 +21,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
   const [loadedAllAds, setLoadedAllAds] = useState(false);
-  
+
   /*
-  * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render. 
-  * After rendering items, fetchData sets fetchAllowed to false. Once user scrolls to the bottom of the page, fetchAllowed is set to true, which calls the backend again. 
-  * Potential performance gains here by only listening if fetchAllowed is true 
-  */
+   * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render.
+   * After rendering items, fetchData sets fetchAllowed to false. Once user scrolls to the bottom of the page, fetchAllowed is set to true, which calls the backend again.
+   * Potential performance gains here by only listening if fetchAllowed is true
+   */
   useEffect(() => {
     if (fetchAllowed) fetchData(currentPage);
   }, [fetchAllowed]);
@@ -75,13 +75,14 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     try {
       const payload = await getData(page);
       const response = payload.status;
-      if(response == 200){
+      if (response == 200) {
         let data = filterData(payload.data);
         data = filterExistingData(data);
-        setPosts(prevData => [...prevData, ...data]);
-        setCurrentPage(currentPage + 1);
-      }
-      else if(response == 204){
+        if (data.length > 0) {  //crucial to fetch the latest data
+          setPosts(prevData => [...prevData, ...data]);
+          setCurrentPage(currentPage + 1);
+        }
+      } else if (response == 204) {
         setLoadedAllAds(true);
       }
     } catch (error) {
@@ -161,14 +162,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @description
    * Renders a loading indicator as a footer while data is being fetched.
    */
-  const ListFooterComponent = () => (
+  const ListFooterComponent = () =>
     loadedAllAds ? (
       <Text style={postListStyles.footer}></Text>
     ) : (
       <Text style={postListStyles.footer}>Loading...</Text>
-    )
-  );
-  
+    );
+
   const keyExtractor = useCallback(
     (item: PostProps, index: number) => `${item.id}_${index}`,
     [],
@@ -183,12 +183,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       removeClippedSubviews={true}
       ListFooterComponent={ListFooterComponent}
       onEndReached={() => {
-        console.log("what the fuck");
-        setFetchAllowed(true)}
-      }
+        console.log('End reached');
+        setFetchAllowed(true);
+      }}
       onEndReachedThreshold={0.3}
       data={posts}
-      keyExtractor={keyExtractor} 
+      keyExtractor={keyExtractor}
       renderItem={renderPostItem}
       ListHeaderComponent={
         isHeaderInNeed ? renderHeader_Home : renderHeader_Profile
