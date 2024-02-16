@@ -8,7 +8,7 @@ import { type AllIconProps } from '../common/Types';
  * Icon component.
  *
  * A clickable homeicon component that be used in various parts of the application including tab.
- * Will take you to the create ad screen
+ * Takes you to the CreateAd screen.
  *
  * @component
  * @param {IconProps} props - The props for the Icon component.
@@ -19,29 +19,31 @@ import { type AllIconProps } from '../common/Types';
  * @example
  */
 
-//creates the parameters we're sending
+// Creates the parameters we're sending
 type RootStackParamList = {
   CreateAd: { name: string };
 };
 
-//uses all icon prop for the interface
+// Uses all icon prop for the interface
 const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
-  //creates a navigation hook
+  // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'CreateAd'>>();
 
-  //link to image
-  const image = '../assets/ad.png';
 
-  //navigates to instruction and sends parameters
-  const goToHomeScreen = () => {
-    navigation.navigate('CreateAd', { name: 'CreateAd' });
+  //link to image
+  const image = '../assets/create-ad.png';
+
+
+  // Navigates to CreateAd and sends parameters
+  const goToCreateAd = () => {
+    navigation.navigate('CreateAd', { name: 'CreateAdIcon' });
   };
 
-  //call this to display and icon image. No need to input anything to the component, will automatically
-  //set the image size and navigation. Yhis is Good for reusability.
+  // Call this to display an icon image. No need to input anything to the component, will automatically
+  // set the image size and navigation, good for reusability.
   return (
-    <TouchableOpacity onPress={goToHomeScreen} testID={'CreateAdIconTest'}>
+    <TouchableOpacity onPress={goToCreateAd} testID={'CreateAdIconTest'}>
       <Image
         source={require(image)}
         style={[{ width: size, height: size }]}

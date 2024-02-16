@@ -247,13 +247,13 @@ interface UpperBarProps {
  * @property {number} expiry - The number of days until the ad expires.
  * @property {string} imageUri - The URI of the image associated with the ad, optional.
  */
-
 interface AdDataProps {
-  title: string;
-  description: string;
   category: string;
-  expiry: number;
-  imageUri?: string;
+  description: string;
+  expiry: string;
+  title: string;
+  image: string;
+  color: string;
 }
 
 /**
@@ -353,18 +353,11 @@ interface ViewPostProps {
 interface PostListRendererProps {
   isHeaderInNeed: boolean;
   endpoint: string;
-  getData: () => any;
+  getData: (pagenumber: number) => any;
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
 }
-
-/**
- * PostProps interface for Post component.
- *
- * @interface
- * @property {function} selectedRange - get range selected and send it back to the home
- */
 
 interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;

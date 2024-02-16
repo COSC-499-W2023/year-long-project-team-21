@@ -6,24 +6,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    //borderWidth: 0.75,
     backgroundColor: global.tertiary,
     height: 50,
-    //borderColor: global.primary,
     borderRadius: 15,
-    // width: '40%',4
-    width: 280,
+    width: '100%',
     marginVertical: 10,
   },
   input: {
     color: global.secondary,
     padding: 10,
-    // width: 280 - 40, // Adjust for padding and icon width if secureTextEntry is true
+    flex: 1,
   },
   inputWithToggle: {
     color: global.secondary,
     padding: 10,
-    // width: 280 - 40 - 30, // Subtract the width of the icon
+    flex: 1,
   },
   icon: {
     color: global.primary,

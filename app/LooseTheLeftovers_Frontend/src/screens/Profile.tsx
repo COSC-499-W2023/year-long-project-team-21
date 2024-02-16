@@ -65,9 +65,9 @@ const Profile = ({ navigation }: { navigation: any }) => {
   };
 
   // function passed down as a prop to handle retrieivng ads for users
-  async function fetchAds() {
+  async function fetchAds(pageNumber: number) {
     const req: SecureAPIReq = await SecureAPIReq.createInstance();
-    const endpoint: string = usersAds + userID + '/';
+    const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
     const payload: any = await req.get(endpoint);
     return payload.data;
   }

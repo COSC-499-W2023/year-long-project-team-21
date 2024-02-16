@@ -5,7 +5,6 @@ const generateSelectRangeBarStyles = (screenWidth: number) =>
   StyleSheet.create({
     picker: {
       width: screenWidth / 2,
-      borderWidth: 4,
       borderColor: global.dropdown_color.medium_border,
       borderRadius: 0.06 * screenWidth,
       backgroundColor: global.primary,
@@ -18,7 +17,7 @@ const generateSelectRangeBarStyles = (screenWidth: number) =>
       color: global.secondary,
     },
     dropDown: {
-      borderColor: global.dropdown_color.medium_border,
+      borderColor: global.primary,
       width: screenWidth / 2,
       borderRadius: 0.06 * screenWidth,
       borderWidth: 2,
