@@ -4,7 +4,6 @@ import {
   FlatList,
   Text,
   ListRenderItem,
-  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
@@ -13,52 +12,33 @@ import { ChatType } from '../common/Types';
 
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
-import Icon from '../components/Icon';
 import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import AccountIcon from '../components/AccountIcon';
+import ChatListItem from '../components/ChatListItem';
 
 import chatData from '../assets/dummy_chats.json';
 // Page sends an error if FlatList gets no data
-
-// ChatListItem component
-const ChatListItem: React.FC<{ chat: ChatType }> = ({ chat }) => {
-  const handleChatPress = () => {
-    console.log('Pressed chat:', chat.id);
-  };
-
-  return (
-    <TouchableOpacity onPress={handleChatPress} style={styles.chatItem}>
-      <Text style={styles.chatItemName}>{chat.name}</Text>
-      <Text style={styles.chatItemMessage}>{chat.lastMessage}</Text>
-    </TouchableOpacity>
-  );
-};
 
 const ChatList = ({ navigation }: { navigation: any }) => {
   const title = 'Messsages';
   const testID = 'title-test';
 
-  // To be replaced with 'Back' button
-  function handleLeftPress(): void {
-    navigation.goBack();
-  }
-
   const renderItem: ListRenderItem<ChatType> = ({ item }) => (
-    <ChatListItem chat={item} />
+    <ChatListItem 
+      chat={item} 
+      onPress={(chatId) => {
+        console.log('Pressed chat:', chatId);
+      }}
+    />
   );
+  
   const keyExtractor = (item: ChatType) => item.id.toString();
 
   return (
     <SafeAreaView style={globalscreenstyles.container}>
       {/* Header */}
       <TabBarTop
-        LeftIcon={
-          <Icon
-            source={require('../assets/back_arrow_white.png')}
-            onPress={handleLeftPress}
-          />
-        }
         MiddleIcon={
           <Text style={styles.title} testID={testID}>
             {title}
