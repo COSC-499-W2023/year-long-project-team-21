@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  FlatList,
-  Text,
-  ListRenderItem,
-} from 'react-native';
+import { View, FlatList, Text, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
 import globalscreenstyles from '../common/global_ScreenStyles';
@@ -15,24 +10,24 @@ import TabBarBottom from '../components/TabBarBottom';
 import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import AccountIcon from '../components/AccountIcon';
-import ChatListItem from '../components/ChatListItem';
+import ChatListItem from '../components/chatlist-utils/ChatListItem';
+import ChatListEmptyComponent from '../components/chatlist-utils/ChatListEmpty';
 
 import chatData from '../assets/dummy_chats.json';
-// Page sends an error if FlatList gets no data
 
 const ChatList = ({ navigation }: { navigation: any }) => {
   const title = 'Messsages';
   const testID = 'title-test';
 
   const renderItem: ListRenderItem<ChatType> = ({ item }) => (
-    <ChatListItem 
-      chat={item} 
-      onPress={(chatId) => {
+    <ChatListItem
+      chat={item}
+      onPress={chatId => {
         console.log('Pressed chat:', chatId);
       }}
     />
   );
-  
+
   const keyExtractor = (item: ChatType) => item.id.toString();
 
   return (
@@ -52,6 +47,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
           data={chatData}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          ListEmptyComponent={ChatListEmptyComponent}
         />
       </View>
 

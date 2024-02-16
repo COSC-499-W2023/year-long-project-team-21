@@ -25,6 +25,16 @@ const styles = StyleSheet.create({
     color: global.primary,
     textAlign: 'center',
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: global.secondary,
+  },
 });
 
 export default styles;

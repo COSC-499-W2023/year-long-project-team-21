@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import ChatListItem from '../../src/components/ChatListItem';
+import ChatListItem from '../../../src/components/chatlist-utils/ChatListItem';
 
 describe('ChatListItem Component Tests', () => {
   const mockChatData = {
@@ -12,10 +12,7 @@ describe('ChatListItem Component Tests', () => {
 
   it('displays the chat name and last message', () => {
     const { getByText } = render(
-      <ChatListItem
-        chat={mockChatData}
-        onPress={() => {}}
-      />
+      <ChatListItem chat={mockChatData} onPress={() => {}} />,
     );
 
     expect(getByText(mockChatData.name)).toBeTruthy();
@@ -24,12 +21,9 @@ describe('ChatListItem Component Tests', () => {
 
   it('triggers onPress event when pressed', () => {
     const mockOnPress = jest.fn();
-    
+
     const { getByTestId } = render(
-      <ChatListItem
-        chat={mockChatData}
-        onPress={mockOnPress}
-      />
+      <ChatListItem chat={mockChatData} onPress={mockOnPress} />,
     );
 
     const chatListItem = getByTestId('chatlist-item-test');

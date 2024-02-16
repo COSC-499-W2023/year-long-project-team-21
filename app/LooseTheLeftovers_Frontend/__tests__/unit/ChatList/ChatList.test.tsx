@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import ChatList from '../../src/screens/ChatList';
-import chatData from '../../src/assets/dummy_chats.json';
+import ChatList from '../../../src/screens/ChatList';
+import chatData from '../../../src/assets/dummy_chats.json';
 
 const navigation = {
   navigate: jest.fn(),
@@ -16,7 +16,7 @@ describe('ChatList Screen', () => {
     const { getByText } = render(<ChatList navigation={navigation} />);
     expect(getByText('Messages')).toBeDefined();
     // Only check the first three chats
-    chatData.slice(0, 3).forEach((chat) => {
+    chatData.slice(0, 3).forEach(chat => {
       expect(getByText(chat.name)).toBeDefined();
       expect(getByText(chat.lastMessage)).toBeDefined();
     });
@@ -24,16 +24,15 @@ describe('ChatList Screen', () => {
 
   it('logs chat id on press', () => {
     const consoleSpy = jest.spyOn(console, 'log');
-    
+
     const { getByText } = render(<ChatList navigation={navigation} />);
     const firstChatName = chatData[0].name;
     fireEvent.press(getByText(firstChatName));
-  
+
     expect(consoleSpy).toHaveBeenCalledWith('Pressed chat:', chatData[0].id);
-  
+
     consoleSpy.mockRestore();
   });
-  
 
   it('navigates to Home and Profile on tab press', () => {
     const { getByTestId } = render(<ChatList navigation={navigation} />);

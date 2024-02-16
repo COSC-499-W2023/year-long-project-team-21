@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import styles from '../styles/chatListStyles';
-import { ChatListItemProps } from '../common/Types';
+import styles from '../../styles/chatListStyles';
+import { ChatListItemProps } from '../../common/Types';
 
 /**
  * ChatListItem component.
@@ -26,7 +26,10 @@ import { ChatListItemProps } from '../common/Types';
 
 const ChatListItem: React.FC<ChatListItemProps> = ({ chat, onPress }) => {
   return (
-    <TouchableOpacity onPress={() => onPress(chat.id)} style={styles.chatItem} testID='chatlist-item-test'>
+    <TouchableOpacity
+      onPress={() => onPress(chat.id)}
+      style={styles.chatItem}
+      testID="chatlist-item-test">
       <Text style={styles.chatItemName}>{chat.name}</Text>
       <Text style={styles.chatItemMessage}>{chat.lastMessage}</Text>
     </TouchableOpacity>
