@@ -6,6 +6,7 @@ import SelectRangeBar from './SelectRangeBar';
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
+import { useFocusEffect } from '@react-navigation/native';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
@@ -21,6 +22,21 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
   const [loadedAllAds, setLoadedAllAds] = useState(false);
+
+  // Function to fetch data when the screen gains focus
+  const fetchDataOnFocus = () => {
+    setPosts([]); // Clear existing posts when the screen gains focus
+    setCurrentPage(1); // Reset current page to 1
+    setFetchAllowed(true); // Allow fetching data again
+    setLoadedAllAds(false)
+  };
+
+  // Use useFocusEffect to fetch data when the screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchDataOnFocus();
+    }, []),
+  );
 
   /*
    * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render.
@@ -78,10 +94,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       if (response == 200) {
         let data = filterData(payload.data);
         data = filterExistingData(data);
-        if (data.length > 0) {  //crucial to fetch the latest data
-          setPosts(prevData => [...prevData, ...data]);
-          setCurrentPage(currentPage + 1);
-        }
+        setPosts(prevData => [...prevData, ...data]);
+        setCurrentPage(currentPage + 1);
       } else if (response == 204) {
         setLoadedAllAds(true);
       }
@@ -91,6 +105,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       setFetchAllowed(false);
     }
   };
+
   /**
    * @function
    * @description
