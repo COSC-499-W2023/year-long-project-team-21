@@ -144,17 +144,9 @@ class LocationService {
    * @throws {Error} Throws an error if an issue occurs.
    * @private
    */
-  private async checkThreshold(oldTime: number) {
-    try {
-      const difference = Date.now() - oldTime;
-      if (difference < this.threshold) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error: any) {
-      throw new Error(`Error check threshold: ${error.message}`);
-    }
+  private checkThreshold(oldTime:number) {
+    const delta = Date.now() - oldTime;
+    return delta < this.threshold 
   }
 
   /**
@@ -272,16 +264,20 @@ class LocationService {
    */
   public async getLocation() {
     Geolocation.getCurrentPosition(
+      // callback function for sucessfully retrived location
       async position => {
-        console.log(position);
-        const dataSaved = await this.saveLocationToCache(position.coords);
+        // set the location attribute to the retrieved position
         this.location = position;
-        //await this.sendLocationToServer(position);
-        console.log('location data is cached: ', dataSaved);
+        // save the data to the cache (@TODO combine with EncryptedStorage?)
+        const dataSaved = await this.saveLocationToCache(position.coords);
       },
+      // callback function for an error 
       async error => {
+        // set the location attribute to undefined. 
         this.location = undefined;
+        // see if there is a cached location 
         const cachedLocation = await this.getCachedLocation();
+        // take a look at this here. 
         if (cachedLocation) {
           console.log(cachedLocation);
         }
@@ -289,11 +285,9 @@ class LocationService {
       },
       { enableHighAccuracy: true, timeout: 1500, maximumAge: 10000 },
     );
-
-    console.log(this.location);
   }
 
-  //retrieves the chached location only if the infomation is new enough based on the threshold specified in instatiation.
+  //retrieves the cached location only if the infomation is new enough based on the threshold specified in instatiation.
   /**
    * Retrieves the cached location if it's recent, otherwise fetches a new location.
    * @returns {Promise<GeoCoordinates|null>} The cached location or null if not found.
@@ -302,12 +296,13 @@ class LocationService {
    */
   private async getCachedLocation() {
     try {
+      // retrieve location from storage 
       const cachedLocation = await EncryptedStorage.getItem('cachedLocation');
       if (cachedLocation) {
+        // parse location, check if timestamp is within instantiated threshold
         const { timestamp, latitude, longitude } = JSON.parse(cachedLocation);
         const timeOK = this.checkThreshold(timestamp);
-        if (await timeOK) {
-          console.log(cachedLocation);
+        if (timeOK) {
           return { latitude, longitude };
         }
         return this.getLocation();
@@ -350,36 +345,6 @@ class LocationService {
     } catch (error: any) {
       console.log('Error happened at saveLocationToCache(): ', error.message);
       return false;
-    }
-  }
-
-  /**
-   * Sends the device's location to a server.
-   * @param {GeoPosition} position - The device's current location.
-   * @returns {Promise<void>}
-   * @throws {Error} Throws an error if an issue occurs.
-   */
-  public async sendLocationToServer(position: GeoPosition): Promise<void> {
-    try {
-      const apiUrl = 'https://10.0.2.2:8000/???';
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        }),
-      });
-
-      if (response.ok) {
-        console.log('Location data sent to server successfully');
-      } else {
-        console.error('Failed to send location data to server');
-      }
-    } catch (error) {
-      throw new Error('Error sending location data to server');
     }
   }
 }
