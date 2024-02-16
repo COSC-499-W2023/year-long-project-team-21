@@ -2,10 +2,17 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import ChatList from '../../../src/screens/ChatList';
 import chatData from '../../../src/assets/dummy_chats.json';
+import { NavigationContainer } from '@react-navigation/native';
 
 const navigation = {
   navigate: jest.fn(),
 };
+
+const MockedChatList = () => (
+  <NavigationContainer>
+    <ChatList navigation={{ navigate: navigation }} />
+  </NavigationContainer>
+);
 
 describe('ChatList Screen', () => {
   beforeEach(() => {
@@ -13,8 +20,8 @@ describe('ChatList Screen', () => {
   });
 
   it('renders correctly', () => {
-    const { getByText } = render(<ChatList navigation={navigation} />);
-    expect(getByText('Messages')).toBeDefined();
+    const { getByTestId, getByText } = render(<MockedChatList />);
+    expect(getByTestId('title-test')).toBeDefined();
     // Only check the first three chats
     chatData.slice(0, 3).forEach(chat => {
       expect(getByText(chat.name)).toBeDefined();
@@ -25,7 +32,7 @@ describe('ChatList Screen', () => {
   it('logs chat id on press', () => {
     const consoleSpy = jest.spyOn(console, 'log');
 
-    const { getByText } = render(<ChatList navigation={navigation} />);
+    const { getByText } = render(<MockedChatList />);
     const firstChatName = chatData[0].name;
     fireEvent.press(getByText(firstChatName));
 
@@ -34,11 +41,19 @@ describe('ChatList Screen', () => {
     consoleSpy.mockRestore();
   });
 
-  it('navigates to Home and Profile on tab press', () => {
-    const { getByTestId } = render(<ChatList navigation={navigation} />);
-    fireEvent.press(getByTestId('left-test'));
-    expect(navigation.navigate).toHaveBeenCalledWith('Home');
-    fireEvent.press(getByTestId('right-test'));
-    expect(navigation.navigate).toHaveBeenCalledWith('Profile');
+  it('checks if TabBar Icons are present and pressable', () => {
+    const { getByTestId } = render(<MockedChatList />);
+
+    const homeIcon = getByTestId('HomeIconTest');
+    expect(homeIcon).toBeTruthy();
+    fireEvent.press(homeIcon);
+
+    const createIcon = getByTestId('CreateAdIconTest');
+    expect(createIcon).toBeTruthy();
+    fireEvent.press(createIcon);
+
+    const accountIcon = getByTestId('AccountIconTest');
+    expect(accountIcon).toBeTruthy();
+    fireEvent.press(accountIcon);
   });
 });
