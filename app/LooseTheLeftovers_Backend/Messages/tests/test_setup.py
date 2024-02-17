@@ -1,3 +1,4 @@
+import os
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -57,7 +58,7 @@ class TestSetUpGetMessage(APITestCase):
             expiry="2024-02-25T12:30:00.000000Z"
         )
 
-        # create 3 messages sent by user_1 to user_2
+        # create messages for test conversation
         self.message_1 = Message.objects.create(
             msg="Hey!",
             sender_id=self.user_1.id,
@@ -73,26 +74,24 @@ class TestSetUpGetMessage(APITestCase):
             ad_id = self.ad.id
         )
         self.message_3 = Message.objects.create(
-            msg="Does tomorrow afternoon work? Maybe 3pm?",
-            sender_id=self.user_1.id,
-            receiver_id=self.user_2.id,
-            time_sent="2024-02-10T20:39:00.000000Z",
-            ad_id = self.ad.id
-        )
-
-        # create 4 messages sent by user_2 to user_1
-        self.message_4 = Message.objects.create(
             msg="Hello, yes they are",
             sender_id=self.user_2.id,
             receiver_id=self.user_1.id,
             time_sent="2024-02-10T12:45:10.000000Z",
             ad_id = self.ad.id
         )
-        self.message_5 = Message.objects.create(
+        self.message_4 = Message.objects.create(
             msg="When can you pick them up",
             sender_id=self.user_2.id,
             receiver_id=self.user_1.id,
             time_sent="2024-02-10T12:45:20.000000Z",
+            ad_id = self.ad.id
+        )
+        self.message_5 = Message.objects.create(
+            msg="Does tomorrow afternoon work? Maybe 3pm?",
+            sender_id=self.user_1.id,
+            receiver_id=self.user_2.id,
+            time_sent="2024-02-10T20:39:00.000000Z",
             ad_id = self.ad.id
         )
         self.message_6 = Message.objects.create(
@@ -112,6 +111,3 @@ class TestSetUpGetMessage(APITestCase):
 
         # call APITestCase.setUp()
         return super().setUp()
-
-    def tearDown(self):
-        return super().tearDown()

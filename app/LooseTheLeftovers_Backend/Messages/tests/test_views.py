@@ -29,7 +29,16 @@ class TestRetrieveMessages(TestSetUpGetMessage):
         # assert 200 response returned and 7 messages in the response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 7)
-    
+
+        # loop to check the messages are in order of time_sent
+        isOrdered = True
+        for i in range(2, len(response.data)):
+            if response.data[i-1]['time_sent'] > response.data[i]['time_sent']:
+                isOrdered = False
+                break
+        self.assertTrue(isOrdered)
+
+
     def test_get_messages_no_athentication(self):
         '''
         test to see if messages can be retrieved via GET request without being logged in
