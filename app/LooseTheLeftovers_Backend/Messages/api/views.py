@@ -106,7 +106,7 @@ def get_messages(request):
         if len(messages_sent) == 0:
             serializer_received = GetMessageSerializer(messages_received, many=True)
             return Response(
-                serializer_received.validated_data,
+                serializer_received.data,
                 status=status.HTTP_200_OK,
             )
         
@@ -114,19 +114,16 @@ def get_messages(request):
         if len(messages_received) == 0:
             serializer_sent = GetMessageSerializer(messages_sent, many=True)
             return Response(
-                serializer_sent.validated_data,
+                serializer_sent.data,
                 status=status.HTTP_200_OK,
             )
-
+ 
         # if there are both sent and received messages, serialize both to json
-        serializer_sent = GetMessageSerializer(messages_sent, many=True)
-        serializer_received = GetMessageSerializer(messages_received, many=True)
+        messages = messages_sent.union(messages_received).order_by("time_sent")
+        serializer_sent = GetMessageSerializer(messages, many=True)
 
-        # merge results into one data structure
-        combined_data = list(serializer_sent.data) + list(serializer_received.data)
-        
         return Response(
-            combined_data,
+            serializer_sent.data,
             status=status.HTTP_200_OK,
         )
 
