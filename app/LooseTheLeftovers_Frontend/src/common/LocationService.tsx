@@ -92,8 +92,7 @@ class LocationService {
    */
   public async initializeLocationService() {
     try {
-      if (this.os === 'android')
-        this.hasPermission = await this.getLocationPermissionAndroid();
+      if (this.os === 'android') this.hasPermission = await this.getLocationPermissionAndroid();
       else this.hasPermission = await this.getLocationPermissionIOS();
 
       if (this.hasPermission) {
@@ -302,9 +301,11 @@ class LocationService {
         // parse location, check if timestamp is within instantiated threshold
         const { timestamp, latitude, longitude } = JSON.parse(cachedLocation);
         const timeOK = this.checkThreshold(timestamp);
+        // return time within threshold 
         if (timeOK) {
           return { latitude, longitude };
         }
+        // return new location 
         return this.getLocation();
       } else {
         console.log('Could not find chached location info');
