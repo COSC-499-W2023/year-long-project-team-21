@@ -37,51 +37,19 @@ class LocationService {
   }
 
   /**
-   * Sets the threshold for location timestamp validity.
-   * @param {number} threshold - The new threshold value.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
-  private setThreshold(threshold: number) {
-    try {
-      this.threshold = threshold;
-    } catch (error: any) {
-      throw new Error(`Error setting threshold: ${error.message}`);
-    }
-  }
-
-  /**
-   * Gets the current threshold for location timestamp validity.
-   * @returns {number} The current threshold.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
-  private getThreshold() {
-    try {
-      return this.threshold;
-    } catch (error: any) {
-      throw new Error(`Error getting threshold: ${error.message}`);
-    }
-  }
-
-  /**
    * Gets the operating system identifier.
    * @returns {string} The operating system identifier.
    * @throws {Error} Throws an error if an issue occurs.
    * @private
    */
   private getOS() {
-    try {
-      switch (Platform.OS) {
-        case 'ios':
-          return 'ios';
-        case 'android':
-          return 'android';
-        default:
-          return 'unknown';
-      }
-    } catch (error: any) {
-      throw new Error(`Error getOS : ${error.message}`);
+    switch (Platform.OS) {
+      case 'ios':
+        return 'ios';
+      case 'android':
+        return 'android';
+      default:
+        return 'unknown';
     }
   }
 
@@ -105,21 +73,6 @@ class LocationService {
   }
 
   /**
-   * Gets the current time in milliseconds.
-   * @returns {number} The current timestamp.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
-  private getCurrentTime() {
-    try {
-      const timestampInMilliseconds = Date.now();
-      return timestampInMilliseconds;
-    } catch (error: any) {
-      throw new Error(`Error get Current time: ${error.message}`);
-    }
-  }
-
-  /**
    * Opens the device settings for the app.
    * @throws {Error} Throws an error if an issue occurs.
    * @private
@@ -134,18 +87,6 @@ class LocationService {
     } catch (error: any) {
       throw new Error(`Error open settings: ${error.message}`);
     }
-  }
-
-  /**
-   * Checks if the time difference is within the threshold.
-   * @param {number} oldTime - The old timestamp.
-   * @returns {boolean} True if within threshold, false otherwise.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
-  private checkThreshold(oldTime:number) {
-    const delta = Date.now() - oldTime;
-    return delta < this.threshold 
   }
 
   /**
@@ -199,17 +140,14 @@ class LocationService {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Geolocation Permission',
-          message: 'Can we access your location?',
+          title: 'Location Access',
+          message: 'Please enable location services to access ads nearby.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         },
       );
-
-      console.log('granted', granted);
       if (granted === 'granted') {
-        console.log('You can use Geolocation');
         return true;
       } else if (granted == 'never_ask_again') {
         console.log('The user denied to be asked again.');
@@ -231,8 +169,7 @@ class LocationService {
    * @throws {Error} Throws an error if an issue occurs.
    */
   public async promptToChangeLocationSettings() {
-    const message =
-      'To use this app, please enable location permissions in settings.';
+    const message = 'To use this app, please enable location permissions in settings.';
     try {
       Alert.alert(
         'Location Permissions Required',
@@ -262,6 +199,7 @@ class LocationService {
    * @throws {Error} Throws an error if an issue occurs.
    */
   public async getLocation() {
+    // this might need to be refactored to retrieve the cached location first... 
     Geolocation.getCurrentPosition(
       // callback function for sucessfully retrived location
       async position => {
@@ -284,69 +222,6 @@ class LocationService {
       },
       { enableHighAccuracy: true, timeout: 1500, maximumAge: 10000 },
     );
-  }
-
-  //retrieves the cached location only if the infomation is new enough based on the threshold specified in instatiation.
-  /**
-   * Retrieves the cached location if it's recent, otherwise fetches a new location.
-   * @returns {Promise<GeoCoordinates|null>} The cached location or null if not found.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
-  private async getCachedLocation() {
-    try {
-      // retrieve location from storage 
-      const cachedLocation = await EncryptedStorage.getItem('cachedLocation');
-      if (cachedLocation) {
-        // parse location, check if timestamp is within instantiated threshold
-        const { timestamp, latitude, longitude } = JSON.parse(cachedLocation);
-        const timeOK = this.checkThreshold(timestamp);
-        // return time within threshold 
-        if (timeOK) {
-          return { latitude, longitude };
-        }
-        // return new location 
-        return this.getLocation();
-      } else {
-        console.log('Could not find chached location info');
-        return null;
-      }
-    } catch (error: any) {
-      console.log('Error happened at getCachedLocation().', error.message);
-      return undefined;
-    }
-  }
-
-  //Everytime the location is newly retrieved, the position and timestamp is stored in the encrypted storage as JSON format.
-  /**
-   * Saves the current location to encrypted storage.
-   * @param {GeoCoordinates} position - The current location.
-   * @returns {Promise<boolean>} True if saved successfully, false otherwise.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
-  private async saveLocationToCache(
-    position: GeoCoordinates,
-  ): Promise<Boolean> {
-    let locationWithTimestamp: {
-      timestamp: number;
-      latitude: number;
-      longitude: number;
-    };
-
-    try {
-      locationWithTimestamp = {
-        timestamp: this.getCurrentTime(),
-        latitude: position.latitude,
-        longitude: position.longitude,
-      };
-      const stringifiedLocation = JSON.stringify(locationWithTimestamp);
-      await EncryptedStorage.setItem('cachedLocation', stringifiedLocation);
-      return true;
-    } catch (error: any) {
-      console.log('Error happened at saveLocationToCache(): ', error.message);
-      return false;
-    }
   }
 }
 
