@@ -7,27 +7,49 @@ from Messages.models import Message
 from Users.models import CustomUser
 from Advertisments.models import Advertisment
 
-class TestSetUpCreateMessage(APITestCase):
+class TestSetUpSendMessage(APITestCase):
     def setUp(self):
 
-        # create temp msg
-        self.test_msg = Message.objects.create(
-            msg="test msg",
-            sender_id = 1,
-            receiver_id = 2,
-            ad_id = 1
+        # create 2 test users
+        self.username_1 = "user_1"
+        self.password_2 = "123"
+        self.user_1 = CustomUser.objects.create_user(
+            username=self.username_1,
+            password=self.password_2
         )
-        # call APITestCase.setUp()
+        self.user_1.save()
+
+        self.username_1 = "user_2"
+        self.password_2 = "456"
+        self.user_2 = CustomUser.objects.create_user(
+            username=self.username_1,
+            password=self.password_2
+        )
+        self.user_2.save()
+
+        # get token for user_1
+        token = RefreshToken.for_user(self.user_1)
+        self.token = str(token.access_token)
+        self.refresh = str(token)
+        
+        # create 1 test ad
+        self.ad = Advertisment.objects.create(
+            user_id=self.user_1.id,
+            title='Bananas',
+            description='Some bananas',
+            category='vegan',
+            expiry="2024-02-25T12:30:00.000000Z"
+        )
+
         return super().setUp()
 
     def tearDown(self):
-        self.test_msg.delete()
         return super().tearDown()
     
 class TestSetUpGetMessage(APITestCase):
     def setUp(self):
 
-         # create 2 test users
+        # create 2 test users
         self.username_1 = "user_1"
         self.password_2 = "123"
         self.user_1 = CustomUser.objects.create_user(
