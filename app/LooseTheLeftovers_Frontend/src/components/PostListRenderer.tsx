@@ -25,13 +25,11 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
 
   // Function to fetch data when the screen gains focus
   const fetchDataOnFocus = () => {
-    setPosts([]); // Clear existing posts when the screen gains focus
-    setCurrentPage(1); // Reset current page to 1
     setFetchAllowed(true); // Allow fetching data again
     setLoadedAllAds(false)
   };
 
-  // Use useFocusEffect to fetch data when the screen gains focus
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered. 
   useFocusEffect(
     useCallback(() => {
       fetchDataOnFocus();
