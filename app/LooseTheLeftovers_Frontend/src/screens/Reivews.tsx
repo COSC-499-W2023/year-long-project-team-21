@@ -4,7 +4,7 @@ import Texts from '../components/Text';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
 import ReviewStyles from '../styles/ReviewStyles';
-import Rating from '../components/Rating';
+import Ratings from '../components/Rating';
 import Button from '../components/Button';
 
 const Reviews = ({ navigation }: { navigation: any }) => {
@@ -17,11 +17,12 @@ const Reviews = ({ navigation }: { navigation: any }) => {
         How would you rate this interaction?
       </Text>
       <View style={ReviewStyles.Rating}>
-        <Rating size={50}></Rating>
+        <Ratings startingValue={0} imageSize={60}></Ratings>
       </View>
       <View style={ReviewStyles.Button}>
         <Button onPress={handleButtonOnPress} title="Done"></Button>
       </View>
+      {/* <AirbnbRating></AirbnbRating> */}
     </View>
   );
 };

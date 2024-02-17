@@ -365,13 +365,12 @@ interface SelectRangeBarProps {
 
 interface RatingProps {
   testID?: string;
-  selectedColor?: string;
-  unselectedColor?: string;
-  count?: number;
-  defaultRating?: number;
-  size?: number;
+  backgroundColor?: string;
+  ratingCount?: number;
+  startingValue?: number;
+  imageSize?: number;
   showRating?: boolean;
-  isDisabled?: boolean;
+  readonly?: boolean;
   onFinishRating?: (rating: number) => void;
 }
 

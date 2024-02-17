@@ -18,13 +18,13 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Reviews"
-        component={Reviews}
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Login"
-        component={Login}
+        name="Reviews"
+        component={Reviews}
         options={{ headerShown: false }}
       />
       <Stack.Screen
