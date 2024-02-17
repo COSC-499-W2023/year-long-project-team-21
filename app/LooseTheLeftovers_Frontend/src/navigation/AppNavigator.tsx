@@ -19,6 +19,7 @@ const AppNavigator = () => {
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect hook determining if the app has been launched before. Updates state accordingly. 
   useEffect(() => { 
     const checkLaunch = async () => {
       try{
@@ -43,7 +44,7 @@ const AppNavigator = () => {
     checkLaunch();
   },  []);
 
-  
+  // load a splash screen while checking if has launched before. 
   if (isLoading) {
     return <SplashScreen />;
   }
@@ -70,6 +71,7 @@ const AppNavigator = () => {
         name="Home"
         component={Home}
         options={{ headerShown: false }}
+        initialParams = {{ firstLaunch: firstLaunch }}
       />
       <Stack.Screen
         name="View_Post"
