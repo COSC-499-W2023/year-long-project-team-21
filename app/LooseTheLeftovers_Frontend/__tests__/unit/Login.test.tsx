@@ -15,10 +15,10 @@ const navigation = {
   navigate: jest.fn(), // Mocking the navigate function
 };
 
-
+// mocking first login 
 const route = { 
   params: { 
-    firstLaunch: false 
+    firstLaunch: true 
   } 
 };
 
@@ -111,6 +111,70 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
       expect(navigation.navigate).toHaveBeenCalled();
+    });
+  });
+
+  it('navigates to Instructon screen on successful first time login', async () => {
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    // Mock a successful API response
+    mockedAxios.post.mockResolvedValueOnce({
+      status: 200,
+      data: { token: 'fake_token' },
+    });
+
+    const navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
+
+    const { getByPlaceholderText, getByTestId } = render(
+      <Login navigation={navigation} route={route}/>,
+    );
+
+    // Simulate user input and button press
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
+    fireEvent.press(getByTestId('loginButton'));
+
+    await waitFor(() => {
+      // Check if navigation was triggered with the correct screen name
+      expect(navigation.navigate).toHaveBeenCalledWith("Instruction");
+    });
+  });
+
+  
+  it('navigates to the Home screen on successful n+ login', async () => {
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    // Mock a successful API response
+    mockedAxios.post.mockResolvedValueOnce({
+      status: 200,
+      data: { token: 'fake_token' },
+    });
+    
+    // mocking has launched before 
+    const route = { 
+    params: { 
+      firstLaunch: false 
+      } 
+    };
+
+    const navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
+
+    const { getByPlaceholderText, getByTestId } = render(
+      <Login navigation={navigation} route={route}/>,
+    );
+
+    // Simulate user input and button press
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
+    fireEvent.press(getByTestId('loginButton'));
+
+    await waitFor(() => {
+      // Check if navigation was triggered with the correct screen name
+      expect(navigation.navigate).toHaveBeenCalledWith("Home");
     });
   });
 
