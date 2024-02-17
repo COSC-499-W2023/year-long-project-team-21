@@ -15,6 +15,13 @@ const navigation = {
   navigate: jest.fn(), // Mocking the navigate function
 };
 
+
+const route = { 
+  params: { 
+    firstLaunch: false 
+  } 
+};
+
 describe('Login component', () => {
   beforeEach(() => {
     jest.clearAllMocks(); // Clear all mocks including axios
@@ -22,7 +29,7 @@ describe('Login component', () => {
 
   it('renders correctly', () => {
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     // Check if the username and password input fields are rendered
@@ -38,7 +45,7 @@ describe('Login component', () => {
   });
 
   it('handles input changes', () => {
-    const { getByPlaceholderText } = render(<Login navigation={navigation} />);
+    const { getByPlaceholderText } = render(<Login navigation={navigation} route={route} />);
 
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
@@ -53,7 +60,7 @@ describe('Login component', () => {
   it('handles button press - success', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     const { getByPlaceholderText, getByTestId, queryByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     // Simulate user input in the username field
@@ -93,7 +100,7 @@ describe('Login component', () => {
     };
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     // Simulate user input and button press
@@ -113,7 +120,7 @@ describe('Login component', () => {
     mockedAxios.post.mockRejectedValueOnce(new Error('API error'));
 
     const { getByPlaceholderText, getByTestId, queryByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     // Simulate user input in the username field
@@ -146,7 +153,7 @@ describe('Login component', () => {
   it('handles button press - failure to login with invalid credentials', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     const { getByPlaceholderText, getByTestId, queryByTestId, debug } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     fireEvent.changeText(getByPlaceholderText('Username'), 'wrongtestuser');
@@ -183,7 +190,7 @@ describe('Login component', () => {
     });
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     // Simulate user input and button press
@@ -205,7 +212,7 @@ describe('Login component', () => {
     mockedAxios.post.mockRejectedValueOnce(new Error('Invalid credentials'));
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route}/>,
     );
 
     // Simulate user input with invalid credentials
