@@ -27,8 +27,8 @@ class MessageSerializer(serializers.Serializer):
 
         Returns an instance of the Advertisment that was saved.
         """
-        user = self.context["request"].user
-        ad = Message.objects.create(user_id=user.id, **validated_data)
+        sender = self.context["request"].user.id
+        ad = Message.objects.create(sender_id=sender, **validated_data)
         return ad
 
 class GetMessageSerializer(serializers.Serializer):

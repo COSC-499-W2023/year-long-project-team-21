@@ -4,8 +4,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage
 
+from Users.models import CustomUser
 from Messages.models import Message
-from Messages.api.serializers import GetMessageSerializer
+from Messages.api.serializers import MessageSerializer, GetMessageSerializer
 
 class MessageHandler(APIView):
     """
@@ -64,10 +65,36 @@ def send_message(request):
     POST request to send a message from on user to another. 
 
     Request should include:
+        -msg contents
         -user id (of receiver)
         -ad id
     '''
-    return Response(status=status.HTTP_501_NOT_IMPLEMENTED)
+
+    # retrieve receiver to validate that it exists
+    try:    
+        CustomUser.objects.get(pk=request.data['receiver_id'])
+    except:
+        return Response("invalid recipient", status=status.HTTP_400_BAD_REQUEST)
+
+    # deserialize incoming data
+    msg_serializer = MessageSerializer(
+        data=request.data, context={"request": request}
+    )
+
+    # validate data in request
+    #   if serializer is not valid return 400 response
+    if not msg_serializer.is_valid():
+        return Response(msg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # save ad
+        msg_serializer.save()
+
+        # return 201 response indicating ad was created successfully
+        return Response(msg_serializer.validated_data, status=status.HTTP_201_CREATED)
+    except:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 def get_messages(request):
     """
