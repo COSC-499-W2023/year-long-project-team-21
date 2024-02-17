@@ -23,6 +23,7 @@ import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
 import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
+import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
 import { djangoConfig } from '../common/NetworkRequest';
@@ -111,8 +112,12 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       <Card style={style}>
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
+          <View style={styles.ratings}>
+            <Ratings></Ratings>
+          </View>
           <Title style={styles.expiry}>{adData.expiry}</Title>
           <Text style={styles.description}>{adData.description}</Text>
+
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,

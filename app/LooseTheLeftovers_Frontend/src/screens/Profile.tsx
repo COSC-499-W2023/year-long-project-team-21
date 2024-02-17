@@ -9,7 +9,7 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
-import Ratings from '../components/Rating';
+import Ratings from '../components/Ratings';
 import {
   removeUserSession,
   retrieveUserSession,
@@ -82,10 +82,9 @@ const Profile = ({ navigation }: { navigation: any }) => {
     return <ActivityIndicator size="large" />;
   }
 
+  //this is for when backend is implementated
   const ratingCompleted = (rating: number) => {
     console.log(rating);
-    // const finalrating = rating;
-    // return finalrating;
   };
 
   return (
@@ -96,6 +95,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
           <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
           <View style={{ marginTop: '-15%' }}>
             <Ratings
+              onFinishRating={ratingCompleted}
               readonly={true}
               backgroundColor={global.tertiary}></Ratings>
           </View>
