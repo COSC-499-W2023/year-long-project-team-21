@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => { 
     const checkLaunch = async () => {
@@ -27,9 +27,11 @@ const AppNavigator = () => {
           setFirstLaunch(false);
         }
         setFirstLaunch(true);
+        //setIsLoading(false);
+        /*
         setTimeout(() => {
           setIsLoading(false);
-        }, 2500);
+        }, 2500);*/
       }
       catch(e){
         console.error(e);
@@ -38,10 +40,10 @@ const AppNavigator = () => {
     checkLaunch();
   },  []);
 
-
+  /*
   if (isLoading) {
     return <SplashScreen />;
-  }
+  }*/
 
   return (
     <Stack.Navigator>
@@ -49,7 +51,6 @@ const AppNavigator = () => {
         name="Login"
         component={Login}
         options={{ headerShown: false }}
-        initialParams={{firstLaunch:firstLaunch}}
       />
       <Stack.Screen
         name="Registration"
