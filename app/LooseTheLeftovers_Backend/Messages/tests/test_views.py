@@ -3,78 +3,8 @@ from rest_framework import status
 
 from .test_setup import TestSetUpGetMessage, TestSetUpSendMessage
 from Messages.models import Message
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APIClient
 
-class TestRetrieveMessages(TestSetUpGetMessage):
-
-    __message_url = reverse("messages")
-
-    def test_get_messages(self):
-        '''
-        test to see if messages can be retrieved via GET request.
-        Expect 200 response and 7 messages in the response
-        '''
-        data = {
-            'user_id': self.user_2.id,
-            'ad_id': self.ad.id,
-        }
-
-        client = APIClient()
-        response = client.get(
-            self.__message_url,
-            data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
-        )
-
-        # assert 200 response returned and 7 messages in the response
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 7)
-
-        # loop to check the messages are in order of time_sent
-        isOrdered = True
-        for i in range(2, len(response.data)):
-            if response.data[i-1]['time_sent'] > response.data[i]['time_sent']:
-                isOrdered = False
-                break
-        self.assertTrue(isOrdered)
-
-    def test_get_messages_no_athentication(self):
-        '''
-        test to see if messages can be retrieved via GET request without being logged in
-        (not logged in means no access token included in request)
-        '''
-        data = {
-            'user_id': self.user_2.id,
-            'ad_id': self.ad.id,
-        }
-
-        client = APIClient()
-        response = client.get(
-            self.__message_url,
-            data,
-        )
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-    
-    def test_get_messages_empty_response(self):
-        '''
-        test to see if messages can be retrieved via GET request, but the request is
-        for messages that do not exist. Expect 204 response
-        '''
-        data = {
-            'user_id': self.user_2.id,
-            'ad_id': 999,
-        }
-
-        client = APIClient()
-        response = client.get(
-            self.__message_url,
-            data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
-        )
-
-        # assert 200 response returned and 7 messages in the response
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-    
 class TestSendMessages(TestSetUpSendMessage):
 
     __message_url = reverse("messages")
@@ -140,3 +70,133 @@ class TestSendMessages(TestSetUpSendMessage):
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+class TestRetrieveMessages(TestSetUpGetMessage):
+
+    __message_url = reverse("messages")
+
+    def test_get_messages(self):
+        '''
+        test to see if messages can be retrieved via GET request.
+        Expect 200 response and 7 messages in the response
+        '''
+        data = {
+            'user_id': self.user_2.id,
+            'ad_id': self.ad.id,
+        }
+
+        client = APIClient()
+        response = client.get(
+            self.__message_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+        )
+
+        # assert 200 response returned and 6 messages in the response
+        #   (pagination only returns up to 6 items)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 6)
+
+        # loop to check the messages are in order of time_sent
+        isOrdered = True
+        for i in range(2, len(response.data)):
+            if response.data[i-1]['time_sent'] > response.data[i]['time_sent']:
+                isOrdered = False
+                break
+        self.assertTrue(isOrdered)
+    
+    def test_get_messages_page_2(self):
+        '''
+        test to see if messages can be retrieved via GET request.
+        Expect 200 response and 1 messages in the response
+        '''
+
+        # create GET url with parameters in header
+        get_url = self.__message_url + '?user_id=' + str(self.user_2.id) + '&ad_id=' + str(self.ad.id) + '&page=2'
+
+        client = APIClient()
+        response = client.get(
+            get_url,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+        )
+
+        # assert 200 response returned and 1 message in the response
+        # pagination returns up to 6 items. There are 7 ads so page 2
+        # should only have 1
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+    
+    def test_get_messages_page_3(self):
+        '''
+        test to see if messages can be retrieved via GET request.
+        Expect 204 response as page is out of bounds
+        '''
+
+        # create GET url with parameters in header
+        get_url = self.__message_url + '?user_id=' + str(self.user_2.id) + '&ad_id=' + str(self.ad.id) + '&page=3'
+
+        client = APIClient()
+        response = client.get(
+            get_url,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+        )
+
+        # assert 200 response returned and 6 messages in the response
+        #   (pagination only returns up to 6 items)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_messages_no_athentication(self):
+        '''
+        test to see if messages can be retrieved via GET request without being logged in
+        (not logged in means no access token included in request)
+        '''
+        data = {
+            'user_id': self.user_2.id,
+            'ad_id': self.ad.id,
+        }
+
+        client = APIClient()
+        response = client.get(
+            self.__message_url,
+            data,
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    def test_get_messages_empty_response(self):
+        '''
+        test to see if messages can be retrieved via GET request, but the request is
+        for messages that do not exist. Expect 204 response
+        '''
+        data = {
+            'user_id': self.user_2.id,
+            'ad_id': 999,
+        }
+
+        client = APIClient()
+        response = client.get(
+            self.__message_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+        )
+
+        # assert 200 response returned and 7 messages in the response
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    
+    def test_get_last_msg_converations(self):
+        '''
+        test to see if the last message in each conversation can be retrieved
+        '''
+
+        client = APIClient()
+        response = client.get(
+            self.__message_url + '?ad_id=' + str(self.ad.id),
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+        )
+
+        # assert 200 response returned and 1 messages in the response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+        # assert msg of last message in test setup is correct
+        self.assertEqual(response.data[0].get('username'), 'user_2')
+        self.assertEqual(response.data[0].get('msg'), 'My address is 123 1st Street')
