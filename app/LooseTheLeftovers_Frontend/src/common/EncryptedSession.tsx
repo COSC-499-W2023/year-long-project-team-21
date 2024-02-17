@@ -1,5 +1,26 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 
+// function that retrieves getFirstOpen
+export async function getFirstOpen(){
+  try{
+    const firstOpen = await EncryptedStorage.getItem('first_open');
+    return firstOpen; 
+  }
+  catch(error){
+    throw error;
+  }
+}
+
+// function that sets setFirstOpen to true 
+export async function setFirstOpen(){
+  try{
+    await EncryptedStorage.setItem("first_open", "true");
+  }
+  catch(error){
+    throw error;
+  }
+}
+
 /**
  * Stores user session data securely.
  * @param {string} token - The user's token.
