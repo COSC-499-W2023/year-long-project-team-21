@@ -2,8 +2,8 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 // Returns true if the program has launched once before. Returns false if it hasn't, then updates async encrpyted storage.
 export async function checkHasLaunched(){
-  const hasLaunched:boolean = await getHasLaunched();
-  if(hasLaunched === true){
+  const hasLaunched:any = await getHasLaunched();
+  if(hasLaunched === "true"){
     return true; 
   }
   await setHasLaunched();

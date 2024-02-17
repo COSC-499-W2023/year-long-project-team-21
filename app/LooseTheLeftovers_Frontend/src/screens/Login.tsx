@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Texts from '../components/Text';
 import {Text} from 'react-native';
 import styles from '../styles/loginStyle';
@@ -9,6 +9,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
+import { RouteProp } from '@react-navigation/native';
 
 /**
  * Login component.
@@ -22,10 +23,11 @@ import Icon from '../components/Icon';
  * // Usage
  * <Login />
  */
-const Login = ({ navigation }: { navigation: any }) => {
+const Login = ({ navigation, route }: { navigation: any; route: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { firstLaunch } = route.params;
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
@@ -35,7 +37,12 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        navigation.navigate('Home');
+        if(firstLaunch){
+          navigation.navigate('Instruction');
+        }
+        else{
+          navigation.navigate('Home');
+        }
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,

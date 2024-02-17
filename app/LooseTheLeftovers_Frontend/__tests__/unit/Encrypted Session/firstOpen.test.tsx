@@ -41,7 +41,7 @@ describe("firstOpen", () => {
     test("test that checkHasLaunched returns true if there is a hasLaunched variable", async () => {
         mockStorage.getItem.mockImplementation(async (key) => {
             if(key === "hasLaunched"){
-                return Promise.resolve(true);
+                return Promise.resolve("true");
             }
             return Promise.resolve(false);
         })

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { checkHasLaunched } from '../common/EncryptedSession'; 
+import { checkHasLaunched, getHasLaunched } from '../common/EncryptedSession'; 
 
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
@@ -17,21 +17,24 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
-  //const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => { 
     const checkLaunch = async () => {
       try{
-        const hasLaunched = await checkHasLaunched()
+        // check if the app has been launched before and set state accordingly
+        const hasLaunched = await checkHasLaunched();
+        console.log(hasLaunched);
         if(hasLaunched){
           setFirstLaunch(false);
         }
-        setFirstLaunch(true);
-        //setIsLoading(false);
-        /*
+        else{
+          setFirstLaunch(true);
+        }
+        // after check, setIsLoading to false to finalize loading screen aftern seconds
         setTimeout(() => {
           setIsLoading(false);
-        }, 2500);*/
+        }, 2500);
       }
       catch(e){
         console.error(e);
@@ -40,10 +43,10 @@ const AppNavigator = () => {
     checkLaunch();
   },  []);
 
-  /*
+  
   if (isLoading) {
     return <SplashScreen />;
-  }*/
+  }
 
   return (
     <Stack.Navigator>
@@ -51,6 +54,7 @@ const AppNavigator = () => {
         name="Login"
         component={Login}
         options={{ headerShown: false }}
+        initialParams={{ firstLaunch: firstLaunch }}
       />
       <Stack.Screen
         name="Registration"
