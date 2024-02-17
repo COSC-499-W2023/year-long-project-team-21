@@ -37,3 +37,8 @@ class GetMessageSerializer(serializers.Serializer):
     receiver_id = serializers.IntegerField()
     ad_id = serializers.IntegerField()
     time_sent = serializers.DateTimeField()
+
+class LastMessageSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    msg = serializers.CharField(max_length=1000)
+    time_sent = serializers.DateTimeField()
