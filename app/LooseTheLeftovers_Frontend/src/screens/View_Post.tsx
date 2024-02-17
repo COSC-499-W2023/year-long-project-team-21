@@ -113,7 +113,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
           <View style={styles.ratings}>
-            <Ratings></Ratings>
+            <Ratings readonly={true}></Ratings>
           </View>
           <Title style={styles.expiry}>{adData.expiry}</Title>
           <Text style={styles.description}>{adData.description}</Text>
