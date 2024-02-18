@@ -16,7 +16,8 @@ import { adEndpoint } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
 
-const Home = ({ navigation }: { navigation: any }) => {
+const Home = ({ navigation}: { navigation: any})  => {
+
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   // const checkLocationPermission = async () => {
   //   try {
@@ -27,6 +28,7 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
+
 
   async function fetchAds(pageNumber: number) {
     const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;

@@ -16,46 +16,17 @@ import SplashScreen from '../screens/SplashScreen';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-  const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect hook determining if the app has been launched before. Updates state accordingly. 
-  useEffect(() => { 
-    const checkLaunch = async () => {
-      try{
-        // check if the app has been launched before and set state accordingly
-        const hasLaunched = await checkHasLaunched();
-        console.log(hasLaunched);
-        if(hasLaunched){
-          setFirstLaunch(false);
-        }
-        else{
-          setFirstLaunch(true);
-        }
-        // after check, setIsLoading to false to finalize loading screen aftern seconds
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2500);
-      }
-      catch(e){
-        console.error(e);
-      }
-    }
-    checkLaunch();
-  },  []);
-
-  // load a splash screen while checking if has launched before. 
-  if (isLoading) {
-    return <SplashScreen />;
-  }
-
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={Login}
         options={{ headerShown: false }}
-        initialParams={{ firstLaunch: firstLaunch }}
       />
       <Stack.Screen
         name="Registration"
@@ -71,7 +42,6 @@ const AppNavigator = () => {
         name="Home"
         component={Home}
         options={{ headerShown: false }}
-        initialParams = {{ firstLaunch: firstLaunch }}
       />
       <Stack.Screen
         name="View_Post"
