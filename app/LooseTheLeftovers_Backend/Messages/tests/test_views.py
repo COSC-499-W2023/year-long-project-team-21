@@ -81,13 +81,17 @@ class TestRetrieveMessages(TestSetUpGetMessage):
         Expect 200 response and 7 messages in the response
         '''
         data = {
-            'user_id': self.user_2.id,
             'ad_id': self.ad.id,
         }
 
+        get_message_url = reverse(
+            "conversation", 
+            kwargs={"user_id": self.user_2.id}
+        )
+
         client = APIClient()
         response = client.get(
-            self.__message_url,
+            get_message_url,
             data,
             HTTP_AUTHORIZATION='Bearer ' + self.token,
         )
@@ -112,11 +116,15 @@ class TestRetrieveMessages(TestSetUpGetMessage):
         '''
 
         # create GET url with parameters in header
-        get_url = self.__message_url + '?user_id=' + str(self.user_2.id) + '&ad_id=' + str(self.ad.id) + '&page=2'
+        get_message_url = reverse(
+            "conversation", 
+            kwargs={"user_id": self.user_2.id}
+        ) + '?ad_id=' + str(self.ad.id) + '&page=2'
+
 
         client = APIClient()
         response = client.get(
-            get_url,
+            get_message_url,
             HTTP_AUTHORIZATION='Bearer ' + self.token,
         )
 
@@ -133,11 +141,14 @@ class TestRetrieveMessages(TestSetUpGetMessage):
         '''
 
         # create GET url with parameters in header
-        get_url = self.__message_url + '?user_id=' + str(self.user_2.id) + '&ad_id=' + str(self.ad.id) + '&page=3'
+        get_message_url = reverse(
+            "conversation", 
+            kwargs={"user_id": self.user_2.id}
+        ) + '?ad_id=' + str(self.ad.id) + '&page=3'
 
         client = APIClient()
         response = client.get(
-            get_url,
+            get_message_url,
             HTTP_AUTHORIZATION='Bearer ' + self.token,
         )
 
@@ -167,15 +178,14 @@ class TestRetrieveMessages(TestSetUpGetMessage):
         test to see if messages can be retrieved via GET request, but the request is
         for messages that do not exist. Expect 204 response
         '''
-        data = {
-            'user_id': self.user_2.id,
-            'ad_id': 999,
-        }
+        get_message_url = reverse(
+            "user-ads", 
+            kwargs={"user_id": 999}
+        ) + '?ad_id=' + str(self.ad.id) + '&page=3'
 
         client = APIClient()
         response = client.get(
-            self.__message_url,
-            data,
+            get_message_url,
             HTTP_AUTHORIZATION='Bearer ' + self.token,
         )
 
