@@ -64,12 +64,14 @@ class MessageHandler(APIView):
 
         # if a user id was passed, get the conversation between users
         try:
-            if request.GET.get('user_id') is None:
+            user_id = kwargs.get("user_id", None)
+
+            if user_id is None:
                 return get_last_message_per_conversation(request)
 
             # no user id was passed: return each converstation and the last message
             else:
-                return get_messages(request)
+                return get_messages(request, user_id)
                 
         except Exception as e:
             return Response(
@@ -113,7 +115,7 @@ def send_message(request):
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def get_messages(request):
+def get_messages(request, other_user_id):
     """
     GET request to handle retrieving Messages from the database.
 
@@ -123,7 +125,6 @@ def get_messages(request):
 
     # get data to query messages from the request
     request_user_id = request.user.id
-    other_user_id = request.GET.get('user_id')
     ad_id = request.GET.get('ad_id')
 
     # retrieve messages where the request user is the sender
