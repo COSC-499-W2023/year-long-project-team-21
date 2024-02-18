@@ -113,7 +113,8 @@ const SplashScreen = ({ navigation }: { navigation: any }) => {
   );
 };
 
-// You might need to adjust or add to your existing styles
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
