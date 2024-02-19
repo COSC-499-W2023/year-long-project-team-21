@@ -123,22 +123,26 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     {
       name: 'gluten-free',
       imageSource: require('../assets/gluten-free.png'),
-      size: 50,
+      size: 40,
     },
     {
       name: 'nut-free',
       imageSource: require('../assets/nut.png'),
-      size: 50,
+      size: 40,
     },
     {
       name: 'vegan',
       imageSource: require('../assets/vegan.png'),
-      size: 50,
+      size: 40,
     },
   ];
 
-  const handleCategoryPress = (categoryName: string) => {
-    console.log('Category clicked:', categoryName);
+  const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
+    if (isSelected) {
+      console.log('Category', categoryName, 'has been selected.');
+    } else {
+      console.log('Category', categoryName, 'has been deselected.');
+    }
   };
 
   /**
@@ -150,6 +154,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return (
       <View style={postListStyles.listHeder}>
         <CategoryRender
+          testID="category-render-container"
           onCategoryPress={handleCategoryPress}
           categoryInfo={categoryInfo}></CategoryRender>
         <View style={postListStyles.dropdownHeader}>

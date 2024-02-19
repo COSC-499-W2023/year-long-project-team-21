@@ -10,6 +10,7 @@ interface CategoryProps {
   imageSource: ImageSourcePropType;
   onPress: () => void;
   isSelected: boolean;
+  testID: string;
 }
 
 const Category: React.FC<CategoryProps> = ({
@@ -17,15 +18,17 @@ const Category: React.FC<CategoryProps> = ({
   size,
   imageSource,
   onPress,
+  testID,
 }) => {
   const category = {
-    width: 30 || size,
-    height: 30 || size,
+    width: size,
+    height: size,
   };
   const backgroundColor = isSelected ? global.primary : global.tertiary;
 
   return (
     <TouchableOpacity
+      testID={'categoryTestID'}
       onPress={onPress}
       style={[categoryStyles.container, { backgroundColor }]}>
       <Image source={imageSource} style={category} />

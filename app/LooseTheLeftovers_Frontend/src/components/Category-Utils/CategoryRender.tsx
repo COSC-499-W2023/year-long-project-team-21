@@ -12,12 +12,14 @@ interface CategoryInfo {
 
 interface CategoryRenderProps {
   categoryInfo: CategoryInfo[];
-  onCategoryPress: (categoryName: string) => void;
+  onCategoryPress: (categoryName: string, isSelected: boolean) => void;
+  testID: string;
 }
 
 const CategoryRender: React.FC<CategoryRenderProps> = ({
   categoryInfo,
   onCategoryPress,
+  testID,
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -25,10 +27,8 @@ const CategoryRender: React.FC<CategoryRenderProps> = ({
     const isSelected = selectedCategories.includes(categoryName);
 
     if (isSelected) {
-      // If already selected, remove from the selected list
       setSelectedCategories(prev => prev.filter(name => name !== categoryName));
     } else {
-      // If not selected, add to the selected list
       setSelectedCategories(prev => [...prev, categoryName]);
     }
   };
@@ -37,11 +37,14 @@ const CategoryRender: React.FC<CategoryRenderProps> = ({
     <View style={categoryStyles.categoryWhole}>
       {categoryInfo.map((category, index) => (
         <Category
+          testID={'CategoryRenderTestID'}
           key={index}
           isSelected={selectedCategories.includes(category.name)}
           onPress={() => {
-            toggleCategorySelection(category.name);
-            onCategoryPress(category.name);
+            const categoryName = category.name;
+            const isSelected = selectedCategories.includes(categoryName);
+            toggleCategorySelection(categoryName);
+            onCategoryPress(categoryName, !isSelected);
           }}
           size={category.size}
           categoryName={category.name}

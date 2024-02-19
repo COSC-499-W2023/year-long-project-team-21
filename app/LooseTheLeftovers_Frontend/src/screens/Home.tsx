@@ -15,7 +15,6 @@ import TabBarBottom from '../components/TabBarBottom';
 import { adEndpoint } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
-import Categories from '../components/CategoryUtils/Category';
 
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
