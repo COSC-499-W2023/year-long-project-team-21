@@ -7,7 +7,6 @@ from Advertisments.api.serializers import (
     AdvertismentSerializer,
     ImageSerializer,
     ReturnAdvertismentSerializer,
-    ReturnAdvertismentNoDescriptionSerializer,
 )
 from Advertisments.models import Advertisment, AdvertismentImage
 from datetime import date
@@ -190,9 +189,15 @@ def retrieve_single_advertisment(ad_id):
 
 def retrieve_advertisments_for_user(request, user_id):
     """
-    GET request to handle retrieving ads from the database. No authentication required.
+    GET request to handle retrieving ads from the database.
 
-    This method will return all ads created by the user that matches passed user_id
+    This method will return all ads created by the user that matches passed user_id. It uses
+    pagination so it will split the result into pages and return a page of results at a time
+
+    /ads/users/<user_id>?page=2 or /ads/users/<user_id>?page=3
+
+    if no page number is supplied, the first page is returned
+    if the page number is out of bounds, a HTTP_204 response is returned
     """
     try:
         # query all ads and their images for passed user
@@ -215,7 +220,7 @@ def retrieve_advertisments_for_user(request, user_id):
         image_page = image_paginator.page(page_number)
 
         # send each page to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        serializer = ReturnAdvertismentSerializer(ad_page, many=True)
         image_serializer = ImageSerializer(image_page, many=True)
 
         # merge results into one data structure
@@ -234,8 +239,6 @@ def retrieve_advertisments_for_user(request, user_id):
         response = {"message": "Last page reached"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
 
-
-
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
@@ -247,12 +250,20 @@ def retrieve_all_advertisments(request):
     GET request to handle retrieving ads from the database. No authentication required.
 
     This method will return all ads in the database. It uses pagination so it will split
-    the result into pages and return a page of results at a time (a page currently set to 
-    include 8 ads)
+    the result into pages and return a page of results at a time
+
+    To get a specific page of ads, the page number has to be passed in the GET request header
+    like this:
+
+    /ads?page=2 or /ads?page=3
+
+    if no page number is supplied, the first page is returned
+    if the page number is out of bounds, a HTTP_204 response is returned
+
     """
     try:
         # query all ads and their images
-        all_ads = Advertisment.objects.all()
+        all_ads = Advertisment.objects.all().defer('description')
         all_images = AdvertismentImage.objects.all()
     except:
         response = {"message": "No ad found"}
@@ -271,7 +282,7 @@ def retrieve_all_advertisments(request):
         image_page = image_paginator.page(page_number)
 
         # send each page to serializer to package data
-        serializer = ReturnAdvertismentNoDescriptionSerializer(ad_page, many=True)
+        serializer = ReturnAdvertismentSerializer(ad_page, many=True)
         image_serializer = ImageSerializer(image_page, many=True)
 
         # merge results into one data structure
@@ -293,25 +304,3 @@ def retrieve_all_advertisments(request):
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-def get_expiry_formatted(expiry):
-    '''
-    returns dict with two items: color and expiry. Both items are formatted to how front end needs them.
-    To be passed the expiry of the ad as datetime or None
-    '''
-    if expiry is None:
-        return {'color': 'expiry_long', 'expiry': '2 weeks'}
-    today = date.today()
-    delta = expiry - today
-    # >9 days will show as 2 weeks (long color)
-    if delta.days > 9:
-        return {'color': 'expiry_long', 'expiry': '2 weeks'}
-    # >6 days will show as 1 week (mid color)
-    elif delta.days > 6:
-        return {'color': 'expiry_mid', 'expiry': '1 week'}
-    # 1 day or less will show as 1 day (short color)
-    elif delta.days <= 1:
-        return {'color': 'expiry_short', 'expiry': '1 day'}
-    # 1 to 6 days will show as 'n' days (short color)
-    else:
-        return {'color': 'expiry_short', 'expiry': str(delta.days) + ' days'}
