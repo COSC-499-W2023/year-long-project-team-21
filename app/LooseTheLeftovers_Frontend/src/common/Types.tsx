@@ -214,7 +214,7 @@ interface ImageTextProps {
 // }
 
 interface UserInfoProps {
-  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfo: { [key: string]: string };
   userInfoKeys: string[];
 }
 

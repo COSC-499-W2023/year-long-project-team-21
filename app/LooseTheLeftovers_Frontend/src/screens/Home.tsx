@@ -35,44 +35,11 @@ const Home = ({ navigation }: { navigation: any }) => {
     return payload.data;
   }
 
-  const categoryInfo = [
-    {
-      name: '',
-      imageSource: '',
-      size: { width: 0, height: 0 },
-    },
-    {
-      name: '',
-      imageSource: '',
-      size: { width: 0, height: 0 },
-    },
-    {
-      name: '',
-      imageSource: '',
-      size: { width: 0, height: 0 },
-    },
-  ];
-
-  // const categoryList = () => {
-  //   return instructions.map(element => {
-  //     return (
-  //       <TextImage
-  //         key={element.id}
-  //         text={element.txt}
-  //         source={element.image}
-  //         size={element.size}
-  //       />
-  //     );
-  //   });
-  // };
-
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop
         LeftIcon={<Logo size={55}></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
-
-      <Categories></Categories>
 
       <View style={globalscreenstyles.middle}>
         <PostListRenderer

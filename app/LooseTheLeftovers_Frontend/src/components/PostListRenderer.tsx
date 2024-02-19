@@ -6,6 +6,8 @@ import SelectRangeBar from './SelectRangeBar';
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
+import CategoryRender from './Category-Utils/CategoryRender';
+import { global } from '../common/global_styles';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
@@ -117,6 +119,28 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     console.log(selectedRange);
   };
 
+  const categoryInfo = [
+    {
+      name: 'gluten-free',
+      imageSource: require('../assets/gluten-free.png'),
+      size: 50,
+    },
+    {
+      name: 'nut-free',
+      imageSource: require('../assets/nut.png'),
+      size: 50,
+    },
+    {
+      name: 'vegan',
+      imageSource: require('../assets/vegan.png'),
+      size: 50,
+    },
+  ];
+
+  const handleCategoryPress = (categoryName: string) => {
+    console.log('Category clicked:', categoryName);
+  };
+
   /**
    * @function
    * @description
@@ -125,6 +149,9 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
+        <CategoryRender
+          onCategoryPress={handleCategoryPress}
+          categoryInfo={categoryInfo}></CategoryRender>
         <View style={postListStyles.dropdownHeader}>
           <SelectRangeBar onSelectRange={handleSelectRange} />
         </View>

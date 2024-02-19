@@ -1,14 +1,19 @@
 import { StyleSheet } from 'react-native';
+import { global } from '../common/global_styles';
 
-const categoryBackground = StyleSheet.create({
+const categoryStyles = StyleSheet.create({
   container: {
-    // margin: 10,
-    // borderRadius: 40,
-    // height: 65,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // elevation: 3,
+    padding: '2%',
+    marginTop: '4%',
+    marginRight: '4%',
+    borderRadius: 10,
+  },
+  categoryWhole: {
+    flex: 1,
+    paddingLeft: '8%',
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
   },
 });
 
-export default categoryBackground;
+export default categoryStyles;
