@@ -1,8 +1,8 @@
-# Team 21 - 02/0 to 02/11
+# Team 21 - 02/11 to 02/18
 
 ## Overview
 
-Last week's peer evaluation went well for us but did result in several bugs being identified. We documented these bugs in a Google Doc along with feedback for some small feature requests/changes and reviewed them as a team. We focused on getting these bug fixes done this week and most of them are resolved. The rest of our focus is going toward finishing the next two large features for our app, which are location services and messaging. These features will be split into several sub-features and will require work on both the front and back end.
+After fixing up all of our bugs from the Peer Review, we are now working on the last bit of big features for our second round of peer evals during the first week of March. This includes hooking up the messaages front end to the back end being worked on by Sten and Egor, location services being worked on by Gerren, catagories and ratings being worked on by Sten and Nicholas, and the ability to update/edit the profile/ads by Kei. Egor worked on refining his create-ad screen waiting for Sten to finish and Gerren and Keizo fixed up a bug for lazy loading and the View Post component. 
 
 
 ## Quick reminder for usernames
@@ -15,29 +15,22 @@ Last week's peer evaluation went well for us but did result in several bugs bein
 
 ## Completed tasks for this week
 
-- bug fixes
-  - rending posts on home and profile screens
-  - view post colors showing correctly
-  - view post icons showing correctly
-  - home screen post colors updated to match user feedback (green, yellow, red)
-  - images show properly for posts (aspect ratio was sometimes off)
-  - back button added to pages that was missing it
-  - input fields width fixed
-- ads automatically delete after they expire
-- retrieve messages from backend via GET
-- Add image to create ad using phone camera
+- Messages (back end)
+- Reviews (front end)
+- Create Ad updates and fixes
+- Bug fix for lazy loading (full stack) 
   
 ## Tasks in progress
 
-- Retrieving messages (backend)
-- Sending messages (storing on backend)
-- Messages (frontend)
-- Editing/deleting ads (backend)
-- Location services
-- Bugs 
+- Messages API hook up
+- Catagories
+- Location Services
+- Editing profile and Ads.
+
 
 ## Burn Up Chart
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/50179b1e-b5bb-4f1f-953e-47c156973909)
+![burn](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/ccd7f0db-e371-4063-a6f6-96cde6ffe1c6)
+
 
 
 ### Test Report
@@ -52,8 +45,8 @@ Last week's peer evaluation went well for us but did result in several bugs bein
 
 
 ### Project Board
+![project board](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/d34961a1-10f6-4be0-b484-c51956d27643)
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/6ab55959-c50f-4024-ac6a-3ab0c8119e69)
 
 
 
