@@ -1,25 +1,27 @@
 # Sten Korver Personal Weekly Log
 
-02/05 to 02/11
+02/12 to 02/18
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Expired ads delete automatically
-* Retrieve messages from backend
 * Store messages on backend
+* Retrieve messages from backend
 
 ### Completed Features For This Week:
-* Expired ads delete automatically
-    * Once a day a scheduled task runs to get expired ads and delete them
+* Store messages on backend
+  * handle POST request to save a message sent from on user to another
 * Retrieve messages from backend
-    * Backend can receive GET request to return messages belonging to a conversation between two users
+   * retrieve all messages in conversation between two users
+   * retrieve most recent message from each conversation for one user for messages screen
+
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/f56bc41b-6799-4d5d-9a5a-bac6ce7ecbfe)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/1898e231-9af8-411d-a1ca-c6d0194569a6)
+
 
 
 
