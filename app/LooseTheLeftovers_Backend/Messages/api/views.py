@@ -11,23 +11,26 @@ from Messages.api.serializers import MessageSerializer, GetMessageSerializer, La
 
 class MessageHandler(APIView):
     """
-    API View for handling advertisment requests.
+    API View for handling message requests.
 
-    This view handles creating ads with POST requests as well as retrieving
-    ads from the database.
+    This view handles creating messages with POST requests as well as retrieving
+    messages from the database.
     """
 
     def post(self, request, *args, **kwargs):
         """
-        Handle POST requests to create a new ad. Requires authentication so valid token must
+        Handle POST requests to create a new message. Requires authentication so valid token must
         be included in the request header.
 
         Args:
-            request (HttpRequest): The request object containing the advertisment data.
-            Also has to contain an image to include with the ad
+            request (HttpRequest): The request object containing the message data.
+            The json data contained in the request should include:
+                msg (the contents of the message)
+                user_id (of the user receiving the message)
+                ad_id
 
         Returns:
-            Response: Response object with the ad data and a HTTP_201_OK response
+            Response: Response object with the message data and a HTTP_201_OK response
         """
         # Manually authenticate user
         permission = IsAuthenticated()
@@ -50,7 +53,7 @@ class MessageHandler(APIView):
         requesting user.
         
         Returns:
-            Response: Response object with the messages as json. Messages will be sorted from oldest to newest
+            Response: Response object with the messages as json. Messages will be sorted from newest to oldest
 
         """
 
@@ -177,7 +180,7 @@ def get_messages(request, other_user_id):
             )
  
         # if there are both sent and received messages, serialize both to json
-        messages = messages_sent.union(messages_received).order_by("time_sent")
+        messages = messages_sent.union(messages_received).order_by("-time_sent")
     
         # put query result into pages
         msg_paginator = Paginator(messages, 6)
