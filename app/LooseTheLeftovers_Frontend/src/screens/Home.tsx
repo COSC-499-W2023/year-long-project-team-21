@@ -15,6 +15,7 @@ import TabBarBottom from '../components/TabBarBottom';
 import { adEndpoint } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
+import Categories from '../components/CategoryUtils/Category';
 
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
@@ -34,15 +35,45 @@ const Home = ({ navigation }: { navigation: any }) => {
     return payload.data;
   }
 
+  const categoryInfo = [
+    {
+      name: '',
+      imageSource: '',
+      size: { width: 0, height: 0 },
+    },
+    {
+      name: '',
+      imageSource: '',
+      size: { width: 0, height: 0 },
+    },
+    {
+      name: '',
+      imageSource: '',
+      size: { width: 0, height: 0 },
+    },
+  ];
+
+  // const categoryList = () => {
+  //   return instructions.map(element => {
+  //     return (
+  //       <TextImage
+  //         key={element.id}
+  //         text={element.txt}
+  //         source={element.image}
+  //         size={element.size}
+  //       />
+  //     );
+  //   });
+  // };
+
   return (
     <View style={globalscreenstyles.container}>
-      {/* <LinearGradient
-        style={globalscreenstyles.container}
-        colors={[global.background, global.purple, global.background]}
-        start={{ x: 0, y: 0 }}> */}
       <TabBarTop
-        LeftIcon={<Logo size={55} ></Logo>}
+        LeftIcon={<Logo size={55}></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+
+      <Categories></Categories>
+
       <View style={globalscreenstyles.middle}>
         <PostListRenderer
           isHeaderInNeed={true}
@@ -56,7 +87,6 @@ const Home = ({ navigation }: { navigation: any }) => {
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
         RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
-      {/* </LinearGradient> */}
     </View>
   );
 };
