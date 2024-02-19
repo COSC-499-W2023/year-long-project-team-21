@@ -366,7 +366,6 @@ interface SelectRangeBarProps {
 interface RatingProps {
   testID?: string;
   backgroundColor?: string;
-  ratingCount?: number;
   startingValue?: number;
   imageSize?: number;
   showRating?: boolean;
