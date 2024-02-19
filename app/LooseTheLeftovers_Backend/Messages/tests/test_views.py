@@ -104,7 +104,7 @@ class TestRetrieveMessages(TestSetUpGetMessage):
         # loop to check the messages are in order of time_sent
         isOrdered = True
         for i in range(2, len(response.data)):
-            if response.data[i-1]['time_sent'] > response.data[i]['time_sent']:
+            if response.data[i-1]['time_sent'] < response.data[i]['time_sent']:
                 isOrdered = False
                 break
         self.assertTrue(isOrdered)
