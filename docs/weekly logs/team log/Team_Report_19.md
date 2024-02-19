@@ -36,7 +36,7 @@ After fixing up all of our bugs from the Peer Review, we are now working on the 
 ### Test Report
 
 #### Test for modules (frontend)
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/ee3fb855-b809-4599-924e-4c15a7917d35)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/88ae527b-c0a6-4cf8-8609-5bf63640fe43)
 
 #### Test for modules (backend)
 
