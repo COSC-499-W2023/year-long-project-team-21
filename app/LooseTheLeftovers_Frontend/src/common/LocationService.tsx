@@ -5,6 +5,7 @@ import Geolocation, {
 import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { getLocationPermissionAndroid } from '../common/LocationServices';
 
 /**
  * Class representing a location service utility.
@@ -60,7 +61,8 @@ class LocationService {
    */
   public async initializeLocationService() {
     try {
-      if (this.os === 'android') this.hasPermission = await this.getLocationPermissionAndroid();
+      if (this.os === 'android')
+        this.hasPermission = await this.getLocationPermissionAndroid();
       else this.hasPermission = await this.getLocationPermissionIOS();
 
       if (this.hasPermission) {
@@ -169,7 +171,8 @@ class LocationService {
    * @throws {Error} Throws an error if an issue occurs.
    */
   public async promptToChangeLocationSettings() {
-    const message = 'To use this app, please enable location permissions in settings.';
+    const message =
+      'To use this app, please enable location permissions in settings.';
     try {
       Alert.alert(
         'Location Permissions Required',
@@ -199,7 +202,7 @@ class LocationService {
    * @throws {Error} Throws an error if an issue occurs.
    */
   public async getLocation() {
-    // this might need to be refactored to retrieve the cached location first... 
+    // this might need to be refactored to retrieve the cached location first...
     Geolocation.getCurrentPosition(
       // callback function for sucessfully retrived location
       async position => {
@@ -208,13 +211,13 @@ class LocationService {
         // save the data to the cache (@TODO combine with EncryptedStorage?)
         const dataSaved = await this.saveLocationToCache(position.coords);
       },
-      // callback function for an error 
+      // callback function for an error
       async error => {
-        // set the location attribute to undefined. 
+        // set the location attribute to undefined.
         this.location = undefined;
-        // see if there is a cached location 
+        // see if there is a cached location
         const cachedLocation = await this.getCachedLocation();
-        // take a look at this here. 
+        // take a look at this here.
         if (cachedLocation) {
           console.log(cachedLocation);
         }

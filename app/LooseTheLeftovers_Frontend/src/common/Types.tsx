@@ -363,6 +363,24 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+/**
+ * Defines the structure for the global context state used throughout the app.
+ * This includes the state for tracking the first launch status, the current
+ * permission status for accessing location services, and functions to update
+ * these states.
+ *
+ * @interface GlobalContextType
+ * @property {boolean | null} firstLaunch - Indicates whether the app is being launched for the first time. `true` for the first launch, `false` otherwise, and `null` before determination.
+ * @property {string | null} locationPermission - Represents the current status of location services permission as a string. It can be `null` if the permission status has not been determined yet.
+ * @property {Function} updateFirstLaunch - A function to update the `firstLaunch` state. Accepts a `boolean` or `null` value.
+ * @property {Function} updateLocationPermission - A function to update the `locationPermission` state. Accepts a string value representing the new permission status.
+ */
+interface GlobalContextType {
+  firstLaunch: boolean | null;
+  locationPermission: string | null;
+  updateFirstLaunch: (value: boolean) => void;
+  updateLocationPermission: (value: string) => void;
+}
 
 export {
   type ButtonProps,
@@ -384,4 +402,5 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type GlobalContextType,
 };

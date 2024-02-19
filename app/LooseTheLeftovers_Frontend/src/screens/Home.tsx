@@ -15,9 +15,9 @@ import TabBarBottom from '../components/TabBarBottom';
 import { adEndpoint } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
+import { getLocationPermissionAndroid } from '../common/LocationServices';
 
-const Home = ({ navigation}: { navigation: any})  => {
-
+const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
   // const checkLocationPermission = async () => {
   //   try {
@@ -29,6 +29,13 @@ const Home = ({ navigation}: { navigation: any})  => {
   //   }
   // };
 
+  useEffect(() => {
+    const fuckMe = async () => {
+      const a = await getLocationPermissionAndroid();
+      console.log(a);
+    };
+    fuckMe();
+  }, []);
 
   async function fetchAds(pageNumber: number) {
     const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;
@@ -43,7 +50,7 @@ const Home = ({ navigation}: { navigation: any})  => {
         colors={[global.background, global.purple, global.background]}
         start={{ x: 0, y: 0 }}> */}
       <TabBarTop
-        LeftIcon={<Logo size={55} ></Logo>}
+        LeftIcon={<Logo size={55}></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.middle}>
         <PostListRenderer

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Texts from '../components/Text';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
 import LinearGradient from 'react-native-linear-gradient';
@@ -9,7 +9,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
-import { RouteProp } from '@react-navigation/native';
+import { useGlobal } from '../common/GlobalContext';
 
 /**
  * Login component.
@@ -24,10 +24,10 @@ import { RouteProp } from '@react-navigation/native';
  * <Login />
  */
 const Login = ({ navigation, route }: { navigation: any; route: any }) => {
+  const { firstLaunch } = useGlobal();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const { firstLaunch } = route.params;
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
@@ -37,10 +37,9 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        if(firstLaunch){
+        if (firstLaunch) {
           navigation.navigate('Instruction');
-        }
-        else{
+        } else {
           navigation.navigate('Home');
         }
       } catch (error) {
