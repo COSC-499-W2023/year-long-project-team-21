@@ -40,7 +40,8 @@ After fixing up all of our bugs from the Peer Review, we are now working on the 
 
 #### Test for modules (backend)
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/d9c1e2cc-9585-4347-8709-b3f166c15f4f)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/294b7aa4-b33c-4774-b036-95509c98ee3e)
+
 
 
 
