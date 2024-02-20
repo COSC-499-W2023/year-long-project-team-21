@@ -1,43 +1,42 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import Category from './Category';
-import { ImageSourcePropType } from 'react-native';
 import categoryStyles from '../../styles/categoryStyles';
+import { CategoryRenderProps } from '../../common/Types';
 
-interface CategoryInfo {
-  name: string;
-  imageSource: ImageSourcePropType;
-  size: number;
-}
-
-interface CategoryRenderProps {
-  categoryInfo: CategoryInfo[];
-  onCategoryPress: (categoryName: string, isSelected: boolean) => void;
-  testID: string;
-}
+/** CategoryRender component.
+* @component
+* @param {CategoryInfo[]} props.CategoryInfo -an array for the infromation about the category(name,imagesource,size)
+* @param { (categoryName: string, isSelected: boolean) => void} props.onCategoryPress -call back funtion when an icon is pressed. Will pass the name and if it's selected
+* @example
+*  <CategoryRender
+          onCategoryPress={function-to-handle-onceits-pressed}
+          categoryInfo={JSON-containing-categoryinfo}></CategoryRender>
+*/
 
 const CategoryRender: React.FC<CategoryRenderProps> = ({
   categoryInfo,
   onCategoryPress,
-  testID,
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+  //toggles selection
   const toggleCategorySelection = (categoryName: string) => {
     const isSelected = selectedCategories.includes(categoryName);
 
+    //checks if the category name is selcected by filtering out the name
     if (isSelected) {
       setSelectedCategories(prev => prev.filter(name => name !== categoryName));
     } else {
       setSelectedCategories(prev => [...prev, categoryName]);
     }
   };
-
+  //this uses category component and the .map to print out all the components. Then the color of the icon
+  //and the output is printed out on PostListRender
   return (
-    <View style={categoryStyles.categoryWhole}>
+    <View testID={'CategoryRenderTestID'} style={categoryStyles.categoryWhole}>
       {categoryInfo.map((category, index) => (
         <Category
-          testID={'CategoryRenderTestID'}
           key={index}
           isSelected={selectedCategories.includes(category.name)}
           onPress={() => {

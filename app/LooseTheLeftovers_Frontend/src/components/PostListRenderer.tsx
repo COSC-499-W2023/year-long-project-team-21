@@ -119,24 +119,26 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     console.log(selectedRange);
   };
 
+  //this is where the category info created. If more categories are needed add them here.
   const categoryInfo = [
     {
       name: 'gluten-free',
       imageSource: require('../assets/gluten-free.png'),
-      size: 40,
+      size: 35,
     },
     {
       name: 'nut-free',
       imageSource: require('../assets/nut.png'),
-      size: 40,
+      size: 35,
     },
     {
       name: 'vegan',
       imageSource: require('../assets/vegan.png'),
-      size: 40,
+      size: 35,
     },
   ];
 
+  //this prints out the category name if the corresponding icon is pressed. It also prints out if it is selected or deselected.
   const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
     if (isSelected) {
       console.log('Category', categoryName, 'has been selected.');
@@ -148,13 +150,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   /**
    * @function
    * @description
-   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
+   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`. It also renders the category component
    */
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
         <CategoryRender
-          testID="category-render-container"
           onCategoryPress={handleCategoryPress}
           categoryInfo={categoryInfo}></CategoryRender>
         <View style={postListStyles.dropdownHeader}>

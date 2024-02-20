@@ -363,6 +363,24 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+interface CategoryInfo {
+  name: string;
+  imageSource: ImageSourcePropType;
+  size: number;
+}
+
+interface CategoryProps {
+  size?: number;
+  categoryName: string;
+  imageSource: ImageSourcePropType;
+  onPress: () => void;
+  isSelected: boolean;
+}
+interface CategoryRenderProps {
+  categoryInfo: CategoryInfo[];
+  onCategoryPress: (categoryName: string, isSelected: boolean) => void;
+}
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -383,4 +401,6 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type CategoryRenderProps,
+  type CategoryProps,
 };

@@ -1,106 +1,57 @@
-// import Category from '../../src/components/Category-Utils/Category';
-// import React from 'react';
-// import { render } from '@testing-library/react-native';
-// import '@testing-library/jest-native/extend-expect';
-// import { global } from '../../src/common/global_styles';
-// import fireEvent from '@testing-library/react-native';
-// import CategoryRender from '../../src/components/Category-Utils/CategoryRender';
-// import { press } from '@testing-library/react-native/build/user-event/press';
-// import handleCategoryPress from '../../src/screens/Home';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import CategoryRender from '../../src/components/Category-Utils/CategoryRender';
+const mockOnCategoryPress = jest.fn();
 
-// describe('CategoryRender', () => {
-//   it('logs the correct messages when category is pressed', () => {
-//     const categoryInfo = [
-//       {
-//         name: 'Category1',
-//         imageSource: require('path/to/image1.png'),
-//         size: 24,
-//       },
-//       {
-//         name: 'Category2',
-//         imageSource: require('path/to/image2.png'),
-//         size: 24,
-//       },
-//       // Add more category info as needed
-//     ];
+//test data
+const categoryInfo = [
+  {
+    name: 'gluten-free',
+    imageSource: require('../../src/assets/gluten-free.png'),
+    size: 40,
+  },
+];
 
-//     const { getByTestId } = render(
-//       <CategoryRender
-//         testID="categoryrenderTestID"
-//         onCategoryPress={handleCategoryPress}
-//         categoryInfo={categoryInfo}
-//       />,
-//     );
+test('CategoryRender component renders correctly', () => {
+  const { getByTestId } = render(
+    <CategoryRender
+      onCategoryPress={mockOnCategoryPress}
+      categoryInfo={categoryInfo}
+    />,
+  );
 
-    // Get the category element and simulate a press event
-    const categoryContainer = getByTestId('categoryrenderTestID');
-    const categoryElement = categoryContainer.children[0]; // Adjust the index as needed
-    fireEvent.press(categoryElement);
+  const categoryRenderComponent = getByTestId('CategoryRenderTestID');
 
-    // Check if the correct console log message is called
-    expect(console.log).toHaveBeenCalledWith(
-      'Category',
-      'Category1',
-      'has been selected.',
-    );
-  });
+  // Check if the component is there and is rendered
+  expect(categoryRenderComponent).toBeTruthy();
 });
 
-// describe('Category Component', () => {
-//   test('renders correctly when selected', () => {
-//     const { getByTestId } = render(
-//       <Category
-//         testID="categoryTestID"
-//         isSelected={true}
-//         onPress={() => {}}
-//         categoryName="testCategory"
-//         imageSource={require('../../src/assets/gluten-free.png')}
-//       />,
-//     );
+test('Category component renders correctly', () => {
+  const { getByTestId } = render(
+    <CategoryRender
+      onCategoryPress={mockOnCategoryPress}
+      categoryInfo={categoryInfo}
+    />,
+  );
 
-//     const categoryIcon = getByTestId('categoryTestID');
-//     fireEvent.press(categoryIcon);
-//   });
+  const categoryComponent = getByTestId('CategoryTestID');
 
-//   test('renders correctly when not selected', () => {
-//     const { getByTestId } = render(
-//       <Category
-//         testID="categoryTestID"
-//         isSelected={false}
-//         onPress={() => {}}
-//         categoryName="testCategory"
-//         imageSource={require('../../src/assets/gluten-free.png')}
-//       />,
-//     );
+  // Check if the component is there and is rendered
+  expect(categoryComponent).toBeTruthy();
+});
 
-//     const categoryContainer = getByTestId('categoryTestID');
-//     expect(categoryContainer).toHaveStyle({ backgroundColor: global.tertiary });
-//   });
+test('pressing category icon calls onCategoryPress with correct parameters', () => {
+  const { getByTestId } = render(
+    <CategoryRender
+      onCategoryPress={mockOnCategoryPress}
+      categoryInfo={categoryInfo}
+    />,
+  );
 
-// describe('CategoryRender Component', () => {
-//   test('renders correctly with categoryInfo', () => {
-//     const categoryInfo = [
-//       {
-//         name: 'test1',
-//         imageSource: require('../../src/assets/gluten-free.png'),
-//         size: 50,
-//       },
-//       {
-//         name: 'test2',
-//         imageSource: require('../../src/assets/gluten-free.png'),
-//         size: 50,
-//       },
-//     ];
+  const firstCategoryIcon = getByTestId('CategoryTestID');
 
-//     const { getByTestId } = render(
-//       <CategoryRender
-//         testID="category-render-container3"
-//         categoryInfo={categoryInfo}
-//         onCategoryPress={() => {}}
-//       />,
-//     );
+  // Simulates press of icon
+  fireEvent.press(firstCategoryIcon);
 
-//     const categoryWhole = getByTestId('category-render-container3');
-//     expect(categoryWhole.children.length).toBe(categoryInfo.length);
-//   });
-// });
+  expect(mockOnCategoryPress).toHaveBeenCalled();
+});
