@@ -5,7 +5,7 @@ from .test_setup import TestSetUpCreateAdvertisment, TestSetUpRetrieveAdvertisme
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-from Advertisments.api.views import get_expiry_formatted
+from Advertisments.api.serializers import ReturnAdvertismentSerializer
 from Advertisments.cron import delete_expired_ads
 
 class TestCreateAd(TestSetUpCreateAdvertisment):
@@ -361,7 +361,7 @@ class ExpiryDateTests(APITestCase):
         Expect '1 days'
         '''
         expiry = date.today() + timedelta(days=1)
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '1 day')
 
@@ -371,7 +371,7 @@ class ExpiryDateTests(APITestCase):
         Expect '1 week'
         '''
         expiry = date.today() + timedelta(days=7)
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '1 week')
 
@@ -381,7 +381,7 @@ class ExpiryDateTests(APITestCase):
         Expect '2 weeks'
         '''
         expiry = date.today() + timedelta(days=14)
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '2 weeks')
 
@@ -391,6 +391,6 @@ class ExpiryDateTests(APITestCase):
         Expect '2 weeks' (no expiry will forever show two weeks)
         '''
         expiry = None
-        result = get_expiry_formatted(expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
 
         self.assertEqual(result['expiry'], '2 weeks')
