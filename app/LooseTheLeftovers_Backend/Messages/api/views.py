@@ -241,7 +241,7 @@ def get_last_message_per_conversation(request):
             (Q(receiver_id=user) & Q(sender_id=request_user)) | (Q(receiver_id=request_user) & Q(sender_id=user))
         ).last()
         # append as dictionary to list
-        last_msg_list.append({"username": username, "msg": last_message.msg, "time_sent": last_message.time_sent})
+        last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent})
     
     try:
         # put result into pages
