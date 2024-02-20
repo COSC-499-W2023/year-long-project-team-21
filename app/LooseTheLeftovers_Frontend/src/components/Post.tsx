@@ -8,13 +8,12 @@ import {
   View,
 } from 'react-native';
 import generateHomeScreenCardStyles from '../styles/postStyles';
-import { global } from '../common/global_styles';
 import {
-  getCardColors,
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
   render_Icons,
+  assignColor,
 } from '../common/postUtils';
 /**
  * Post Component
@@ -34,15 +33,16 @@ import {
  */
 const Post: React.FC<PostProps> = ({
   id,
+  endpoint,
   title,
   image,
   expiryDate,
   category,
+  color,
   navigation,
 }: PostProps): JSX.Element => {
   const screenWidth = Dimensions.get('window').width;
   const scaleValue = useRef(new Animated.Value(1)).current;
-  const [lightMode, setLightMode] = useState('');
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
@@ -61,7 +61,7 @@ const Post: React.FC<PostProps> = ({
    */
   const checkDietaryOption = (category: string) => {
     const dietaryOptions = category.split(',').map(option => option.trim());
-    setShowNutAllergyIcon(dietaryOptions.includes('nut'));
+    setShowNutAllergyIcon(dietaryOptions.includes('peanut-free'));
     setShowGlutenFreeIcon(dietaryOptions.includes('gluten-free'));
     setShowVeganIcon(dietaryOptions.includes('vegan'));
   };
@@ -74,8 +74,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
-    console.log('tapped:', id);
-    navigation.navigate('View_Post', { postId: id });
+    navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 
   /**
@@ -113,7 +112,7 @@ const Post: React.FC<PostProps> = ({
    * @private
    * @returns {JSX.Element} The rendered front card component.
    */
-  const render_Card_Front = () => {
+  const render_Card_Front = (image: string) => {
     return (
       <Card style={cardStyles.card_front}>
         <Card.Content>
@@ -127,39 +126,21 @@ const Post: React.FC<PostProps> = ({
               showVeganIcon,
               showGlutenFreeIcon,
             )}
-          
             <View style={cardStyles.card_image_wrapper_style}>
-              {renderPostImage(cardStyles.post_image_style, 40)}
+              {renderPostImage(cardStyles.post_image_style, image, 135)}
             </View>
-            </View>
+          </View>
         </Card.Content>
       </Card>
     );
   };
 
-  /**
-   * Assigns a random color scheme for the post card.
-   *
-   * @function
-   * @private
-   * @returns {Object} Object containing lightColor, originalColor, and middleColor.
-   */
-  const assignRandomColor = () => {
-    const colors = [
-      global.post_color.expiry_mid,
-      global.post_color.expiry_long,
-      global.post_color.expiry_short,
-    ];
-    const randomInd = Math.floor(Math.random() * 3);
-    return getCardColors(colors[randomInd]);
-  };
-
-  const colors = assignRandomColor();
+  const assignedColor = assignColor(color);
   const cardStyles = generateHomeScreenCardStyles(
     0.4 * screenWidth, //height
     0.8 * screenWidth, //width
     screenWidth,
-    colors,
+    assignedColor,
     scaleValue,
   );
   return (
@@ -171,7 +152,7 @@ const Post: React.FC<PostProps> = ({
         <Animated.View style={cardStyles.animation_style}>
           {render_Card_Back(cardStyles.card_back)}
           {render_Card_Middle(cardStyles.card_middle)}
-          {render_Card_Front()}
+          {render_Card_Front(image)}
         </Animated.View>
       </View>
     </TouchableWithoutFeedback>

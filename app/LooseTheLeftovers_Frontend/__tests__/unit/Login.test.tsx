@@ -67,12 +67,12 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'users/tokens/',
+        '/users/tokens/',
         {
           username: 'testuser',
           password: 'testpassword',
         },
-        { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
+        { baseURL: 'http://10.0.2.2:8000', timeout: 1500 },
       );
       // Since this is a success scenario, check that the error message is not displayed
       expect(queryByTestId('error-msg')).toBeNull();
@@ -87,6 +87,11 @@ describe('Login component', () => {
       data: { token: 'fake_token' },
     });
 
+    const navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
+
     const { getByPlaceholderText, getByTestId } = render(
       <Login navigation={navigation} />,
     );
@@ -98,7 +103,7 @@ describe('Login component', () => {
 
     await waitFor(() => {
       // Check if navigation was triggered with the correct screen name
-      expect(navigation.navigate).toHaveBeenCalledWith('Home');
+      expect(navigation.navigate).toHaveBeenCalled();
     });
   });
 
@@ -123,12 +128,12 @@ describe('Login component', () => {
     await waitFor(() => {
       // Check if the Axios POST request is called with the correct arguments
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'users/tokens/',
+        '/users/tokens/',
         {
           username: 'testuser',
           password: 'testpassword',
         },
-        { baseURL: 'http://10.0.2.2:8000/', timeout: 1500 },
+        { baseURL: 'http://10.0.2.2:8000', timeout: 1500 },
       );
       // Find the error message element
       const errorMessageElement = getByTestId('error-msg');

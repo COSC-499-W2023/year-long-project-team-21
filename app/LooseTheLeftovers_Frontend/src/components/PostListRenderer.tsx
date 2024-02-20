@@ -1,76 +1,57 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
-import { View, FlatList, Dimensions, Text } from 'react-native';
-import Post from '../components/Post'; // Replace with the correct path to your Post component
-import postData from '../assets/fake_post_data.json';
-import { PostProps } from '../common/Types';
-import SelectRangeBar from './SelectRangeBar';
+import { View, FlatList, Text, Dimensions } from 'react-native';
+import { PostListRendererProps, PostProps } from '../common/Types';
 import { Title } from 'react-native-paper';
+import SelectRangeBar from './SelectRangeBar';
 import generatePostListStyles from '../styles/postListStyles';
-import { PostListRendererProps } from '../common/Types';
-
-let stopFetchMore = true;
+import Post from './Post';
+import { BASE_URL } from '../common/API';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
+  endpoint,
+  getData,
   // locationPermission,
   navigation,
 }) => {
-  const screenWidth = Dimensions.get('window').width;
-  const postListStyles = generatePostListStyles(screenWidth);
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [range, setRange] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [lastItemIndex, setLastItemIndex] = useState(0); // Initialize with 0
+  const screenWidth = Dimensions.get('window').width;
+  const postListStyles = generatePostListStyles(screenWidth);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [fetchAllowed, setFetchAllowed] = useState(true);
   useEffect(() => {
-    console.log('loading...');
-    fetchData(0);
-  }, [!stopFetchMore]);
-
-  /**
-   * Makes an asynchronous request to the backend API based on location permission.
-   * @async
-   * @function
-   * @throws {Error} Throws an error if there is an issue fetching the data.
-   */
-  // const server = async () => {
-  //   try {
-  //     const apiUrl = locationPermission
-  //       ? 'backend-api-endpoint-for-post'
-  //       : 'backend-api-endpoint-for-get';
-
-  //     const requestBody = locationPermission
-  //       ? { range } // Include range data in the POST request body
-  //       : null; // No request body for GET request
-
-  //     // Make the request based on locationPermission
-  //     const response = await fetch(apiUrl, {
-  //       method: locationPermission ? 'POST' : 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         // Add other headers if needed
-  //       },
-  //       body: locationPermission ? JSON.stringify(requestBody) : null,
-  //     });
-
-  //     const data = await response.json();
-  //   } catch (error) {}
-  // };
+    if (fetchAllowed) fetchData(currentPage);
+  }, [fetchAllowed]);
 
   /**
    * Filters and transforms raw data into a specific format.
    * @function
    * @param {any[]} data - The raw data to be filtered.
    * @returns {Object[]} The filtered and transformed data.
+   * @Todo replace the base URL here and make it come from ./api
    */
   const filterData = (data: any[]) => {
-    const filteredPosts = postData.map(post => ({
-      id: post.id,
-      title: post.title,
-      image: post.image,
-      expiryDate: post.expiryDate,
-      category: post.category,
-    }));
+    const filteredPosts = data.map(post => {
+      return {
+        id: post.id,
+        endpoint: post.endpoint,
+        title: post.title,
+        image: BASE_URL + post.image,
+        expiryDate: post.expiry,
+        category: post.category,
+        color: post.color,
+      };
+    });
+
     return filteredPosts;
+  };
+
+  const filterExistingData = (data: any[]) => {
+    return data.filter(
+      (newPost: { id: number }) =>
+        !posts.some(existingPost => existingPost.id === newPost.id),
+    );
   };
 
   /**
@@ -83,21 +64,22 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    *
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
-  const fetchData = async (startIndex: number) => {
+  const fetchData = async (page: number) => {
+    console.log('next page is: ', page);
     try {
-      //const data = server(lastItemIndex);
-      // Update lastItemIndex with the new value
-      setPosts([]);
-      const filteredPosts = filterData(postData);
-      setLastItemIndex(lastItemIndex + filteredPosts.length);
-      setPosts(prevPosts => [...prevPosts, ...filteredPosts]);
-      setIsLoading(false);
-      stopFetchMore = false;
+      let data = await getData(page);
+      data = filterData(data);
+      data = filterExistingData(data); //only return non existing posts in post array
+      if (data.length > 0) {
+        setPosts(prevData => [...prevData, ...data]);
+        setCurrentPage(currentPage + 1);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setFetchAllowed(false);
     }
   };
-
   /**
    * @function
    * @description
@@ -106,23 +88,22 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @param {Object} params - Parameters for rendering the post item.
    * @param {PostProps} params.item - The post item to be rendered.
    */
-  const renderPostItem = useCallback(
-    ({ item }: { item: PostProps }) => {
-      return (
-        <View style={postListStyles.postContainer}>
-          <Post
-            id={item.id}
-            title={item.title}
-            image={item.image}
-            expiryDate={item.expiryDate}
-            category={item.category}
-            navigation={navigation}
-          />
-        </View>
-      );
-    },
-    [navigation],
-  );
+  const renderPostItem = ({ item }: { item: PostProps }) => {
+    return (
+      <View style={postListStyles.postContainer}>
+        <Post
+          id={item.id}
+          endpoint={endpoint}
+          title={item.title}
+          image={item.image}
+          expiryDate={item.expiryDate}
+          category={item.category}
+          color={item.color}
+          navigation={navigation}
+        />
+      </View>
+    );
+  };
 
   /**
    * @function
@@ -144,13 +125,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
+        <View style={postListStyles.dropdownHeader}>
+          <SelectRangeBar onSelectRange={handleSelectRange} />
+        </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
             Showing Posts Nearby
           </Title>
-        </View>
-        <View style={postListStyles.dropdownHeader}>
-          <SelectRangeBar onSelectRange={handleSelectRange} />
         </View>
       </View>
     );
@@ -174,37 +155,21 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     <Text style={postListStyles.footer}>Loading...</Text>
   );
 
-  /**
-   * @function
-   * @description
-   * Triggered when the end of the list is reached, loading more data by incrementing the `pagecurrent` state.
-   */
-  const handleLoadMore = async () => {
-    setIsLoading(true);
-    console.log(stopFetchMore);
-    if (!stopFetchMore) {
-      console.log('Loading more data...');
-      await fetchData(lastItemIndex);
-      stopFetchMore = true;
-    }
-    setIsLoading(false);
-  };
-
   const keyExtractor = useCallback(
-    (item: { id: { toString: () => any } }) => item.id.toString(),
+    (item: PostProps, index: number) => `${item.id}_${index}`,
     [],
   );
 
   return (
     <FlatList
       testID="flatlist"
-      initialNumToRender={3}
-      maxToRenderPerBatch={5}
+      initialNumToRender={4}
+      maxToRenderPerBatch={3}
       windowSize={2}
       removeClippedSubviews={true}
       ListFooterComponent={ListFooterComponent}
-      onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.5}
+      onEndReached={() => setFetchAllowed(true)}
+      onEndReachedThreshold={0.3}
       data={posts}
       keyExtractor={keyExtractor} // Replace 'id' with your post identifier
       renderItem={renderPostItem}
@@ -212,7 +177,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         isHeaderInNeed ? renderHeader_Home : renderHeader_Profile
       }
       onScrollBeginDrag={() => {
-        stopFetchMore = false;
+        setFetchAllowed(false);
       }}
     />
   );

@@ -6,15 +6,19 @@ describe('Post Component', () => {
   const mockPost = {
     id: 1,
     title: 'Sample Post',
-    description: "this is sample description", 
+    description: 'this is sample description',
     image: '/sample-image.jpg',
     expiryDate: '2024-12-31',
-    category: 'nut',
+    category: 'peanut-free',
+    endpoint: 'mock_endpoint',
   };
 
   it('renders without crashing', () => {
-    const { getByText, getByTestId } = render(<Post {...mockPost} />);
-    
+    // color and endipoint should be assigned to render properly
+    const { getByText, getByTestId } = render(
+      <Post color={'expiry_short'} {...mockPost} />,
+    );
+
     // Check if the title is rendered
     const titleElement = getByText(mockPost.title);
     expect(titleElement).toBeTruthy();
@@ -28,15 +32,22 @@ describe('Post Component', () => {
     expect(nutIcon).toBeTruthy();
   });
 
-//   it('handles click events', async () => {
-//     const { getByText } = render(<Post {...mockPost} />);
+  it('handles click events', async () => {
+    // Mock navigation prop
+    const mockNavigate = jest.fn();
+    const navigation = { navigate: mockNavigate };
 
-//     // Trigger a click event on the component
-//     fireEvent.press(getByText(mockPost.title));
+    const { getByText } = render(
+      <Post color={'expiry_short'} {...mockPost} navigation={navigation} />,
+    );
 
-//     // Wait for animations to complete (if any)
-//     await waitFor(() => {
-//       // Add any assertions or expectations for the post-click state if needed
-//     });
-//   });
+    // // Trigger a click event on the component
+    fireEvent.press(getByText(mockPost.title));
+
+    // Check if navigate function is called with the correct arguments
+    expect(mockNavigate).toHaveBeenCalledWith('View_Post', {
+      postId: 1,
+      endpoint: 'mock_endpoint',
+    });
+  });
 });

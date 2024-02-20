@@ -14,6 +14,11 @@ const styles = StyleSheet.create({
     sliderLabel: {
         color: global.primary,
     },
+    currentValueText: {
+        alignContent: 'center',
+        paddingBottom: 12,
+        color: global.secondary,
+    }, valuePopup: {}, valuePopupText: {}
 });
 
 export default styles;

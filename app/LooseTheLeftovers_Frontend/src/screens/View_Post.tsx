@@ -1,15 +1,20 @@
-import React from 'react';
-import { Dimensions, StyleProp, Text, View, ViewStyle } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Dimensions,
+  StyleProp,
+  Text,
+  View,
+  ViewStyle,
+  ActivityIndicator,
+} from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
-import { ViewPostProps } from '../common/Types';
-import Logo from '../components/Logo';
 import { Card, Title } from 'react-native-paper';
 import {
   renderPostImage,
   render_Card_Back,
   render_Card_Middle,
-  getCardColors,
   render_Icons,
+  assignColor,
 } from '../common/postUtils';
 import { global } from '../common/global_styles';
 import generateViewPostStyles from '../styles/view_postStyles';
@@ -20,35 +25,78 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
+import { djangoConfig } from '../common/NetworkRequest';
+import { BASE_URL } from '../common/API';
+import axios from 'axios';
+import { AdDataProps } from '../common/Types';
+import GoBackIcon from '../components/GoBackIcon';
 
-const View_Post = ({ navigation }: { navigation: any }) => {
-  //const { postId } = route.params;
-  const post_color = global.post_color.expiry_long;
-  const styles = generateViewPostStyles(getCardColors(post_color));
-  // useEffect(() => {
-  //   // Make a POST request to the backend API
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('backend-api-endpoint', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           // Add other headers if needed
-  //         },
-  //         body: JSON.stringify({ id: postId }),
-  //       });
+const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
+  // retrieve endpoint and postId from Post.tsx
+  const { postId, endpoint } = route.params;
+  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
+  const [adData, setAdData] = useState<AdDataProps>({
+    category: '',
+    description: '',
+    expiry: '',
+    title: '',
+    image: require('../assets/logo.png'),
+    color: 'expiry_long',
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const card_color_dict = assignColor(adData.color);
+  const styles = generateViewPostStyles(card_color_dict);
+  const [showNutIcon, setShowNutAllergyIcon] = useState(false);
+  const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
+  const [showVeganIcon, setShowVeganIcon] = useState(false);
 
-  //       const data = await response.json();
+  // Move checkDietaryOption to useEffect to avoid re-renders
+  useEffect(() => {
+    checkDietaryOption(adData.category);
+  }, [adData.category]);
 
-  //       // Handle the data as needed
-  //       console.log('Fetched data:', data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  /**
+   * Checks and sets dietary options based on the post category.
+   *
+   * @function
+   * @private
+   * @param {string} category - The category of the post.
+   * @returns {void}
+   */
+  const checkDietaryOption = (category: string) => {
+    const dietaryOptions = category.split(',').map(option => option.trim());
+    setShowNutAllergyIcon(dietaryOptions.includes('peanut-free'));
+    setShowGlutenFreeIcon(dietaryOptions.includes('gluten-free'));
+    setShowVeganIcon(dietaryOptions.includes('vegan'));
+  };
 
-  //   fetchData();
-  // }, []); // Empty dependency array to run the effect only once
+  const fetchBackend = async () => {
+    try {
+      const viewAds: string = endpoint + postId + '/';
+      const payload: any = await axios.get(viewAds, djangoConfig());
+      let data: JSON = payload.data;
+      return data;
+    } catch (e) {
+      // display error on a screen would be nice.
+      console.log(e);
+      return undefined;
+    }
+  };
+
+  useEffect(() => {
+    const populateState = async () => {
+      const data: any = await fetchBackend();
+      if (data && data.image) {
+        data.image = BASE_URL + data.image;
+        setAdData(data);
+        setIsLoading(false);
+      } else {
+        // exit or show a screen
+        console.log('error retrieving payload');
+      }
+    };
+    populateState();
+  }, []);
 
   /**
    * Renders the front part of the post card.
@@ -58,21 +106,19 @@ const View_Post = ({ navigation }: { navigation: any }) => {
    * @returns {JSX.Element} The rendered front card component.
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
+    console.log(adData.category);
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
-          <Title style={styles.title}>title</Title>
-          <Title style={styles.expiry}>2days</Title>
-          <Text style={styles.description}>
-            Fresh salmon fillet grilled to perfection, served with lemon and
-            herbs.
-          </Text>
+          <Title style={styles.title}>{adData.title}</Title>
+          <Title style={styles.expiry}>{adData.expiry}</Title>
+          <Text style={styles.description}>{adData.description}</Text>
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
-            true,
-            true,
-            true,
+            showNutIcon,
+            showVeganIcon,
+            showGlutenFreeIcon,
           )}
           <View style={styles.message_button}>
             <Button
@@ -81,8 +127,8 @@ const View_Post = ({ navigation }: { navigation: any }) => {
                 console.log('hi');
               }}
               borderRadius={0.05 * Dimensions.get('window').width}
-              color={post_color[1]}
-              borderColor={post_color[1]}
+              backgroundcolor={card_color_dict.middleColor}
+              borderColor={card_color_dict.middleColor}
               textColor={global.secondary}
             />
           </View>
@@ -91,12 +137,16 @@ const View_Post = ({ navigation }: { navigation: any }) => {
     );
   };
 
+  if (isLoading) {
+    return <ActivityIndicator size="large" />;
+  }
+
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
-      <View style={globalscreenstyles.body}>
+      <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
+      <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
-          {renderPostImage(styles.image, Dimensions.get('window').width * 0.9)}
+          {renderPostImage(styles.image, adData.image, 400)}
         </View>
         <View style={styles.info_container}>
           {render_Card_Back(styles.card_back)}

@@ -31,6 +31,7 @@ interface ButtonProps {
   testID?: string;
   borderRadius?: number;
   color?: string;
+  backgroundcolor?: string;
 }
 
 /**
@@ -225,6 +226,7 @@ interface UserInfoProps {
  * @property {() => void} onRightPress - Callback function to execute when the right icon is pressed.
  * @property {ImageSourcePropType} leftIconSource - The image source for the left icon.
  * @property {ImageSourcePropType} rightIconSource - The image source for the right icon.
+ * @property {string} title - The prop to pass title.
  */
 
 interface UpperBarProps {
@@ -232,6 +234,7 @@ interface UpperBarProps {
   onRightPress?: () => void;
   leftIconSource?: ImageSourcePropType;
   rightIconSource?: ImageSourcePropType;
+  title?: string;
 }
 
 /**
@@ -240,15 +243,17 @@ interface UpperBarProps {
  * @interface
  * @property {string} title - The title of the ad.
  * @property {string} description - The description of the ad.
- * @property {string | null} imageUri - The URI of the image associated with the ad. Can be null if no image is selected.
+ * @property {string} category - The category of the ad, will be added as a field later.
  * @property {number} expiry - The number of days until the ad expires.
+ * @property {string} imageUri - The URI of the image associated with the ad, optional.
  */
-
 interface AdDataProps {
-  title: string;
+  category: string;
   description: string;
-  imageUri: string | null;
-  expiry: number;
+  expiry: string;
+  title: string;
+  image: string;
+  color: string;
 }
 
 /**
@@ -261,6 +266,7 @@ interface AdDataProps {
 
 interface ImagePickerButtonProps {
   onImagePicked: (imageUri: string | null) => void;
+  testID?: string;
 }
 
 /**
@@ -273,6 +279,7 @@ interface ImagePickerButtonProps {
 
 interface ExpirySliderProps {
   onExpiryChange: (expiry: number) => void;
+  testID?: string;
 }
 
 /**
@@ -288,11 +295,13 @@ interface ExpirySliderProps {
 
 interface PostProps {
   id: number;
-  title?: string;
-  image?: string; // Assuming image is a string representing the path or URL
+  endpoint: string;
+  title: string;
+  image: string; // Assuming image is a string representing the path or URL
   expiryDate?: string;
   category: string;
   navigation?: any;
+  color: string;
 }
 
 /**
@@ -333,7 +342,7 @@ type ViewPostScreenNavigationProp = NavigationProp<
 interface ViewPostProps {
   route: ViewPostScreenRouteProp;
   // navigation: ViewPostScreenNavigationProp;
-  navigation: any
+  navigation: any;
 }
 /**
  * PostListRendererProps interface for PostListRenderer component.
@@ -343,21 +352,17 @@ interface ViewPostProps {
  */
 interface PostListRendererProps {
   isHeaderInNeed: boolean;
+  endpoint: string;
+  getData: (pagenumber: number) => any;
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
 }
 
-/**
- * PostProps interface for Post component.
- *
- * @interface
- * @property {function} selectedRange - get range selected and send it back to the home
- */
-
 interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
+
 
 export {
   type ButtonProps,

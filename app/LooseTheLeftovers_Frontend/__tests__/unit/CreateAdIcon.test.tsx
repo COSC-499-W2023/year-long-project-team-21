@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import MessageIcon from '../src/components/HomeIcon';
+import MessageIcon from '../../src/components/CreateAdIcon';
 
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
   useNavigation: jest.fn(),
 }));
 
-describe('HomeIcon Component', () => {
-  it('navigates to Home screen when clicked', () => {
+describe('CreateAdIcon Component', () => {
+  it('navigates to CreateAd screen when clicked', () => {
     // Mock the navigation object
     const mockNavigate = jest.fn();
     jest
@@ -19,15 +19,15 @@ describe('HomeIcon Component', () => {
 
     // Render the component
     const { getByTestId } = render(
-      <MessageIcon size={45} testID="HomeIconTest" />,
+      <MessageIcon size={45} testID="CreateAdIconTest" />,
     );
 
     // Simulate a click on the image
-    fireEvent.press(getByTestId('HomeIconTest'));
+    fireEvent.press(getByTestId('CreateAdIconTest'));
 
     // Check if navigate was called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith('Home', {
-      name: 'HomeIcon',
+    expect(mockNavigate).toHaveBeenCalledWith('CreateAd', {
+      name: 'CreateAdIcon',
     });
   });
 });

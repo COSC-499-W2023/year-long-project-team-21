@@ -25,7 +25,7 @@ type RootStackParamList = {
 };
 
 //uses all icon prop for the interface
-const AccountIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
+const AccountIcon: React.FC<AllIconProps> = ({ size = 28 }) => {
   //creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Profile'>>();
