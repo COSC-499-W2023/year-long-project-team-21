@@ -1,4 +1,5 @@
 import datetime
+
 from Advertisments.models import Advertisment
 
 '''
