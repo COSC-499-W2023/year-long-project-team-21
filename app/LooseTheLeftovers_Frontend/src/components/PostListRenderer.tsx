@@ -7,6 +7,10 @@ import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
 import { useFocusEffect } from '@react-navigation/native';
+import globalscreenstyles from '../common/global_ScreenStyles';
+import profileStyles from '../styles/profileStyles';
+import UserInfo from '../components/UserInfo';
+import Button from './Button';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
@@ -14,6 +18,9 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   getData,
   // locationPermission,
   navigation,
+  userInfo,
+  handleEditOnpress,
+  handleLoginOnpress,
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [range, setRange] = useState('');
@@ -26,10 +33,10 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   // Function to fetch data when the screen gains focus
   const fetchDataOnFocus = () => {
     setFetchAllowed(true); // Allow fetching data again
-    setLoadedAllAds(false)
+    setLoadedAllAds(false);
   };
 
-  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered. 
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered.
   useFocusEffect(
     useCallback(() => {
       fetchDataOnFocus();
@@ -166,9 +173,28 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @description
    * Renders the header for the profile screen. (Currently set to null)
    */
-  const renderHeader_Profile = () => {
-    return null;
-  };
+  const renderHeader_Profile = React.memo(() => {
+    return (
+      <View style={profileStyles.userinfocontainer}>
+        <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
+        <View style={profileStyles.button_container}>
+          <View>
+            <Button
+              backgroundcolor="red"
+              buttonSize={150}
+              onPress={handleLoginOnpress!}
+              title="Logout"></Button>
+          </View>
+          <View>
+            <Button
+              buttonSize={150}
+              onPress={handleEditOnpress!}
+              title="Edit"></Button>
+          </View>
+        </View>
+      </View>
+    );
+  });
 
   /**
    * @function

@@ -25,7 +25,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
   const [data, setData] = useState('');
 
-  const handleButtonOnPress = async () => {
+  const handleLoginButtonOnPress = async () => {
     try {
       // Retrieve the current user session
       const session = await retrieveUserSession();
@@ -42,6 +42,10 @@ const Profile = ({ navigation }: { navigation: any }) => {
       console.error('Error during logout:', error);
     }
   };
+
+  const handleEditButtonOnPress = async () => {
+     console.log("edit!")
+  }
 
   const fetchUserInfo = async () => {
     try {
@@ -85,12 +89,17 @@ const Profile = ({ navigation }: { navigation: any }) => {
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
-        <View style={profileStyles.userinfocontainer}>
+        {/* <View style={profileStyles.userinfocontainer}>
           <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
+          <View style = {profileStyles.button_container}>
           <View style={profileStyles.button}>
-            <Button onPress={handleButtonOnPress} title="Logout"></Button>
+            <Button backgroundcolor='red' buttonSize ={150} onPress={handleLoginButtonOnPress} title="Logout"></Button>
           </View>
-        </View>
+          <View style={profileStyles.button}>
+            <Button  buttonSize ={150} onPress={handleEditButtonOnPress} title="Edit"></Button>
+          </View>
+          </View>
+        </View> */}
 
         <View style={profileStyles.viewPost}>
           <PostListRenderer
@@ -98,6 +107,9 @@ const Profile = ({ navigation }: { navigation: any }) => {
             endpoint={adEndpoint}
             getData={fetchAds}
             navigation={navigation}
+            handleEditOnpress={handleEditButtonOnPress}
+            handleLoginOnpress={handleLoginButtonOnPress}
+            userInfo={userInfo!}
           />
         </View>
       </View>

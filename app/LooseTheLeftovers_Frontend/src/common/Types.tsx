@@ -22,7 +22,7 @@ import {
  */
 
 interface ButtonProps {
-  onPress: () => void;
+  onPress: () => any;
   title: string;
   textColor?: string;
   borderColor?: string;
@@ -357,6 +357,9 @@ interface PostListRendererProps {
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
+  handleLoginOnpress?: ()=> any;
+  handleEditOnpress?: () => any;
+  userInfo?: { username: string, email: string};
 }
 
 interface SelectRangeBarProps {

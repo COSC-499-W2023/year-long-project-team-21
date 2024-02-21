@@ -30,6 +30,7 @@ import { BASE_URL } from '../common/API';
 import axios from 'axios';
 import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
+import { useNavigation } from '@react-navigation/native';
 
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
@@ -107,6 +108,50 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
     console.log(adData.category);
+    const renderMessageButton = () => {
+      return (
+        <View style={styles.message_button}>
+          <Button
+            title="message"
+            onPress={() => {
+              console.log('hi');
+            }}
+            borderRadius={0.05 * Dimensions.get('window').width}
+            backgroundcolor={card_color_dict.middleColor}
+            borderColor={card_color_dict.middleColor}
+            textColor={global.secondary}
+          />
+        </View>
+      );
+    };
+
+    const renderEditButton = () => {
+      return (
+        <View style={styles.message_button}>
+          <Button
+            title="Edit"
+            onPress={() => {
+              console.log('hi');
+            }}
+            borderRadius={0.05 * Dimensions.get('window').width}
+            backgroundcolor={card_color_dict.middleColor}
+            borderColor={card_color_dict.middleColor}
+            textColor={global.secondary}
+          />
+        </View>
+      );
+    };
+
+    const IsPrevPageProfile = () => {
+      const routes = navigation.getState()?.routes;
+      const prevRoute = routes[routes.length - 2];
+      return prevRoute?.name === 'Profile';
+    };
+
+    const renderButton = () => {
+      return IsPrevPageProfile() ? renderEditButton() : renderMessageButton();
+    };
+
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
@@ -120,18 +165,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             showGlutenFreeIcon,
             showVeganIcon,
           )}
-          <View style={styles.message_button}>
-            <Button
-              title="message"
-              onPress={() => {
-                console.log('hi');
-              }}
-              borderRadius={0.05 * Dimensions.get('window').width}
-              backgroundcolor={card_color_dict.middleColor}
-              borderColor={card_color_dict.middleColor}
-              textColor={global.secondary}
-            />
-          </View>
+          {renderButton()}
         </Card.Content>
       </Card>
     );
