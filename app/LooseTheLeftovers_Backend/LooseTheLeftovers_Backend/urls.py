@@ -14,4 +14,7 @@ urlpatterns = [
     path("ads/", include("Advertisments.api.urls")),
     # linking to Messages's urls.api
     path("messages/", include("Messages.api.urls")),
+    # linking to Ratings's urls.api
+    path("ratings/", include("Ratings.api.urls")),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
