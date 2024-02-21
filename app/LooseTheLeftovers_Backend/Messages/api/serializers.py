@@ -22,10 +22,10 @@ class MessageSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         """
-        Create method executes when AdvertismentSerializer.save() is called in advertisements/api/views.py.
-        Will save an instance of the Advertisment in the database.
+        Create method executes when MessageSerializer.save() is called in messages/api/views.py.
+        Will save an instance of the Message in the database.
 
-        Returns an instance of the Advertisment that was saved.
+        Returns an instance of the Message that was saved.
         """
         sender = self.context["request"].user.id
         ad = Message.objects.create(sender_id=sender, **validated_data)
