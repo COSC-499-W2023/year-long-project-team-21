@@ -7,7 +7,6 @@ import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
 import CategoryRender from './Category-Utils/CategoryRender';
-import { global } from '../common/global_styles';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,

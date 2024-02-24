@@ -1,18 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { global } from '../common/global_styles';
 
 const categoryStyles = StyleSheet.create({
   container: {
-    padding: '2%',
-    marginTop: '4%',
-    marginRight: '4%',
     borderRadius: 10,
+    padding: '3%',
   },
   categoryWhole: {
-    flex: 1,
-    paddingLeft: '8%',
-    alignSelf: 'flex-start',
+    marginTop: '4%',
+    marginLeft: '2%',
+    width: '50%',
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 });
 
