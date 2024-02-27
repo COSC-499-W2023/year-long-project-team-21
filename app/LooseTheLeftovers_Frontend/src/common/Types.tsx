@@ -351,7 +351,7 @@ interface ViewPostProps {
  * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
  */
 interface PostListRendererProps {
-  isHeaderInNeed: boolean;
+  whichHeader?: React.ReactNode;
   endpoint: string;
   getData: (pagenumber: number) => any;
   location?: [];

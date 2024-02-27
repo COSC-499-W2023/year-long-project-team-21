@@ -12,7 +12,6 @@ import { useGlobal } from '../common/GlobalContext';
 
 const SplashScreen = ({ navigation }: { navigation: any }) => {
   const { updateFirstLaunch, updateLocationPermission } = useGlobal();
-  const { isLogged, setIsLogged } = useState('');
   const fadeAnim = useState(new Animated.Value(0))[0];
   const [error, setError] = useState('');
   const [pun, setPun] = useState('');

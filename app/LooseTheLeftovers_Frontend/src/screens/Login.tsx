@@ -46,7 +46,6 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,
         );
-        //console.log(errorMessage);
       }
     }
   };

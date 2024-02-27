@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
 import Logo from '../components/Logo';
@@ -16,6 +16,12 @@ import { adEndpoint } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
 import { getLocationPermissionAndroid } from '../common/LocationServices';
+import { useGlobal } from '../common/GlobalContext';
+import generatePostListStyles from '../styles/postListStyles';
+
+import SelectRangeBar from '../components/SelectRangeBar';
+import Title from '../components/Title';
+import Icon from '../components/Icon';
 
 const Home = ({ navigation }: { navigation: any }) => {
   // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
@@ -28,11 +34,20 @@ const Home = ({ navigation }: { navigation: any }) => {
   //     setHasLocationPermission(false); // Assume no permission in case of an error
   //   }
   // };
+  const screenWidth = Dimensions.get('window').width;
+  const postListStyles = generatePostListStyles(screenWidth);
+  const { firstLaunch, locationPermission } = useGlobal();
+
+  const [whichHeader, setWhichHeader] = useState('');
 
   useEffect(() => {
     const fuckMe = async () => {
-      const a = await getLocationPermissionAndroid();
-      console.log(a);
+      console.log(locationPermission);
+      if (locationPermission === 'GRANTED') {
+        setWhichHeader('location-enabled');
+      } else {
+        setWhichHeader('location-disabled');
+      }
     };
     fuckMe();
   }, []);
@@ -42,6 +57,68 @@ const Home = ({ navigation }: { navigation: any }) => {
     const payload = await axios.get(adEndpointWithPage, djangoConfig());
     return payload.data;
   }
+
+  const renderHeader_Handler = (): React.ReactNode => {
+    switch (whichHeader) {
+      case 'location-disabled': {
+        return renderHeader_Default();
+      }
+      case 'location-enabled': {
+        return renderHeader_Location();
+      }
+    }
+  };
+
+  /**
+   * @function
+   * @description
+   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
+   */
+  // @Todo consider making this a component
+
+  const renderHeader_Location = (): React.ReactNode => {
+    return (
+      <View style={postListStyles.listHeder}>
+        <View style={postListStyles.dropdownHeader}>
+          <SelectRangeBar onSelectRange={handleSelectRange} />
+        </View>
+        <View style={postListStyles.titleContainer}>
+          <Title style={postListStyles.title} testID="header title">
+            Showing Posts Nearby
+          </Title>
+        </View>
+      </View>
+    );
+  };
+
+  // @Todo consider making this a component
+  const renderHeader_Default = (): React.ReactNode => {
+    const noLocationIcon = '../assets/location-zero.png';
+    return (
+      <View style={postListStyles.listHeder}>
+        <View style={postListStyles.dropdownHeader}>
+          <Icon source={require(noLocationIcon)} size={50}></Icon>
+        </View>
+        <View style={postListStyles.titleContainer}>
+          <Title style={postListStyles.title} testID="header title">
+            Showing All Posts
+          </Title>
+        </View>
+      </View>
+    );
+  };
+
+  /**
+   * @function
+   * @description
+   * Updates the `range` state when a new range is selected.
+   *
+   * @param {number} selectedRange - The selected range value.
+   */
+  const handleSelectRange = (selectedRange: string) => {
+    setRange(selectedRange);
+    console.log(selectedRange);
+  };
 
   return (
     <View style={globalscreenstyles.container}>
@@ -54,7 +131,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
       <View style={globalscreenstyles.middle}>
         <PostListRenderer
-          isHeaderInNeed={true}
+          whichHeader={renderHeader_Handler()}
           endpoint={adEndpoint}
           navigation={navigation}
           getData={fetchAds}

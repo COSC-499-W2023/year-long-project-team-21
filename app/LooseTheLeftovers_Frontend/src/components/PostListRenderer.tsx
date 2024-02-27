@@ -1,14 +1,13 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Text, Dimensions } from 'react-native';
 import { PostListRendererProps, PostProps } from '../common/Types';
-import { Title } from 'react-native-paper';
-import SelectRangeBar from './SelectRangeBar';
-import generatePostListStyles from '../styles/postListStyles';
-import Post from './Post';
 import { BASE_URL } from '../common/API';
 
+import generatePostListStyles from '../styles/postListStyles';
+import Post from './Post';
+
 const PostListRenderer: React.FC<PostListRendererProps> = ({
-  isHeaderInNeed,
+  whichHeader,
   endpoint,
   getData,
   // locationPermission,
@@ -20,6 +19,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const postListStyles = generatePostListStyles(screenWidth);
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
+
   useEffect(() => {
     if (fetchAllowed) fetchData(currentPage);
   }, [fetchAllowed]);
@@ -108,47 +108,6 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   /**
    * @function
    * @description
-   * Updates the `range` state when a new range is selected.
-   *
-   * @param {number} selectedRange - The selected range value.
-   */
-  const handleSelectRange = (selectedRange: string) => {
-    setRange(selectedRange);
-    console.log(selectedRange);
-  };
-
-  /**
-   * @function
-   * @description
-   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
-   */
-  const renderHeader_Home = React.memo(() => {
-    return (
-      <View style={postListStyles.listHeder}>
-        <View style={postListStyles.dropdownHeader}>
-          <SelectRangeBar onSelectRange={handleSelectRange} />
-        </View>
-        <View style={postListStyles.titleContainer}>
-          <Title style={postListStyles.title} testID="header title">
-            Showing Posts Nearby
-          </Title>
-        </View>
-      </View>
-    );
-  });
-
-  /**
-   * @function
-   * @description
-   * Renders the header for the profile screen. (Currently set to null)
-   */
-  const renderHeader_Profile = () => {
-    return null;
-  };
-
-  /**
-   * @function
-   * @description
    * Renders a loading indicator as a footer while data is being fetched.
    */
   const ListFooterComponent = () => (
@@ -173,9 +132,9 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       data={posts}
       keyExtractor={keyExtractor} // Replace 'id' with your post identifier
       renderItem={renderPostItem}
-      ListHeaderComponent={
-        isHeaderInNeed ? renderHeader_Home : renderHeader_Profile
-      }
+      ListHeaderComponent={() => {
+        return whichHeader ? whichHeader : null;
+      }}
       onScrollBeginDrag={() => {
         setFetchAllowed(false);
       }}
