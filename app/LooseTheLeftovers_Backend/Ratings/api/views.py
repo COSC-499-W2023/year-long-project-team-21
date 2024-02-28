@@ -2,8 +2,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
-from django.db.models import Avg
-from django.utils.datastructures import MultiValueDictKeyError
+from django.db.models import Avg, Count
 
 from Users.models import CustomUser
 from Ratings.models import Rating
@@ -130,16 +129,18 @@ def get_rating(request, user_id):
     This method will return the average of all ratings saved for the user.
     """
     try:
-        # query to get average rating for the given user
-
-        rating = Rating.objects.filter(receiver_id=user_id).aggregate(Avg('rating'))['rating__avg']
+        # query to get average rating and number of ratings received for the given user
+        rating = Rating.objects.filter(receiver_id=user_id).aggregate(Avg('rating'), Count('rating'))
 
         # if there are no ratings returned return 204
         if rating is None:
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-        # serialize to json and return response
-        data = {'rating': round(rating, 2)}
+        # put data in json and return response
+        data = {
+            'rating': round(rating['rating__avg'], 2),
+            'count': rating['rating__count']
+        }
         return Response(data, status=status.HTTP_200_OK)
     
     except Exception as e:
