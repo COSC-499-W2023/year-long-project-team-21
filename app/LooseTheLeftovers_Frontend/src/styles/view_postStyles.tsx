@@ -72,6 +72,9 @@ const generateViewPostStyles = (colors: {
       top: '20%',
       // elevation: 5,
     },
+    ratings: {
+      alignSelf: 'flex-start',
+    },
   });
 
 export default generateViewPostStyles;
