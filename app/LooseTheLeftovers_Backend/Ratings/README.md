@@ -19,7 +19,7 @@ Input:
 
 Fields returned:
 - rating
-- user_id
+- count of ratings received
 
 ### POST Ratings
 
