@@ -88,7 +88,7 @@ class TestRetrieveRatings(TestSetUpRatings):
         # assert 200 response returned and 6 messages in the response
         #   (pagination only returns up to 6 items)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['rating'], 3)
+        self.assertAlmostEqual(response.data['rating'], 3.67)
 
     def test_get_ratings_no_athentication(self):
         '''
