@@ -93,16 +93,16 @@ def create_rating(request):
     Request should include:
         -rating
         -user_id
-    '''
+    '''  
     # retrieve user receiving the rating to validate that it exists
-    user_id = request.data['receiver_id']
-    try:    
+    try: 
+        user_id = request.data['receiver_id']   
         CustomUser.objects.get(pk=user_id)
-    except MultiValueDictKeyError:
+    except KeyError:
         return Response(
-            {"detail": "user_id was not provided."}, 
-            status=status.HTTP_400_BAD_REQUEST
-        )
+            {"detail": "'receiver_id' must be provided."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )   
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -131,15 +131,16 @@ def get_rating(request, user_id):
     """
     try:
         # query to get average rating for the given user
+
         rating = Rating.objects.filter(receiver_id=user_id).aggregate(Avg('rating'))['rating__avg']
-       
-       # if there are no ratings returned return 204
+
+        # if there are no ratings returned return 204
         if rating is None:
             return Response(status=status.HTTP_204_NO_CONTENT)
         
         # serialize to json and return response
-        serializer = RatingSerializer({'receiver_id': user_id, 'rating': rating})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        data = {'rating': round(rating, 2)}
+        return Response(data, status=status.HTTP_200_OK)
     
     except Exception as e:
         # send problem response and server error
