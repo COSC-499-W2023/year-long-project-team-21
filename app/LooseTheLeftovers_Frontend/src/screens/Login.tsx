@@ -74,6 +74,11 @@ const Login = ({ navigation }: { navigation: any }) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
+
+  const handleForgotPassword = () => {
+    console.log("Forgot passeword")
+    navigation.navigate("ForgotPassword")
+  }
   return (
     <>
       <LinearGradient
@@ -113,6 +118,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         />
 
         <Texts
+          onPress={handleForgotPassword}
           position="top"
           textsColor="white"
           texts="Forgot password?"

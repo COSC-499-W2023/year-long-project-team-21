@@ -11,6 +11,7 @@ import DoneScreen from '../screens/Done';
 import ChatList from '../screens/ChatList';
 import View_Post from '../screens/View_Post';
 import Reviews from '../screens/Reivews';
+import ForgotPassword from '../screens/ForgotPassword'
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,11 @@ const AppNavigator = () => {
         name="Login"
         component={Login}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Reviews"
