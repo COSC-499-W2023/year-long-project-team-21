@@ -11,7 +11,8 @@ import globalscreenstyles from '../common/global_ScreenStyles';
 import profileStyles from '../styles/profileStyles';
 import UserInfo from '../components/UserInfo';
 import Button from './Button';
-
+import Ratings from './Ratings';
+import { global } from '../common/global_styles';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   endpoint,
@@ -21,6 +22,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   userInfo,
   handleEditOnpress,
   handleLoginOnpress,
+  ratingCompleted,
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [range, setRange] = useState('');
@@ -177,6 +179,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return (
       <View style={profileStyles.userinfocontainer}>
         <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
+        <View style={profileStyles.ratingContainer}>
+          <Ratings
+            onFinishRating={ratingCompleted}
+            readonly={true}
+            backgroundColor={global.tertiary}></Ratings>
+        </View>
         <View style={profileStyles.button_container}>
           <View>
             <Button
@@ -189,7 +197,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
             <Button
               buttonSize={150}
               onPress={handleEditOnpress!}
-              title="Edit"></Button>
+              title="Edit Profile"></Button>
           </View>
         </View>
       </View>

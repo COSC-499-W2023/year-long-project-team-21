@@ -360,12 +360,22 @@ interface PostListRendererProps {
   handleLoginOnpress?: ()=> any;
   handleEditOnpress?: () => any;
   userInfo?: { username: string, email: string};
+  ratingCompleted?: () => any;
 }
 
 interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+interface RatingProps {
+  testID?: string;
+  backgroundColor?: string;
+  startingValue?: number;
+  imageSize?: number;
+  showRating?: boolean;
+  readonly?: boolean;
+  onFinishRating?: (rating: number) => void;
+}
 
 export {
   type ButtonProps,
@@ -387,4 +397,5 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type RatingProps,
 };

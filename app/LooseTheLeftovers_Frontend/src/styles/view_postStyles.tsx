@@ -14,7 +14,6 @@ const generateViewPostStyles = (colors: {
       position: 'relative',
     },
     image: {
-      // width: Dimensions.get('window').width,
       width: '100%',
       zIndex: -1,
       marginLeft: '1.5%',
@@ -60,7 +59,6 @@ const generateViewPostStyles = (colors: {
     },
     dietary_icons_wrapper: {
       flexDirection: 'row',
-      // width: Dimensions.get('window').width * 0.35,
       justifyContent: 'flex-start',
       marginRight: 10,
     },
@@ -71,7 +69,9 @@ const generateViewPostStyles = (colors: {
     message_button: {
       alignSelf: 'center',
       top: '20%',
-      // elevation: 5,
+    },
+    ratings: {
+      alignSelf: 'flex-start',
     },
   });
 

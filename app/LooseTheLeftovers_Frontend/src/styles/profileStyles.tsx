@@ -3,29 +3,24 @@ import { global } from '../common/global_styles';
 
 const profileStyles = StyleSheet.create({
   userInformation: {
-    top: '8%',
-    // backgroundColor: global.tertiary,
-    borderRadius: 20,
-    flex: 1,
+    marginTop: '8%',
+    // backgroundColor:"red"
   },
   userinfocontainer: {
-    // marginBottom: '4%',
-    // marginLeft: '5%',
-    // marginRight: '5%',
-    // marginTop: "4%",
-    margin:"5%",
+    margin: '5%',
     backgroundColor: global.tertiary,
     borderRadius: 20,
-    flexDirection:"column",
-    // flex: 0.5,
-    justifyContent: 'flex-start',
+    // flexDirection:"column",
+    // justifyContent: "space-between"
+  },
+  ratingContainer: {
+    paddingTop: '4%',
+    // backgroundColor:"white"
   },
   profileText: {
-    // top: '10%',
-    // flex: 0.25,
     textAlign: 'center',
     color: global.secondary,
-    fontSize: 25,
+    fontSize: 23,
   },
   item: {
     alignItems: 'center',
@@ -37,9 +32,10 @@ const profileStyles = StyleSheet.create({
     color: global.secondary,
   },
   button_container: {
-    paddingTop: "4%",
+    // paddingTop: "4%",
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    // backgroundColor:"yellow"
   },
   button: {
     // paddingTop: '4%',
@@ -50,6 +46,27 @@ const profileStyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
+  },
+  modalContainer: {
+    // backgroundColor:"white",
+    // height: "50%",
+    // width: "80%",
+    alignSelf: 'center',
+    // flexDirection:"column",
+    // justifyContent:"space-evenly"
+  },
+  modalButtonContainer: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    // backgroundColor:"yellow",
+  },
+  modalTitle: {
+    paddingTop: '4%',
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'white',
+    // backgroundColor:"blue",
+    alignContent: 'center',
   },
 });
 
