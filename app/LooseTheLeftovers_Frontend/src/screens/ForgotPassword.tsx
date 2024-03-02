@@ -1,35 +1,57 @@
-import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
-import Text from "../components/Text";
-import { resetPassword } from "../common/ResetPassword";
-
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import Text from '../components/Text';
+import { resetPassword } from '../common/ResetPassword';
+import InputField from '../components/InputField';
+import styles from '../styles/forgotPasswordStyles';
+import { global } from '../common/global_styles';
+import LinearGradient from 'react-native-linear-gradient';
+import Button from '../components/Button';
+import GoBackIcon from '../components/GoBackIcon';
 const ForgotPassword = ({ navigation }: { navigation: any }) => {
-    const [email, setEmail] = useState("");
-    const [newPassword, setNewPassword] = useState("")
-    const [confirmedPassword, setConfirmedPassword] = useState("")
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
 
-    const handleResetPassword = () => {
-        try{
-           let pass = [newPassword, confirmedPassword]
-           resetPassword(pass);
-        }catch(error){
+  const handleResetPassword = () => {
+    try {
+      let pass = [newPassword, confirmedPassword];
+      console.log(pass);
+      //   resetPassword(pass);
+    } catch (error) {}
+  };
 
-        }
-    };
-
-    return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text texts="Forgot Password"/>
-            <TextInput
-                style={{ height: 40, width: "80%", borderColor: "gray", borderWidth: 1, marginBottom: 20, paddingHorizontal: 10 }}
-                placeholder="Enter your email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-            />
-            <Button title="Reset Password" onPress={handleResetPassword} />
+  return (
+    <>
+      <LinearGradient
+        style={styles.backgroundContainer}
+        colors={['#251D3A', global.background]}
+        start={{ x: 1, y: 0 }}>
+        <View style={styles.backIcon}>
+          <GoBackIcon />
         </View>
-    );
-}
+        <Text texts="Forgot Password"/>
+        <View style={styles.inputContainer}>
+          <InputField
+            placeholder={'Enter Your Email or Username'}
+            onChangeText={newPass => setNewPassword(newPass)}
+            value={newPassword}
+          />
+          <InputField
+            placeholder={'Enter New Password'}
+            onChangeText={newPass => setNewPassword(newPass)}
+            value={newPassword}
+          />
+          <InputField
+            placeholder={'Confirm Password'}
+            onChangeText={conPass => setConfirmedPassword(conPass)}
+            value={confirmedPassword}
+          />
+        </View>
+        <Button title="Reset Password" onPress={handleResetPassword} />
+      </LinearGradient>
+    </>
+  );
+};
 
 export default ForgotPassword;
