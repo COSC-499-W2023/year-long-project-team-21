@@ -13,6 +13,7 @@ import UserInfo from '../components/UserInfo';
 import Button from './Button';
 import Ratings from './Ratings';
 import { global } from '../common/global_styles';
+import Icon from './Icon';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   endpoint,
@@ -179,6 +180,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return (
       <View style={profileStyles.userinfocontainer}>
         <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
+        <View style={postListStyles.editIconContainer}>
+          <Icon
+            source={require('../assets/edit_white.png')}
+            size={25}
+            onPress={handleEditOnpress}
+          />
+        </View>
         <View style={profileStyles.ratingContainer}>
           <Ratings
             onFinishRating={ratingCompleted}
@@ -192,12 +200,6 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
               buttonSize={150}
               onPress={handleLoginOnpress!}
               title="Logout"></Button>
-          </View>
-          <View>
-            <Button
-              buttonSize={150}
-              onPress={handleEditOnpress!}
-              title="Edit Profile"></Button>
           </View>
         </View>
       </View>
