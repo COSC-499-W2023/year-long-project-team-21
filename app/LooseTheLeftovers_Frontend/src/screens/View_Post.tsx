@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { Card, Title } from 'react-native-paper';
@@ -22,7 +23,6 @@ import Button from '../components/Button';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
 import CreateAdIcon from '../components/CreateAdIcon';
-import MessageIcon from '../components/MessageIcon';
 import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
@@ -31,8 +31,17 @@ import { BASE_URL } from '../common/API';
 import axios from 'axios';
 import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
-import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
+/**
+ * React component for viewing a post.
+ *
+ * @component
+ * @param {object} props - The props object.
+ * @param {object} props.navigation - The navigation object.
+ * @param {object} props.route - The route object.
+ * @returns {JSX.Element} A JSX Element representing the View_Post component.
+ */
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
@@ -51,7 +60,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
-
+  const [isVisible, setIsVisible] = useState(false);
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
     checkDietaryOption(adData.category);
@@ -109,6 +118,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
     console.log(adData.category);
+
+    /**
+     * Renders the message button component.
+     *
+     * @function
+     * @private
+     * @returns {JSX.Element} The rendered message button component.
+     */
     const renderMessageButton = () => {
       return (
         <View style={styles.message_button}>
@@ -125,15 +142,20 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         </View>
       );
     };
-
-    const renderEditButton = () => {
+    
+    /**
+     * Renders the delete button component.
+     *
+     * @function
+     * @private
+     * @returns {JSX.Element} The rendered delete button component.
+     */
+    const renderDeleteButton = () => {
       return (
         <View style={styles.message_button}>
           <Button
-            title="Edit"
-            onPress={() => {
-              console.log('hi');
-            }}
+            title="Delete"
+            onPress={deletePost}
             borderRadius={0.05 * Dimensions.get('window').width}
             backgroundcolor={card_color_dict.middleColor}
             borderColor={card_color_dict.middleColor}
@@ -143,14 +165,28 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       );
     };
 
+    /**
+     * Checks if the previous page is the Profile page.
+     *
+     * @function
+     * @private
+     * @returns {boolean} Indicates whether the previous page is the Profile page.
+     */
     const IsPrevPageProfile = () => {
       const routes = navigation.getState()?.routes;
       const prevRoute = routes[routes.length - 2];
       return prevRoute?.name === 'Profile';
     };
 
+    /**
+     * Renders either the delete button or the message button based on the previous page.
+     *
+     * @function
+     * @private
+     * @returns {JSX.Element} The rendered button component.
+     */
     const renderButton = () => {
-      return IsPrevPageProfile() ? renderEditButton() : renderMessageButton();
+      return IsPrevPageProfile() ? renderDeleteButton() : renderMessageButton();
     };
 
     return (
@@ -178,6 +214,63 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     );
   };
 
+  /**
+   * Renders the delete confirmation modal.
+   *
+   * @function
+   * @private
+   * @returns {JSX.Element} The rendered delete confirmation modal.
+   */
+  const renderDeleteConfimation = () => {
+    return (
+      <Modal visible={isVisible}>
+        <LinearGradient
+          style={styles.modal_container}
+          colors={['#251D3A', global.background]}
+          start={{ x: 1, y: 0 }}>
+          <Text style={styles.modal_title}>
+            Are you sure to delete this post?
+          </Text>
+          <View style={styles.modal_button_container}>
+            <Button
+              backgroundcolor="red"
+              buttonSize={150}
+              onPress={() => setIsVisible(false)}
+              title="Cancel"></Button>
+            <Button
+              buttonSize={150}
+              onPress={deletePost}
+              title="Confirm"></Button>
+          </View>
+        </LinearGradient>
+      </Modal>
+    );
+  };
+
+  /**
+   * Deletes the post.
+   *
+   * @function
+   * @private
+   * @returns {void}
+   */
+  const deletePost = async () => {
+    console.log('post delete request starts...');
+    setIsVisible(true);
+    try {
+      const viewAds: string = endpoint + postId + '/';
+      // const payload: any = await axios.post(viewAds, "delete", djangoConfig()); Im not sure if there exists the function on backend
+      // if(payload.status==405){
+      //   // renderDeleteConfimation
+      //   console.log("here")
+      // }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log('post delete request ends...');
+    }
+  };
+
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
@@ -195,6 +288,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           {render_Card_Front(styles.card_front)}
         </View>
       </View>
+      {renderDeleteConfimation()}
       <TabBarBottom
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}

@@ -141,6 +141,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
     console.log('request is submitted');
     console.log('new username: ', newUsername);
     console.log('new email: ', newEmail);
+    console.log();
     //check username and email input format
     try {
       setNewUsername(userInfo.username);

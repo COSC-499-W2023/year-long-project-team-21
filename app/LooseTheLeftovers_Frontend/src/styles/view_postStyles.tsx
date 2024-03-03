@@ -73,6 +73,20 @@ const generateViewPostStyles = (colors: {
     ratings: {
       alignSelf: 'flex-start',
     },
+    modal_container: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    modal_button_container: {
+      alignSelf: 'center',
+      flexDirection: 'row',
+    },
+    modal_title: {
+      textAlign: 'center',
+      fontSize: 20,
+      color: 'white',
+      margin: 10,
+    },
   });
 
 export default generateViewPostStyles;
