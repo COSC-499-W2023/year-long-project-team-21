@@ -81,10 +81,11 @@ const Profile = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const newReq: any = await SecureAPIReq.createInstance();
       try {
+        const newReq: any = await SecureAPIReq.createInstance();
         const endpoint = '/ratings/';
-        const params = { rating: ratings };
+        const params = { user_id: 'n3c777' };
+        console.log('Request Details:', { endpoint, params });
         const res = await newReq.get(endpoint, params);
 
         setRatings(res.ratings);
