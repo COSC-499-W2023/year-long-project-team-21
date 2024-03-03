@@ -23,7 +23,7 @@ const profileStyles = StyleSheet.create({
     flex: 0.25,
     textAlign: 'center',
     color: global.secondary,
-    fontSize: 25,
+    fontSize: 23,
   },
   item: {
     alignItems: 'center',

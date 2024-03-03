@@ -380,7 +380,7 @@ type ChatType = {
   name: string;
   lastMessage: string;
   timestamp: string;
-};
+}
 
 /**
  * ChatListItemProps type definition for ChatListItem component.
@@ -396,7 +396,17 @@ type ChatType = {
 type ChatListItemProps = {
   chat: ChatType;
   onPress: (chatId: number) => void;
-};
+}
+
+interface RatingProps {
+  testID?: string;
+  backgroundColor?: string;
+  startingValue?: number;
+  imageSize?: number;
+  showRating?: boolean;
+  readonly?: boolean;
+  onFinishRating?: (rating: number) => void;
+}
 
 export {
   type ButtonProps,
@@ -420,4 +430,5 @@ export {
   type UserInfoProps,
   type ChatType,
   type ChatListItemProps,
+  type RatingProps,
 };

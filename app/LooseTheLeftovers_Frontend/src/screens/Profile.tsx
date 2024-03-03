@@ -9,6 +9,7 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
+import Ratings from '../components/Ratings';
 import {
   removeUserSession,
   retrieveUserSession,
@@ -81,12 +82,24 @@ const Profile = ({ navigation }: { navigation: any }) => {
     return <ActivityIndicator size="large" />;
   }
 
+  //this is for when backend is implementated
+  const ratingCompleted = (rating: number) => {
+    console.log(rating);
+  };
+
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
         <View style={profileStyles.userinfocontainer}>
           <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
+          <View style={{ marginTop: '-15%' }}>
+            <Ratings
+              onFinishRating={ratingCompleted}
+              readonly={true}
+              backgroundColor={global.tertiary}></Ratings>
+          </View>
+
           <View style={profileStyles.button}>
             <Button onPress={handleButtonOnPress} title="Logout"></Button>
           </View>
