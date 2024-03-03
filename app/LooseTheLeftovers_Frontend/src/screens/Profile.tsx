@@ -52,6 +52,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
       const userSesh: Record<string, string> = await retrieveUserSession();
       // Gets user id from session data
       const userId: string = userSesh['user_id'];
+
+      console.log('UserId:', userId);
       // set state appropriately
       setUserId(userId);
       // call backend to retrieve
@@ -83,14 +85,23 @@ const Profile = ({ navigation }: { navigation: any }) => {
     const fetchData = async () => {
       try {
         const newReq: any = await SecureAPIReq.createInstance();
+        const userSesh: Record<string, string> = await retrieveUserSession();
+        const userId: string = userSesh['user_id'];
         const endpoint = '/ratings/';
-        const params = { user_id: 'n3c777' };
+        const params = { user_id: 5 };
+
         console.log('Request Details:', { endpoint, params });
-        const res = await newReq.get(endpoint, params);
+
+        const res = await newReq.get(endpoint, { params });
 
         setRatings(res.ratings);
       } catch (error) {
-        console.error('Failed to fetch rating info:', error);
+        const apiError: any = error; // Replace 'any' with the actual type of your error
+        console.error(
+          'Failed to fetch rating info:',
+          apiError.response?.status,
+          apiError.response?.data || apiError.message,
+        );
         setRatings(0);
       }
     };

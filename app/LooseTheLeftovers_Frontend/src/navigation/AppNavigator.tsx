@@ -19,6 +19,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Reviews"
         component={Reviews}
         options={{ headerShown: false }}
@@ -26,11 +31,6 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Conversation_Ended"
         component={Conversation_Ended}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
         options={{ headerShown: false }}
       />
 
