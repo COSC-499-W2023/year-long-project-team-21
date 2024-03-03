@@ -363,6 +363,41 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+/**
+ * ChatType type definition for ChatList screen.
+ *
+ * The structure of a single chat item, detailing the
+ * information needed to display and identify a chat.
+ *
+ * @typedef {Object} ChatType
+ * @property {number} id - The unique id for the chat.
+ * @property {string} name - The name of the user.
+ * @property {string} lastMessage - The most recent message sent.
+ * @property {string} timestamp - The timestamp of the last message, formatted as a string.
+ */
+type ChatType = {
+  id: number;
+  name: string;
+  lastMessage: string;
+  timestamp: string;
+}
+
+/**
+ * ChatListItemProps type definition for ChatListItem component.
+ *
+ * The props required by the ChatListItem component, including the chat
+ * data to be displayed and the onPress callback function, triggered when
+ * the chat item is pressed.
+ *
+ * @typedef {Object} ChatListItemProps
+ * @property {ChatType} chat - The chat data to display in this list item.
+ * @property {(chatId: number) => void} onPress - Callback function when the chat item is pressed, will navigate to Chat screen.
+ */
+type ChatListItemProps = {
+  chat: ChatType;
+  onPress: (chatId: number) => void;
+}
+
 interface RatingProps {
   testID?: string;
   backgroundColor?: string;
@@ -393,5 +428,7 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type ChatType,
+  type ChatListItemProps,
   type RatingProps,
 };
