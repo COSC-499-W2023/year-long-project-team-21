@@ -6,6 +6,7 @@ import SelectRangeBar from './SelectRangeBar';
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
+import CategoryRender from './Category-Utils/CategoryRender';
 import { useFocusEffect } from '@react-navigation/native';
 import profileStyles from '../styles/profileStyles';
 import UserInfo from '../components/UserInfo';
@@ -31,6 +32,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
   const [loadedAllAds, setLoadedAllAds] = useState(false);
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   // Function to fetch data when the screen gains focus
   const fetchDataOnFocus = () => {
@@ -150,14 +153,51 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     console.log(selectedRange);
   };
 
+  //this is where the category info created. If more categories are needed add them here.
+  const categoryInfo = [
+    {
+      name: 'gluten-free',
+      imageSource: require('../assets/gluten-free.png'),
+      size: 35,
+    },
+    {
+      name: 'nut-free',
+      imageSource: require('../assets/nut.png'),
+      size: 35,
+    },
+    {
+      name: 'vegan',
+      imageSource: require('../assets/vegan.png'),
+      size: 35,
+    },
+  ];
+
+  //this prints out the category name if the corresponding icon is pressed. It also prints out if it is selected or deselected.
+  const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
+    // Updated state based on the previous state to avoid mutations
+    setSelectedCategories(prevCategories => {
+      if (isSelected) {
+        console.log('Category', categoryName, 'has been selected.');
+        return [...prevCategories, categoryName];
+      } else {
+        console.log('Category', categoryName, 'has been deselected.');
+        return prevCategories.filter(category => category !== categoryName);
+      }
+    });
+  };
+
   /**
    * @function
    * @description
-   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
+   * Renders the header for the home screen, displaying a title and a `SelectRangeBar`. It also renders the category component
    */
   const renderHeader_Home = React.memo(() => {
     return (
       <View style={postListStyles.listHeder}>
+        <CategoryRender
+          selectedCategories={selectedCategories}
+          onCategoryPress={handleCategoryPress}
+          categoryInfo={categoryInfo}></CategoryRender>
         <View style={postListStyles.dropdownHeader}>
           <SelectRangeBar onSelectRange={handleSelectRange} />
         </View>

@@ -133,7 +133,7 @@ def get_rating(request, user_id):
         rating = Rating.objects.filter(receiver_id=user_id).aggregate(Avg('rating'), Count('rating'))
 
         # if there are no ratings returned return 204
-        if rating is None:
+        if rating['rating__avg'] is None:
             return Response(status=status.HTTP_204_NO_CONTENT)
         
         # put data in json and return response
