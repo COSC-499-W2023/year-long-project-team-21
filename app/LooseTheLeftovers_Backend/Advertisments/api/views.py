@@ -221,12 +221,16 @@ def update_advertisment(request):
     
     Will return 201 CREATED response if successful.
     """
+    # validate ad being updated exists
     try:
-        # validate ad being updated exists
         ad_id = request.data['ad_id']
         ad = Advertisment.objects.get(pk=ad_id)
     except:
         return Response({"detail": "Post to update does no exist."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # validate ad being updated was created by requesting user
+    if ad.user_id != request.user.id:
+        return Response({"detail": "Cannot update post created by another user."}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
         # pass new ad data to serializer and validate passed data
@@ -234,7 +238,7 @@ def update_advertisment(request):
         if ad_serializer.is_valid():
             # if valid save updated ad
             ad_serializer.save() 
-            return Response(ad_serializer.validated_data, status=status.HTTP_201_CREATED)
+            return Response(ad_serializer.validated_data, status=status.HTTP_200_OK)
         else:
             # if serializer returned errors on validation return errors and HTTP_400 status
             return Response(ad_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
