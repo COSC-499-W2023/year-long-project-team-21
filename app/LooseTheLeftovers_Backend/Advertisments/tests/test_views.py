@@ -1,10 +1,12 @@
 from datetime import date, timedelta
-from Advertisments.models import Advertisment, AdvertismentImage
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.fields.files import ImageFieldFile
-from .test_setup import TestSetUpCreateAdvertisment, TestSetUpRetrieveAdvertisment
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
+
+from .test_setup import TestSetUpCreateAdvertisment, TestSetUpRetrieveAdvertisment
+from Advertisments.models import Advertisment, AdvertismentImage
 from Advertisments.api.serializers import ReturnAdvertismentSerializer
 from Advertisments.cron import delete_expired_ads
 
@@ -394,7 +396,7 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             format="json",
         )
 
-        # assert HTTP_200 response and that the title of the ad was updated
+        # assert HTTP_401 response
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_update_ad_other_user(self):
@@ -421,9 +423,77 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             format="json",
         )
 
-        # assert HTTP_200 response and that the title of the ad was updated
+        # assert HTTP_400 response
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_delete_ad(self):
+        """
+        Test if ad can be deleted via DELETE request.
+        Expect HTTP_200 response and ad and its image to be deleted
+        """
+        client = APIClient()
+        data = {
+            'ad_id': self.ad_1.id,
+        }
+
+        # post request and assert valid response
+        response = client.delete(
+            self.__ad_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_400 response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # assert ad is deleted
+        try:
+            deleted_ad = Advertisment.objects.get(pk=self.ad_1.id)
+        except ObjectDoesNotExist as e:
+            self.assertTrue(True)
+            
+    
+    def test_delete_ad_no_authentication(self):
+        """
+        Test if ad can be deleted via DELETE request.
+        Expect HTTP_401 response and ad and its image to be deleted
+        """
+        client = APIClient()
+        data = {
+            'ad_id': self.ad_5.id,
+        }
+
+        # post request and assert valid response
+        response = client.delete(
+            self.__ad_url,
+            data,
+            format="json",
+        )
+
+        # assert HTTP_401 response
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_delete_ad_other_user(self):
+        """
+        Test if ad can be deleted via DELETE request but requesting user is no the
+        user that created the original ad. Expect HTTP_401 response
+        """
+        client = APIClient()
+        data = {
+            'ad_id': self.ad_5.id,
+        }
+
+        # post request and assert valid response
+        response = client.delete(
+            self.__ad_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_400 response
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class ExpiryDateTests(APITestCase):
 
