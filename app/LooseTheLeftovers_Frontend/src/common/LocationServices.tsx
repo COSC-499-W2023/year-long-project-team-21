@@ -74,6 +74,7 @@ export async function getLocationPermissionIOS() {
  * @returns {Promise<boolean>} True if permission granted, false otherwise.
  * @throws {Error} Throws an error if an issue occurs.
  */
+
 export async function getLocationPermissionAndroid() {
   try {
     const granted = await PermissionsAndroid.request(
@@ -86,50 +87,62 @@ export async function getLocationPermissionAndroid() {
         buttonPositive: 'OK',
       },
     );
-    console.log('this is granted ' + granted);
-    if (granted === 'granted') {
+    console.log('this is granted: ' + granted);
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Location permission granted.');
       return true;
-    } else if (granted == 'never_ask_again') {
-      console.log('The user denied to be asked again.');
+    } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      Alert.alert('Location Services must be enabled');
       return false;
     } else {
-      console.log('You cannot use Geolocation');
+      console.log('Location permission denied or not answered yet.');
       return false;
     }
-  } catch (error: any) {
-    console.log(`Error getLocationPermissionAndroid: ${error.message}`);
-    return false;
+  } catch (error) {
+    console.log(`Error getLocationPermissionAndroid: ${error}`);
+    throw new Error(
+      `An error occurred while requesting location permission: ${error}`,
+    );
   }
 }
 
 // likely could use a handler here to depcipher between IOS and android device
+// this needs to be tested
 export async function checkLocationPermission() {
   try {
     const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
     switch (result) {
       case RESULTS.UNAVAILABLE:
-        console.log(
-          'This feature is not available (on this device / in this context)',
-        );
         return 'UNAVAILABLE';
       case RESULTS.DENIED:
-        console.log(
-          'The permission has not been requested / is denied but requestable',
-        );
         return 'DENIED';
       case RESULTS.LIMITED:
-        console.log('The permission is limited: some actions are possible');
         return 'LIMITED';
       case RESULTS.GRANTED:
-        console.log('The permission is granted');
         return 'GRANTED';
       case RESULTS.BLOCKED:
-        console.log('The permission is denied and not requestable anymore');
         return 'BLOCKED';
     }
   } catch (error) {
-    // …handle the error accordingly
-    console.error(error);
     return error;
   }
+}
+
+export async function getLocation(): Promise<{
+  latitude: number;
+  longitude: number;
+}> {
+  return new Promise((resolve, reject) => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        resolve({ latitude, longitude });
+      },
+      error => {
+        // Reject the promise if there's an error
+        reject(new Error(error.message));
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+    );
+  });
 }

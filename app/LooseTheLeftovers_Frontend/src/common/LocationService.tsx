@@ -201,31 +201,34 @@ class LocationService {
    * Gets the device's current location.
    * @throws {Error} Throws an error if an issue occurs.
    */
-  public async getLocation() {
-    // this might need to be refactored to retrieve the cached location first...
-    Geolocation.getCurrentPosition(
-      // callback function for sucessfully retrived location
-      async position => {
-        // set the location attribute to the retrieved position
-        this.location = position;
-        // save the data to the cache (@TODO combine with EncryptedStorage?)
-        const dataSaved = await this.saveLocationToCache(position.coords);
-      },
-      // callback function for an error
-      async error => {
-        // set the location attribute to undefined.
-        this.location = undefined;
-        // see if there is a cached location
-        const cachedLocation = await this.getCachedLocation();
-        // take a look at this here.
-        if (cachedLocation) {
-          console.log(cachedLocation);
-        }
-        throw new Error(error.message);
-      },
-      { enableHighAccuracy: true, timeout: 1500, maximumAge: 10000 },
-    );
+  public async getLocation(): Promise<{latitude: number, longitude: number}> {
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        async position => {
+          // Extract latitude and longitude from the position
+          const { latitude, longitude } = position.coords;
+          
+          // Optionally, save the location to cache here
+          await this.saveLocationToCache(position.coords);
+          
+          // Resolve the promise with the latitude and longitude
+          resolve({ latitude, longitude });
+        },
+        async error => {
+          // Attempt to retrieve the cached location on error
+          const cachedLocation = await this.getCachedLocation();
+          
+          if (cachedLocation) {
+            // Assuming cachedLocation has latitude and longitude
+            resolve({ latitude: cachedLocation.latitude, longitude: cachedLocation.longitude });
+          } else {
+            // Reject the promise if there's an error and no cached location
+            reject(new Error(error.message));
+          }
+        },
+        { enableHighAccuracy: true, timeout: 1500, maximumAge: 10000 },
+      );
+    });
   }
-}
 
 export default LocationService;

@@ -62,8 +62,9 @@ const SplashScreen = ({ navigation }: { navigation: any }) => {
       setError(String(result));
     } else {
       // cast to string if not an error
-      const final: string = String(result);
-      updateLocationPermission(final);
+      const finalResult: string = String(result);
+      console.log(finalResult);
+      updateLocationPermission(finalResult);
     }
   };
 

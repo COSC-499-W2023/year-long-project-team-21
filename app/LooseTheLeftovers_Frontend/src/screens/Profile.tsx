@@ -94,7 +94,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
 
         <View style={profileStyles.viewPost}>
           <PostListRenderer
-            whichHeader={'profile'}
             endpoint={adEndpoint}
             getData={fetchAds}
             navigation={navigation}
