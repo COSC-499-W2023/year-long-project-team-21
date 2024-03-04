@@ -8,11 +8,11 @@ For this week we continued to work on location services, messages, ratings, and 
 
 ## Quick reminder for usernames
 
-CookiedOutMonster - Gerren Hunter
-n3c777 - Nicholas Chamberlain
-Rev-Rok - Sten Korver
-Keizo410 - Keizo Kato
-rogeonee - Egor Bezriadin
+* CookiedOutMonster - Gerren Hunter
+* n3c777 - Nicholas Chamberlain
+* Rev-Rok - Sten Korver
+* Keizo410 - Keizo Kato
+* rogeonee - Egor Bezriadin
 
 ## Completed tasks for this week
 
