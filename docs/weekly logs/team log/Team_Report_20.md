@@ -24,9 +24,11 @@ Tasks in progress
 Test Report
 -Tests that have been completed
 
-## Burn Up Chart
+## Project board
+![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/58d92a11-fa28-46ec-82f6-1d9e96932985)
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/8c2f3173-4ca5-43f8-bb07-912d591ec368)
+## Burn Up Chart
+![Capture2](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/6ac4541c-9689-400e-a364-7b1ba7a268c2)
 
 ### Test Report
 
