@@ -2,27 +2,29 @@ Example of team logs:
 
 Team 21 - 02/18 to 03/03
 
-Overview
+## Overview
+
 For this week we continued to work on location services, messages, ratings, and editing profile screen. 
 
-Quick reminder for usernames
+## Quick reminder for usernames
+
 CookiedOutMonster - Gerren Hunter
 n3c777 - Nicholas Chamberlain
 Rev-Rok - Sten Korver
 Keizo410 - Keizo Kato
 rogeonee - Egor Bezriadin
-Completed tasks for this week would be as follows
 
-Tasks completed
+## Completed tasks for this week
+
 - ratings
-- front end edit profile screen 
+- front end edit profile screen
+- back end update/delete posts
 
-Tasks in progress
+## Tasks in progress
+
 - location services
 - messages
-
-Test Report
--Tests that have been completed
+- edit profile (backend)
 
 ## Project board
 ![Capture](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/44909431/58d92a11-fa28-46ec-82f6-1d9e96932985)
@@ -34,5 +36,9 @@ Test Report
 
 #### Test for modules (frontend)
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/c8256f7f-4c0b-41b2-abf6-8bc74dd6859e)
+
+#### Test for modules (backend)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/3f479cf7-3548-462f-bbfc-ebfe76eeaa1c)
+
 
 
