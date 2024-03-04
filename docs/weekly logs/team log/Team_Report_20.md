@@ -24,5 +24,7 @@ Tasks in progress
 Test Report
 -Tests that have been completed
 
-Project Board
-Can add image of project board here. Add some tasks related to researching/learning parts of tech stack or components of the project plan that were worked on.
+## Burn Up Chart
+
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/8c2f3173-4ca5-43f8-bb07-912d591ec368)
+
