@@ -363,7 +363,6 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
-
 interface CategoryInfo {
   name: string;
   imageSource: ImageSourcePropType;
@@ -380,6 +379,8 @@ interface CategoryProps {
 interface CategoryRenderProps {
   categoryInfo: CategoryInfo[];
   onCategoryPress: (categoryName: string, isSelected: boolean) => void;
+  selectedCategories: string[];
+}
 
 /**
  * ChatType type definition for ChatList screen.
@@ -398,7 +399,7 @@ type ChatType = {
   name: string;
   lastMessage: string;
   timestamp: string;
-}
+};
 
 /**
  * ChatListItemProps type definition for ChatListItem component.
@@ -414,7 +415,7 @@ type ChatType = {
 type ChatListItemProps = {
   chat: ChatType;
   onPress: (chatId: number) => void;
-}
+};
 
 interface RatingProps {
   testID?: string;

@@ -9,7 +9,6 @@ import { BASE_URL } from '../common/API';
 import CategoryRender from './Category-Utils/CategoryRender';
 import { useFocusEffect } from '@react-navigation/native';
 
-
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   endpoint,
@@ -25,13 +24,15 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [fetchAllowed, setFetchAllowed] = useState(true);
   const [loadedAllAds, setLoadedAllAds] = useState(false);
 
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   // Function to fetch data when the screen gains focus
   const fetchDataOnFocus = () => {
     setFetchAllowed(true); // Allow fetching data again
-    setLoadedAllAds(false)
+    setLoadedAllAds(false);
   };
 
-  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered. 
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered.
   useFocusEffect(
     useCallback(() => {
       fetchDataOnFocus();
@@ -164,11 +165,16 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
 
   //this prints out the category name if the corresponding icon is pressed. It also prints out if it is selected or deselected.
   const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
-    if (isSelected) {
-      console.log('Category', categoryName, 'has been selected.');
-    } else {
-      console.log('Category', categoryName, 'has been deselected.');
-    }
+    // Updated state based on the previous state to avoid mutations
+    setSelectedCategories(prevCategories => {
+      if (isSelected) {
+        console.log('Category', categoryName, 'has been selected.');
+        return [...prevCategories, categoryName];
+      } else {
+        console.log('Category', categoryName, 'has been deselected.');
+        return prevCategories.filter(category => category !== categoryName);
+      }
+    });
   };
 
   /**
@@ -180,6 +186,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return (
       <View style={postListStyles.listHeder}>
         <CategoryRender
+          selectedCategories={selectedCategories}
           onCategoryPress={handleCategoryPress}
           categoryInfo={categoryInfo}></CategoryRender>
         <View style={postListStyles.dropdownHeader}>

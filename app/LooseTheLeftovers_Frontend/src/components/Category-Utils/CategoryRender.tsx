@@ -15,21 +15,25 @@ import { CategoryRenderProps } from '../../common/Types';
 */
 
 const CategoryRender: React.FC<CategoryRenderProps> = ({
+  selectedCategories: propSelectedCategories,
   categoryInfo,
   onCategoryPress,
 }) => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    propSelectedCategories,
+  );
 
   //toggles selection
   const toggleCategorySelection = (categoryName: string) => {
-    const isSelected = selectedCategories.includes(categoryName);
-
-    //checks if the category name is selcected by filtering out the name
-    if (isSelected) {
-      setSelectedCategories(prev => prev.filter(name => name !== categoryName));
-    } else {
-      setSelectedCategories(prev => [...prev, categoryName]);
-    }
+    setSelectedCategories(prev => {
+      const isSelected = prev.includes(categoryName);
+      //checks if the category name is selcected by filtering out the name
+      if (isSelected) {
+        return prev.filter(name => name !== categoryName);
+      } else {
+        return [...prev, categoryName];
+      }
+    });
   };
   //this uses category component and the .map to print out all the components. Then the color of the icon
   //and the output is printed out on PostListRender
