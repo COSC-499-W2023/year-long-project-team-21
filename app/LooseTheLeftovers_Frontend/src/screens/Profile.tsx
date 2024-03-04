@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import UserInfo from '../components/UserInfo';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
@@ -175,7 +179,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
    */
   const renderModalScreen = () => {
     return (
-      <Modal visible={isVisible}>
+      <Modal visible={isVisible} onDismiss={() => setIsVisible(false)}>
         <LinearGradient
           colors={['#251D3A', global.background]}
           start={{ x: 1, y: 0 }}>
@@ -198,7 +202,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
                 backgroundcolor="red"
                 buttonSize={150}
                 onPress={handleCancelEditing}
-                title="cancel"></Button>
+                title="Cancel"></Button>
               <Button
                 buttonSize={150}
                 onPress={handleNewProfileInfoSubmission}

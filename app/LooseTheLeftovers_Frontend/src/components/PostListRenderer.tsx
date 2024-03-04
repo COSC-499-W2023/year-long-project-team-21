@@ -7,7 +7,6 @@ import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
 import { useFocusEffect } from '@react-navigation/native';
-import globalscreenstyles from '../common/global_ScreenStyles';
 import profileStyles from '../styles/profileStyles';
 import UserInfo from '../components/UserInfo';
 import Button from './Button';
