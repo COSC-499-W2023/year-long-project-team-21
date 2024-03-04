@@ -12,15 +12,14 @@ const Reviews = ({ navigation }: { navigation: any }) => {
   const [rating, setRating] = useState<number>(0);
   const [isRatingPressed, setIsRatingPressed] = useState<boolean>(false);
 
+  //when done button is pressed the ratings are sent
   const handleButtonOnPress = async () => {
     try {
+      //if done button is pressed without adding reivew then it will just navigate home
       if (!isRatingPressed) {
-        console.log('Rating has not been pressed. Review not submitted.');
         navigation.navigate('Home');
         return;
       }
-
-      console.log('new test');
       const newReq: any = await SecureAPIReq.createInstance();
       const userSesh: Record<string, string> = await retrieveUserSession();
       const userId: string = userSesh['user_id'];
@@ -31,15 +30,16 @@ const Reviews = ({ navigation }: { navigation: any }) => {
         receiver_id: userId,
       };
       setRating(0);
-      setIsRatingPressed(false); // Reset the flag after submitting the review
-      const res = await newReq.post(endpoint, ratingInfo);
-      // Log the response to the console
-      console.log('Request Details:', { ratingInfo });
-      console.log('API Response:', res);
+      setIsRatingPressed(false);
+      await newReq.post(endpoint, ratingInfo);
+
+      // Log the response to the console if you need to
+      //console.log('API Response:', res);
+
       navigation.navigate('Home');
     } catch (error) {
       const apiError = error as any;
-      // Log the error details
+      // Log the error
       console.error(
         'API Request Error:',
         apiError.response?.status,
@@ -48,6 +48,7 @@ const Reviews = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  //temporarily sets rating
   const handleOnFinishRating = (newRating: number) => {
     setRating(newRating);
     setIsRatingPressed(true);

@@ -24,13 +24,13 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Reviews"
-        component={Reviews}
+        name="Conversation_Ended"
+        component={Conversation_Ended}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Conversation_Ended"
-        component={Conversation_Ended}
+        name="Reviews"
+        component={Reviews}
         options={{ headerShown: false }}
       />
 
