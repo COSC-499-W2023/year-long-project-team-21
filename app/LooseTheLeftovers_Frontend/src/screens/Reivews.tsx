@@ -4,11 +4,11 @@ import globalscreenstyles from '../common/global_ScreenStyles';
 import ReviewStyles from '../styles/ReviewStyles';
 import Ratings from '../components/Ratings';
 import Button from '../components/Button';
-import { retrieveUserSession } from '../common/EncryptedSession';
-
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
 
-const Reviews = ({ navigation }: { navigation: any }) => {
+const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
+  const { receiverId } = route.params;
+
   const [rating, setRating] = useState<number>(0);
   const [isRatingPressed, setIsRatingPressed] = useState<boolean>(false);
 
@@ -17,17 +17,15 @@ const Reviews = ({ navigation }: { navigation: any }) => {
     try {
       //if done button is pressed without adding reivew then it will just navigate home
       if (!isRatingPressed) {
-        navigation.navigate('Home');
+        navigation.navigate('Conversation_Ended');
         return;
       }
       const newReq: any = await SecureAPIReq.createInstance();
-      const userSesh: Record<string, string> = await retrieveUserSession();
-      const userId: string = userSesh['user_id'];
-      console.log('UserId:', userId);
+
       const endpoint = '/ratings/';
       const ratingInfo = {
         rating: rating,
-        receiver_id: userId,
+        receiver_id: receiverId,
       };
       setRating(0);
       setIsRatingPressed(false);

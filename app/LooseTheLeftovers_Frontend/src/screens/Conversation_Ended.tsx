@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
-import ReviewStyles from '../styles/ReviewStyles';
 import Conversation_EndedStyles from '../styles/conversation_EndedStyles';
 import { global } from '../common/global_styles';
-
 import Button from '../components/Button';
 
 const Conversation_Ended = ({ navigation }: { navigation: any }) => {
   const handleButtonOnPress = () => {
-    navigation.navigate('Reviews');
+    navigation.navigate('Home');
   };
 
   return (
