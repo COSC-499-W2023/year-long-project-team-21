@@ -28,3 +28,9 @@ Test Report
 
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/8c2f3173-4ca5-43f8-bb07-912d591ec368)
 
+### Test Report
+
+#### Test for modules (frontend)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/c8256f7f-4c0b-41b2-abf6-8bc74dd6859e)
+
+
