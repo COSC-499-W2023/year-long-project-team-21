@@ -122,21 +122,6 @@ class TestCreateAd(TestSetUpCreateAdvertisment):
         self.assertEqual(new_ad.description, "Three Bananas")
         self.assertIsInstance(new_ad_image.image, ImageFieldFile)
 
-    def test_create_ad_with_put_request(self):
-        """
-        Test if ad can be created via PUT request. Expect HTTP_405_METHOD_NOT_ALLOWED response
-        """
-        client = APIClient()
-
-        # post request and assert valid response
-        response = client.put(
-            self.__ad_url,
-            self.valid_data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
-            format="multipart",
-        )
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
 class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
 
     def test_get_single_ad(self):
@@ -180,7 +165,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         client = APIClient()
 
         # specific user id to get all ads for
-        specific_user_id = 1
+        specific_user_id = self.user_1.id
 
         # create get request using kwargs
         user_ad_url = reverse(
@@ -352,6 +337,93 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         all_images = AdvertismentImage.objects.all()
         self.assertEqual(len(all_ads), 3)
         self.assertEqual(len(all_images), 3)
+
+class TestUpdateAds(TestSetUpRetrieveAdvertisment):
+
+    __ad_url = reverse("create-ad")
+
+    def test_update_ad(self):
+        """
+        Test if ad can be updated via PUT request
+        """
+        client = APIClient()
+        data = {
+            'ad_id': self.ad_1.id,
+            'title': "Updated title",
+            'description': self.ad_1.description,
+            'category': "Fruit",
+            'expiry': self.ad_1.expiry,
+            'latitude': self.ad_1.latitude,
+            'longitude': self.ad_1.longitude,
+        }
+        # post request and assert valid response
+        response = client.put(
+            self.__ad_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_200 response 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # get updated ad and assert title was updated
+        updated_ad = Advertisment.objects.get(pk=self.ad_1.id)
+        self.assertEqual(updated_ad.title, "Updated title")       
+    
+    def test_update_ad_no_authentication(self):
+        """
+        Test if ad can be updated via PUT request without
+        providing authentication. Expect 401_Unauthorized
+        """
+        client = APIClient()
+        data = {
+            'ad_id': self.ad_1.id,
+            'title': "Updated title",
+            'description': self.ad_1.description,
+            'category': self.ad_1.category,
+            'expiry': self.ad_1.expiry,
+            'latitude': self.ad_1.latitude,
+            'longitude': self.ad_1.longitude,
+        }
+
+        # post request and assert valid response
+        response = client.put(
+            self.__ad_url,
+            data,
+            format="json",
+        )
+
+        # assert HTTP_200 response and that the title of the ad was updated
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_update_ad_other_user(self):
+        """
+        Test if ad can be updated via PUT request but the requesting user is not
+        the user that created to original ad. Expect 400_Bad_Request
+        """
+        client = APIClient()
+        data = {
+            'ad_id': self.ad_5.id,
+            'title': "Updated title",
+            'description': self.ad_1.description,
+            'category': self.ad_1.category,
+            'expiry': self.ad_1.expiry,
+            'latitude': self.ad_1.latitude,
+            'longitude': self.ad_1.longitude,
+        }
+
+        # post request and assert valid response
+        response = client.put(
+            self.__ad_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_200 response and that the title of the ad was updated
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 class ExpiryDateTests(APITestCase):
 
