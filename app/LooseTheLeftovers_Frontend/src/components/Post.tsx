@@ -123,8 +123,8 @@ const Post: React.FC<PostProps> = ({
               cardStyles.card_dietaryIcons_wrapper_style,
               cardStyles.dietary_icon_style,
               showNutIcon,
-              showVeganIcon,
               showGlutenFreeIcon,
+              showVeganIcon,
             )}
             <View style={cardStyles.card_image_wrapper_style}>
               {renderPostImage(cardStyles.post_image_style, image, 135)}
