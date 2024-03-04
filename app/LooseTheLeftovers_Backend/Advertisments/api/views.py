@@ -226,7 +226,7 @@ def update_advertisment(request):
         ad_id = request.data['ad_id']
         ad = Advertisment.objects.get(pk=ad_id)
     except:
-        return Response({"detail": "Post to update does no exist."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Post to update does not exist."}, status=status.HTTP_400_BAD_REQUEST)
     
     # validate ad being updated was created by requesting user
     if ad.user_id != request.user.id:
