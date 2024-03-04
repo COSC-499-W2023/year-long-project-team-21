@@ -124,8 +124,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
             showNutIcon,
-            showVeganIcon,
             showGlutenFreeIcon,
+            showVeganIcon,
           )}
           <View style={styles.message_button}>
             <Button

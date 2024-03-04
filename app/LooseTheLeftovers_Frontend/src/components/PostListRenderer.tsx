@@ -6,6 +6,7 @@ import SelectRangeBar from './SelectRangeBar';
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 import { BASE_URL } from '../common/API';
+import { useFocusEffect } from '@react-navigation/native';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
@@ -20,6 +21,26 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const postListStyles = generatePostListStyles(screenWidth);
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
+  const [loadedAllAds, setLoadedAllAds] = useState(false);
+
+  // Function to fetch data when the screen gains focus
+  const fetchDataOnFocus = () => {
+    setFetchAllowed(true); // Allow fetching data again
+    setLoadedAllAds(false)
+  };
+
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered. 
+  useFocusEffect(
+    useCallback(() => {
+      fetchDataOnFocus();
+    }, []),
+  );
+
+  /*
+   * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render.
+   * After rendering items, fetchData sets fetchAllowed to false. Once user scrolls to the bottom of the page, fetchAllowed is set to true, which calls the backend again.
+   * Potential performance gains here by only listening if fetchAllowed is true
+   */
   useEffect(() => {
     if (fetchAllowed) fetchData(currentPage);
   }, [fetchAllowed]);
@@ -65,14 +86,16 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
   const fetchData = async (page: number) => {
-    console.log('next page is: ', page);
     try {
-      let data = await getData(page);
-      data = filterData(data);
-      data = filterExistingData(data); //only return non existing posts in post array
-      if (data.length > 0) {
+      const payload = await getData(page);
+      const response = payload.status;
+      if (response == 200) {
+        let data = filterData(payload.data);
+        data = filterExistingData(data);
         setPosts(prevData => [...prevData, ...data]);
         setCurrentPage(currentPage + 1);
+      } else if (response == 204) {
+        setLoadedAllAds(true);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -80,6 +103,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       setFetchAllowed(false);
     }
   };
+
   /**
    * @function
    * @description
@@ -151,9 +175,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @description
    * Renders a loading indicator as a footer while data is being fetched.
    */
-  const ListFooterComponent = () => (
-    <Text style={postListStyles.footer}>Loading...</Text>
-  );
+  const ListFooterComponent = () =>
+    loadedAllAds ? (
+      <Text style={postListStyles.footer}></Text>
+    ) : (
+      <Text style={postListStyles.footer}>Loading...</Text>
+    );
 
   const keyExtractor = useCallback(
     (item: PostProps, index: number) => `${item.id}_${index}`,
@@ -168,10 +195,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       windowSize={2}
       removeClippedSubviews={true}
       ListFooterComponent={ListFooterComponent}
-      onEndReached={() => setFetchAllowed(true)}
+      onEndReached={() => {
+        console.log('End reached');
+        setFetchAllowed(true);
+      }}
       onEndReachedThreshold={0.3}
       data={posts}
-      keyExtractor={keyExtractor} // Replace 'id' with your post identifier
+      keyExtractor={keyExtractor}
       renderItem={renderPostItem}
       ListHeaderComponent={
         isHeaderInNeed ? renderHeader_Home : renderHeader_Profile

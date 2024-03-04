@@ -30,16 +30,17 @@ const Home = ({ navigation }: { navigation: any }) => {
 
   async function fetchAds(pageNumber: number) {
     const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;
+    console.log(adEndpointWithPage);
     const payload = await axios.get(adEndpointWithPage, djangoConfig());
-    return payload.data;
+    return payload;
   }
 
   return (
     <View style={globalscreenstyles.container}>
-      {/* <LinearGradient
+      <LinearGradient
         style={globalscreenstyles.container}
         colors={[global.background, global.purple, global.background]}
-        start={{ x: 0, y: 0 }}> */}
+        start={{ x: 0, y: 0 }}> 
       <TabBarTop
         LeftIcon={<Logo size={55} ></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
@@ -56,7 +57,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         LeftIcon={<HomeIcon></HomeIcon>}
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
         RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
-      {/* </LinearGradient> */}
+      </LinearGradient> 
     </View>
   );
 };
