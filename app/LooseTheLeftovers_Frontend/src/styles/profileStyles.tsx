@@ -14,7 +14,7 @@ const profileStyles = StyleSheet.create({
     marginRight: '5%',
     backgroundColor: global.tertiary,
     borderRadius: 20,
-    flex: 0.5,
+    flex: 0.58,
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },

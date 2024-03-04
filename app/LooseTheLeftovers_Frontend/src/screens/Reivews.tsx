@@ -10,9 +10,16 @@ import { SecureAPIReq } from '../../src/common/NetworkRequest';
 
 const Reviews = ({ navigation }: { navigation: any }) => {
   const [rating, setRating] = useState<number>(0);
+  const [isRatingPressed, setIsRatingPressed] = useState<boolean>(false);
 
   const handleButtonOnPress = async () => {
     try {
+      if (!isRatingPressed) {
+        console.log('Rating has not been pressed. Review not submitted.');
+        navigation.navigate('Home');
+        return;
+      }
+
       console.log('new test');
       const newReq: any = await SecureAPIReq.createInstance();
       const userSesh: Record<string, string> = await retrieveUserSession();
@@ -24,6 +31,7 @@ const Reviews = ({ navigation }: { navigation: any }) => {
         receiver_id: userId,
       };
       setRating(0);
+      setIsRatingPressed(false); // Reset the flag after submitting the review
       const res = await newReq.post(endpoint, ratingInfo);
       // Log the response to the console
       console.log('Request Details:', { ratingInfo });
@@ -39,9 +47,12 @@ const Reviews = ({ navigation }: { navigation: any }) => {
       );
     }
   };
+
   const handleOnFinishRating = (newRating: number) => {
     setRating(newRating);
+    setIsRatingPressed(true);
   };
+
   return (
     <View style={globalscreenstyles.container}>
       <Text style={ReviewStyles.Title}>

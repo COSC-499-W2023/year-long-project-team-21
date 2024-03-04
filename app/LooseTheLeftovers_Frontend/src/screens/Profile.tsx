@@ -132,7 +132,10 @@ const Profile = ({ navigation }: { navigation: any }) => {
               startingValue={ratings}
               readonly={true}
               backgroundColor={global.tertiary}></Ratings>
-            <Text>{`Number of Reviews: ${reviewsCount}`}</Text>
+            <Texts
+              textsColor={global.secondary}
+              textsSize={15}
+              texts={`(${reviewsCount} Reviews)`}></Texts>
           </View>
 
           <View style={profileStyles.button}>
