@@ -214,7 +214,7 @@ interface ImageTextProps {
 // }
 
 interface UserInfoProps {
-  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfo: { [key: string]: string };
   userInfoKeys: string[];
 }
 
@@ -363,6 +363,25 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+interface CategoryInfo {
+  name: string;
+  imageSource: ImageSourcePropType;
+  size: number;
+}
+
+interface CategoryProps {
+  size?: number;
+  categoryName: string;
+  imageSource: ImageSourcePropType;
+  onPress: () => void;
+  isSelected: boolean;
+}
+interface CategoryRenderProps {
+  categoryInfo: CategoryInfo[];
+  onCategoryPress: (categoryName: string, isSelected: boolean) => void;
+  selectedCategories: string[];
+}
+
 /**
  * ChatType type definition for ChatList screen.
  *
@@ -380,7 +399,7 @@ type ChatType = {
   name: string;
   lastMessage: string;
   timestamp: string;
-}
+};
 
 /**
  * ChatListItemProps type definition for ChatListItem component.
@@ -396,7 +415,7 @@ type ChatType = {
 type ChatListItemProps = {
   chat: ChatType;
   onPress: (chatId: number) => void;
-}
+};
 
 interface RatingProps {
   testID?: string;
@@ -428,6 +447,8 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type CategoryRenderProps,
+  type CategoryProps,
   type ChatType,
   type ChatListItemProps,
   type RatingProps,

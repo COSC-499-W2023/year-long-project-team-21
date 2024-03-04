@@ -36,14 +36,14 @@ const Home = ({ navigation }: { navigation: any }) => {
   }
 
   return (
-    <View style={globalscreenstyles.container}>
       <LinearGradient
         style={globalscreenstyles.container}
         colors={[global.background, global.purple, global.background]}
         start={{ x: 0, y: 0 }}> 
       <TabBarTop
-        LeftIcon={<Logo size={55} ></Logo>}
+        LeftIcon={<Logo size={55}></Logo>}
         RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+
       <View style={globalscreenstyles.middle}>
         <PostListRenderer
           isHeaderInNeed={true}
@@ -58,7 +58,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         MiddleIcon={<CreateAdIcon></CreateAdIcon>}
         RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
       </LinearGradient> 
-    </View>
+
   );
 };
 
