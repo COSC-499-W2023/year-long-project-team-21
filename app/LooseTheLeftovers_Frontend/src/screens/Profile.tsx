@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import UserInfo from '../components/UserInfo';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
@@ -19,6 +19,7 @@ import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
 import Button from '../components/Button';
+import Texts from '../components/Text';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
@@ -80,6 +81,9 @@ const Profile = ({ navigation }: { navigation: any }) => {
   }, []);
 
   const [ratings, setRatings] = useState<number | undefined>(undefined);
+  const [reviewsCount, setReviewsCount] = useState<number | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,16 +91,16 @@ const Profile = ({ navigation }: { navigation: any }) => {
         const newReq: any = await SecureAPIReq.createInstance();
         const userSesh: Record<string, string> = await retrieveUserSession();
         const userId: string = userSesh['user_id'];
-        const endpoint = '/ratings/';
-        const params = { user_id: 5 };
+        const endpoint = `/ratings/${userId}`;
+        console.log('Request Details:', { endpoint });
 
-        console.log('Request Details:', { endpoint, params });
+        const res = await newReq.get(endpoint);
 
-        const res = await newReq.get(endpoint, { params });
+        setReviewsCount(res.data.count);
 
-        setRatings(res.ratings);
+        setRatings(res.data.rating);
       } catch (error) {
-        const apiError: any = error; // Replace 'any' with the actual type of your error
+        const apiError: any = error;
         console.error(
           'Failed to fetch rating info:',
           apiError.response?.status,
@@ -128,6 +132,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
               startingValue={ratings}
               readonly={true}
               backgroundColor={global.tertiary}></Ratings>
+            <Text>{`Number of Reviews: ${reviewsCount}`}</Text>
           </View>
 
           <View style={profileStyles.button}>

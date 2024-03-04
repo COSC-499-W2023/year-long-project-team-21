@@ -13,32 +13,35 @@ const Reviews = ({ navigation }: { navigation: any }) => {
 
   const handleButtonOnPress = async () => {
     try {
-      console.log('test');
+      console.log('new test');
       const newReq: any = await SecureAPIReq.createInstance();
       const userSesh: Record<string, string> = await retrieveUserSession();
       const userId: string = userSesh['user_id'];
       console.log('UserId:', userId);
       const endpoint = '/ratings/';
       const ratingInfo = {
-        ratings: rating,
-        receiver_id: 'JohnDoe',
+        rating: rating,
+        receiver_id: userId,
       };
       setRating(0);
       const res = await newReq.post(endpoint, ratingInfo);
       // Log the response to the console
+      console.log('Request Details:', { ratingInfo });
       console.log('API Response:', res);
-
       navigation.navigate('Home');
     } catch (error) {
-      const apiError: any = error;
-      apiError.response?.status, apiError.response?.data || apiError.message;
+      const apiError = error as any;
+      // Log the error details
+      console.error(
+        'API Request Error:',
+        apiError.response?.status,
+        apiError.response?.data || apiError.message,
+      );
     }
   };
-
   const handleOnFinishRating = (newRating: number) => {
     setRating(newRating);
   };
-
   return (
     <View style={globalscreenstyles.container}>
       <Text style={ReviewStyles.Title}>
