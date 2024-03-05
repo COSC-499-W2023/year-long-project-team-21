@@ -30,7 +30,7 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ onSelectRange }) => {
    * @property {number} value - The selected value from the dropdown picker.
    */
   const [item, setSelectedItem] = useState([
-    { label: 'All location', value: '-1', testID: 'dropdown-item-all' },
+    //{ label: 'All location', value: '-1', testID: 'dropdown-item-all' },
     { label: '1 km', value: '1', testID: 'dropdown-item-1' },
     { label: '5 km', value: '5', testID: 'dropdown-item-5' },
     { label: '10 km', value: '10', testID: 'dropdown-item-10' },

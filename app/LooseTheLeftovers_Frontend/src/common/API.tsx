@@ -10,7 +10,11 @@ export const refEndpoint: string = '/users/tokens/refresh/';
 // endpoint for create ad
 export const adEndpoint: string = '/ads/';
 
+// endpoint for ads/location/
+export const adsLocation: string = '/ads/location/';
+
 // endpoint for individual user's ad
 export const usersAds: string = '/ads/users/';
 
+// endpoitn for users
 export const users: string = '/users/';

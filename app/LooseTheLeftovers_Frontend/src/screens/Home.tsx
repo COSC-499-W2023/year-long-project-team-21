@@ -1,7 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Dimensions } from 'react-native';
-import globalscreenstyles from '../common/global_ScreenStyles';
+import { View, Dimensions, ActivityIndicator } from 'react-native';
 import { global } from '../common/global_styles';
+import { adEndpoint, adsLocation } from '../common/API';
+import { djangoConfig } from '../common/NetworkRequest';
+import {
+  getLocationPermissionAndroid,
+  getLocation,
+} from '../common/LocationServices';
+import { useGlobal } from '../common/GlobalContext';
+import { Title } from 'react-native-paper';
+
+import globalscreenstyles from '../common/global_ScreenStyles';
 import Logo from '../components/Logo';
 import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
@@ -11,95 +20,87 @@ import PostListRenderer from '../components/PostListRenderer';
 import LinearGradient from 'react-native-linear-gradient';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
-import { adEndpoint } from '../common/API';
-import { djangoConfig } from '../common/NetworkRequest';
 import axios from 'axios';
-import {
-  getLocationPermissionAndroid,
-  getLocation,
-} from '../common/LocationServices';
-import { useGlobal } from '../common/GlobalContext';
 import generatePostListStyles from '../styles/postListStyles';
-
-import { Title } from 'react-native-paper';
-
 import SelectRangeBar from '../components/SelectRangeBar';
 import Icon from '../components/Icon';
 
+// @TODO move this to Types.tsx
+type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
+
 const Home = ({ navigation }: { navigation: any }) => {
-  // const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null);
-  // const checkLocationPermission = async () => {
-  //   try {
-  //     const instance = await LocationService.CreateAndInitialize();
-  //     setHasLocationPermission(instance.hasPermission);
-  //   } catch (error) {
-  //     console.error('Error checking location permission:', error);
-  //     setHasLocationPermission(false); // Assume no permission in case of an error
-  //   }
-  // };
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
   const { firstLaunch, locationPermission, updateLocationPermission } =
     useGlobal();
+  // this state contains the function that PostListRenderer needs to call the backend with. When it is changed, PostListRenderer re-renders and recalls with the new request.
+  const [getDataFunction, setGetDataFunction] =
+    useState<GetDataFunctionType>(null);
   const [whichHeader, setWhichHeader] = useState('');
-  const [whichEndpoint, setWhichEndpoint] = useState('all');
+  const [range, setRange] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fuckMe = async () => {
-      console.log(locationPermission);
+    async function updateDataFetchingMethod() {
       if (locationPermission === 'GRANTED') {
         setWhichHeader('location-enabled');
+        // we can get the range here
+        setRange('30');
+        try {
+          setGetDataFunction(() => getAdsLocation);
+        } catch (error) {
+          console.error('Error getting location:', error);
+          setGetDataFunction(() => fetchAds);
+        }
       } else {
         setWhichHeader('location-disabled');
+        setGetDataFunction(() => fetchAds);
       }
-    };
-    fuckMe();
-  }, []);
-
-  useEffect(() => {
-    const awaitLocation = async () => {
-      const pos = await getLocation();
-      // trigger component refresh
-      setWhichEndpoint('location');
-      fetchAds(2, pos);
-    };
-
-    // retrieve longitude and latituce if accessing location is permitted
-    if (locationPermission === 'GRANTED') {
-      console.log(locationPermission);
-      awaitLocation();
+      setIsLoading(false);
     }
-  }, [locationPermission]);
 
-  // think this one through. This might require some brain power here
+    updateDataFetchingMethod();
+  }, [locationPermission, range]); // This effect depends on locationPermission
 
-  // bassiically wehn the app is launched, and location services aare ena
-  async function fetchAds(pageNumber: number, location?: any) {
-    if (location) {
-      console.log(location);
-      console.log('we will need to form our strike here');
-    } else {
-      const payload = await getAllAds(pageNumber);
-      return payload;
-    }
-  }
-
-  async function getAllAds(pageNumber: number) {
+  async function fetchAds(pageNumber: number) {
+    // create endpoint for ads with pageNumber that gets updated by PostListRenderer for lazyloading
     const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;
+    // call the backend endpoint
     const payload = await axios.get(adEndpointWithPage, djangoConfig());
+    // return the data to PostListRenderer
     return payload.data;
   }
 
-  async function getAdsLocation(pageNumber: number, location: any) {}
+  async function getAdsLocation(pageNumber: number) {
+    // retrieve users location permission
+    const pos = await getLocation();
+    // extract longitude and latitude and set it as the body
+    const body = {
+      latitude: pos.latitude,
+      longitude: pos.longitude,
+      range: range,
+    };
+    console.log(body);
+    // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
+    const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
+
+    console.log(adsLocation);
+
+    // call the backend endpoint
+    const payload = await axios.post(adsLocation, body, djangoConfig());
+    console.log(payload);
+    // return nothing... FOR NOW
+    return [];
+  }
 
   const enableLocation = async () => {
-    // make asynchronous location call
+    // get location permissions
     let answer = await getLocationPermissionAndroid();
     // only perform location services if user enables them
     if (answer) {
       // change header
       setWhichHeader('location-enabled');
-      // update state
+      // update state.
       updateLocationPermission('GRANTED');
     }
   };
@@ -142,7 +143,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
-            Showing Posts Nearby
+            Showing Posts Near {range} km
           </Title>
         </View>
       </View>
@@ -183,28 +184,30 @@ const Home = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={globalscreenstyles.container}>
-      {/* <LinearGradient
+      <LinearGradient
         style={globalscreenstyles.container}
         colors={[global.background, global.purple, global.background]}
-        start={{ x: 0, y: 0 }}> */}
-      <TabBarTop
-        LeftIcon={<Logo size={55}></Logo>}
-        RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
-      <View style={globalscreenstyles.middle}>
-        <PostListRenderer
-          key={whichEndpoint}
-          whichHeader={renderHeader_Handler()}
-          endpoint={adEndpoint}
-          navigation={navigation}
-          getData={fetchAds}
-        />
-      </View>
-
-      <TabBarBottom
-        LeftIcon={<HomeIcon></HomeIcon>}
-        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
-      {/* </LinearGradient> */}
+        start={{ x: 0, y: 0 }}>
+        <TabBarTop
+          LeftIcon={<Logo size={55}></Logo>}
+          RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
+        <View style={globalscreenstyles.middle}>
+          {isLoading ? (
+            ''
+          ) : (
+            <PostListRenderer
+              whichHeader={renderHeader_Handler()}
+              endpoint={adEndpoint}
+              navigation={navigation}
+              getData={getDataFunction}
+            />
+          )}
+        </View>
+        <TabBarBottom
+          LeftIcon={<HomeIcon></HomeIcon>}
+          MiddleIcon={<CreateAdIcon></CreateAdIcon>}
+          RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
+      </LinearGradient>
     </View>
   );
 };

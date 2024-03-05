@@ -76,29 +76,33 @@ const Profile = ({ navigation }: { navigation: any }) => {
     fetchUserInfo();
   }, []);
 
-  if (isLoading) {
-    // @ todo find one that is not so intruisvie.
-    return <ActivityIndicator size="large" />;
-  }
-
   return (
     <View style={globalscreenstyles.container}>
       <TabBarTop RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
-        <View style={profileStyles.userinfocontainer}>
-          <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
-          <View style={profileStyles.button}>
-            <Button onPress={handleButtonOnPress} title="Logout"></Button>
-          </View>
-        </View>
+        {isLoading ? (
+          ''
+        ) : (
+          <>
+            <View style={profileStyles.userinfocontainer}>
+              <UserInfo
+                userInfo={userInfo}
+                userInfoKeys={['username', 'email']}
+              />
+              <View style={profileStyles.button}>
+                <Button onPress={handleButtonOnPress} title="Logout" />
+              </View>
+            </View>
 
-        <View style={profileStyles.viewPost}>
-          <PostListRenderer
-            endpoint={adEndpoint}
-            getData={fetchAds}
-            navigation={navigation}
-          />
-        </View>
+            <View style={profileStyles.viewPost}>
+              <PostListRenderer
+                endpoint={adEndpoint}
+                getData={fetchAds}
+                navigation={navigation}
+              />
+            </View>
+          </>
+        )}
       </View>
 
       <TabBarBottom

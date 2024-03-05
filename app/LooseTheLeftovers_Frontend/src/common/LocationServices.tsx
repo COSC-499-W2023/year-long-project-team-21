@@ -87,9 +87,7 @@ export async function getLocationPermissionAndroid() {
         buttonPositive: 'OK',
       },
     );
-    console.log('this is granted: ' + granted);
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Location permission granted.');
       return true;
     } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
       Alert.alert('Location Services must be enabled');

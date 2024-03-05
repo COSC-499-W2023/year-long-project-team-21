@@ -10,11 +10,9 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   whichHeader,
   endpoint,
   getData,
-  // locationPermission,
   navigation,
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
-  const [range, setRange] = useState('');
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +21,17 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   useEffect(() => {
     if (fetchAllowed) fetchData(currentPage);
   }, [fetchAllowed]);
+
+  useEffect(() => {
+    // Reset posts and current page when getData changes
+    /*
+    setPosts([]);
+    setCurrentPage(1);
+    setFetchAllowed(true);*/
+    setPosts([]);
+    setCurrentPage(1);
+    setFetchAllowed(true);
+  }, [getData]);
 
   /**
    * Filters and transforms raw data into a specific format.

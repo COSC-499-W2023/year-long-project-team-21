@@ -353,7 +353,7 @@ interface ViewPostProps {
 interface PostListRendererProps {
   whichHeader?: React.ReactNode;
   endpoint: string;
-  getData: (pagenumber: number) => any;
+  getData: (pagenumber: number) => any | null;
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;

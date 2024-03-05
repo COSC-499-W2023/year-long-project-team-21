@@ -32,6 +32,10 @@ class AdvertismentHandler(APIView):
         Returns:
             Response: Response object with the ad data and a HTTP_201_OK response
         """
+
+        if request.META["PATH_INFO"] == "/ads/location/":
+            return get_ads_location(request)
+
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -63,6 +67,7 @@ class AdvertismentHandler(APIView):
                       If multiple ads are returned they will be returned as a list
 
         """
+
         # if request to create-ads endpoint was made via GET, return 405 response
         if request.META["PATH_INFO"] == "/ads/create":
             return Response(
@@ -175,12 +180,13 @@ def retrieve_single_advertisment(ad_id):
         serializer = ReturnAdvertismentSerializer(ad)
         image_serializer = ImageSerializer(ad_image)
 
-        combined = {**serializer.data, **image_serializer.data}  # Merge two dictionaries
+        combined = {
+            **serializer.data,
+            **image_serializer.data,
+        }  # Merge two dictionaries
 
         # return response data of both serializers and 200 OK response
-        return Response(
-            combined, status=status.HTTP_200_OK
-        )
+        return Response(combined, status=status.HTTP_200_OK)
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
@@ -228,13 +234,13 @@ def retrieve_advertisments_for_user(request, user_id):
         for ad, image in zip(serializer.data, image_serializer.data):
             combined = {**ad, **image}  # Merge two dictionaries
             combined_data.append(combined)
-        
+
         return Response(
             combined_data,
             status=status.HTTP_200_OK,
         )
 
-    # when index for page is out of bounds return 204 response       
+    # when index for page is out of bounds return 204 response
     except EmptyPage as e:
         response = {"message": "Last page reached"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
@@ -263,12 +269,12 @@ def retrieve_all_advertisments(request):
     """
     try:
         # query all ads and their images
-        all_ads = Advertisment.objects.all().defer('description')
+        all_ads = Advertisment.objects.all().defer("description")
         all_images = AdvertismentImage.objects.all()
     except:
         response = {"message": "No ad found"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
-    
+
     try:
         # put query results into pages
         ad_paginator = Paginator(all_ads, 3)
@@ -295,8 +301,8 @@ def retrieve_all_advertisments(request):
             combined_data,
             status=status.HTTP_200_OK,
         )
-    
-    # when index for page is out of bounds return 204 response 
+
+    # when index for page is out of bounds return 204 response
     except EmptyPage as e:
         response = {"message": "Last page reached"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
@@ -304,3 +310,12 @@ def retrieve_all_advertisments(request):
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def get_ads_location(request):
+    # going to need to serialize this aren't I
+    payload = request.data
+
+    print(payload)
+
+    return Response(status=status.HTTP_200_OK)
