@@ -245,7 +245,7 @@ interface UpperBarProps {
  * @property {string} description - The description of the ad.
  * @property {string} category - The category of the ad, will be added as a field later.
  * @property {number} expiry - The number of days until the ad expires.
- * @property {string} imageUri - The URI of the image associated with the ad, optional.
+ * @property {string} image - The URI of the image associated with the ad, optional.
  */
 interface AdDataProps {
   category: string;

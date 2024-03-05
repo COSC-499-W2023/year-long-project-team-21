@@ -29,8 +29,9 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     title: '',
     description: '',
     category: '',
-    expiry: 1,
-    imageUri: '',
+    expiry: '',
+    image: '',
+    color: '',
   });
 
   const categories = [
@@ -54,7 +55,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   ) => {
     setAdData(prevAdData => ({
       ...prevAdData,
-      [field]: field === 'imageUri' && value === null ? '' : value, // Handle imageUri null case
+      [field]: field === 'image' && value === null ? '' : value, // Handle image null case
     }));
 
     // Reset error for the field edited
@@ -80,7 +81,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       errors.categoryError = 'Please select a category for your ad.';
       isValid = false;
     }
-    if (adData.imageUri === '') {
+    if (adData.image === '') {
       errors.imageError = 'Please add an image for your ad.';
       isValid = false;
     }
@@ -143,13 +144,13 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     }
 
     // Adding image if it exists
-    if (adData.imageUri) {
-      const filename = adData.imageUri.split('/').pop();
+    if (adData.image) {
+      const filename = adData.image.split('/').pop();
       const match = /\.(\w+)$/.exec(filename ?? '');
       const type = match ? `image/${match[1]}` : `image`;
 
       formData.append('image', {
-        uri: adData.imageUri,
+        uri: adData.image,
         name: filename ?? 'upload.jpg',
         type,
       });
@@ -265,8 +266,8 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           </View>
           <View style={styles.imagePickerContainer}>
             <ImagePickerButton
-              onImagePicked={newImageUri =>
-                handleFieldChange('imageUri', newImageUri)
+              onImagePicked={newimage =>
+                handleFieldChange('image', newimage)
               }
             />
           </View>
