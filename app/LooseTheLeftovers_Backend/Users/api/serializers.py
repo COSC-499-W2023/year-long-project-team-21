@@ -106,3 +106,39 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+class UpdateUserSerializer(serializers.Serializer):
+    """
+    Serializer to validate fields for updating an CustomUser.
+
+    When an instance of this class is initialized it has to be passed the request files
+    as a parameter. After it is initialized .is_valid() should be called to validate that
+    the image passed is valid.
+
+    If .is_valid() returns false, the .errors property will be populated.
+
+    If .is_valid() returns true, the .validated_data property will be populated and the .update()
+    method can be called to update an instance of an CustomUser in the database.
+    """
+    email = serializers.EmailField()
+    firstname = serializers.CharField()
+    lastname = serializers.CharField()
+    latitude = serializers.DecimalField()
+    longitude = serializers.DecimalField()
+
+    def update(self, instance, validated_data):
+        """
+        update method executes when UpdateUserSerializer.save() is called in advertisements/api/views.py
+        and an instance of an existing CustomUser is included.
+
+        Will save an updated instance of the CustomUser in the database.
+
+        Returns an instance of the CustomUser that was saved.
+        """
+        instance.email = validated_data.get('email', instance.email)
+        instance.firstname = validated_data.get('firstname', instance.firstname)
+        instance.lastname = validated_data.get('lastname', instance.lastname)
+        instance.latitude = validated_data.get('latitude', instance.latitude)
+        instance.longitude = validated_data.get('longitude', instance.longitude)
+        instance.save()
+        return instance
