@@ -31,8 +31,7 @@ type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
 const Home = ({ navigation }: { navigation: any }) => {
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
-  const { firstLaunch, locationPermission, updateLocationPermission } =
-    useGlobal();
+  const { locationPermission, updateLocationPermission } = useGlobal();
   // this state contains the function that PostListRenderer needs to call the backend with. When it is changed, PostListRenderer re-renders and recalls with the new request.
   const [getDataFunction, setGetDataFunction] =
     useState<GetDataFunctionType>(null);
@@ -72,25 +71,30 @@ const Home = ({ navigation }: { navigation: any }) => {
   }
 
   async function getAdsLocation(pageNumber: number) {
-    // retrieve users location permission
-    const pos = await getLocation();
-    // extract longitude and latitude and set it as the body
-    const body = {
-      latitude: pos.latitude,
-      longitude: pos.longitude,
-      range: range,
-    };
-    console.log(body);
-    // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
-    const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
+    try {
+      // retrieve users location permission
+      const pos = await getLocation();
+      // extract longitude and latitude and set it as the body
+      const body = {
+        latitude: pos.latitude,
+        longitude: pos.longitude,
+        range: range,
+      };
+      console.log(body);
+      // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
+      const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
 
-    console.log(adsLocation);
+      console.log(adsLocation);
 
-    // call the backend endpoint
-    const payload = await axios.post(adsLocation, body, djangoConfig());
-    console.log(payload);
-    // return nothing... FOR NOW
-    return [];
+      // call the backend endpoint
+      const payload = await axios.post(adsLocation, body, djangoConfig());
+      console.log(payload);
+      // return nothing... FOR NOW
+      return [];
+    } catch (error) {
+      console.log(`There was an error getting the location ${error} `);
+      return [];
+    }
   }
 
   const enableLocation = async () => {

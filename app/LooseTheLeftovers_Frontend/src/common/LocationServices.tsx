@@ -74,7 +74,7 @@ export async function getLocationPermissionIOS() {
  * @returns {Promise<boolean>} True if permission granted, false otherwise.
  * @throws {Error} Throws an error if an issue occurs.
  */
-
+/*
 export async function getLocationPermissionAndroid() {
   try {
     const granted = await PermissionsAndroid.request(
@@ -100,6 +100,32 @@ export async function getLocationPermissionAndroid() {
     console.log(`Error getLocationPermissionAndroid: ${error}`);
     throw new Error(
       `An error occurred while requesting location permission: ${error}`,
+    );
+  }
+}*/
+export async function getLocationPermissionAndroid() {
+  try {
+    const permissions = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    ]);
+
+    const fineLocationGranted =
+      permissions[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION] ===
+      PermissionsAndroid.RESULTS.GRANTED;
+    const coarseLocationGranted =
+      permissions[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION] ===
+      PermissionsAndroid.RESULTS.GRANTED;
+
+    if (fineLocationGranted || coarseLocationGranted) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error getLocationPermissionAndroid: ${error}`);
+    throw new Error(
+      `An error occurred while requesting location permissions: ${error}`,
     );
   }
 }

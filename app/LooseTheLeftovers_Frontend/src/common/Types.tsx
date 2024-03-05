@@ -254,6 +254,8 @@ interface AdDataProps {
   title: string;
   image: string;
   color: string;
+  longitude: number;
+  latitude: number;
 }
 
 /**
