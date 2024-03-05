@@ -121,10 +121,10 @@ class UpdateUserSerializer(serializers.Serializer):
     method can be called to update an instance of an CustomUser in the database.
     """
     email = serializers.EmailField()
-    firstname = serializers.CharField()
-    lastname = serializers.CharField()
-    latitude = serializers.DecimalField()
-    longitude = serializers.DecimalField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    latitude = serializers.DecimalField(max_digits=9, decimal_places=6)
+    longitude = serializers.DecimalField(max_digits=9, decimal_places=6)
 
     def update(self, instance, validated_data):
         """
@@ -136,8 +136,8 @@ class UpdateUserSerializer(serializers.Serializer):
         Returns an instance of the CustomUser that was saved.
         """
         instance.email = validated_data.get('email', instance.email)
-        instance.firstname = validated_data.get('firstname', instance.firstname)
-        instance.lastname = validated_data.get('lastname', instance.lastname)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.latitude = validated_data.get('latitude', instance.latitude)
         instance.longitude = validated_data.get('longitude', instance.longitude)
         instance.save()
