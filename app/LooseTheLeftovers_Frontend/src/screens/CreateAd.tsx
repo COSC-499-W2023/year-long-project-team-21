@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
@@ -17,12 +17,14 @@ import Button from '../components/Button';
 import Icon from '../components/Icon';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
+  const [expiryEnabled, setExpiryEnabled] = useState(true);
   const [networkError, setNetworkError] = useState('');
   const [fieldError, setFieldError] = useState({
     titleError: '',
     categoryError: '',
     imageError: '',
   });
+
   const [adData, setAdData] = useState<AdDataProps>({
     title: '',
     description: '',
@@ -32,11 +34,19 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
   });
 
   const categories = [
-    { key: 'none', value: 'none' },
-    { key: 'vegan', value: 'vegan' },
-    { key: 'gluten free', value: 'gluten-free' },
-    { key: 'peanut free', value: 'peanut-free' },
+    { key: 'none', value: 'None' },
+    { key: 'vegan', value: 'Vegan' },
+    { key: 'gluten free', value: 'Gluten-free' },
+    { key: 'peanut free', value: 'Peanut-free' },
   ];
+
+  // Default RN switch won't allow to pass styles for it
+  const switchColors = {
+    trackFalse: global.tertiary,
+    trackTrue: global.tertiary,
+    thumbFalse: global.secondary,
+    thumbTrue: global.primary,
+  };
 
   const handleFieldChange = (
     field: keyof AdDataProps,
@@ -126,7 +136,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     formData.append('title', adData.title);
     formData.append('description', adData.description);
     formData.append('category', adData.category);
-    formData.append('expiry', adData.expiry);
+
+    // Adding expiry if enabled
+    if (expiryEnabled) {
+      formData.append('expiry', adData.expiry);
+    }
 
     // Adding image if it exists
     if (adData.imageUri) {
@@ -160,7 +174,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <Header title="Create Post" />
-      
+
       <ScrollView>
         <View style={styles.formContainer}>
           {/* Title */}
@@ -265,17 +279,39 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           )}
 
-          {/* Slider */}
-          <View style={styles.leftAlignedText}>
-            <Texts
-              texts="Set an expiry range"
-              textsSize={22}
-              textsColor={global.secondary}
-              textsWeight="bold"
-            />
-          </View>
-          <View style={styles.expirySliderContainer}>
-            <ExpirySlider onExpiryChange={handleExpiryChange} />
+          {/* Expiry */}
+          <View style={styles.expirySection}>
+            <View style={styles.expiryTitleContainer}>
+              <Texts
+                texts="Set an expiry range"
+                textsSize={22}
+                textsColor={global.secondary}
+                textsWeight="bold"
+              />
+              <Switch
+                trackColor={{
+                  false: switchColors.trackFalse,
+                  true: switchColors.trackTrue,
+                }}
+                thumbColor={
+                  expiryEnabled
+                    ? switchColors.thumbTrue
+                    : switchColors.thumbFalse
+                }
+                onValueChange={() => setExpiryEnabled(prevState => !prevState)}
+                value={expiryEnabled}
+                style={styles.switchStyle}
+                testID="switch-test"
+              />
+            </View>
+            {expiryEnabled && (
+              <View style={styles.expirySliderContainer}>
+                <ExpirySlider
+                  onExpiryChange={handleExpiryChange}
+                  testID="slider-test"
+                />
+              </View>
+            )}
           </View>
 
           {/* Submit Button */}
