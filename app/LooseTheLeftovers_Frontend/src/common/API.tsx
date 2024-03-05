@@ -1,5 +1,6 @@
 // BASE_URL, loopback for android devices
-export const BASE_URL: string = 'http://10.0.2.2:8000';
+// export const BASE_URL: string = 'http://10.0.2.2:8000';
+export const BASE_URL: string = 'http://192.168.1.224:8000';
 
 // endpoint for logging in (retrieving auth token)
 export const loginEndpoint: string = '/users/tokens/';
@@ -14,3 +15,5 @@ export const adEndpoint: string = '/ads/';
 export const usersAds: string = '/ads/users/';
 
 export const users: string = '/users/';
+
+export const lastMessage: string = '/messages/';
