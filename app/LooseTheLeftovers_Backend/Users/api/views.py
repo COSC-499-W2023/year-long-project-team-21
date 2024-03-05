@@ -4,12 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
-from Users.models import CustomUser
+from django.contrib.auth.hashers import check_password
 
+from Users.models import CustomUser
 from Users.api.serializers import RegistrationSerializer
 from Users.api.serializers import TokenObtainPairSerializerUserId
 from Users.api.serializers import UserSerializer
-from Users.api.serializers import UpdateUserSerializer
+from Users.api.serializers import UpdateUserSerializer, UpdatePasswordSerializer
 
 
 class TokenObtainPairSerializerUserId(TokenObtainPairView):
@@ -102,7 +103,10 @@ class UsersHandler(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         
-        return update_user(request)
+        if 'new_password' in request.data.keys():
+            return update_password(request)
+        else:
+            return update_user(request)
         
 def register_user(request):
     """
@@ -217,3 +221,33 @@ def update_user(request):
         # if error occurs return error message and detail with HTTP_500 status
         response = {"message": "Error updating post", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def update_password(request):
+    """
+    PUT request to update a user's password.
+    Uses the UpdatePasswordSerializer class to validate input and update the
+    password for the user.
+
+    Request must contain
+        -old_password
+        -new_password
+        -confirm_password
+    """
+    old_password = request.data['old_password']
+    new_password = request.data['new_password']
+    confirm_password = request.data['confirm_password']
+    
+    # if user didn't enter their correct password return error message and HTTP 401 response
+    if not check_password(old_password, request.user.password):
+        return Response({'detail': 'Incorrect password entered'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # if user didn't enter same password twice return error message and HTTP 400 response
+    if new_password != confirm_password:
+        return Response({'detail': 'Passwords must match'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # old password entered correct and new passwords match:
+    #   save new password and return message and HTTP 200 response
+    user = request.user
+    user.set_password(new_password)
+    user.save()
+    return Response({'detail': 'Password changed successfully'}, status=status.HTTP_200_OK)
