@@ -31,7 +31,9 @@ import { BASE_URL } from '../common/API';
 import axios from 'axios';
 import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
-
+import Texts from '../components/Text';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import { retrieveUserSession } from '../common/EncryptedSession';
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
@@ -99,6 +101,88 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     populateState();
   }, []);
 
+  const getUsername = async () => {
+    try {
+      // init class for new request
+      const newReq: any = await SecureAPIReq.createInstance();
+      // Retrieve session data
+      const userSesh: Record<string, string> = await retrieveUserSession();
+      // Gets user id from session data
+      const userId: string = userSesh['user_id'];
+      console.log('UserId:', userId);
+      // set state appropriatel
+      // call backend to retrieve
+      const res: any = await newReq.get(`users/${userId}`);
+      return res.data.username;
+    } catch (error) {
+      console.error('Failed to fetch user info:', error);
+    }
+  };
+
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('hello');
+        // init class for a new request
+        const newReq: any = await SecureAPIReq.createInstance();
+
+        // Retrieve session data
+        const userSesh: Record<string, string> = await retrieveUserSession();
+
+        // Gets user id from session data
+        const userId: string = userSesh['user_id'];
+        console.log('UserId:', userId);
+
+        // call backend to retrieve
+        const res: any = await newReq.get(`users/${userId}`);
+        const fetchedUsername = res.data.username;
+        console.log(fetchedUsername);
+        setUsername(fetchedUsername);
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const [ratings, setRatings] = useState<number | undefined>(undefined);
+  const [reviewsCount, setReviewsCount] = useState<number | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        //retrieves user id
+        const newReq: any = await SecureAPIReq.createInstance();
+        const userSesh: Record<string, string> = await retrieveUserSession();
+        const userId: string = userSesh['user_id'];
+        //attaches userid to the url
+        const endpoint = `/ratings/${userId}`;
+        const res = await newReq.get(endpoint);
+        //rating itself
+        setRatings(res.data.rating);
+        //rating count
+        setReviewsCount(res.data.count);
+      } catch (error) {
+        const apiError: any = error;
+        console.error(
+          'Failed to fetch rating info:',
+          apiError.response?.status,
+          apiError.response?.data || apiError.message,
+        );
+        //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
+        setReviewsCount(0);
+        setRatings(0);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   /**
    * Renders the front part of the post card.
    *
@@ -106,14 +190,19 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @private
    * @returns {JSX.Element} The rendered front card component.
    */
+
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
     console.log(adData.category);
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
+          <Text style={{ fontSize: 20, color: global.secondary }}>
+            {username}
+          </Text>
           <View style={styles.ratings}>
             <Ratings
+              startingValue={ratings}
               backgroundColor={global.tertiary}
               readonly={true}></Ratings>
           </View>

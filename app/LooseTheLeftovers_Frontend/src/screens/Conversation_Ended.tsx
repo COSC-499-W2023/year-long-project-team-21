@@ -5,9 +5,18 @@ import Conversation_EndedStyles from '../styles/conversation_EndedStyles';
 import { global } from '../common/global_styles';
 import Button from '../components/Button';
 
-const Conversation_Ended = ({ navigation }: { navigation: any }) => {
+const Conversation_Ended = ({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) => {
+  const { receiverId } = route.params;
+
+  console.log(receiverId);
   const handleButtonOnPress = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Reviews', { receiverId });
   };
 
   return (

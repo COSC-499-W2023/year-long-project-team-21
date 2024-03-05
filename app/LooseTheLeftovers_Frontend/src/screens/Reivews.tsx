@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
 
 const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
-  const { receiverId } = route.params;
+  //const { receiverId } = route.params;
 
   const [rating, setRating] = useState<number>(0);
   const [isRatingPressed, setIsRatingPressed] = useState<boolean>(false);
@@ -17,7 +17,9 @@ const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
     try {
       //if done button is pressed without adding reivew then it will just navigate home
       if (!isRatingPressed) {
-        navigation.navigate('Conversation_Ended');
+        navigation.navigate('Conversation_Ended', {
+          receiverId: 'exampleReceiverId',
+        });
         return;
       }
       const newReq: any = await SecureAPIReq.createInstance();
@@ -25,7 +27,7 @@ const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
       const endpoint = '/ratings/';
       const ratingInfo = {
         rating: rating,
-        receiver_id: receiverId,
+        receiver_id: 'n3c777',
       };
       setRating(0);
       setIsRatingPressed(false);
@@ -34,7 +36,9 @@ const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
       // Log the response to the console if you need to
       //console.log('API Response:', res);
 
-      navigation.navigate('Home');
+      navigation.navigate('Conversation_Ended', {
+        receiverId: 'exampleReceiverId',
+      });
     } catch (error) {
       const apiError = error as any;
       // Log the error
