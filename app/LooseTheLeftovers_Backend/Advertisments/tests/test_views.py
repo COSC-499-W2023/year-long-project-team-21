@@ -136,7 +136,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # specific user id to get all ads for
         # this may have to be modified (also in assert statement) as more tests are added.
         # a correct primary key to use depends on how many tests run before this one
-        specific_ad_id = 30
+        specific_ad_id = self.ad_2.id
 
         # create get request using kwargs
         specific_ad_url = reverse(
@@ -151,7 +151,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert ad matching primary key is returned
-        self.assertEqual(response.data['id'], 30)
+        self.assertEqual(response.data['id'], specific_ad_id)
 
         # assert path to image is included
         self.assertEqual(response.data['image'], '/media/app/LooseTheLeftovers_Backend/media/images/12345.PNG')
@@ -317,6 +317,24 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
 
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_ads_by_category(self):
+        """
+        Test if ads can be retrieved via GET request by category.
+        """
+        client = APIClient()
+
+        # create get request using kwargs
+        ad_url = reverse("category-ads") + '?category=vegan'
+
+        # send request
+        response = client.get(ad_url) 
+
+        # assert valid response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # assert 2 ads returned
+        self.assertEqual(len(response.data), 2)
 
     def test_delete_expired_ads(self):
         '''
