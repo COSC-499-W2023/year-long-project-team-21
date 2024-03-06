@@ -10,8 +10,9 @@ from Advertisments.api.serializers import (
     LocationSerializer,
 )
 from Advertisments.models import Advertisment, AdvertismentImage
-from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import *
 from datetime import date
 
 
@@ -307,7 +308,6 @@ def retrieve_all_advertisments(request):
 
     # when index for page is out of bounds return 204 response
     except EmptyPage as e:
-        response = {"message": "Last page reached"}
         return Response(response, status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
@@ -322,8 +322,7 @@ def get_ads_location(request):
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
-        response = {"message": "Endpoint expecting range, longitude, and latitude"}
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, and latitude
     req_range = serializer.validated_data["range"]
@@ -331,17 +330,31 @@ def get_ads_location(request):
     req_latitude = serializer.validated_data["latitude"]
 
     # create a Point for the user using GeoDjango
-    user_location = Point(
-        req_longitude, req_latitude, srid=4326
-    )  # srid=436 is some geospatial standard  to interpit long and lat assuming earth is not flat
+    user_location = Point(req_longitude, req_latitude)
 
-    nearby_ads = (
-        Advertisment.objects.annotate(distance=Distance("location", user_location))
-        .filter(distance__lte=req_range)
-        .order_by("distance")
-    )
+    # filter ads nearby based on radius, append a location which is the distance between the long/lat, and then also retrieve the images
+    try:
+        nearby_ads = (
+            Advertisment.objects.filter(
+                location__distance_lt=(user_location, D(km=req_range))
+            )
+            .annotate(distance=Distance("location", user_location))
+            .prefetch_related("ad_image")
+        )
 
-    for ad in nearby_ads:
-        print(ad)
-    # print(range + " " + str(longitude) + " " + str(latitude))
+        ad_serializer = ReturnAdvertismentSerializer(nearby_ads, many=True)
+
+        # return response dependant on data in the response
+        if ad_serializer.data is not None:
+            return Response(
+                ad_serializer.data,
+                status=status.HTTP_200_OK,
+            )
+
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     return Response(status=status.HTTP_200_OK)

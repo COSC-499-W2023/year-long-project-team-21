@@ -22,7 +22,9 @@ class Advertisment(models.Model):
 
 
 class AdvertismentImage(models.Model):
-    ad_id = models.OneToOneField(Advertisment, on_delete=models.CASCADE)
+    ad_id = models.OneToOneField(
+        Advertisment, on_delete=models.CASCADE, related_name="ad_image"
+    )
     image = models.ImageField(upload_to="images/")
 
     def __str__(self):

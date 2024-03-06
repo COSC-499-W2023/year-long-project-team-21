@@ -84,15 +84,26 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
+    distance = serializers.SerializerMethodField()
+    # Nested ImageSerializer
+    image = serializers.ImageField(source="ad_image.image", read_only=True)
 
     def to_representation(self, instance):
         """
-        Convert `expiry` date format to the desired format when serializing.
+        Convert `expiry` date format to the desired format when serializing
         """
         ret = super().to_representation(instance)
         expiry_formatted = self.get_expiry_formatted(ret["expiry"])
         ret.update(expiry_formatted)
+
         return ret
+
+    def get_distance(self, instance):
+        # This method provides the value for the 'distance' field
+        if hasattr(instance, "distance") and instance.distance is not None:
+            # Assuming instance.distance is a Distance object and we want to return kilometers
+            return round(instance.distance.km, 2)
+        return None
 
     def get_expiry_formatted(self, expiry):
         """

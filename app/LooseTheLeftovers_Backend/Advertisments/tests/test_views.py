@@ -420,5 +420,17 @@ class TestRetrieveLocationAds(TestSetupLocatonAds):
             "range": range,
         }
 
-        # Assuming `ad_url` is defined and `client` is an instance of `APIClient` or similar
         response = client.post(ad_url, body, format="json")
+        status_code = response.status_code
+        data = response.data
+
+        # there should be 3 responses
+        self.assertEqual(len(data), 3)
+
+        self.assertEqual(status_code, status.HTTP_200_OK)
+
+        # todo, could make sure that locations are precise,  but I am going to assume they are for now
+
+        for ad in data:
+            print(ad)
+            print("\n")
