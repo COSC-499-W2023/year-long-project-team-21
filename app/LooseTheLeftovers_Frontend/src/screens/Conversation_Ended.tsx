@@ -16,10 +16,10 @@ const Conversation_Ended = ({
   const { adId, receiverId } = route.params;
 
   console.log(receiverId);
-  const handleYesOnPress = () => {
+  const handleNoOnPress = () => {
     navigation.navigate('Reviews', { receiverId });
   };
-  const handleNoOnPress = async () => {
+  const handleYesOnPress = async () => {
     const newReq: any = await SecureAPIReq.createInstance();
 
     const endpoint = '/ads/';

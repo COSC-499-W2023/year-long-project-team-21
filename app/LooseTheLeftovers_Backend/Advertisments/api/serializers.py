@@ -70,6 +70,7 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     This serializer will also return the primary key when an ad is retrieved.
     """
     id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
+    user_id =  serializers.IntegerField()
     title = serializers.CharField(max_length=50)
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)

@@ -31,12 +31,23 @@ import { BASE_URL } from '../common/API';
 import axios from 'axios';
 import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
-import Texts from '../components/Text';
 import { SecureAPIReq } from '../common/NetworkRequest';
 import { retrieveUserSession } from '../common/EncryptedSession';
+
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
+  interface data {
+    category: '';
+    description: '';
+    expiry: '';
+    title: '';
+    image: any;
+    color: 'expiry_long';
+    username: '';
+    ratings: 0;
+    count: 0;
+  }
   //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
   const [adData, setAdData] = useState<AdDataProps>({
     category: '',
@@ -45,8 +56,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     title: '',
     image: require('../assets/logo.png'),
     color: 'expiry_long',
-    ratings: 0,
     username: '',
+    ratings: 0,
+    count: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const card_color_dict = assignColor(adData.color);
@@ -77,56 +89,52 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   const fetchBackend = async () => {
     try {
-      // this is only for retrieving the ad data
-      // remeber, we get the user_id from here
       const viewAds: string = endpoint + postId + '/';
-      const payload: any = '';
-      // this is a function that will eventually be populated here
+      let payload: any;
       let newReq: any;
 
-      // this is running 2 asynchronous operations at once and assigning them to the decalred variable above
+      //load both at the same time
       await Promise.all([
-        async (payload: any) => {
-          payload = await axios.get(viewAds, djangoConfig());
-        },
-        async (newReq: any) => {
-          newReq = await SecureAPIReq.createInstance();
-        },
+        axios.get(viewAds, djangoConfig()).then(response => {
+          payload = response;
+        }),
+        SecureAPIReq.createInstance().then(instance => {
+          newReq = instance;
+        }),
       ]);
 
-      let data: JSON = payload.data;
-      // I am pretty sure this is it, but you might haft to change what the field is
-      // this is for getting the user information
-      //const user_id = data['user_id'];
-      console.log('Payload:', data);
-      console.log('test 1');
-      console.log(data);
-      // const user_id: string = (data as any)['user_id'];
-      //newReq = await SecureAPIReq.createInstance();
-      // const user_details = newReq.get(`/users/${user_id}`);
-      // this is for getting the ratings
-      // const ratings = newReq.get(`/ratings/${user_id}`);
+      let data: data = payload.data;
+      const user_id = (data as any).user_id;
 
-      //last we will need to append all the data togehter
+      newReq = await SecureAPIReq.createInstance();
 
-      //  const appendData = data + user_details.data.username + ratings.data;
-      const appendData = data;
+      const user_details: any = await newReq.get(`users/${user_id}`);
 
-      return appendData;
+      try {
+        //append ratings and ratings count
+        const user_ratings: any = await newReq.get(`/ratings/${user_id}`);
+        data.ratings = user_ratings.data.rating;
+        data.count = user_ratings.data.count;
+      } catch {
+        //if there are no ratings, set both to zero
+        data.ratings = 0;
+        data.count = 0;
+      }
+
+      //append username to data
+      data.username = user_details.data.username;
+
+      return data;
     } catch (e) {
-      // display error on a screen would be nice.
-      const apiError: any = e;
-      console.error(
-        'Failed to fetch info:',
-        apiError.response?.status,
-        apiError.response?.data || apiError.message,
-      );
+      console.log(e);
+      return undefined;
     }
   };
 
   useEffect(() => {
     const populateState = async () => {
       const data: any = await fetchBackend();
+
       if (data && data.image) {
         data.image = BASE_URL + data.image;
         setAdData(data);
@@ -139,87 +147,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     populateState();
   }, []);
 
-  const [username, setUsername] = useState<string | null>(null);
-
-  /*
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const newReq: any = await SecureAPIReq.createInstance();
-
-        // const userSesh: Record<string, string> = await retrieveUserSession();
-
-        // const userId: string = userSesh['user_id'];
-
-        // console.log(userId);
-
-        // const res: any = await newReq.get(`users/${num}`);
-
-        const newReq: any = await SecureAPIReq.createInstance();
-        const postInfo: any = await newReq.get(`/ads/${postId}`);
-        console.log(postInfo);
-        const userId = postInfo.data;
-        const res: any = await newReq.get(`users/${userId}`);
-
-        console.log(res.data.username);
-        const username = res.data.username;
-        console.log(username);
-        //   setUsername({ username });
-      } catch (error) {
-        const axiosError = error as any;
-
-        if (axiosError.response) {
-          // The request was made and the server responded with a status code
-          console.error('Failed to fetch user info:', axiosError.response.data);
-          console.error('Status Code:', axiosError.response.status);
-          console.error('Headers:', axiosError.response.headers);
-        } else if (axiosError.request) {
-          // The request was made but no response was received
-          console.error('Failed to fetch user info. No response received.');
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error('Error setting up the request:', axiosError.message);
-        }
-      }
-    };
-    fetchData();
-  }, []);*/
-
-  const [ratings, setRatings] = useState<number | undefined>(undefined);
-  const [reviewsCount, setReviewsCount] = useState<number | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //retrieves user id
-        const newReq: any = await SecureAPIReq.createInstance();
-        const userSesh: Record<string, string> = await retrieveUserSession();
-        const userId: string = userSesh['user_id'];
-        //attaches userid to the url
-        const endpoint = `/ratings/${userId}`;
-        const res = await newReq.get(endpoint);
-        //rating itself
-        setRatings(res.data.rating);
-        //rating count
-        setReviewsCount(res.data.count);
-      } catch (error) {
-        const apiError: any = error;
-        console.error(
-          'Failed to fetch rating info:',
-          apiError.response?.status,
-          apiError.response?.data || apiError.message,
-        );
-        //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
-        setReviewsCount(0);
-        setRatings(0);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   /**
    * Renders the front part of the post card.
    *
@@ -227,32 +154,43 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @private
    * @returns {JSX.Element} The rendered front card component.
    */
-
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
     console.log(adData.category);
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
-          <Text style={{ fontSize: 20, color: global.secondary }}>
-            {adData.username}
-          </Text>
-          <View style={styles.ratings}>
-            <Ratings
-              startingValue={adData.ratings}
-              backgroundColor={global.tertiary}
-              readonly={true}></Ratings>
-          </View>
-          <Title style={styles.expiry}>{adData.expiry}</Title>
+          <Title
+            style={[{ color: card_color_dict.middleColor }, styles.expiry]}>
+            {adData.expiry}
+          </Title>
           <Text style={styles.description}>{adData.description}</Text>
-
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
             showNutIcon,
-            showVeganIcon,
             showGlutenFreeIcon,
+            showVeganIcon,
           )}
+          <View>
+            <View style={styles.userInfo}>
+              <Text style={{ fontSize: 20, color: global.secondary }}>
+                {adData.username} {'  '}
+              </Text>
+
+              <View style={styles.ratings}>
+                <Ratings
+                  startingValue={adData.ratings}
+                  backgroundColor={global.tertiary}
+                  readonly={true}></Ratings>
+
+                <Text style={{ color: global.secondary }}>
+                  ({adData.count})
+                </Text>
+              </View>
+            </View>
+          </View>
+
           <View style={styles.message_button}>
             <Button
               title="message"
