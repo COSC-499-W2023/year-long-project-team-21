@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   ActivityIndicator,
-  TouchableWithoutFeedback,
 } from 'react-native';
-import UserInfo from '../components/UserInfo';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
 import AccountIcon from '../components/AccountIcon';
@@ -13,7 +11,6 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
-import Ratings from '../components/Ratings';
 import {
   removeUserSession,
   retrieveUserSession,
@@ -22,21 +19,13 @@ import { SecureAPIReq } from '../../src/common/NetworkRequest';
 import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
-import Button from '../components/Button';
-import { Modal, Text } from 'react-native-paper';
-import InputField from '../components/InputField';
 import LinearGradient from 'react-native-linear-gradient';
-import styles from '../styles/registrationStyles';
-import axios from 'axios';
+
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
-  const [data, setData] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
-  const [newEmail, setNewEmail] = useState(userInfo.email);
-  const [newUsername, setNewUsername] = useState(userInfo.username);
 
   /**
    * Handles button press event to log out the user.
@@ -68,7 +57,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
    */
   const handleEditButtonOnPress = async () => {
     console.log('edit profile!');
-    setIsVisible(true);
+    navigation.navigate("EditProfile", {userInfo: userInfo})
   };
 
   /**
@@ -125,97 +114,11 @@ const Profile = ({ navigation }: { navigation: any }) => {
     console.log(rating);
   };
 
-  /**
-   * Handles button press event to cancel profile editing.
-   *
-   * @returns {void}
-   */
-  const handleCancelEditing = () => {
-    setIsVisible(false);
-  };
-
-  /**
-   * Handles the submission of new profile information.
-   * This function logs the submission details, updates the local state with new username and email,
-   * and sends a request to update the user's profile information.
-   *
-   * @returns {void}
-   */
-  const handleNewProfileInfoSubmission = async () => {
-    console.log('request is submitted');
-    console.log('new username: ', newUsername);
-    console.log('new email: ', newEmail);
-    console.log();
-    //check username and email input format
-    try {
-      setNewUsername(userInfo.username);
-      setNewEmail(userInfo.email);
-      // const apiUrl = 'http://10.0.2.2:8000/users/';
-
-      // const response = await axios.post(apiUrl, {
-      //   username: newUsername,
-      //   email: newEmail,
-      // });
-
-      // const { data } = response;
-
-      // Check response successful
-      // if (response.status === 200) {
-      //   console.log('request is submitted');
-      // } else {
-      //   //red text error produced by server
-      //   console.log("server error")
-      // }
-    } catch (error: any) {
-      //red text error produced by requesting error
-      console.log(error);
-    }
-  };
-
-  /**
-   * Renders the modal screen for editing profile information.
-   *
-   * @returns {JSX.Element} - JSX element representing the modal screen.
-   */
-  const renderModalScreen = () => {
-    return (
-      <Modal visible={isVisible} onDismiss={() => setIsVisible(false)}>
-        <LinearGradient
-          colors={['#251D3A', global.background]}
-          start={{ x: 1, y: 0 }}>
-          <View style={profileStyles.modalContainer}>
-            <View>
-              <Text style={profileStyles.modalTitle}>Edit Profile</Text>
-            </View>
-            <View>
-              <InputField
-                placeholder={userInfo.username}
-                onChangeText={newNameText => setNewUsername(newNameText)}
-                value={newUsername}></InputField>
-              <InputField
-                placeholder={userInfo.email}
-                onChangeText={newText => setNewEmail(newText)}
-                value={newEmail}></InputField>
-            </View>
-            <View style={profileStyles.modalButtonContainer}>
-              <Button
-                backgroundcolor="red"
-                buttonSize={150}
-                onPress={handleCancelEditing}
-                title="Cancel"></Button>
-              <Button
-                buttonSize={150}
-                onPress={handleNewProfileInfoSubmission}
-                title="Save"></Button>
-            </View>
-          </View>
-        </LinearGradient>
-      </Modal>
-    );
-  };
-
   return (
-    <View style={globalscreenstyles.container}>
+    <LinearGradient
+      style={globalscreenstyles.container}
+      colors={[global.purple, global.background]}
+      start={{ x: 1, y: 0 }}>
       <TabBarTop RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
         <View style={profileStyles.viewPost}>
@@ -231,13 +134,12 @@ const Profile = ({ navigation }: { navigation: any }) => {
           />
         </View>
       </View>
-      {renderModalScreen()}
       <TabBarBottom
         LeftIcon={<HomeIcon />}
         MiddleIcon={<CreateAdIcon />}
         RightIcon={<AccountIcon />}
       />
-    </View>
+    </LinearGradient>
   );
 };
 

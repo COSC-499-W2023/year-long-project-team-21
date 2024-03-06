@@ -213,7 +213,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   /**
    * @function
    * @description
-   * Renders the header for the profile screen. (Currently set to null)
+   * Renders the header for the profile screen.
    */
   const renderHeader_Profile = React.memo(() => {
     return (

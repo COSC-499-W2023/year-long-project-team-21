@@ -26,8 +26,8 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
-import { djangoConfig } from '../common/NetworkRequest';
-import { BASE_URL } from '../common/API';
+import { djangoConfig, SecureAPIReq } from '../common/NetworkRequest';
+import { BASE_URL, adEndpoint, usersAds } from '../common/API';
 import axios from 'axios';
 import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
@@ -83,7 +83,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   const fetchBackend = async () => {
     try {
-      const viewAds: string = endpoint + postId + '/';
+      const viewAds: string = endpoint + postId;
       const payload: any = await axios.get(viewAds, djangoConfig());
       let data: JSON = payload.data;
       return data;
@@ -142,7 +142,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         </View>
       );
     };
-    
+
     /**
      * Renders the delete button component.
      *
@@ -155,7 +155,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         <View style={styles.message_button}>
           <Button
             title="Delete"
-            onPress={deletePost}
+            onPress={() => setIsVisible(true)}
             borderRadius={0.05 * Dimensions.get('window').width}
             backgroundcolor={card_color_dict.middleColor}
             borderColor={card_color_dict.middleColor}
@@ -200,7 +200,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           </View>
           <Title style={styles.expiry}>{adData.expiry}</Title>
           <Text style={styles.description}>{adData.description}</Text>
-
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
@@ -258,12 +257,17 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     console.log('post delete request starts...');
     setIsVisible(true);
     try {
-      const viewAds: string = endpoint + postId + '/';
-      // const payload: any = await axios.post(viewAds, "delete", djangoConfig()); Im not sure if there exists the function on backend
-      // if(payload.status==405){
-      //   // renderDeleteConfimation
-      //   console.log("here")
-      // }
+      const deleteAds: string = endpoint ;
+      console.log(deleteAds);
+      const req: SecureAPIReq = await SecureAPIReq.createInstance();
+      const payload: any = await req.delete(deleteAds, {
+        ad_id: postId
+      });
+      console.log(payload.status)
+      if (payload.status == 201) {
+        console.log('deletion completed!');
+        navigation.navigate('DoneDelete');
+      }
     } catch (error) {
       console.log(error);
     } finally {
