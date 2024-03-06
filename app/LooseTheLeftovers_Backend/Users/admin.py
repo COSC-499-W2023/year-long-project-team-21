@@ -23,8 +23,6 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
         "is_active",
         "date_joined",
-        "latitude",
-        "longitude",
     )
 
     fieldsets = (
@@ -43,7 +41,6 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
-        ("Additional info", {"fields": ("latitude", "longitude",)}),
     )
 
     add_fieldsets = (
@@ -62,7 +59,6 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
-        ("Additional info", {"fields": ("latitude", "longitude",)}),
     )
 
     search_fields = ('username', 'first_name', 'last_name',)

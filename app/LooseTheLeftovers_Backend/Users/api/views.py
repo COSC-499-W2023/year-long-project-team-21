@@ -89,8 +89,6 @@ class UsersHandler(APIView):
                 -email
                 -firstname
                 -lastname
-                -latitude
-                -longitude
 
         Returns:
             Response: Response object with the user data and HTTP status dependent on user auth and sucess
@@ -200,8 +198,6 @@ def update_user(request):
         -email
         -firstname
         -lastname
-        -longitude
-        -latitude
     """
     # get user_id from request
     try:
