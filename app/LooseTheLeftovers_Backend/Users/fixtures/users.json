@@ -13,8 +13,6 @@
             "is_staff": true,
             "is_active": true,
             "date_joined": "2024-01-31T01:30:18.100Z",
-            "latitude": "0.000000",
-            "longitude": "0.000000",
             "groups": [],
             "user_permissions": []
         }
@@ -30,8 +28,6 @@
             "last_name": "",
             "email": "admin@mail.com",
             "date_joined": "2024-01-31T01:30:18.100Z",
-            "latitude": "0.000000",
-            "longitude": "0.000000",
             "groups": [],
             "user_permissions": []
         }
@@ -47,8 +43,6 @@
             "last_name": "",
             "email": "admin@mail.com",
             "date_joined": "2024-01-31T01:30:18.100Z",
-            "latitude": "0.000000",
-            "longitude": "0.000000",
             "groups": [],
             "user_permissions": []
         }
@@ -65,8 +59,6 @@
             "email": "staff@mail.com",
             "is_staff": true,
             "date_joined": "2024-01-31T01:30:18.100Z",
-            "latitude": "0.000000",
-            "longitude": "0.000000",
             "groups": [],
             "user_permissions": []
         }
