@@ -60,8 +60,9 @@ const generateViewPostStyles = (colors: {
     },
     dietary_icons_wrapper: {
       flexDirection: 'row',
-      width: Dimensions.get('window').width * 0.35,
-      justifyContent: 'space-between',
+      // width: Dimensions.get('window').width * 0.35,
+      justifyContent: 'flex-start',
+      marginRight: 10,
     },
     dietary_icons: {
       height: Dimensions.get('window').height * 0.045,

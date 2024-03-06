@@ -55,7 +55,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
       // set state appropriately
       setUserId(userId);
       // call backend to retrieve
-      const res: any = await newReq.get(`users/${userId}`);
+      const res: any = await newReq.get(`users/${userId}/`);
       // set state
       setUserInfo({ username: res.data.username, email: res.data.email });
       // no longer loading (wonder if nec?)
@@ -70,7 +70,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
     const req: SecureAPIReq = await SecureAPIReq.createInstance();
     const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
     const payload: any = await req.get(endpoint);
-    return payload.data;
+    return payload;
   }
 
   useEffect(() => {
