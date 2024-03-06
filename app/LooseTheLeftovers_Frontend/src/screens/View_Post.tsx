@@ -7,8 +7,14 @@ import {
   ViewStyle,
   ActivityIndicator,
 } from 'react-native';
-import globalscreenstyles from '../common/global_ScreenStyles';
 import { Card, Title } from 'react-native-paper';
+import axios from 'axios';
+
+import generateViewPostStyles from '../styles/view_postStyles';
+import globalscreenstyles from '../common/global_ScreenStyles';
+import { global } from '../common/global_styles';
+import { retrieveUserSession } from '../common/EncryptedSession';
+
 import {
   renderPostImage,
   render_Card_Back,
@@ -16,26 +22,22 @@ import {
   render_Icons,
   assignColor,
 } from '../common/postUtils';
-import { global } from '../common/global_styles';
-import generateViewPostStyles from '../styles/view_postStyles';
+import { djangoConfig } from '../common/NetworkRequest';
+import { BASE_URL } from '../common/API';
+import { AdDataProps } from '../common/Types';
+import ChatService from '../common/ChatService';
+
 import Button from '../components/Button';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
 import CreateAdIcon from '../components/CreateAdIcon';
-import MessageIcon from '../components/MessageIcon';
 import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
-import { djangoConfig } from '../common/NetworkRequest';
-import { BASE_URL } from '../common/API';
-import axios from 'axios';
-import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
 
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
-  // retrieve endpoint and postId from Post.tsx
-  const { postId, endpoint } = route.params;
-  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
+  // Put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. It'll be overwritten anyway.
   const [adData, setAdData] = useState<AdDataProps>({
     category: '',
     description: '',
@@ -44,12 +46,27 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     image: require('../assets/logo.png'),
     color: 'expiry_long',
   });
+  // Retrieve endpoint and postId from Post.tsx
+  const { postId, endpoint } = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const card_color_dict = assignColor(adData.color);
   const styles = generateViewPostStyles(card_color_dict);
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
+  const [posterId, setPosterId] = useState('');
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  // Get current user id
+  useEffect(() => {
+    const getSessionAndSetUserId = async () => {
+      const session = await retrieveUserSession();
+      if (session && session.user_id) {
+        setCurrentUserId(session.user_id);
+      }
+    };
+    getSessionAndSetUserId();
+  }, []);
 
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
@@ -78,7 +95,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       let data: JSON = payload.data;
       return data;
     } catch (e) {
-      // display error on a screen would be nice.
+      // Display an error screen would be nice.
       console.log(e);
       return undefined;
     }
@@ -91,8 +108,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         data.image = BASE_URL + data.image;
         setAdData(data);
         setIsLoading(false);
+        setPosterId(data.user_id);
       } else {
-        // exit or show a screen
+        // Exit or show a screen
         console.log('error retrieving payload');
       }
     };
@@ -127,18 +145,18 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             showGlutenFreeIcon,
             showVeganIcon,
           )}
-          <View style={styles.message_button}>
-            <Button
-              title="message"
-              onPress={() => {
-                console.log('hi');
-              }}
-              borderRadius={0.05 * Dimensions.get('window').width}
-              backgroundcolor={card_color_dict.middleColor}
-              borderColor={card_color_dict.middleColor}
-              textColor={global.secondary}
-            />
-          </View>
+          {currentUserId !== posterId && (
+            <View style={styles.message_button}>
+              <Button
+                title="message"
+                onPress={handlePressMessage}
+                borderRadius={0.05 * Dimensions.get('window').width}
+                backgroundcolor={card_color_dict.middleColor}
+                borderColor={card_color_dict.middleColor}
+                textColor={global.secondary}
+              />
+            </View>
+          )}
         </Card.Content>
       </Card>
     );
@@ -148,9 +166,23 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     return <ActivityIndicator size="large" />;
   }
 
+  const handlePressMessage = async () => {
+    const messageContent = 'start text';
+    try {
+      const response = await ChatService.sendMessage(
+        posterId,
+        postId,
+        messageContent,
+      );
+      navigation.navigate('Chat', { adId: postId, receiverId: posterId });
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
+      <TabBarTop LeftIcon={<GoBackIcon />} />
       <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, adData.image, 400)}
@@ -162,9 +194,10 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         </View>
       </View>
       <TabBarBottom
-        LeftIcon={<HomeIcon></HomeIcon>}
-        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
+        LeftIcon={<HomeIcon />}
+        MiddleIcon={<CreateAdIcon />}
+        RightIcon={<AccountIcon />}
+      />
     </View>
   );
 };

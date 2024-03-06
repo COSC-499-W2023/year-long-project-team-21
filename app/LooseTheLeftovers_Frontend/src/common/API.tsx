@@ -16,4 +16,4 @@ export const usersAds: string = '/ads/users/';
 
 export const users: string = '/users/';
 
-export const lastMessage: string = '/messages/';
+export const messages: string = '/messages/';
