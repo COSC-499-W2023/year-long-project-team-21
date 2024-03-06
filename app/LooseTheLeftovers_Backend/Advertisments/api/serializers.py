@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from Advertisments.models import Advertisment, AdvertismentImage
 from datetime import date, datetime
+from django.contrib.gis.geos import Point
 
 
 class AdvertismentSerializer(serializers.Serializer):
@@ -31,7 +32,15 @@ class AdvertismentSerializer(serializers.Serializer):
 
         Returns an instance of the Advertisment that was saved.
         """
+        # extract user_id from request to tie to advertisement
         user = self.context["request"].user
+        # use verify location data
+        longitude = validated_data.pop("longitude", None)
+        latitude = validated_data.pop("latitude", None)
+
+        if longitude is not None and latitude is not None:
+            validated_data["location"] = Point(longitude, latitude)
+
         ad = Advertisment.objects.create(user_id=user.id, **validated_data)
         return ad
 
@@ -69,6 +78,7 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     Serializer to serialize data when retrieving ads from the database.
     This serializer will also return the primary key when an ad is retrieved.
     """
+
     id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
     title = serializers.CharField(max_length=50)
     description = serializers.CharField(max_length=1000, required=False)
@@ -115,3 +125,9 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
         # 1 to 6 days will show as 'n' days (short color)
         else:
             return {"color": "expiry_short", "expiry": str(delta.days) + " days"}
+
+
+class LocationSerializer(serializers.Serializer):
+    range = serializers.FloatField(write_only=True)
+    longitude = serializers.FloatField(write_only=True)
+    latitude = serializers.FloatField(write_only=True)

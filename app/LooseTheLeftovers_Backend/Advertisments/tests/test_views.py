@@ -1,12 +1,17 @@
 from datetime import date, timedelta
 from Advertisments.models import Advertisment, AdvertismentImage
 from django.db.models.fields.files import ImageFieldFile
-from .test_setup import TestSetUpCreateAdvertisment, TestSetUpRetrieveAdvertisment
+from .test_setup import (
+    TestSetUpCreateAdvertisment,
+    TestSetUpRetrieveAdvertisment,
+    TestSetupLocatonAds,
+)
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from Advertisments.api.serializers import ReturnAdvertismentSerializer
 from Advertisments.cron import delete_expired_ads
+
 
 class TestCreateAd(TestSetUpCreateAdvertisment):
 
@@ -22,7 +27,7 @@ class TestCreateAd(TestSetUpCreateAdvertisment):
         response = client.post(
             self.__ad_url,
             self.valid_data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -35,16 +40,16 @@ class TestCreateAd(TestSetUpCreateAdvertisment):
         self.assertIsInstance(new_ad_image.image, ImageFieldFile)
 
     def test_post_new_ad_no_authentication(self):
-        '''
+        """
         Test POST request to create-ad with invalid token. Expect 401_unauthorized
-        '''
+        """
         client = APIClient()
 
         # post request with invalid token
         response = client.post(
             self.__ad_url,
             self.valid_data,
-            HTTP_AUTHORIZATION='Bearer ' + 'this_is_not_a_valid_token',
+            HTTP_AUTHORIZATION="Bearer " + "this_is_not_a_valid_token",
             format="multipart",
         )
 
@@ -52,65 +57,65 @@ class TestCreateAd(TestSetUpCreateAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_post_new_ad_missing_title(self):
-        '''
+        """
         Test POST request to create-ad with missing required title field. Expect 400_bad_request
-        '''
+        """
         client = APIClient()
         data = {
-            'description': "Three Bananas",
-            'category': "Fruit",
-            'expiry': "2023-12-25T12:30:00.000000Z",
-            'image': self.image_file
+            "description": "Three Bananas",
+            "category": "Fruit",
+            "expiry": "2023-12-25T12:30:00.000000Z",
+            "image": self.image_file,
         }
 
         # post request and assert valid response
         response = client.post(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_new_ad_invalid_date(self):
-        '''
+        """
         Test POST request to create-ad with invalid date format in body. Expect 400_bad_request
-        '''
+        """
         client = APIClient()
         # create data with no title
         data = {
-            'title': "Bananas",
-            'description': "Three Bananas",
-            'category': "Fruit",
-            'expiry': "12/25/2023"
+            "title": "Bananas",
+            "description": "Three Bananas",
+            "category": "Fruit",
+            "expiry": "12/25/2023",
         }
 
         # post request and assert valid response
         response = client.post(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_new_ad_empty_date(self):
-        '''
+        """
         Test POST request to create-ad without expiry date provided (expiry is allowed to be null)
-        '''
+        """
         client = APIClient()
         data = {
-            'title': "Bananas",
-            'description': "Three Bananas",
-            'category': "Fruit",
-            'image': self.image_file
+            "title": "Bananas",
+            "description": "Three Bananas",
+            "category": "Fruit",
+            "image": self.image_file,
         }
 
         # post request and assert valid response
         response = client.post(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -132,10 +137,11 @@ class TestCreateAd(TestSetUpCreateAdvertisment):
         response = client.put(
             self.__ad_url,
             self.valid_data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
 
@@ -152,10 +158,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         specific_ad_id = 30
 
         # create get request using kwargs
-        specific_ad_url = reverse(
-            "specific-ad", 
-            kwargs={"ad_id": specific_ad_id}
-        )
+        specific_ad_url = reverse("specific-ad", kwargs={"ad_id": specific_ad_id})
 
         # send request
         response = client.get(specific_ad_url)
@@ -164,17 +167,20 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert ad matching primary key is returned
-        self.assertEqual(response.data['id'], 30)
+        self.assertEqual(response.data["id"], 30)
 
         # assert path to image is included
-        self.assertEqual(response.data['image'], '/media/app/LooseTheLeftovers_Backend/media/images/12345.PNG')
+        self.assertEqual(
+            response.data["image"],
+            "/media/app/LooseTheLeftovers_Backend/media/images/12345.PNG",
+        )
 
         # assert expiry in correct format is included
-        self.assertEqual(response.data['expiry'], '2 weeks')
+        self.assertEqual(response.data["expiry"], "2 weeks")
 
     def test_get_users_ads(self):
         """
-        Test if all ads created by a user can be retrieved with GET request. 
+        Test if all ads created by a user can be retrieved with GET request.
         Expect HTTP_200_OK response and 3 ads returned as json (only 3 due to pagination)
         """
         client = APIClient()
@@ -183,26 +189,23 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         specific_user_id = 1
 
         # create get request using kwargs
-        user_ad_url = reverse(
-            "user-ads", 
-            kwargs={"user_id": specific_user_id}
-        )
+        user_ad_url = reverse("user-ads", kwargs={"user_id": specific_user_id})
 
         # send request
         response = client.get(
             user_ad_url,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
         )
 
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # assert 3 ads returned 
+        # assert 3 ads returned
         self.assertEqual(len(response.data), 3)
 
     def test_get_users_ads_last_page(self):
         """
-        Test if ads created by a user can be retrieved after the final page of ads with GET request. 
+        Test if ads created by a user can be retrieved after the final page of ads with GET request.
         Expect HTTP_204_NO_CONTENT response
         """
         client = APIClient()
@@ -211,15 +214,14 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         specific_user_id = 1
 
         # create get request using kwargs
-        user_ad_url = reverse(
-            "user-ads", 
-            kwargs={"user_id": specific_user_id}
-        ) + "?page=2"
+        user_ad_url = (
+            reverse("user-ads", kwargs={"user_id": specific_user_id}) + "?page=2"
+        )
 
         # send request
         response = client.get(
             user_ad_url,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
         )
 
         # assert valid response
@@ -235,10 +237,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         specific_user_id = 1
 
         # create get request using kwargs
-        user_ad_url = reverse(
-            "user-ads", 
-            kwargs={"user_id": specific_user_id}
-        )
+        user_ad_url = reverse("user-ads", kwargs={"user_id": specific_user_id})
 
         # send request
         response = client.get(user_ad_url)
@@ -268,7 +267,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
     def test_get_all_ads_second_page(self):
         """
         Test if the second page of ads can be retrieved with a GET request.
-        5 ads in total are created in test setup and 3 are returned per page. 
+        5 ads in total are created in test setup and 3 are returned per page.
         The second page should therefore have 2 ads on it
         """
         client = APIClient()
@@ -284,11 +283,11 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
 
         # assert 2 ads returned
         self.assertEqual(len(response.data), 2)
-    
+
     def test_get_all_ads_page_out_of_bounds(self):
         """
         Test if page after final page of ads can be retrieved with a GET request.
-        5 ads in total are created in test setup and 3 are returned per page, so the 
+        5 ads in total are created in test setup and 3 are returned per page, so the
         third page will not exist.
 
         Expect a 204 no content response
@@ -320,10 +319,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         specific_ad_id = 100
 
         # create get request using kwargs
-        specific_ad_url = reverse(
-            "specific-ad", 
-            kwargs={"ad_id": specific_ad_id}
-        )
+        specific_ad_url = reverse("specific-ad", kwargs={"ad_id": specific_ad_id})
 
         # send request
         response = client.get(specific_ad_url)
@@ -332,11 +328,11 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_expired_ads(self):
-        '''
+        """
         Test that the function that deletes expired ads is deleting them correctly.
         Test setup ads 5 total ads of which 2 have expired dates, therefore there should be
         3 left after the expired ones are deleted.
-        '''
+        """
         # assert there are 5 ads (and images) before function call
         all_ads = Advertisment.objects.all()
         all_images = AdvertismentImage.objects.all()
@@ -353,44 +349,76 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(len(all_ads), 3)
         self.assertEqual(len(all_images), 3)
 
+
 class ExpiryDateTests(APITestCase):
 
     def test_short_expiry(self):
-        '''
+        """
         Test the expiry returned if ad expires tomorrow.
         Expect '1 days'
-        '''
+        """
         expiry = date.today() + timedelta(days=1)
-        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(
+            ReturnAdvertismentSerializer(), expiry
+        )
 
-        self.assertEqual(result['expiry'], '1 day')
+        self.assertEqual(result["expiry"], "1 day")
 
     def test_medium_expiry(self):
-        '''
+        """
         Test the expiry returned if ad expires in a week.
         Expect '1 week'
-        '''
+        """
         expiry = date.today() + timedelta(days=7)
-        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(
+            ReturnAdvertismentSerializer(), expiry
+        )
 
-        self.assertEqual(result['expiry'], '1 week')
+        self.assertEqual(result["expiry"], "1 week")
 
     def test_long_expiry(self):
-        '''
+        """
         Test the expiry returned if ad expires in two weeks.
         Expect '2 weeks'
-        '''
+        """
         expiry = date.today() + timedelta(days=14)
-        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(
+            ReturnAdvertismentSerializer(), expiry
+        )
 
-        self.assertEqual(result['expiry'], '2 weeks')
+        self.assertEqual(result["expiry"], "2 weeks")
 
     def test_no_expiry(self):
-        '''
+        """
         Test the expiry returned if ad has no expiry set.
         Expect '2 weeks' (no expiry will forever show two weeks)
-        '''
+        """
         expiry = None
-        result = ReturnAdvertismentSerializer.get_expiry_formatted(ReturnAdvertismentSerializer(), expiry)
+        result = ReturnAdvertismentSerializer.get_expiry_formatted(
+            ReturnAdvertismentSerializer(), expiry
+        )
 
-        self.assertEqual(result['expiry'], '2 weeks')
+        self.assertEqual(result["expiry"], "2 weeks")
+
+
+class TestRetrieveLocationAds(TestSetupLocatonAds):
+
+    def test_retrieve_ads_near_10km_lake_country(self):
+        # creata client to make requests
+        client = APIClient()
+
+        # endpoint for request
+        ad_url = reverse("location-ads")
+
+        # test for 10km
+        range = 10
+
+        # body required
+        body = {
+            "longitude": self.lake_country_long,
+            "latitude": self.lake_country_lat,
+            "range": range,
+        }
+
+        # Assuming `ad_url` is defined and `client` is an instance of `APIClient` or similar
+        response = client.post(ad_url, body, format="json")

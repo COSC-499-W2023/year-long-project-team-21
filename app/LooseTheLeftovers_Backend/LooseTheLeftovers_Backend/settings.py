@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "Messages",
     "Users",
     "Ratings",
-    'django_crontab',
+    "django_crontab",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -47,11 +47,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+    "django.contrib.gis",
 ]
 
-CRONJOBS = [
-    ('0 1 * * *', 'Advertisments.cron.delete_expired_ads')
-]
+CRONJOBS = [("0 1 * * *", "Advertisments.cron.delete_expired_ads")]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -95,7 +94,8 @@ WSGI_APPLICATION = "LooseTheLeftovers_Backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("DB_DRIVER", "django.db.backends.postgresql"),
+        # "ENGINE": os.environ.get("DB_DRIVER", "django.db.backends.postgresql"),
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": os.environ.get("PG_DB"),
         "USER": os.environ.get("PG_USER"),
         "PASSWORD": os.environ.get("PG_PASSWORD"),
