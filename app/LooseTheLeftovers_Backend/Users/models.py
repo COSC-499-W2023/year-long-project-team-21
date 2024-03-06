@@ -9,8 +9,6 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractUser):
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.000000)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.000000)
 
     objects = CustomUserManager()
 
