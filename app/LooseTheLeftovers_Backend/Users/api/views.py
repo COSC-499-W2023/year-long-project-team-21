@@ -10,7 +10,7 @@ from Users.models import CustomUser
 from Users.api.serializers import RegistrationSerializer
 from Users.api.serializers import TokenObtainPairSerializerUserId
 from Users.api.serializers import UserSerializer
-from Users.api.serializers import UpdateUserSerializer, UpdatePasswordSerializer
+from Users.api.serializers import UpdateUserSerializer
 
 
 class TokenObtainPairSerializerUserId(TokenObtainPairView):
