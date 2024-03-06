@@ -40,17 +40,17 @@ It is possible to use a PUT request to update the user profile or the user passw
 
 To update the user profile, send an authenticated PUT request to `/users/` and include these fields in the body of
 the request as JSON:
--email
--first_name
--last_name
--longitude
--latitude
+- email
+- first_name
+- last_name
+- longitude
+- latitude
 
 To update a user's password, send an authenticated PUT request to `/users/` and include these fields in the body of
 the request as JSON:
--old_password
--new_password
--confirm_password
+- old_password
+- new_password
+- confirm_password
 
 The backend will check if old_password matches the user's current password. If false a HTTP_401_UNAUTHORIZED 
 response is returned and "detail" will be filled in the response containing "Incorrect password entered".
