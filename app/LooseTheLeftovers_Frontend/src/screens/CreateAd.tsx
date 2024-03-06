@@ -188,11 +188,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           </View>
           <InputField
-            placeholder="Title (30 character limit)"
+            placeholder="Title (25 character limit)"
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
-            maxLength={29}
+            maxLength={25}
           />
           {fieldError.titleError !== '' && (
             <Texts
@@ -213,7 +213,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           </View>
           <InputField
-            placeholder="Description"
+            placeholder="Description (200 character limit)"
             onChangeText={newDescription =>
               handleFieldChange('description', newDescription)
             }
