@@ -32,6 +32,7 @@ class MessageSerializer(serializers.Serializer):
         return ad
 
 class GetMessageSerializer(serializers.Serializer):
+    id = serializers.PrimaryKeyRelatedField(queryset=Message.objects.all())
     msg = serializers.CharField(max_length=1000)
     sender_id = serializers.IntegerField()
     receiver_id = serializers.IntegerField()
