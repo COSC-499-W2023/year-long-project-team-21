@@ -51,7 +51,7 @@ const generateHomeScreenCardStyles = (
       position: 'relative',
     },
     front_container: {
-      justifyContent: 'space-between', // Center content vertically
+      justifyContent: 'flex-start', // Center content vertically
       flexDirection: 'column',
       height: card_height * 0.8,
       zIndex: -1,
@@ -59,6 +59,7 @@ const generateHomeScreenCardStyles = (
     card_title_style: {
       color: global.secondary, // could be black in light mode
       fontSize: 0.06 * screenWidth,
+      width: 0.35 * screenWidth,
     },
     card_expiry_style: {
       color: colors.lightColor, // could be black in light mode

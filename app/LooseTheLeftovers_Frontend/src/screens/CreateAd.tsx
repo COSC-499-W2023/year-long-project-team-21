@@ -188,10 +188,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           </View>
           <InputField
-            placeholder="Title"
+            placeholder="Title (30 character limit)"
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
+            maxLength={29}
           />
           {fieldError.titleError !== '' && (
             <Texts
@@ -219,6 +220,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             value={adData.description}
             multiline={true}
             width="100%"
+            maxLength={200}
           />
 
           {/* Category */}
@@ -266,9 +268,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           </View>
           <View style={styles.imagePickerContainer}>
             <ImagePickerButton
-              onImagePicked={newimage =>
-                handleFieldChange('image', newimage)
-              }
+              onImagePicked={newimage => handleFieldChange('image', newimage)}
             />
           </View>
           {fieldError.imageError !== '' && (
