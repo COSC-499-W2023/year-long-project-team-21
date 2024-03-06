@@ -1,9 +1,9 @@
 import json
 from django.urls import reverse
 from rest_framework import status
-from .test_setup import TestSetUpCreateAccount
+from .test_setup import TestSetUpCreateAccount, TestSetUpUpdateAccount
 from Users.models import CustomUser
-from rest_framework.test import APITestCase
+from rest_framework.test import APIClient, APITestCase
 from Users.api.serializers import UserSerializer
 
 
@@ -307,13 +307,7 @@ class TestUserCreation(APITestCase):
         # test for a 401 since authentication is not supplied
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-        # try for a put
-        response = self.client.put(self.__register_url)
-
-        # test for a 405
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-        # try for a put
+        # try for a delete
         response = self.client.delete(self.__register_url)
 
         # test for a 405
@@ -457,3 +451,177 @@ class TestGetUsers(TestSetUpCreateAccount):
 
         # test for 500
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class TestUpdateUsers(TestSetUpUpdateAccount):
+    __users_url = reverse("users")
+
+    def test_update_user_profile(self):
+        """
+        Test if user profile can be updated via PUT request
+        """
+        client = APIClient()
+        data = {
+            'email': 'newemail@mail.com',
+            'first_name': "John",
+            'last_name': "Smith",
+            'latitude': self.user_1.latitude,
+            'longitude': self.user_1.longitude,
+        }
+
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_200 response 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # get updated ad and assert title was updated
+        updated_user = CustomUser.objects.get(pk=self.user_1.id)
+        self.assertEqual(updated_user.email, "newemail@mail.com")  
+        self.assertEqual(updated_user.first_name, "John")
+        self.assertEqual(updated_user.last_name, "Smith")
+
+    def test_update_user_profile_no_auth(self):
+        """
+        Test if user profile can be updated via PUT request but without including 
+        autherization token. Expect 401 response
+        """
+        client = APIClient()
+        data = {
+            'email': 'newemail@mail.com',
+            'first_name': "John",
+            'last_name': "Smith",
+            'latitude': self.user_1.latitude,
+            'longitude': self.user_1.longitude,
+        }
+
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            format="json",
+        )
+
+        # assert HTTP_401 response 
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_update_user_profile_invalid_email(self):
+        """
+        Test if user profile can be updated via PUT request but include
+        an invalid email address format. Expect 400 response.
+        """
+        client = APIClient()
+        data = {
+            'email': 'ThisIsNotAnEmail',
+            'first_name': "John",
+            'last_name': "Smith",
+            'latitude': self.user_1.latitude,
+            'longitude': self.user_1.longitude,
+        }
+
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_400 response 
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_password(self):
+        """
+        Test if user password can be updated via PUT request
+        """
+        client = APIClient()
+        data = {
+            'old_password': '123',
+            'new_password': 'newpassword',
+            'confirm_password': 'newpassword',
+        }
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_200 response 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # get updated ad and assert title was updated
+        updated_user = CustomUser.objects.get(pk=self.user_1.id)
+        self.assertTrue(updated_user.check_password("newpassword"))
+
+    def test_update_password_no_auth(self):
+        """
+        Test if user password can be updated via PUT request but do not 
+        include authorization token in request. Expect 401 response
+        """
+        client = APIClient()
+        data = {
+            'old_password': '123',
+            'new_password': 'newpassword',
+            'confirm_password': 'newpassword',
+        }
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            format="json",
+        )
+
+        # assert HTTP_401 response 
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_update_password_wrong_current_password(self):
+        """
+        Test if user password can be updated via PUT request but current
+        password is incorrect. Expect 401 response and error detail message
+        """
+        client = APIClient()
+        data = {
+            'old_password': 'WrongPassword',
+            'new_password': 'newpassword',
+            'confirm_password': 'newpassword',
+        }
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_401 response and error message
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.data['detail'], 'Incorrect password entered')
+
+    def test_update_password_new_password_dont_match(self):
+        """
+        Test if user password can be updated via PUT request but new password and 
+        confirmation password do no match. Expect 400 response and error detail message
+        """
+        client = APIClient()
+        data = {
+            'old_password': '123',
+            'new_password': 'newpassword',
+            'confirm_password': 'DoesNotMatch',
+        }
+        # post request and assert valid response
+        response = client.put(
+            self.__users_url,
+            data,
+            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            format="json",
+        )
+
+        # assert HTTP_400 response and error message
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['detail'], 'Passwords must match')
