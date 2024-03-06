@@ -464,8 +464,6 @@ class TestUpdateUsers(TestSetUpUpdateAccount):
             'email': 'newemail@mail.com',
             'first_name': "John",
             'last_name': "Smith",
-            'latitude': self.user_1.latitude,
-            'longitude': self.user_1.longitude,
         }
 
         # post request and assert valid response
@@ -495,8 +493,6 @@ class TestUpdateUsers(TestSetUpUpdateAccount):
             'email': 'newemail@mail.com',
             'first_name': "John",
             'last_name': "Smith",
-            'latitude': self.user_1.latitude,
-            'longitude': self.user_1.longitude,
         }
 
         # post request and assert valid response
@@ -519,8 +515,6 @@ class TestUpdateUsers(TestSetUpUpdateAccount):
             'email': 'ThisIsNotAnEmail',
             'first_name': "John",
             'last_name': "Smith",
-            'latitude': self.user_1.latitude,
-            'longitude': self.user_1.longitude,
         }
 
         # post request and assert valid response
