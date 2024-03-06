@@ -8,7 +8,9 @@
             "description": "There are 3 bananas",
             "category": "vegan",
             "expiry": "2024-02-09T12:34:56.000000Z",
-            "created": "2024-01-30T12:30:00.000000Z"
+            "created": "2024-01-30T12:30:00.000000Z",
+            "longitude": -119.397873,
+            "latitude": 50.088470
         }
     },
     {
@@ -28,7 +30,9 @@
             "description": "Leftover rice from restaurant",
             "category": "None",
             "expiry": "2024-02-05T12:34:56.000000Z",
-            "created": "2024-01-30T12:30:00.000000Z"
+            "created": "2024-01-30T12:30:00.000000Z",
+            "longitude":-119.397873,
+            "latitude":50.088470
         }
     },
     {
@@ -48,7 +52,9 @@
             "description": "Homemade pasta",
             "category": "nut",
             "expiry": "2024-02-03T12:34:56.000000Z",
-            "created": "2024-01-30T12:30:00.000000Z"
+            "created": "2024-01-30T12:30:00.000000Z",
+            "longitude": -119.463767,
+            "latitude": 50.113186
         }
     },
     {
@@ -68,7 +74,9 @@
             "description": "Sanwiches leftover from a party",
             "category": "None",
             "expiry": "2024-02-01T12:34:56.000000Z",
-            "created": "2024-01-30T12:30:00.000000Z"
+            "created": "2024-01-30T12:30:00.000000Z",
+            "longitude": -119.375607,
+            "latitude" :49.957341
         }
     },
     {
@@ -87,7 +95,9 @@
             "title": "Beans",
             "description": "Bought canned beans but don't really like them.",
             "category": "vegan",
-            "created": "2024-01-30T12:30:00.000000Z"
+            "created": "2024-01-30T12:30:00.000000Z",
+            "longitude":-119.399845,
+            "latitude":49.929965
         }
     },
     {
@@ -106,7 +116,9 @@
             "title": "Canned Fruit",
             "description": "Free",
             "category": "vegan",
-            "created": "2024-01-30T12:30:00.000000Z"
+            "created": "2024-01-30T12:30:00.000000Z",
+            "longitude": -119.743034,
+            "latitude":49.761495
         }
     },
     {

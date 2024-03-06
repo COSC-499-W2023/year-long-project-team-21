@@ -322,6 +322,7 @@ def get_ads_location(request):
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, and latitude
@@ -331,6 +332,9 @@ def get_ads_location(request):
 
     # create a Point for the user using GeoDjango
     user_location = Point(req_longitude, req_latitude)
+
+    # todo add pagination
+
 
     # filter ads nearby based on radius, append a location which is the distance between the long/lat, and then also retrieve the images
     try:
