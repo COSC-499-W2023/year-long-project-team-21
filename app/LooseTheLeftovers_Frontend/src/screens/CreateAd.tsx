@@ -345,6 +345,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 textsColor={global.secondary}
                 textsWeight="bold"
               />
+              <Icon source={require('../assets/question-mark.png')} size={20} />
               <Switch
                 trackColor={{
                   false: switchColors.trackFalse,

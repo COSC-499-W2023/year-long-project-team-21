@@ -36,15 +36,13 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [getDataFunction, setGetDataFunction] =
     useState<GetDataFunctionType>(null);
   const [whichHeader, setWhichHeader] = useState('');
-  const [range, setRange] = useState('');
+  const [range, setRange] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function updateDataFetchingMethod() {
       if (locationPermission === 'GRANTED') {
         setWhichHeader('location-enabled');
-        // we can get the range here
-        setRange('30');
         try {
           setGetDataFunction(() => getAdsLocation);
         } catch (error) {
@@ -80,17 +78,12 @@ const Home = ({ navigation }: { navigation: any }) => {
         longitude: pos.longitude,
         range: range,
       };
-      console.log(body);
       // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
       const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
-
-      console.log(adsLocation);
-
       // call the backend endpoint
       const payload = await axios.post(adsLocation, body, djangoConfig());
-      console.log(payload);
       // return nothing... FOR NOW
-      return [];
+      return payload.data;
     } catch (error) {
       console.log(`There was an error getting the location ${error} `);
       return [];
