@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, Text, Dimensions } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
 import globalscreenstyles from '../common/global_ScreenStyles';
-import TabBarTop from '../components/TabBarTop';
-import AccountIcon from '../components/AccountIcon';
-import HomeIcon from '../components/HomeIcon';
-import CreateAdIcon from '../components/CreateAdIcon';
-import TabBarBottom from '../components/TabBarBottom';
-import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
 import {
   removeUserSession,
   retrieveUserSession,
 } from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
-import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
-import LinearGradient from 'react-native-linear-gradient';
+import generatePostListStyles from '../styles/postListStyles';
+
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import AccountIcon from '../components/AccountIcon';
+import HomeIcon from '../components/HomeIcon';
+import CreateAdIcon from '../components/CreateAdIcon';
+import MessageIcon from '../components/MessageIcon';
 import Logo from '../components/Logo';
 import UserInfo from '../components/UserInfo';
 import Button from '../components/Button';
 import Ratings from '../components/Ratings';
 import Texts from '../components/Text';
 import Icon from '../components/Icon';
-
-import generatePostListStyles from '../styles/postListStyles';
+import PostListRenderer from '../components/PostListRenderer';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const screenWidth = Dimensions.get('window').width;
@@ -148,9 +149,10 @@ const Profile = ({ navigation }: { navigation: any }) => {
   }, [userId]);
 
   // function passed down as a prop to handle retrieving ads for users
-  async function fetchAds(pageNumber: number) {
+  async function fetchUserAds(pageNumber: number) {
     const req: any = await SecureAPIReq.createInstance();
     const endpoint: string = `${usersAds}${userId}/?page=${pageNumber}`;
+    console.log(endpoint);
     const payload: any = await req.get(endpoint);
     return payload;
   }
@@ -199,11 +201,11 @@ const Profile = ({ navigation }: { navigation: any }) => {
             <View style={profileStyles.viewPost}>
               <PostListRenderer
                 endpoint={adEndpoint}
-                getData={fetchAds}
+                getData={fetchUserAds}
                 navigation={navigation}
                 handleEditOnpress={handleEditButtonOnPress}
                 handleLoginOnpress={handleLoginButtonOnPress}
-                userInfo={userInfo!}
+                userInfo={userInfo}
                 rating={ratings!}
                 reviewsCount={reviewsCount}
                 page={page}

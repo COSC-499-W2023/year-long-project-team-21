@@ -93,7 +93,6 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     return filteredPosts;
   };
 
-  // what  does this do?
   const filterExistingData = (data: any[]) => {
     return data.filter(
       (newPost: { id: number }) =>
@@ -116,18 +115,15 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       const payload = await getData(page);
       const response = payload.status;
       // if the response is 200, then we will display the ads, if it is a 204, then let's get rid of the  'loading' indicator.
-      if (response == 204) {
-        setLoadedAllAds(true);
-      } else if (response == 200) {
+      if (response == 200) {
         let data = filterData(payload.data);
         data = filterExistingData(data);
         setPosts(prevData => [...prevData, ...data]);
-        setPageNumber(page + 1);
-        /*if (data.length <= 3) {
-          setLoadedAllAds(true);
-        } else {
-          setCurrentPage(currentPage + 1);
-        }*/
+        if (!getData.toString().includes('fetchUserAds')) {
+          setPageNumber(prevPage => prevPage + 1);
+        }
+      } else if (response == 204) {
+        setLoadedAllAds(true);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
