@@ -32,12 +32,22 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [posts, setPosts] = useState<PostProps[]>([]);
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
-  //const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
-
   const [loadedAllAds, setLoadedAllAds] = useState(false);
-
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  // Function to fetch data when the screen gains focus
+  const fetchDataOnFocus = () => {
+    setFetchAllowed(true); // Allow fetching data again
+    setLoadedAllAds(false);
+  };
+
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen where post list is rendered.
+  useFocusEffect(
+    useCallback(() => {
+      fetchDataOnFocus();
+    }, []),
+  );
 
   /*
    * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render.

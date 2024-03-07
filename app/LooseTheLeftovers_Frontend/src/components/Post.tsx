@@ -75,7 +75,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
-    console.log(endpoint)
+    console.log(endpoint);
     navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 
@@ -92,6 +92,10 @@ const Post: React.FC<PostProps> = ({
       useNativeDriver: true,
     }).start();
   };
+
+  useEffect(() => {
+    console.log('ack!');
+  }, []);
 
   /**
    * Handles the press out event for scaling animation.

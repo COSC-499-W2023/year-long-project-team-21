@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, Text } from 'react-native';
+import { View, ActivityIndicator, Text, Dimensions } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
 import AccountIcon from '../components/AccountIcon';
@@ -22,8 +22,13 @@ import UserInfo from '../components/UserInfo';
 import Button from '../components/Button';
 import Ratings from '../components/Ratings';
 import Texts from '../components/Text';
+import Icon from '../components/Icon';
+
+import generatePostListStyles from '../styles/postListStyles';
 
 const Profile = ({ navigation }: { navigation: any }) => {
+  const screenWidth = Dimensions.get('window').width;
+  const postListStyles = generatePostListStyles(screenWidth);
   const [userId, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
@@ -82,13 +87,20 @@ const Profile = ({ navigation }: { navigation: any }) => {
       const res: any = await newReq.get(`users/${userId}/`);
       // set state
       setUserInfo({ username: res.data.username, email: res.data.email });
-      // no longer loading (wonder if nec?)
-      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
     }
   };
 
+  /**
+   * Fetches the rating and review count for a given user.
+   *
+   * This function makes an HTTP GET request to retrieve the user's ratings and review count.
+   * Upon a successful response, it updates the relevant state. If the request fails or if the
+   * user has no ratings, it sets the ratings and review counts to zero.
+   *
+   * @param {object} newReq - The instance of the request object to make the HTTP call.
+   */
   const fetchRatings = async (newReq: any) => {
     try {
       //attaches userid to the url
@@ -131,6 +143,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
 
     if (userId) {
       makeReq();
+      setIsLoading(false);
     }
   }, [userId]);
 
@@ -155,10 +168,17 @@ const Profile = ({ navigation }: { navigation: any }) => {
           <>
             <View style={profileStyles.userinfocontainer}>
               <UserInfo
-                userInfo={userInfo}
+                userInfo={userInfo!}
                 userInfoKeys={['username', 'email']}
               />
-              <View style={{ marginTop: '-15%' }}>
+              <View style={postListStyles.editIconContainer}>
+                <Icon
+                  source={require('../assets/edit_white.png')}
+                  size={25}
+                  onPress={handleEditButtonOnPress}
+                />
+              </View>
+              <View style={profileStyles.ratingContainer}>
                 <Ratings
                   startingValue={ratings}
                   readonly={true}
@@ -168,11 +188,12 @@ const Profile = ({ navigation }: { navigation: any }) => {
                   textsSize={15}
                   texts={`(${reviewsCount} Reviews)`}></Texts>
               </View>
-
-              <View style={profileStyles.button}>
-                <Button
-                  onPress={handleLoginButtonOnPress}
-                  title="Logout"></Button>
+              <View style={profileStyles.button_container}>
+                <View>
+                  <Button
+                    onPress={handleLoginButtonOnPress!}
+                    title="Logout"></Button>
+                </View>
               </View>
             </View>
             <View style={profileStyles.viewPost}>
