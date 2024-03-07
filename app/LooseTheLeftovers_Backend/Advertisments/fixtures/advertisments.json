@@ -9,8 +9,7 @@
             "category": "vegan",
             "expiry": "2024-02-09T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z",
-            "longitude": -119.397873,
-            "latitude": 50.088470
+            "location": "POINT (-119.411188 50.027849)"
         }
     },
     {
@@ -31,8 +30,7 @@
             "category": "None",
             "expiry": "2024-02-05T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z",
-            "longitude":-119.397873,
-            "latitude":50.088470
+            "location": "POINT (-119.402754 49.965566)"
         }
     },
     {
@@ -53,8 +51,7 @@
             "category": "nut",
             "expiry": "2024-02-03T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z",
-            "longitude": -119.463767,
-            "latitude": 50.113186
+            "location": "POINT (-119.393555 49.939806)"
         }
     },
     {
@@ -75,8 +72,7 @@
             "category": "None",
             "expiry": "2024-02-01T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z",
-            "longitude": -119.375607,
-            "latitude" :49.957341
+            "location": "POINT (-119.396281 49.920059)"
         }
     },
     {
@@ -96,8 +92,7 @@
             "description": "Bought canned beans but don't really like them.",
             "category": "vegan",
             "created": "2024-01-30T12:30:00.000000Z",
-            "longitude":-119.399845,
-            "latitude":49.929965
+            "location": "POINT (-119.379948 49.905630)"
         }
     },
     {
@@ -117,8 +112,7 @@
             "description": "Free",
             "category": "vegan",
             "created": "2024-01-30T12:30:00.000000Z",
-            "longitude": -119.743034,
-            "latitude":49.761495
+            "location": "POINT (-119.406895 49.894616)"
         }
     },
     {
@@ -138,7 +132,8 @@
             "category": "vegan, gluten-free",
             "description": "Bread baked today with cranberries",
             "created": "2024-01-30T12:30:00.000000Z",
-            "expiry": "2024-02-15T12:34:56.000000Z"
+            "expiry": "2024-02-15T12:34:56.000000Z",
+            "location": "POINT (-119.412614 49.887665)"
         }
     },
     {
@@ -158,7 +153,8 @@
             "category": "None",
             "description": "Leftover from halloween. Please take my children have had enough",
             "created": "2024-01-30T12:30:00.000000Z",
-            "expiry": "2024-01-07T12:34:56.000000Z"
+            "expiry": "2024-01-07T12:34:56.000000Z",
+            "location": "POINT (-119.458738 49.878225)"
         }
     },
     {
@@ -178,7 +174,8 @@
             "description": "Lots leftover from family dinner",
             "category": "None",
             "created": "2024-01-30T12:30:00.000000Z",
-            "expiry": "2024-02-02T12:34:56.000000Z"
+            "expiry": "2024-02-02T12:34:56.000000Z",
+            "location": "POINT (-119.483196 49.879136)"
         }
     },
     {
@@ -198,7 +195,8 @@
             "description": "Home backed. Gluten free",
             "category": "nut, vegan, gluten-free",
             "created": "2024-01-30T12:30:00.000000Z",
-            "expiry": "2024-02-08T12:34:56.000000Z"
+            "expiry": "2024-02-08T12:34:56.000000Z",
+            "location": "POINT (-119.403049 49.939236)"
         }
     },
     {
