@@ -76,6 +76,7 @@ interface IconProps {
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
  * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
+ *  @property {boolean} maxLength - optional character limit
  */
 
 interface InputFieldProps {
@@ -86,6 +87,7 @@ interface InputFieldProps {
   placeholderTextColor?: string;
   multiline?: boolean;
   width?: string | number;
+  maxLength?: number;
 }
 
 /**
