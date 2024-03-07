@@ -3,7 +3,7 @@ import { global } from '../common/global_styles';
 
 export const styles = StyleSheet.create({
   boxStyles: {
-    width: '50%',
+    width: '60%',
     height: 50,
     borderColor: global.primary,
     borderWidth: 1,
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   dropdownStyles: {
     borderColor: global.primary, // Border color for dropdown
-    width: '50%',
+    width: '60%',
     borderWidth: 1, // Border width for dropdown
     paddingVertical: 6,
     marginBottom: 10,

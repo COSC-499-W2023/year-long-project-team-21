@@ -16,6 +16,8 @@ const generatePostListStyles = (screenWidth: number) =>
       color: global.secondary,
     },
     dropdownHeader: {
+      flexDirection: 'row', // Align children in a row
+      alignItems: 'center', // Center children vertically
       marginVertical: 20,
       left: 0.07 * screenWidth,
     },

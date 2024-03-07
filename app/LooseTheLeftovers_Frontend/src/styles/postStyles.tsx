@@ -67,7 +67,9 @@ const generateHomeScreenCardStyles = (
     },
     card_distance_style: {
       color: global.secondary, // could be black in light mode
-      fontSize: 0.05 * screenWidth,
+      fontSize: 0.038 * screenWidth,
+      fontWeight: 'normal',
+      textAlign: 'left',
     },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',

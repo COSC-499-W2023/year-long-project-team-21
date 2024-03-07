@@ -119,10 +119,11 @@ const Post: React.FC<PostProps> = ({
         <Card.Content>
           <View style={cardStyles.front_container}>
             <Title style={cardStyles.card_title_style}>{title}</Title>
-            <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
             <Title style={cardStyles.card_distance_style}>
-              {distance !== undefined && ` ${distance} km`}
+              {distance !== undefined && ` ${distance} km away`}
             </Title>
+            <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
+
             {render_Icons(
               cardStyles.card_dietaryIcons_wrapper_style,
               cardStyles.dietary_icon_style,

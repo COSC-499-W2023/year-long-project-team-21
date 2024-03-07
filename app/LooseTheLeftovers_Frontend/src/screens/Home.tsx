@@ -81,7 +81,11 @@ const Home = ({ navigation }: { navigation: any }) => {
       // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
       const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
       // call the backend endpoint
-      const payload = await axios.post(adsLocation, body, djangoConfig());
+      const payload = await axios.post(
+        adLocEndpointWPage,
+        body,
+        djangoConfig(),
+      );
       // return nothing... FOR NOW
       return payload;
     } catch (error) {
