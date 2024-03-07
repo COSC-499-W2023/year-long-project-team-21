@@ -8,8 +8,8 @@ import CreateAd from '../screens/CreateAd';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
-import ChatList from '../screens/ChatList';
 import View_Post from '../screens/View_Post';
+import ChatList from '../screens/ChatList';
 import Reviews from '../screens/Reivews';
 import Conversation_Ended from '../screens/Conversation_Ended';
 
@@ -53,7 +53,6 @@ const AppNavigator = () => {
         component={View_Post}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="CreateAd"
         component={CreateAd}

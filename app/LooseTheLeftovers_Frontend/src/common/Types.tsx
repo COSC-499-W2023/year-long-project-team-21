@@ -76,6 +76,7 @@ interface IconProps {
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
  * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
+ *  @property {boolean} maxLength - optional character limit
  */
 
 interface InputFieldProps {
@@ -86,6 +87,7 @@ interface InputFieldProps {
   placeholderTextColor?: string;
   multiline?: boolean;
   width?: string | number;
+  maxLength?: number;
 }
 
 /**
@@ -214,7 +216,7 @@ interface ImageTextProps {
 // }
 
 interface UserInfoProps {
-  userInfo: { [key: string]: string }; // Assuming user information is a key-value pair of strings
+  userInfo: { [key: string]: string };
   userInfoKeys: string[];
 }
 
@@ -245,7 +247,7 @@ interface UpperBarProps {
  * @property {string} description - The description of the ad.
  * @property {string} category - The category of the ad, will be added as a field later.
  * @property {number} expiry - The number of days until the ad expires.
- * @property {string} imageUri - The URI of the image associated with the ad, optional.
+ * @property {string} image - The URI of the image associated with the ad, optional.
  */
 interface AdDataProps {
   category: string;
@@ -366,6 +368,60 @@ interface SelectRangeBarProps {
   onSelectRange: (selectedRange: string) => void;
 }
 
+interface CategoryInfo {
+  name: string;
+  imageSource: ImageSourcePropType;
+  size: number;
+}
+
+interface CategoryProps {
+  size?: number;
+  categoryName: string;
+  imageSource: ImageSourcePropType;
+  onPress: () => void;
+  isSelected: boolean;
+}
+interface CategoryRenderProps {
+  categoryInfo: CategoryInfo[];
+  onCategoryPress: (categoryName: string, isSelected: boolean) => void;
+  selectedCategories: string[];
+}
+
+/**
+ * ChatType type definition for ChatList screen.
+ *
+ * The structure of a single chat item, detailing the
+ * information needed to display and identify a chat.
+ *
+ * @typedef {Object} ChatType
+ * @property {number} id - The unique id for the chat.
+ * @property {string} name - The name of the user.
+ * @property {string} lastMessage - The most recent message sent.
+ * @property {string} timestamp - The timestamp of the last message, formatted as a string.
+ */
+type ChatType = {
+  id: number;
+  name: string;
+  lastMessage: string;
+  timestamp: string;
+};
+
+/**
+ * ChatListItemProps type definition for ChatListItem component.
+ *
+ * The props required by the ChatListItem component, including the chat
+ * data to be displayed and the onPress callback function, triggered when
+ * the chat item is pressed.
+ *
+ * @typedef {Object} ChatListItemProps
+ * @property {ChatType} chat - The chat data to display in this list item.
+ * @property {(chatId: number) => void} onPress - Callback function when the chat item is pressed, will navigate to Chat screen.
+ */
+type ChatListItemProps = {
+  chat: ChatType;
+  onPress: (chatId: number) => void;
+};
+
 interface RatingProps {
   testID?: string;
   backgroundColor?: string;
@@ -396,5 +452,9 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type CategoryRenderProps,
+  type CategoryProps,
+  type ChatType,
+  type ChatListItemProps,
   type RatingProps,
 };

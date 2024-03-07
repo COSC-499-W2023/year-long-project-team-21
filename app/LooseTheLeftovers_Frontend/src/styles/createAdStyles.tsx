@@ -55,6 +55,19 @@ const styles = StyleSheet.create({
   dropdownTextStyles: {
     color: global.secondary, // Text color for dropdown items
   },
+  expirySection: {
+    paddingTop: 15,
+  },
+  expiryTitleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Push switch to the right
+    alignItems: 'flex-end', // Center title and switch
+    paddingBottom: 15,
+  },
+  switchStyle: {
+    transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }], // Scales up default switch
+  },
 });
 
 export default styles;
