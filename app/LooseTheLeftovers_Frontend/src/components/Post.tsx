@@ -40,6 +40,7 @@ const Post: React.FC<PostProps> = ({
   category,
   color,
   navigation,
+  distance,
 }: PostProps): JSX.Element => {
   const screenWidth = Dimensions.get('window').width;
   const scaleValue = useRef(new Animated.Value(1)).current;
@@ -119,12 +120,15 @@ const Post: React.FC<PostProps> = ({
           <View style={cardStyles.front_container}>
             <Title style={cardStyles.card_title_style}>{title}</Title>
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
+            <Title style={cardStyles.card_distance_style}>
+              {distance !== undefined && ` ${distance} km`}
+            </Title>
             {render_Icons(
               cardStyles.card_dietaryIcons_wrapper_style,
               cardStyles.dietary_icon_style,
               showNutIcon,
-              showVeganIcon,
               showGlutenFreeIcon,
+              showVeganIcon,
             )}
             <View style={cardStyles.card_image_wrapper_style}>
               {renderPostImage(cardStyles.post_image_style, image, 135)}

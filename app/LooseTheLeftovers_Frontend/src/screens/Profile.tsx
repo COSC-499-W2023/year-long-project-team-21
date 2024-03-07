@@ -9,6 +9,7 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
+import Ratings from '../components/Ratings';
 import {
   removeUserSession,
   retrieveUserSession,
@@ -54,7 +55,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
       // set state appropriately
       setUserId(userId);
       // call backend to retrieve
-      const res: any = await newReq.get(`users/${userId}`);
+      const res: any = await newReq.get(`users/${userId}/`);
       // set state
       setUserInfo({ username: res.data.username, email: res.data.email });
       // no longer loading (wonder if nec?)
@@ -69,12 +70,17 @@ const Profile = ({ navigation }: { navigation: any }) => {
     const req: any = await SecureAPIReq.createInstance();
     const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
     const payload: any = await req.get(endpoint);
-    return payload.data;
+    return payload;
   }
 
   useEffect(() => {
     fetchUserInfo();
   }, []);
+
+  //this is for when backend is implementated
+  const ratingCompleted = (rating: number) => {
+    console.log(rating);
+  };
 
   return (
     <View style={globalscreenstyles.container}>
@@ -89,8 +95,15 @@ const Profile = ({ navigation }: { navigation: any }) => {
                 userInfo={userInfo}
                 userInfoKeys={['username', 'email']}
               />
+              <View style={{ marginTop: '-15%' }}>
+                <Ratings
+                  onFinishRating={ratingCompleted}
+                  readonly={true}
+                  backgroundColor={global.tertiary}></Ratings>
+              </View>
+
               <View style={profileStyles.button}>
-                <Button onPress={handleButtonOnPress} title="Logout" />
+                <Button onPress={handleButtonOnPress} title="Logout"></Button>
               </View>
             </View>
 

@@ -1,93 +1,62 @@
 import React from 'react';
-import { View, FlatList, Text, ListRenderItem, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
+import globalscreenstyles from '../common/global_ScreenStyles';
+import { ChatType } from '../common/Types';
 
-import Header from '../components/UpperBar';
-import TabBar from '../components/TabBarBottom';
-import Icon from '../components/Icon';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import HomeIcon from '../components/HomeIcon';
+import CreateAdIcon from '../components/CreateAdIcon';
+import AccountIcon from '../components/AccountIcon';
+import ChatListItem from '../components/chatlist-utils/ChatListItem';
+import ChatListEmptyComponent from '../components/chatlist-utils/ChatListEmpty';
 
-import chatData from '../assets/chat_placeholder.json';
-import noData from '../assets/empty_chats.json';
-// Page sends an error, because FlatList gets no data
-
-type ChatType = {
-  id: number;
-  name: string;
-  lastMessage: string;
-  timestamp: string;
-};
-
-// ChatListItem component
-const ChatListItem: React.FC<{ chat: ChatType }> = ({ chat }) => {
-  const handleChatPress = () => {
-    console.log('Pressed chat:', chat.id);
-  };
-
-  return (
-    <TouchableOpacity onPress={handleChatPress} style={styles.chatItem}>
-      <Text style={styles.chatItemName}>{chat.name}</Text>
-      <Text style={styles.chatItemMessage}>{chat.lastMessage}</Text>
-    </TouchableOpacity>
-  );
-};
-
-// EmptyListMessage component
-// Bugged if added to the FlatList
-const EmptyListMessage: React.FC = () => {
-  return (
-    <View style={styles.emptyListContainer}>
-      <Text style={styles.emptyListText}>No messages yet.</Text>
-    </View>
-  );
-};
+import chatData from '../assets/dummy_chats.json';
 
 const ChatList = ({ navigation }: { navigation: any }) => {
-  function handleLeftPress(): void {
-    console.log('back pressed');
-  }
+  const title = 'Messsages';
+  const testID = 'title-test';
 
   const renderItem: ListRenderItem<ChatType> = ({ item }) => (
-    <ChatListItem chat={item} />
+    <ChatListItem
+      chat={item}
+      onPress={chatId => {
+        console.log('Pressed chat:', chatId);
+      }}
+    />
   );
+
   const keyExtractor = (item: ChatType) => item.id.toString();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={globalscreenstyles.container}>
       {/* Header */}
-      <Header
-        onLeftPress={handleLeftPress}
-        leftIconSource={require('../assets/back_arrow_white.png')}
-        title="Messages"
+      <TabBarTop
+        MiddleIcon={
+          <Text style={styles.title} testID={testID}>
+            {title}
+          </Text>
+        }
       />
 
       {/* FlatList */}
-      <FlatList
-        data={chatData}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        style={styles.listcontainer}
-      />
-
-      {/* TabBar */}
-      <View style={styles.tabcontainer}>
-        <TabBar
-          LeftIcon={
-            <Icon
-              source={require('../assets/home-white.png')}
-              size={40}
-              onPress={() => navigation.navigate('Home')}
-            />
-          }
-          RightIcon={
-            <Icon
-              source={require('../assets/profile-white.png')}
-              size={40}
-              onPress={() => navigation.navigate('Profile')}
-            />
-          }
+      <View style={globalscreenstyles.middle}>
+        <FlatList
+          data={chatData}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          ListEmptyComponent={ChatListEmptyComponent}
         />
       </View>
+
+      {/* TabBar */}
+      <TabBarBottom
+        LeftIcon={<HomeIcon />}
+        MiddleIcon={<CreateAdIcon />}
+        RightIcon={<AccountIcon />}
+      />
     </SafeAreaView>
   );
 };

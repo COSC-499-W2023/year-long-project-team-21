@@ -2,6 +2,8 @@ import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Text, Dimensions } from 'react-native';
 import { PostListRendererProps, PostProps } from '../common/Types';
 import { BASE_URL } from '../common/API';
+import CategoryRender from './Category-Utils/CategoryRender';
+import { useFocusEffect } from '@react-navigation/native';
 
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
@@ -18,16 +20,21 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
 
+  const [loadedAllAds, setLoadedAllAds] = useState(false);
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  /*
+   * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render.
+   * After rendering items, fetchData sets fetchAllowed to false. Once user scrolls to the bottom of the page, fetchAllowed is set to true, which calls the backend again.
+   * Potential performance gains here by only listening if fetchAllowed is true
+   */
   useEffect(() => {
     if (fetchAllowed) fetchData(currentPage);
   }, [fetchAllowed]);
 
   useEffect(() => {
     // Reset posts and current page when getData changes
-    /*
-    setPosts([]);
-    setCurrentPage(1);
-    setFetchAllowed(true);*/
     setPosts([]);
     setCurrentPage(1);
     setFetchAllowed(true);
@@ -42,7 +49,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    */
   const filterData = (data: any[]) => {
     const filteredPosts = data.map(post => {
-      return {
+      // Construct the object with a conditional distance property
+      const postObject = {
         id: post.id,
         endpoint: post.endpoint,
         title: post.title,
@@ -50,12 +58,17 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         expiryDate: post.expiry,
         category: post.category,
         color: post.color,
+        // Conditionally add distance
+        ...(post.distance != null && { distance: post.distance }),
       };
+
+      return postObject;
     });
 
     return filteredPosts;
   };
 
+  // what  does this do?
   const filterExistingData = (data: any[]) => {
     return data.filter(
       (newPost: { id: number }) =>
@@ -74,14 +87,17 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
   const fetchData = async (page: number) => {
-    console.log('next page is: ', page);
     try {
-      let data = await getData(page);
-      data = filterData(data);
-      data = filterExistingData(data); //only return non existing posts in post array
-      if (data.length > 0) {
+      const payload = await getData(page);
+      const response = payload.status;
+      // if the response is 200, then we will display the ads, if it is a 204, then let's get rid of the  'loading' indicator.
+      if (response == 200) {
+        let data = filterData(payload.data);
+        data = filterExistingData(data);
         setPosts(prevData => [...prevData, ...data]);
         setCurrentPage(currentPage + 1);
+      } else if (response == 204) {
+        setLoadedAllAds(true);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -89,6 +105,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       setFetchAllowed(false);
     }
   };
+
   /**
    * @function
    * @description
@@ -109,9 +126,43 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
           category={item.category}
           color={item.color}
           navigation={navigation}
+          distance={item.distance}
         />
       </View>
     );
+  };
+
+  //this is where the category info created. If more categories are needed add them here.
+  const categoryInfo = [
+    {
+      name: 'gluten-free',
+      imageSource: require('../assets/gluten-free.png'),
+      size: 35,
+    },
+    {
+      name: 'nut-free',
+      imageSource: require('../assets/nut.png'),
+      size: 35,
+    },
+    {
+      name: 'vegan',
+      imageSource: require('../assets/vegan.png'),
+      size: 35,
+    },
+  ];
+
+  //this prints out the category name if the corresponding icon is pressed. It also prints out if it is selected or deselected.
+  const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
+    // Updated state based on the previous state to avoid mutations
+    setSelectedCategories(prevCategories => {
+      if (isSelected) {
+        console.log('Category', categoryName, 'has been selected.');
+        return [...prevCategories, categoryName];
+      } else {
+        console.log('Category', categoryName, 'has been deselected.');
+        return prevCategories.filter(category => category !== categoryName);
+      }
+    });
   };
 
   /**
@@ -119,9 +170,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * @description
    * Renders a loading indicator as a footer while data is being fetched.
    */
-  const ListFooterComponent = () => (
-    <Text style={postListStyles.footer}>Loading...</Text>
-  );
+  const ListFooterComponent = () =>
+    loadedAllAds ? (
+      <Text style={postListStyles.footer}></Text>
+    ) : (
+      <Text style={postListStyles.footer}>Loading...</Text>
+    );
 
   const keyExtractor = useCallback(
     (item: PostProps, index: number) => `${item.id}_${index}`,
@@ -136,14 +190,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       windowSize={2}
       removeClippedSubviews={true}
       ListFooterComponent={ListFooterComponent}
-      onEndReached={() => setFetchAllowed(true)}
+      onEndReached={() => {
+        setFetchAllowed(true);
+      }}
       onEndReachedThreshold={0.3}
       data={posts}
-      keyExtractor={keyExtractor} // Replace 'id' with your post identifier
+      keyExtractor={keyExtractor}
       renderItem={renderPostItem}
-      ListHeaderComponent={() => {
-        return whichHeader ? whichHeader : null;
-      }}
       onScrollBeginDrag={() => {
         setFetchAllowed(false);
       }}

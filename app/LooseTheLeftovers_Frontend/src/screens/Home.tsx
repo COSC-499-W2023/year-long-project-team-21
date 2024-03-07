@@ -38,9 +38,10 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [whichHeader, setWhichHeader] = useState('');
   const [range, setRange] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
+  const disableLocationIcon = '../assets/location.png';
 
   useEffect(() => {
-    async function updateDataFetchingMethod() {
+    function updateDataFetchingMethod() {
       if (locationPermission === 'GRANTED') {
         setWhichHeader('location-enabled');
         try {
@@ -55,7 +56,6 @@ const Home = ({ navigation }: { navigation: any }) => {
       }
       setIsLoading(false);
     }
-
     updateDataFetchingMethod();
   }, [locationPermission, range]); // This effect depends on locationPermission
 
@@ -65,7 +65,7 @@ const Home = ({ navigation }: { navigation: any }) => {
     // call the backend endpoint
     const payload = await axios.get(adEndpointWithPage, djangoConfig());
     // return the data to PostListRenderer
-    return payload.data;
+    return payload;
   }
 
   async function getAdsLocation(pageNumber: number) {
@@ -83,7 +83,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       // call the backend endpoint
       const payload = await axios.post(adsLocation, body, djangoConfig());
       // return nothing... FOR NOW
-      return payload.data;
+      return payload;
     } catch (error) {
       console.log(`There was an error getting the location ${error} `);
       return [];
@@ -95,16 +95,12 @@ const Home = ({ navigation }: { navigation: any }) => {
     let answer = await getLocationPermissionAndroid();
     // only perform location services if user enables them
     if (answer) {
-      // change header
-      setWhichHeader('location-enabled');
       // update state.
       updateLocationPermission('GRANTED');
     }
   };
 
   const disableLocation = async () => {
-    // make asynchonronous normal call
-    setWhichHeader('location-disabled');
     // update state
     updateLocationPermission('DENIED');
   };
@@ -127,16 +123,19 @@ const Home = ({ navigation }: { navigation: any }) => {
    */
   // @Todo consider making this a component
 
+  useEffect(() => {
+    console.log('YUCKY!');
+  }, [range]);
+
   const renderHeader_Location = (): React.ReactNode => {
-    const disableLocationIcon = '../assets/location.png';
     return (
       <View style={postListStyles.listHeder}>
         <View style={postListStyles.dropdownHeader}>
-          <SelectRangeBar onSelectRange={handleSelectRange} />
           <Icon
             source={require(disableLocationIcon)}
             size={50}
             onPress={disableLocation}></Icon>
+          <SelectRangeBar setRange={setRange} />
         </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
@@ -167,18 +166,6 @@ const Home = ({ navigation }: { navigation: any }) => {
     );
   };
 
-  /**
-   * @function
-   * @description
-   * Updates the `range` state when a new range is selected.
-   *
-   * @param {number} selectedRange - The selected range value.
-   */
-  const handleSelectRange = (selectedRange: string) => {
-    setRange(selectedRange);
-    console.log(selectedRange);
-  };
-
   return (
     <View style={globalscreenstyles.container}>
       <LinearGradient
@@ -189,11 +176,11 @@ const Home = ({ navigation }: { navigation: any }) => {
           LeftIcon={<Logo size={55}></Logo>}
           RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
         <View style={globalscreenstyles.middle}>
+          {renderHeader_Handler()}
           {isLoading ? (
             ''
           ) : (
             <PostListRenderer
-              whichHeader={renderHeader_Handler()}
               endpoint={adEndpoint}
               navigation={navigation}
               getData={getDataFunction}
