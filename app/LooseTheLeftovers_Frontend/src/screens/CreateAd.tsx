@@ -192,7 +192,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
-            maxLength={25}
+            maxLength={15}
           />
           {fieldError.titleError !== '' && (
             <Texts

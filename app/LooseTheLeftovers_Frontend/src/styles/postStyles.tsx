@@ -58,12 +58,12 @@ const generateHomeScreenCardStyles = (
     },
     card_title_style: {
       color: global.secondary, // could be black in light mode
-      fontSize: 0.05 * screenWidth,
-      width: 0.35 * screenWidth,
+      fontSize: 0.036 * screenWidth,
+      width: 0.4 * screenWidth,
     },
     card_expiry_style: {
       color: colors.lightColor, // could be black in light mode
-      fontSize: 0.04 * screenWidth,
+      fontSize: 0.03 * screenWidth,
     },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
