@@ -440,6 +440,7 @@ def get_ads_location(request):
     req_latitude = serializer.validated_data["latitude"]
     page_number = serializer.validated_data["page"]
 
+    print(page_number)
    
 
     # create a Point for the user using GeoDjango

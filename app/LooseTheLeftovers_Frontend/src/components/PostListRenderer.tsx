@@ -13,11 +13,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   endpoint,
   getData,
   navigation,
+  page,
+  setPageNumber
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
-  const [currentPage, setCurrentPage] = useState(1);
+  //const [currentPage, setCurrentPage] = useState(1);
   const [fetchAllowed, setFetchAllowed] = useState(true);
 
   const [loadedAllAds, setLoadedAllAds] = useState(false);
@@ -30,13 +32,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    * Potential performance gains here by only listening if fetchAllowed is true
    */
   useEffect(() => {
-    if (fetchAllowed) fetchData(currentPage);
+    if (fetchAllowed) fetchData(page);
   }, [fetchAllowed]);
 
   useEffect(() => {
     // Reset posts and current page when getData changes
     setPosts([]);
-    setCurrentPage(1);
+    setPageNumber(1);
     setFetchAllowed(true);
   }, [getData]);
 
@@ -97,11 +99,12 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         let data = filterData(payload.data);
         data = filterExistingData(data);
         setPosts(prevData => [...prevData, ...data]);
-        if (data.length <= 3) {
+        setPageNumber(page + 1);
+        /*if (data.length <= 3) {
           setLoadedAllAds(true);
         } else {
           setCurrentPage(currentPage + 1);
-        }
+        }*/
       }
     } catch (error) {
       console.error('Error fetching data:', error);

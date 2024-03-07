@@ -38,6 +38,7 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [whichHeader, setWhichHeader] = useState('');
   const [range, setRange] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
+  const [pageNumber, setPageNumber] = useState(1);
   const disableLocationIcon = '../assets/location.png';
 
   useEffect(() => {
@@ -58,6 +59,10 @@ const Home = ({ navigation }: { navigation: any }) => {
     }
     updateDataFetchingMethod();
   }, [locationPermission, range]); // This effect depends on locationPermission
+
+  useEffect(()=>{
+    setPageNumber(1)
+  },[range])
 
   async function fetchAds(pageNumber: number) {
     console.log(pageNumber);
@@ -80,7 +85,6 @@ const Home = ({ navigation }: { navigation: any }) => {
         range: range,
         page:pageNumber
       };
-      console.log(body)
       // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
       //const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
       // call the backend endpoint
@@ -191,6 +195,8 @@ const Home = ({ navigation }: { navigation: any }) => {
               endpoint={adEndpoint}
               navigation={navigation}
               getData={getDataFunction}
+              page={pageNumber}
+              setPageNumber={setPageNumber}
             />
           )}
         </View>
