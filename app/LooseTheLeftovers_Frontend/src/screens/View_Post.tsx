@@ -257,14 +257,15 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     console.log('post delete request starts...');
     setIsVisible(true);
     try {
-      const deleteAds: string = endpoint ;
+      const deleteAds: string = adEndpoint ;
       console.log(deleteAds);
-      const req: SecureAPIReq = await SecureAPIReq.createInstance();
+      console.log(postId)
+      const req: any = await SecureAPIReq.createInstance();
       const payload: any = await req.delete(deleteAds, {
         ad_id: postId
       });
       console.log(payload.status)
-      if (payload.status == 201) {
+      if (payload.status == 200) {
         console.log('deletion completed!');
         navigation.navigate('DoneDelete');
       }

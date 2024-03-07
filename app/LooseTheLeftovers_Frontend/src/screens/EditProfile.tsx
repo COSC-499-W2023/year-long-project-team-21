@@ -49,19 +49,20 @@ const EditProfile = ({
     console.log('new first name: ', firstname);
     console.log('new last name: ', lastname);
     console.log('new email: ', newEmail);
-
+    console.log(data)
     //check username and email input format
     try {
-      const req = await SecureAPIReq.createInstance();
-      const endpoint = BASE_URL + users;
-      const response = req.put(endpoint, {
+      const req:any= await SecureAPIReq.createInstance();
+      const endpoint =  users ;
+      const response = await req.put(endpoint, {
         email: newEmail,
-        firstname: firstname,
-        lastname: lastname,
+        first_name: firstname,
+        last_name: lastname,
       });
       //   Check response successful
       if (response.status === 200) {
         console.log('request is submitted');
+        navigation.navigate("Profile")
       } else {
         //red text error produced by server
         console.log('server error');
@@ -80,16 +81,18 @@ const EditProfile = ({
     console.log('old password: ', oldPass);
     console.log('new password: ', newPass);
     console.log('confirm password: ', confirmPass);
+    
     try {
-      const req = await SecureAPIReq.createInstance();
-      const endpoint = BASE_URL + users;
-      const response = req.put(endpoint, {
+      const req:any = await SecureAPIReq.createInstance();
+      const endpoint = users ;
+      const response = await req.put(endpoint, {
         old_password: oldPass,
         new_password: newPass,
         confirm_password: confirmPass,
       });
       if (response.status == 200) {
         console.log('request submitted');
+        navigation.navigate("Profile")
       } else {
         //red text error produced by server
         console.log('server error');
@@ -175,7 +178,7 @@ const EditProfile = ({
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer}>EMAIL : </Text>
             <InputField
-              placeholder={data.userInfo.email}
+              placeholder={"email"}
               onChangeText={newText => setNewEmail(newText)}
               value={newEmail}></InputField>
           </View>
