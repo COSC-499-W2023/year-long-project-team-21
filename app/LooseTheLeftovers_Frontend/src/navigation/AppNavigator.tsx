@@ -11,6 +11,8 @@ import DoneScreen from '../screens/Done';
 import View_Post from '../screens/View_Post';
 import ChatList from '../screens/ChatList';
 import Reviews from '../screens/Reivews';
+import DoneDelete from '../screens/DoneDelete';
+import EditProfile from '../screens/EditProfile';
 import Conversation_Ended from '../screens/Conversation_Ended';
 
 const Stack = createNativeStackNavigator();
@@ -64,8 +66,18 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="DoneDelete"
+        component={DoneDelete}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Profile"
         component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={{ headerShown: false }}
       />
       <Stack.Screen

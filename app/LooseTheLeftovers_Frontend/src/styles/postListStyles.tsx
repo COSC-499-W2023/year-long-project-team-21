@@ -31,6 +31,13 @@ const generatePostListStyles = (screenWidth: number) =>
       padding: 5,
       color: global.secondary,
     },
+    editIconContainer: {
+      width:"100%",
+      top: "28%",
+      position: 'absolute',
+      alignItems: 'flex-end',
+      right:"4%"
+    }
   });
 
 export default generatePostListStyles;

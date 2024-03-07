@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import UserInfo from '../components/UserInfo';
+import {
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
 import AccountIcon from '../components/AccountIcon';
@@ -9,7 +11,6 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import TabBarBottom from '../components/TabBarBottom';
 import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
-import Ratings from '../components/Ratings';
 import {
   removeUserSession,
   retrieveUserSession,
@@ -18,16 +19,19 @@ import { SecureAPIReq } from '../../src/common/NetworkRequest';
 import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
-import Button from '../components/Button';
-import Texts from '../components/Text';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
-  const [data, setData] = useState('');
 
-  const handleButtonOnPress = async () => {
+  /**
+   * Handles button press event to log out the user.
+   *
+   * @returns {void}
+   */
+  const handleLoginButtonOnPress = async () => {
     try {
       // Retrieve the current user session
       const session = await retrieveUserSession();
@@ -45,6 +49,21 @@ const Profile = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  /**
+   * Handles button press event to initiate profile editing.
+   *
+   * @returns {void}
+   */
+  const handleEditButtonOnPress = async () => {
+    console.log('edit profile!');
+    navigation.navigate("EditProfile", {userId: userID})
+  };
+
+  /**
+   * Fetches user information from the backend.
+   *
+   * @returns {void}
+   */
   const fetchUserInfo = async () => {
     try {
       // init class for new request
@@ -70,7 +89,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
 
   // function passed down as a prop to handle retrieving ads for users
   async function fetchAds(pageNumber: number) {
-    const req: SecureAPIReq = await SecureAPIReq.createInstance();
+    const req: any = await SecureAPIReq.createInstance();
     const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
     const payload: any = await req.get(endpoint);
     return payload;
@@ -84,6 +103,17 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const [reviewsCount, setReviewsCount] = useState<number | undefined>(
     undefined,
   );
+
+  /**
+   * Callback function for handling completion of rating.
+   *
+   * @param {number} rating - The rating value.
+   * @returns {void}
+   */
+  //this is for when backend is implementated
+  const ratingCompleted = (rating: number) => {
+    console.log(rating);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,43 +155,32 @@ const Profile = ({ navigation }: { navigation: any }) => {
   }
 
   return (
-    <View style={globalscreenstyles.container}>
+    <LinearGradient
+      style={globalscreenstyles.container}
+      colors={[global.purple, global.background]}
+      start={{ x: 1, y: 0 }}>
       <TabBarTop RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
-        <View style={profileStyles.userinfocontainer}>
-          <UserInfo userInfo={userInfo} userInfoKeys={['username', 'email']} />
-          <View style={{ marginTop: '-15%' }}>
-            <Ratings
-              startingValue={ratings}
-              readonly={true}
-              backgroundColor={global.tertiary}></Ratings>
-            <Texts
-              textsColor={global.secondary}
-              textsSize={15}
-              texts={`(${reviewsCount} Reviews)`}></Texts>
-          </View>
-
-          <View style={profileStyles.button}>
-            <Button onPress={handleButtonOnPress} title="Logout"></Button>
-          </View>
-        </View>
-
         <View style={profileStyles.viewPost}>
           <PostListRenderer
             isHeaderInNeed={false}
             endpoint={adEndpoint}
             getData={fetchAds}
             navigation={navigation}
+            handleEditOnpress={handleEditButtonOnPress}
+            handleLoginOnpress={handleLoginButtonOnPress}
+            userInfo={userInfo!}
+            rating={ratings!}
+            reviewsCount={reviewsCount}
           />
         </View>
       </View>
-
       <TabBarBottom
         LeftIcon={<HomeIcon />}
         MiddleIcon={<CreateAdIcon />}
         RightIcon={<AccountIcon />}
       />
-    </View>
+    </LinearGradient>
   );
 };
 

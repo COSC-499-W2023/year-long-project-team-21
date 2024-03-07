@@ -8,13 +8,24 @@ import Post from './Post';
 import { BASE_URL } from '../common/API';
 import CategoryRender from './Category-Utils/CategoryRender';
 import { useFocusEffect } from '@react-navigation/native';
-
+import profileStyles from '../styles/profileStyles';
+import UserInfo from '../components/UserInfo';
+import Button from './Button';
+import Ratings from './Ratings';
+import { global } from '../common/global_styles';
+import Icon from './Icon';
+import Texts from './Text';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   endpoint,
   getData,
   // locationPermission,
   navigation,
+  userInfo,
+  handleEditOnpress,
+  handleLoginOnpress,
+  rating,
+  reviewsCount
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [range, setRange] = useState('');
@@ -204,11 +215,39 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   /**
    * @function
    * @description
-   * Renders the header for the profile screen. (Currently set to null)
+   * Renders the header for the profile screen.
    */
-  const renderHeader_Profile = () => {
-    return null;
-  };
+  const renderHeader_Profile = React.memo(() => {
+    return (
+      <View style={profileStyles.userinfocontainer}>
+        <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
+        <View style={postListStyles.editIconContainer}>
+          <Icon
+            source={require('../assets/edit_white.png')}
+            size={25}
+            onPress={handleEditOnpress}
+          />
+        </View>
+        <View style={profileStyles.ratingContainer}>
+          <Ratings
+            startingValue={rating}
+            readonly={true}
+            backgroundColor={global.tertiary}></Ratings>
+          <Texts
+             textsColor={global.secondary}
+             textsSize={15}
+             texts={`(${reviewsCount} Reviews)`}></Texts>
+        </View>
+        <View style={profileStyles.button_container}>
+          <View>
+            <Button
+              onPress={handleLoginOnpress!}
+              title="Logout"></Button>
+          </View>
+        </View>
+      </View>
+    );
+  });
 
   /**
    * @function
