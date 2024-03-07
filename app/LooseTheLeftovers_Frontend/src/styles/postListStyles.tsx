@@ -33,7 +33,7 @@ const generatePostListStyles = (screenWidth: number) =>
     },
     editIconContainer: {
       width:"100%",
-      top: "30.5%",
+      top: "28%",
       position: 'absolute',
       alignItems: 'flex-end',
       right:"4%"
