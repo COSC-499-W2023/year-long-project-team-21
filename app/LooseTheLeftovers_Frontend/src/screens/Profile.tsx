@@ -21,7 +21,6 @@ import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -73,6 +72,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
       const userSesh: Record<string, string> = await retrieveUserSession();
       // Gets user id from session data
       const userId: string = userSesh['user_id'];
+
+      console.log('UserId:', userId);
       // set state appropriately
       setUserId(userId);
       // call backend to retrieve
@@ -86,7 +87,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  // function passed down as a prop to handle retrieivng ads for users
+  // function passed down as a prop to handle retrieving ads for users
   async function fetchAds(pageNumber: number) {
     const req: any = await SecureAPIReq.createInstance();
     const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
@@ -98,10 +99,10 @@ const Profile = ({ navigation }: { navigation: any }) => {
     fetchUserInfo();
   }, []);
 
-  if (isLoading) {
-    // @ todo find one that is not so intruisvie.
-    return <ActivityIndicator size="large" />;
-  }
+  const [ratings, setRatings] = useState<number | undefined>(undefined);
+  const [reviewsCount, setReviewsCount] = useState<number | undefined>(
+    undefined,
+  );
 
   /**
    * Callback function for handling completion of rating.
@@ -113,6 +114,45 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const ratingCompleted = (rating: number) => {
     console.log(rating);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        //retrieves user id
+        const newReq: any = await SecureAPIReq.createInstance();
+        const userSesh: Record<string, string> = await retrieveUserSession();
+        const userId: string = userSesh['user_id'];
+        //attaches userid to the url
+        const endpoint = `/ratings/${userId}`;
+        console.log('Request Details:', { endpoint });
+        const res = await newReq.get(endpoint);
+        //rating itself
+        setRatings(res.data.rating);
+        //rating count
+        setReviewsCount(res.data.count);
+      } catch (error) {
+        const apiError: any = error;
+        console.error(
+          'Failed to fetch rating info:',
+          apiError.response?.status,
+          apiError.response?.data || apiError.message,
+        );
+        //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
+        setReviewsCount(0);
+        setRatings(0);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={globalscreenstyles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <LinearGradient
@@ -130,7 +170,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
             handleEditOnpress={handleEditButtonOnPress}
             handleLoginOnpress={handleLoginButtonOnPress}
             userInfo={userInfo!}
-            ratingCompleted={ratingCompleted(0)!}
+            rating={ratings!}
+            reviewsCount={reviewsCount}
           />
         </View>
       </View>

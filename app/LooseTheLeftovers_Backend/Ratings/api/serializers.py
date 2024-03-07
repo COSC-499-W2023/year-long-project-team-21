@@ -15,7 +15,7 @@ class RatingSerializer(serializers.Serializer):
     If .is_valid() returns true, the .validated_data property will be populated and the .save()
     method can be called to save an instance of an Message in the database.
     """
-    rating = serializers.IntegerField()
+    rating = serializers.FloatField()
     receiver_id = serializers.IntegerField()
 
     def create(self, validated_data):

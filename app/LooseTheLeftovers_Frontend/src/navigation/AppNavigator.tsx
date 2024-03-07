@@ -13,6 +13,7 @@ import ChatList from '../screens/ChatList';
 import Reviews from '../screens/Reivews';
 import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
+import Conversation_Ended from '../screens/Conversation_Ended';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Reviews"
         component={Reviews}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Conversation_Ended"
+        component={Conversation_Ended}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -49,12 +49,12 @@ const generateViewPostStyles = (colors: {
     },
     title: {
       fontSize: 30,
-      color: global.secondary, // could be black in light mode
-    },
-    expiry: {
       color: global.secondary,
     },
+
+    expiry: {},
     description: {
+      //  marginTop: '-5%',
       color: global.secondary,
     },
     dietary_icons_wrapper: {
@@ -71,7 +71,11 @@ const generateViewPostStyles = (colors: {
       top: '20%',
     },
     ratings: {
+      flexDirection: 'row',
+    },
+    userInfo: {
       alignSelf: 'flex-start',
+      marginTop: '5%',
     },
     modal_container: {
       flex: 1,

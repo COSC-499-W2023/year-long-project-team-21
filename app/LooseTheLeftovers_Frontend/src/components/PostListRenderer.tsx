@@ -14,6 +14,7 @@ import Button from './Button';
 import Ratings from './Ratings';
 import { global } from '../common/global_styles';
 import Icon from './Icon';
+import Texts from './Text';
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   endpoint,
@@ -23,7 +24,8 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   userInfo,
   handleEditOnpress,
   handleLoginOnpress,
-  ratingCompleted,
+  rating,
+  reviewsCount
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [range, setRange] = useState('');
@@ -228,15 +230,17 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         </View>
         <View style={profileStyles.ratingContainer}>
           <Ratings
-            onFinishRating={ratingCompleted}
+            startingValue={rating}
             readonly={true}
             backgroundColor={global.tertiary}></Ratings>
+          <Texts
+             textsColor={global.secondary}
+             textsSize={15}
+             texts={`(${reviewsCount} Reviews)`}></Texts>
         </View>
         <View style={profileStyles.button_container}>
           <View>
             <Button
-              backgroundcolor="red"
-              buttonSize={150}
               onPress={handleLoginOnpress!}
               title="Logout"></Button>
           </View>

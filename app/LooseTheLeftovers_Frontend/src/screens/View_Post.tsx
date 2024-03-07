@@ -32,6 +32,7 @@ import axios from 'axios';
 import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
 import LinearGradient from 'react-native-linear-gradient';
+import { retrieveUserSession } from '../common/EncryptedSession';
 
 /**
  * React component for viewing a post.
@@ -45,6 +46,17 @@ import LinearGradient from 'react-native-linear-gradient';
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   // retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
+  interface data {
+    category: '';
+    description: '';
+    expiry: '';
+    title: '';
+    image: any;
+    color: 'expiry_long';
+    username: '';
+    ratings: 0;
+    count: 0;
+  }
   //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
   const [adData, setAdData] = useState<AdDataProps>({
     category: '',
@@ -53,6 +65,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     title: '',
     image: require('../assets/logo.png'),
     color: 'expiry_long',
+    username: '',
+    ratings: 0,
+    count: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const card_color_dict = assignColor(adData.color);
@@ -83,12 +98,42 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
   const fetchBackend = async () => {
     try {
-      const viewAds: string = endpoint + postId;
-      const payload: any = await axios.get(viewAds, djangoConfig());
-      let data: JSON = payload.data;
+      const viewAds: string = endpoint + postId + '/';
+      let payload: any;
+      let newReq: any;
+
+      //load both at the same time
+      await Promise.all([
+        axios.get(viewAds, djangoConfig()).then(response => {
+          payload = response;
+        }),
+        SecureAPIReq.createInstance().then(instance => {
+          newReq = instance;
+        }),
+      ]);
+
+      let data: data = payload.data;
+      const user_id = (data as any).user_id;
+
+      newReq = await SecureAPIReq.createInstance();
+
+      const user_details: any = await newReq.get(`users/${user_id}`);
+
+      try {
+        //append ratings and ratings count
+        const user_ratings: any = await newReq.get(`/ratings/${user_id}`);
+        data.ratings = user_ratings.data.rating;
+        data.count = user_ratings.data.count;
+      } catch {
+        //if there are no ratings, set both to zero
+        data.ratings = 0;
+        data.count = 0;
+      }
+
+      //append username to data
+      data.username = user_details.data.username;
       return data;
     } catch (e) {
-      // display error on a screen would be nice.
       console.log(e);
       return undefined;
     }
@@ -97,6 +142,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   useEffect(() => {
     const populateState = async () => {
       const data: any = await fetchBackend();
+
       if (data && data.image) {
         data.image = BASE_URL + data.image;
         setAdData(data);
@@ -193,12 +239,10 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       <Card style={style}>
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
-          <View style={styles.ratings}>
-            <Ratings
-              backgroundColor={global.tertiary}
-              readonly={true}></Ratings>
-          </View>
-          <Title style={styles.expiry}>{adData.expiry}</Title>
+          <Title
+            style={[{ color: card_color_dict.middleColor }, styles.expiry]}>
+            {adData.expiry}
+          </Title>
           <Text style={styles.description}>{adData.description}</Text>
           {render_Icons(
             styles.dietary_icons_wrapper,
@@ -207,7 +251,27 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             showGlutenFreeIcon,
             showVeganIcon,
           )}
+          <View>
+            <View style={styles.userInfo}>
+              <Text style={{ fontSize: 20, color: global.secondary }}>
+                {adData.username} {'  '}
+              </Text>
+
+              <View style={styles.ratings}>
+                <Ratings
+                  startingValue={adData.ratings}
+                  backgroundColor={global.tertiary}
+                  readonly={true}></Ratings>
+
+                <Text style={{ color: global.secondary }}>
+                  ({adData.count})
+                </Text>
+              </View>
+            </View>
+          </View>
+
           {renderButton()}
+
         </Card.Content>
       </Card>
     );
