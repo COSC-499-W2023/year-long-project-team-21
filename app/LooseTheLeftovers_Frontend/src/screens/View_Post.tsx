@@ -253,16 +253,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           )}
           <View>
             <View style={styles.userInfo}>
-              <Text style={{ fontSize: 20, color: global.secondary }}>
+              <Text style={styles.userName}>
                 {adData.username} {'  '}
               </Text>
-
               <View style={styles.ratings}>
                 <Ratings
                   startingValue={adData.ratings}
                   backgroundColor={global.tertiary}
                   readonly={true}></Ratings>
-
                 <Text style={{ color: global.secondary }}>
                   ({adData.count})
                 </Text>
@@ -271,7 +269,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           </View>
 
           {renderButton()}
-
         </Card.Content>
       </Card>
     );
@@ -321,14 +318,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     console.log('post delete request starts...');
     setIsVisible(true);
     try {
-      const deleteAds: string = adEndpoint ;
+      const deleteAds: string = adEndpoint;
       console.log(deleteAds);
-      console.log(postId)
+      console.log(postId);
       const req: any = await SecureAPIReq.createInstance();
       const payload: any = await req.delete(deleteAds, {
-        ad_id: postId
+        ad_id: postId,
       });
-      console.log(payload.status)
+      console.log(payload.status);
       if (payload.status == 200) {
         console.log('deletion completed!');
         navigation.navigate('DoneDelete');
