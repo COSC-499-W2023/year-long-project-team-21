@@ -256,9 +256,9 @@ interface AdDataProps {
   title: string;
   image: string;
   color: string;
-  ratings: number;
-  username: string;
-  count: number;
+  ratings?: number;
+  username?: string;
+  count?: number;
 }
 
 /**
