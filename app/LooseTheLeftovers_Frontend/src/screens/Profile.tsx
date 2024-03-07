@@ -24,6 +24,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+  const [page, setPageNumber] = useState(1)
   const [data, setData] = useState('');
 
   const handleButtonOnPress = async () => {
@@ -112,6 +113,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
                 endpoint={adEndpoint}
                 getData={fetchAds}
                 navigation={navigation}
+                page = {page}
+                setPageNumber = {setPageNumber}
               />
             </View>
           </>
