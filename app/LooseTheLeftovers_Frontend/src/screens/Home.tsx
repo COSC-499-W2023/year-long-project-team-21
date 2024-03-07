@@ -143,7 +143,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
-            Showing Posts Near {range} km
+            Showing posts {range} km around you
           </Title>
         </View>
       </View>
