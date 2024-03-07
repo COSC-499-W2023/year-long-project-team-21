@@ -437,8 +437,6 @@ def get_ads_location(request):
     # create a Point for the user using GeoDjango
     user_location = Point(req_longitude, req_latitude)
 
-    # todo add pagination
-
     # filter ads nearby based on radius, append a location which is the distance between the long/lat, and then also retrieve the images
     try:
         nearby_ads = (
@@ -449,7 +447,16 @@ def get_ads_location(request):
             .prefetch_related("ad_image")
         )
 
-        ad_serializer = ReturnAdvertismentSerializer(nearby_ads, many=True)
+        # put query results into pages
+        ad_paginator = Paginator(nearby_ads, 3)
+
+        # gets data for the current page
+        page_number = request.POST.get("page")
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+
+        ad_serializer = ReturnAdvertismentSerializer(ad_page, many=True)
 
         # return response dependant on data in the response
         if ad_serializer.data is not None:
@@ -460,6 +467,10 @@ def get_ads_location(request):
 
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
+        
+    # when index for page is out of bounds return 204 response
+    except EmptyPage as e:
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
