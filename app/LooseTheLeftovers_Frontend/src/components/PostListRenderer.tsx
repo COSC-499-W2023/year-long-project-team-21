@@ -8,13 +8,26 @@ import { useFocusEffect } from '@react-navigation/native';
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 
+import profileStyles from '../styles/profileStyles';
+import UserInfo from '../components/UserInfo';
+import Button from './Button';
+import Ratings from './Ratings';
+import { global } from '../common/global_styles';
+import Icon from './Icon';
+import Texts from './Text';
+
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   whichHeader,
   endpoint,
   getData,
   navigation,
   page,
-  setPageNumber
+  setPageNumber,
+  userInfo,
+  handleEditOnpress,
+  handleLoginOnpress,
+  rating,
+  reviewsCount,
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const screenWidth = Dimensions.get('window').width;

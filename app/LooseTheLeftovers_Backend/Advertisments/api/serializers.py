@@ -98,7 +98,9 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     """
 
     id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
+
     user_id = serializers.IntegerField()
+
     title = serializers.CharField(max_length=50)
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)

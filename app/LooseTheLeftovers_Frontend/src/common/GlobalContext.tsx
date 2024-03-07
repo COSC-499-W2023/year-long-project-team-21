@@ -15,6 +15,7 @@ const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
   const [locationPermission, setLocationPermission] = useState('');
+  const [userId, setUserId] = useState(0);
 
   const updateFirstLaunch = (value: boolean) => {
     setFirstLaunch(value);
@@ -24,11 +25,17 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     setLocationPermission(value);
   };
 
+  const updateUserId = (value: number) => {
+    setUserId(value);
+  };
+
   return (
     <GlobalContext.Provider
       value={{
+        userId,
         firstLaunch,
         locationPermission,
+        setUserId,
         updateFirstLaunch,
         updateLocationPermission,
       }}>

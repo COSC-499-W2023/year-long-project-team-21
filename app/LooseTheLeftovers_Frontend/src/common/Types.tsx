@@ -22,7 +22,7 @@ import {
  */
 
 interface ButtonProps {
-  onPress: () => void;
+  onPress: () => any;
   title: string;
   textColor?: string;
   borderColor?: string;
@@ -258,6 +258,9 @@ interface AdDataProps {
   color: string;
   longitude: number;
   latitude: number;
+  ratings?: number;
+  username?: string;
+  count?: number;
 }
 
 /**
@@ -362,6 +365,13 @@ interface PostListRendererProps {
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
+  handleLoginOnpress?: () => any;
+  handleEditOnpress?: () => any;
+  userInfo?: { username: string; email: string };
+  rating?: number;
+  reviewsCount?: number;
+  page: number;
+  setPageNumber: any;
 }
 
 interface SelectRangeBarProps {
@@ -384,8 +394,10 @@ interface SelectRangeBarProps {
 interface GlobalContextType {
   firstLaunch: boolean | null;
   locationPermission: string | null;
+  userId: any;
   updateFirstLaunch: (value: boolean) => void;
   updateLocationPermission: (value: string) => void;
+  setUserId: (value: number) => void;
 }
 
 interface CategoryInfo {
