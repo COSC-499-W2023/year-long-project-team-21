@@ -152,8 +152,7 @@ def get_messages(request, other_user_id):
     try:
         # if neither query returned result, return http 204 no content response
         if len(messages_sent) == 0 and len(messages_received) == 0:
-            response = {"message": "No messages found"}
-            return Response(response, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         
         # if there are no messages sent and only received, return received messages
         if len(messages_sent) == 0:
