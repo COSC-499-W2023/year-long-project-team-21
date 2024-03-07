@@ -24,7 +24,7 @@ import Ratings from '../components/Ratings';
 import Texts from '../components/Text';
 
 const Profile = ({ navigation }: { navigation: any }) => {
-  const [userID, setUserId] = useState('');
+  const [userId, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
   const [ratings, setRatings] = useState<number | undefined>(undefined);
@@ -32,10 +32,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
     undefined,
   );
   const [page, setPageNumber] = useState(1);
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
 
   /**
    * Handles button press event to log out the user.
@@ -66,7 +62,13 @@ const Profile = ({ navigation }: { navigation: any }) => {
    * @returns {void}
    */
   const handleEditButtonOnPress = async () => {
-    navigation.navigate('EditProfile', { userId: userID });
+    navigation.navigate('EditProfile', { userId: userId });
+  };
+
+  const getUserID = async () => {
+    const sesh = await retrieveUserSession();
+    const user_id = sesh.user_id;
+    setUserId(user_id);
   };
 
   /**
@@ -74,16 +76,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
    *
    * @returns {void}
    */
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = async (newReq: any) => {
     try {
-      // init class for new request
-      const newReq: any = await SecureAPIReq.createInstance();
-      // Retrieve session data
-      const userSesh: Record<string, string> = await retrieveUserSession();
-      // Gets user id from session data
-      const userId: string = userSesh['user_id'];
-      // set state appropriately
-      setUserId(userId);
       // call backend to retrieve
       const res: any = await newReq.get(`users/${userId}/`);
       // set state
@@ -95,49 +89,55 @@ const Profile = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //retrieves user id
-        const newReq: any = await SecureAPIReq.createInstance();
-        const userSesh: Record<string, string> = await retrieveUserSession();
-        const userId: string = userSesh['user_id'];
-        //attaches userid to the url
-        const endpoint = `/ratings/${userId}`;
-        console.log('Request Details:', { endpoint });
-        const res = await newReq.get(endpoint);
-        //rating itself
-        if (res.data.ratings === undefined) {
-          setRatings(0);
-        } else {
-          setRatings(res.data.rating);
-        }
+  const fetchRatings = async (newReq: any) => {
+    try {
+      //attaches userid to the url
+      const endpoint = `/ratings/${userId}`;
+      const res = await newReq.get(endpoint);
+      //rating itself
+      setRatings(res.data.rating || 0);
+      setReviewsCount(res.data.count || 0);
+    } catch (error) {
+      const apiError: any = error;
+      console.error(
+        'Failed to fetch rating info:',
+        apiError.response?.status,
+        apiError.response?.data || apiError.message,
+      );
+      //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
+      setReviewsCount(0);
+      setRatings(0);
+    }
+  };
 
-        if (res.data.count === undefined) {
-          setReviewsCount(0);
-        } else {
-          setReviewsCount(res.data.count);
-        }
+  /*
+   * I don't love this I am just super tired rn and this isn't a good way of doing this idk
+   * would be more elegant to handle it as global state
+   */
+
+  useEffect(() => {
+    getUserID();
+  }, []);
+
+  useEffect(() => {
+    const makeReq = async () => {
+      try {
+        const newReq: any = await SecureAPIReq.createInstance();
+        await Promise.all([fetchUserInfo(newReq), fetchRatings(newReq)]);
       } catch (error) {
-        const apiError: any = error;
-        console.error(
-          'Failed to fetch rating info:',
-          apiError.response?.status,
-          apiError.response?.data || apiError.message,
-        );
-        //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
-        setReviewsCount(0);
-        setRatings(0);
+        console.error('Failed to fetch data:', error);
       }
     };
 
-    fetchData();
-  }, []);
+    if (userId) {
+      makeReq();
+    }
+  }, [userId]);
 
   // function passed down as a prop to handle retrieving ads for users
   async function fetchAds(pageNumber: number) {
     const req: any = await SecureAPIReq.createInstance();
-    const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
+    const endpoint: string = `${usersAds}${userId}/?page=${pageNumber}`;
     const payload: any = await req.get(endpoint);
     return payload;
   }
