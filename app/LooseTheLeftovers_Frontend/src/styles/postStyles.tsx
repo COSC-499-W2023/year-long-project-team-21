@@ -64,6 +64,10 @@ const generateHomeScreenCardStyles = (
       color: colors.lightColor, // could be black in light mode
       fontSize: 0.05 * screenWidth,
     },
+    card_distance_style: {
+      color: global.secondary, // could be black in light mode
+      fontSize: 0.05 * screenWidth,
+    },
     card_dietaryIcons_wrapper_style: {
       flexDirection: 'row',
       width: card_width * 0.1,

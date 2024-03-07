@@ -27,8 +27,10 @@ class AdvertismentSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         """
-        Create method executes when AdvertismentSerializer.save() is called in advertisements/api/views.py.
-        Will save an instance of the Advertisment in the database.
+        create method executes when AdvertismentSerializer.save() is called in advertisements/api/views.py
+        and there is NOT an instance of an existing ad included.
+
+        Will save an instance of the new Advertisment in the database.
 
         Returns an instance of the Advertisment that was saved.
         """
@@ -43,6 +45,22 @@ class AdvertismentSerializer(serializers.Serializer):
 
         ad = Advertisment.objects.create(user_id=user.id, **validated_data)
         return ad
+    
+    def update(self, instance, validated_data):
+        """
+        update method executes when AdvertismentSerializer.save() is called in advertisements/api/views.py
+        and an instance of an existing ad is included.
+
+        Will save an updated instance of the Advertisment in the database.
+
+        Returns an instance of the Advertisment that was saved.
+        """
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.category = validated_data.get('category', instance.category)
+        instance.expiry = validated_data.get('expiry', instance.expiry)
+        instance.save()
+        return instance
 
 
 class ImageSerializer(serializers.Serializer):
@@ -80,6 +98,7 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     """
 
     id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
+    user_id = serializers.IntegerField()
     title = serializers.CharField(max_length=50)
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
