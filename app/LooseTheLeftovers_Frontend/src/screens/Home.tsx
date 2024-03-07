@@ -60,6 +60,7 @@ const Home = ({ navigation }: { navigation: any }) => {
   }, [locationPermission, range]); // This effect depends on locationPermission
 
   async function fetchAds(pageNumber: number) {
+    console.log(pageNumber);
     // create endpoint for ads with pageNumber that gets updated by PostListRenderer for lazyloading
     const adEndpointWithPage = `${adEndpoint}?page=${pageNumber}`;
     // call the backend endpoint
@@ -77,12 +78,14 @@ const Home = ({ navigation }: { navigation: any }) => {
         latitude: pos.latitude,
         longitude: pos.longitude,
         range: range,
+        page:pageNumber
       };
+      console.log(body)
       // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
-      const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
+      //const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
       // call the backend endpoint
       const payload = await axios.post(
-        adLocEndpointWPage,
+        adsLocation,
         body,
         djangoConfig(),
       );

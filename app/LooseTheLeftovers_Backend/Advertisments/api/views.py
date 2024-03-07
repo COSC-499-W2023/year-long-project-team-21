@@ -438,6 +438,9 @@ def get_ads_location(request):
     req_range = serializer.validated_data["range"]
     req_longitude = serializer.validated_data["longitude"]
     req_latitude = serializer.validated_data["latitude"]
+    page_number = serializer.validated_data["page"]
+
+   
 
     # create a Point for the user using GeoDjango
     user_location = Point(req_longitude, req_latitude)
@@ -457,7 +460,6 @@ def get_ads_location(request):
         ad_paginator = Paginator(nearby_ads, 3)
 
         # gets data for the current page
-        page_number = request.POST.get("page")
         if page_number is None:
             page_number = 1
         ad_page = ad_paginator.page(page_number)
