@@ -71,6 +71,8 @@ class AdvertismentHandler(APIView):
                       If multiple ads are returned they will be returned as a list
 
         """
+        if request.META["PATH_INFO"] == "/ads/category/":
+            return get_ads_category(request)
 
         # if request to create-ads endpoint was made via GET, return 405 response
         if request.META["PATH_INFO"] == "/ads/create":
@@ -138,6 +140,9 @@ class AdvertismentHandler(APIView):
             Response: Response object with the ad data and a HTTP_201_OK response
 
         """
+        print("request")
+        print(request.data)
+
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -148,6 +153,7 @@ class AdvertismentHandler(APIView):
 
         # Validate ad to delete exists
         try:
+            
             ad_id = request.data["ad_id"]
             ad = Advertisment.objects.get(pk=ad_id)
         except:
@@ -426,7 +432,6 @@ def get_ads_location(request):
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, and latitude
@@ -444,6 +449,7 @@ def get_ads_location(request):
                 location__distance_lt=(user_location, D(km=req_range))
             )
             .annotate(distance=Distance("location", user_location))
+            .order_by('distance')
             .prefetch_related("ad_image")
         )
 
@@ -476,3 +482,59 @@ def get_ads_location(request):
         return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(status=status.HTTP_200_OK)
+
+def get_ads_category(request):
+
+    # validate category was included in the request
+    try:
+        category = request.GET.get('category')
+    except:
+        response = {"message": "Endpoint expecting category"}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # get ads for the category provided
+        ads = Advertisment.objects.filter(category__icontains=category)
+
+        # get images for all ads returned
+        ad_images = AdvertismentImage.objects.filter(ad_id__in=ads)
+
+    except:
+        # if nothing found return 204 response
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    try:
+        # put query results into pages
+        ad_paginator = Paginator(ads, 3)
+        image_paginator = Paginator(ad_images, 3)
+
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+        image_page = image_paginator.page(page_number)
+
+        # send each page to serializer to package data
+        serializer = ReturnAdvertismentSerializer(ad_page, many=True)
+        image_serializer = ImageSerializer(image_page, many=True)
+
+        # merge results into one data structure
+        combined_data = []
+        for ad, image in zip(serializer.data, image_serializer.data):
+            combined = {**ad, **image}  # Merge two dictionaries
+            combined_data.append(combined)
+
+        return Response(
+            combined_data,
+            status=status.HTTP_200_OK,
+        )
+
+    # when index for page is out of bounds return 204 response
+    except EmptyPage as e:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        # send problem response and server error
+        response = {"message": "Error retrieving ads by category", "error": str(e)}
+        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
