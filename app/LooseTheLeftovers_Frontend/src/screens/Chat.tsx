@@ -65,11 +65,9 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, newMessages),
     );
-    // Call saveMessages to ensure the latest state is saved.
     saveMessages();
-    // Ensure you use newMessages[0] to access the latest message sent.
     saveChatMetadata(adId, username, newMessages[0]);
-  }, [adId, username]); // Depend on adId and username to capture latest changes.
+  }, [adId, username]);
   
 
   const renderBubble = (props: any) => {

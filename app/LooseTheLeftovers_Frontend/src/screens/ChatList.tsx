@@ -22,6 +22,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
   const title = 'Messages';
   const testID = 'title-test';
 
+  // TS sucks
   const loadChatMetadata = async () => {
     let keys = [];
     try {
@@ -49,7 +50,6 @@ const ChatList = ({ navigation }: { navigation: any }) => {
         return acc;
       }, []);
   
-      // Now setChats with this data or return it
       return chats;
     } catch (e) {
       console.error('Failed to load chat metadata:', e);
@@ -65,10 +65,8 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       };
   
       fetchData();
-  
-      // No cleanup action needed, but you could return a cleanup function if necessary
-      return () => {};
-    }, []) // Dependency array can be left empty or include variables that on change, should trigger the effect
+        return () => {};
+    }, [])
   );
 
   const renderItem: ListRenderItem<ChatType> = ({ item }) => (
@@ -81,7 +79,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
     />
   );
 
-  // temporary, waiting for backend
+  // temporary
   const keyExtractor = (item: ChatType) => `${item.username}-${item.adId}`;
 
   return (

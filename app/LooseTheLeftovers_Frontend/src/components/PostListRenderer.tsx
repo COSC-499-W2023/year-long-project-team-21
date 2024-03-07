@@ -122,7 +122,10 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         let data = filterData(payload.data);
         data = filterExistingData(data);
         setPosts(prevData => [...prevData, ...data]);
-        setPageNumber(page + 1);
+        if (!getData.toString().includes('fetchUserAds')) {
+          setPageNumber((prevPage: number) => prevPage + 1);
+        }
+        // setPageNumber(page + 1);
         /*if (data.length <= 3) {
           setLoadedAllAds(true);
         } else {

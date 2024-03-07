@@ -148,9 +148,10 @@ const Profile = ({ navigation }: { navigation: any }) => {
   }, [userId]);
 
   // function passed down as a prop to handle retrieving ads for users
-  async function fetchAds(pageNumber: number) {
+  async function fetchUserAds(pageNumber: number) {
     const req: any = await SecureAPIReq.createInstance();
     const endpoint: string = `${usersAds}${userId}/?page=${pageNumber}`;
+    console.log(endpoint);
     const payload: any = await req.get(endpoint);
     return payload;
   }
@@ -199,7 +200,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
             <View style={profileStyles.viewPost}>
               <PostListRenderer
                 endpoint={adEndpoint}
-                getData={fetchAds}
+                getData={fetchUserAds}
                 navigation={navigation}
                 handleEditOnpress={handleEditButtonOnPress}
                 handleLoginOnpress={handleLoginButtonOnPress}
