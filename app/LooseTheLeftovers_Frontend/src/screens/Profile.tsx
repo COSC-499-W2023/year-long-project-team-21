@@ -107,10 +107,17 @@ const Profile = ({ navigation }: { navigation: any }) => {
         console.log('Request Details:', { endpoint });
         const res = await newReq.get(endpoint);
         //rating itself
-        setRatings(res.data.rating);
-        console.log(res.data.rating);
-        //rating count
-        setReviewsCount(res.data.count);
+        if (res.data.ratings === undefined) {
+          setRatings(0);
+        } else {
+          setRatings(res.data.rating);
+        }
+
+        if (res.data.count === undefined) {
+          setReviewsCount(0);
+        } else {
+          setReviewsCount(res.data.count);
+        }
       } catch (error) {
         const apiError: any = error;
         console.error(
