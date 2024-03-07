@@ -228,10 +228,13 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
+  const goBack = () => {
+    navigation.goBack();
+  }
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header title="Create Post" />
+      <Header leftIconSource= {require("../assets/back_arrow_white.png")} onLeftPress = {goBack} title="Create Post" />
 
       <ScrollView>
         <View style={styles.formContainer}>
@@ -249,7 +252,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
-            maxLength={25}
+            maxLength={15}
           />
           {fieldError.titleError !== '' && (
             <Texts
