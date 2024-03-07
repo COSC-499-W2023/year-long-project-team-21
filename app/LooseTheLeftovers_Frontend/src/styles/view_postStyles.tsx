@@ -14,7 +14,6 @@ const generateViewPostStyles = (colors: {
       position: 'relative',
     },
     image: {
-      // width: Dimensions.get('window').width,
       width: '100%',
       zIndex: -1,
       marginLeft: '1.5%',
@@ -50,12 +49,12 @@ const generateViewPostStyles = (colors: {
     },
     title: {
       fontSize: 30,
-      color: global.secondary, // could be black in light mode
-    },
-    expiry: {
       color: global.secondary,
     },
+
+    expiry: {},
     description: {
+      //  marginTop: '-5%',
       color: global.secondary,
     },
     dietary_icons_wrapper: {
@@ -74,7 +73,11 @@ const generateViewPostStyles = (colors: {
       // elevation: 5,
     },
     ratings: {
+      flexDirection: 'row',
+    },
+    userInfo: {
       alignSelf: 'flex-start',
+      marginTop: '5%',
     },
   });
 
