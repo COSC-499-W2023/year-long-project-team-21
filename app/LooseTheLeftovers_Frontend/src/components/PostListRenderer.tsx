@@ -90,15 +90,14 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
     try {
       const payload = await getData(page);
       const response = payload.status;
-      console.log(response);
       // if the response is 200, then we will display the ads, if it is a 204, then let's get rid of the  'loading' indicator.
-      if (response == 200) {
+      if (response == 204 || payload.length <= 3) {
+        setLoadedAllAds(true);
+      } else if (response == 200) {
         let data = filterData(payload.data);
         data = filterExistingData(data);
         setPosts(prevData => [...prevData, ...data]);
         setCurrentPage(currentPage + 1);
-      } else if (response == 204) {
-        setLoadedAllAds(true);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
