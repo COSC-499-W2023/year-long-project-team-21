@@ -16,6 +16,7 @@ import Reviews from '../screens/Reivews';
 import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
 import Conversation_Ended from '../screens/Conversation_Ended';
+import Chat from '../screens/Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -90,6 +91,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="ChatList"
         component={ChatList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -434,9 +434,11 @@ interface CategoryRenderProps {
  */
 type ChatType = {
   id: number;
-  name: string;
+  adId: string;
+  username: string;
   lastMessage: string;
   timestamp: string;
+  title: string;
 };
 
 /**
