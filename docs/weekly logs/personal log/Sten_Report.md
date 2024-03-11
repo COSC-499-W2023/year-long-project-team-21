@@ -1,29 +1,29 @@
 # Sten Korver Personal Weekly Log
 
-02/19 to 03/03
+03/04 to 03/10
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
 * Participate team meetings
-* Backend for ratings (both storing and retrieving)
-* Backend update/delete existing posts
-* Backend update user profile
+* update user profile backend
+* update user password backend
+* help front end connect their features to the backend
 
 ### Completed Features For This Week:
-* Backend for ratings (both storing and retrieving)
-  * Backend can receive a POST request to store a rating given by one user to another
-  * Backend can receive GET request to retrieve an average of all ratings received for a user
-* Backend update/delete existing posts
-  * Backend can receive PUT request to update an existing post
-  * Backend can receive DELETE request to delete an existing post
-  * Both PUT and DELETE requests validate post exists and request is made by user that created the post
+* update user profile backend
+* update user password backend
+* create backend method for retrieving ads filtering for distance
+* create backend method for retrieving ads filtering for category
+* help others connect their features to the backend
+   * messages, ratings, edit user profile, edit user password
 
 
 ### Types of Tasks Worked On:
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/97429052-5c3c-45ce-85c8-a0545d337c10)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/f5cdf357-8a8a-40c6-a9df-0eeaacb7c5ab)
+
 
 
 

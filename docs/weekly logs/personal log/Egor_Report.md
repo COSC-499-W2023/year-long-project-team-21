@@ -4,21 +4,18 @@
 
 Username: rogeonee
 
-The past 2 weeks were zero weeks for me. I explain more in weekly report section on Canvas.
-
 ## My Features For This Week
 
-1. Chats business logic 
+1. Chats business logic
 
 ## Completed Features For This Week
 
-None
+- Prepared demo version of chat for peer evaluation
 
 ## Tasks In Progress
 
-- Work on business logic for Chats
-- CreateAd improvements - multiple category selection + icons, character limit for title and description
+- COntinue working on business logic for Chats
 
 ## Types of Tasks Worked On
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/0b1e8494-7e70-4d60-8045-d37d99dc1bed)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/86142834/ccf2f9b9-9261-48be-b47e-0b07495a435f)
