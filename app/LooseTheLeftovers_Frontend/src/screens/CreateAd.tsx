@@ -171,10 +171,17 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
+  const goBack = () => {
+    navigation.goBack();
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header title="Create Post" />
+      <Header
+        leftIconSource={require('../assets/back_arrow_white.png')}
+        onLeftPress={goBack}
+        title="Create Post"
+      />
 
       <ScrollView>
         <View style={styles.formContainer}>
@@ -188,7 +195,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           </View>
           <InputField
-            placeholder="Title (25 character limit)"
+            placeholder="Title"
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
@@ -213,7 +220,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           </View>
           <InputField
-            placeholder="Description (200 character limit)"
+            placeholder="Description"
             onChangeText={newDescription =>
               handleFieldChange('description', newDescription)
             }

@@ -14,7 +14,6 @@ const generateViewPostStyles = (colors: {
       position: 'relative',
     },
     image: {
-      // width: Dimensions.get('window').width,
       width: '100%',
       zIndex: -1,
       marginLeft: '1.5%',
@@ -50,31 +49,53 @@ const generateViewPostStyles = (colors: {
     },
     title: {
       fontSize: 30,
-      color: global.secondary, // could be black in light mode
+      color: global.secondary,
     },
     expiry: {
-      color: global.secondary,
+      fontSize:20
     },
     description: {
       color: global.secondary,
+      fontSize:20,
     },
     dietary_icons_wrapper: {
       flexDirection: 'row',
-      // width: Dimensions.get('window').width * 0.35,
       justifyContent: 'flex-start',
       marginRight: 10,
     },
     dietary_icons: {
-      height: Dimensions.get('window').height * 0.045,
+      height: Dimensions.get('window').height * 0.040,
       paddingLeft: Dimensions.get('window').width * 0.1,
+      marginBottom:"-50%",
     },
     message_button: {
       alignSelf: 'center',
       top: '20%',
-      // elevation: 5,
     },
     ratings: {
+      flexDirection: 'row',
+    },
+    userInfo: {
       alignSelf: 'flex-start',
+      marginTop: '5%',
+    },
+    userName: { 
+      fontSize: 20, 
+      color: global.secondary 
+    },
+    modal_container: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    modal_button_container: {
+      alignSelf: 'center',
+      flexDirection: 'row',
+    },
+    modal_title: {
+      textAlign: 'center',
+      fontSize: 20,
+      color: 'white',
+      margin: 10,
     },
   });
 

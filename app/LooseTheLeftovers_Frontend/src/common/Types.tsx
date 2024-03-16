@@ -22,7 +22,7 @@ import {
  */
 
 interface ButtonProps {
-  onPress: () => void;
+  onPress: () => any;
   title: string;
   textColor?: string;
   borderColor?: string;
@@ -256,6 +256,9 @@ interface AdDataProps {
   title: string;
   image: string;
   color: string;
+  ratings?: number;
+  username?: string;
+  count?: number;
 }
 
 /**
@@ -359,6 +362,11 @@ interface PostListRendererProps {
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
+  handleLoginOnpress?: ()=> any;
+  handleEditOnpress?: () => any;
+  userInfo?: { username: string, email: string};
+  rating?: number;
+  reviewsCount?: number;
 }
 
 interface SelectRangeBarProps {

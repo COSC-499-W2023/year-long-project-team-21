@@ -4,9 +4,8 @@ import profileStyles from '../styles/profileStyles';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { UserInfoProps } from '../common/Types';
 
-const UserInfo: React.FC<UserInfoProps> = ({ userInfo, userInfoKeys }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ userInfo, userInfoKeys }) => {  
   return (
-    <View style={globalscreenstyles.container}>
       <View style={profileStyles.userInformation}>
         {userInfoKeys.map(key => (
           <Text key={key} style={profileStyles.profileText}>
@@ -14,7 +13,6 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo, userInfoKeys }) => {
           </Text>
         ))}
       </View>
-    </View>
   );
 };
 

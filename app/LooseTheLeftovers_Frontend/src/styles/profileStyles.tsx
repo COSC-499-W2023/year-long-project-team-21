@@ -3,27 +3,20 @@ import { global } from '../common/global_styles';
 
 const profileStyles = StyleSheet.create({
   userInformation: {
-    top: '8%',
-    backgroundColor: global.tertiary,
-    borderRadius: 20,
-    flex: 1,
+    marginTop: '8%',
   },
   userinfocontainer: {
-    marginBottom: '4%',
-    marginLeft: '5%',
-    marginRight: '5%',
+    margin: '5%',
     backgroundColor: global.tertiary,
     borderRadius: 20,
-    flex: 0.5,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+  },
+  ratingContainer: {
+    paddingTop: '4%',
   },
   profileText: {
-    top: '10%',
-    flex: 0.25,
     textAlign: 'center',
     color: global.secondary,
-    fontSize: 23,
+    fontSize: 17,
   },
   item: {
     alignItems: 'center',
@@ -34,13 +27,10 @@ const profileStyles = StyleSheet.create({
     fontSize: 25,
     color: global.secondary,
   },
-  button: {
-    paddingTop: '1%',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
+  button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
-
   viewPost: {
     flex: 1,
     flexDirection: 'column',

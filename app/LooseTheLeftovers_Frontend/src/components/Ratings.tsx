@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { global } from '../common/global_styles';
 import { RatingProps } from '../common/Types';
 import { Rating } from 'react-native-ratings';
-
 /**
  * @Documentation
  * This is a desciption of ratings. This component has two uses. For adding a rating after completing
