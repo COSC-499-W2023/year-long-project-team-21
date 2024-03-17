@@ -25,8 +25,8 @@ const EditProfile = ({
   const [firstname, setFirstname] = useState('');
   const [isRightVisible, setisRightVisible] = useState(false);
   const [isLeftVisible, setIsLeftVisible] = useState(true);
-  const [leftColor, setLeftColor] = useState(wiggledColor);
-  const [rightColor, setRightColor] = useState(unWiggledColor);
+  const [leftColor, setLeftColor] = useState(unWiggledColor);
+  const [rightColor, setRightColor] = useState(wiggledColor);
   const data = route.params;
 
   /**
@@ -110,8 +110,8 @@ const EditProfile = ({
     if (isRightVisible) {
       setisRightVisible(false);
       setIsLeftVisible(true);
-      setLeftColor(wiggledColor);
-      setRightColor(unWiggledColor);
+      setLeftColor(unWiggledColor);
+      setRightColor(wiggledColor);
     }
   };
 
@@ -119,8 +119,8 @@ const EditProfile = ({
     if (isLeftVisible) {
       setisRightVisible(true);
       setIsLeftVisible(false);
-      setLeftColor(unWiggledColor);
-      setRightColor(wiggledColor);
+      setLeftColor(wiggledColor);
+      setRightColor(unWiggledColor);
     }
   };
 
@@ -164,21 +164,21 @@ const EditProfile = ({
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer}>FIRST NAME : </Text>
             <InputField
-              placeholder={'first name'}
+              placeholder={'First name'}
               onChangeText={newNameText => setFirstname(newNameText)}
               value={firstname}></InputField>
           </View>
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer}>LAST NAME : </Text>
             <InputField
-              placeholder={'last name'}
+              placeholder={'Last name'}
               onChangeText={newNameText => setLastname(newNameText)}
               value={lastname}></InputField>
           </View>
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer}>EMAIL : </Text>
             <InputField
-              placeholder={"email"}
+              placeholder={"Email"}
               onChangeText={newText => setNewEmail(newText)}
               value={newEmail}></InputField>
           </View>
