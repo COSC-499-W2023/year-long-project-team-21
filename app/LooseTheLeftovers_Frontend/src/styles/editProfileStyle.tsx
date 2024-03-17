@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flexDirection: 'column',
     width: '90%',
+    // backgroundColor: "white"
   },
   inputFieldTitleContainer: {
     color: 'white',
@@ -45,6 +46,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: 'white',
   },
+  passwordStrengthWarningContainer: {
+    // backgroundColor:"red",
+    color: "red",
+    // borderBlockColor: "white"
+    // borderBottomColor: "gray",
+    borderBottomWidth: 1,
+    marginBottom: "1%",
+    fontSize: 12
+
+  }
 });
 
 export default styles;
