@@ -48,7 +48,7 @@ Bug fix:
 ### Test Report
 
 #### Test for modules (frontend)
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/97712961/c8256f7f-4c0b-41b2-abf6-8bc74dd6859e)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/12ca80b1-90c6-4999-88ee-24905929f7ed)
 
 #### Test for modules (backend)
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/3f479cf7-3548-462f-bbfc-ebfe76eeaa1c)
