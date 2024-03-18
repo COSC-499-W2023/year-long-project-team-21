@@ -8,6 +8,7 @@ import Button from '../components/Button';
 import { SecureAPIReq } from '../common/NetworkRequest';
 import { users } from '../common/API';
 import { passwordStrength } from 'check-password-strength';
+import * as EmailValidator from 'email-validator';
 
 const EditProfile = ({
   navigation,
@@ -31,7 +32,8 @@ const EditProfile = ({
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(true);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
-  const data = route.params;
+  const [isEmailValidFormat, setIsEmailValidFormat] = useState(true);
+  const [isInputNotEmpty, setIsInputNotEmpty] = useState(true);
 
   /**
    * Handles button press event to cancel profile editing.
@@ -53,31 +55,49 @@ const EditProfile = ({
     console.log('new first name: ', firstname);
     console.log('new last name: ', lastname);
     console.log('new email: ', newEmail);
-    console.log(data);
-    //check username and email input format
-    try {
-      const req: any = await SecureAPIReq.createInstance();
-      const endpoint = users;
-      const response = await req.put(endpoint, {
-        email: newEmail,
-        first_name: firstname,
-        last_name: lastname,
-      });
-      //   Check response successful
-      if (response.status === 200) {
-        console.log('request is submitted');
-        navigation.navigate('Profile');
+    if (
+      firstname.length !== 0 &&
+      lastname.length !== 0 &&
+      newEmail.length !== 0
+    ) {
+      console.log('Input is not empty');
+      if (EmailValidator.validate(newEmail)) {
+        console.log('Email is valid format');
+        //check username and email input format
+        try {
+          const req: any = await SecureAPIReq.createInstance();
+          const endpoint = users;
+          const response = await req.put(endpoint, {
+            email: newEmail,
+            first_name: firstname,
+            last_name: lastname,
+          });
+          //   Check response successful
+          if (response.status === 200) {
+            console.log('request is submitted');
+            setFirstname('');
+            setLastname('');
+            setNewEmail('');
+            navigation.navigate('DoneEdit');
+          } else {
+            //red text error produced by server
+            console.log(`Server returned status code: ${response.status}`);
+          }
+        } catch (error: any) {
+          if (error.response.status === 400) {
+            console.log('400 error: ', error);
+          } else if (error.response.status === 500) {
+            console.log('Internal Server Erorr. ');
+          }
+          //red text error produced by requesting error
+          console.log(error);
+        }
       } else {
-        //red text error produced by server
-        console.log('server error');
+        setIsInputNotEmpty(true);
+        setIsEmailValidFormat(false);
       }
-    } catch (error: any) {
-      //red text error produced by requesting error
-      console.log(error);
-    } finally {
-      setFirstname('');
-      setLastname('');
-      setNewEmail('');
+    } else {
+      setIsInputNotEmpty(false);
     }
   };
 
@@ -90,9 +110,9 @@ const EditProfile = ({
       setIsPasswordEmpty(true);
       setIsPasswordCorrect(true);
       setIsPasswordMatch(true);
-      console.log("Password strength is: ", passwordStrength(newPass).id)
+      console.log('Password strength is: ', passwordStrength(newPass).id);
       if (passwordStrength(newPass).id > 1) {
-        console.log('Password strength is pass level')
+        console.log('Password strength is pass level');
         try {
           const req: any = await SecureAPIReq.createInstance();
           const endpoint = users;
@@ -106,7 +126,7 @@ const EditProfile = ({
             setOldPass('');
             setNewPass('');
             setCofrimPass('');
-            navigation.navigate('Profile');
+            navigation.navigate('DoneEdit');
           } else {
             console.log(`Server returned status code: ${response.status}`);
           }
@@ -114,12 +134,12 @@ const EditProfile = ({
           console.log(error);
           if (error.response.status === 401) {
             //red text error produced by server
-            console.log("Wrong Password");
+            console.log('Wrong Password');
             setIsPasswordCorrect(false);
             setIsPasswordEmpty(true);
             setIsPasswordMatch(true);
           } else if (error.response.status === 400) {
-            console.log("Password Unmatch")
+            console.log('Password Unmatch');
             setIsPasswordMatch(false);
             setIsPasswordEmpty(true);
             setIsPasswordCorrect(true);
@@ -128,7 +148,7 @@ const EditProfile = ({
       }
     } else if (newPass == '' || confirmPass == '' || oldPass == '') {
       setIsPasswordEmpty(false);
-    } 
+    }
   };
 
   const wiggleStatetoLeft = () => {
@@ -152,6 +172,11 @@ const EditProfile = ({
       setIsLeftVisible(false);
       setLeftColor(wiggledColor);
       setRightColor(unWiggledColor);
+      setIsEmailValidFormat(true);
+      setIsInputNotEmpty(true);
+      setLastname('');
+      setFirstname('');
+      setNewEmail('');
     }
   };
 
@@ -189,7 +214,7 @@ const EditProfile = ({
     );
   };
 
-  const renderPasswordEmptyMessage = () => {
+  const renderInputEmptyMessage = () => {
     return (
       <Text style={styles.passwordStrengthWarningContainer}>
         Empty Input is Detected.
@@ -201,6 +226,14 @@ const EditProfile = ({
     return (
       <Text style={styles.passwordStrengthWarningContainer}>
         Your OLD PASSWORD is Wrong.
+      </Text>
+    );
+  };
+
+  const renderEmailFormatErrorMessage = () => {
+    return (
+      <Text style={styles.passwordStrengthWarningContainer}>
+        Email format error.
       </Text>
     );
   };
@@ -282,6 +315,8 @@ const EditProfile = ({
               placeholder={'Email'}
               onChangeText={newText => setNewEmail(newText)}
               value={newEmail}></InputField>
+            {!isEmailValidFormat && renderEmailFormatErrorMessage()}
+            {!isInputNotEmpty && renderInputEmptyMessage()}
           </View>
         </>
       )}
@@ -311,7 +346,7 @@ const EditProfile = ({
               placeholder={'Confirm Password'}
               onChangeText={confirmPass => setCofrimPass(confirmPass)}
               value={confirmPass}></InputField>
-            {!isPasswordEmpty && renderPasswordEmptyMessage()}
+            {!isPasswordEmpty && renderInputEmptyMessage()}
             {!isPasswordMatch && renderPasswordUnmatchMessage()}
             {!isPasswordCorrect && renderPasswordEUncorrectMessage()}
           </View>
