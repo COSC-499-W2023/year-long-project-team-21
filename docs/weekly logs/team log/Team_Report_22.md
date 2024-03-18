@@ -3,7 +3,7 @@ Team 21 - 03/11 to 03/17
 ## Overview
 
 This week we focused on fixing bugs from the peer review. 
-Mainly focused on front-end bug fixes. 
+Mainly focused on Front-end bug fixes. 
 
 ## Quick reminder for usernames
 
