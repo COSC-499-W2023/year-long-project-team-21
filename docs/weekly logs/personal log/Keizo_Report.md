@@ -1,25 +1,23 @@
 # Keizo Kato Personal Weekly Log
 
-3/04 to 3/10
+3/11 to 3/17
 
 Username: Keizo410
 
 ## My Features For This Week
 
-- Profile edit feature on frontend, revision from review and connection with backend
-- Post deletion feature on frontend, revision from review and connection with backend
-- Profile edit frontend design restructure
+- fixing code based on review
+- Writing test for Edit profile
 
 ## Completed Features For This Week
 
-- Profile edit on frontend, revision and backend connection
-- Post deletion on frontend, revision and backend connection
-- Profile edit design restructure
+- Adding restriction for email format, input length, and etc on profile page.
+- Fixing edit profile wiggle bar color.
 
 ## Features in progress
 
-- To be decided
+- Writing test for edit profile. 
 
 ## Types of Tasks Worked On
 
-![スクリーンショット 2024-03-10 202136](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/5086f49a-25a5-4051-b48e-b5efd1fe87f6)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/3c12de61-d177-465c-ac2a-32894aef6e34)
