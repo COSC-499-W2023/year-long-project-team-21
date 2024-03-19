@@ -26,24 +26,31 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     },
     {
       id: 2,
-      txt: 'Select the range',
-      image: require('../assets/select-range.png'),
-      size: 100,
+      txt: 'Turn on Location',
+      image: require('../assets/location.png'),
+      size: 40,
     },
     {
       id: 3,
+      txt: 'Select the radius',
+      image: require('../assets/select-radius.png'),
+      size: 140,
+    },
+
+    {
+      id: 4,
       txt: 'See how long food will expire in',
       image: require('../assets/expiry.png'),
       size: 80,
     },
     {
-      id: 4,
+      id: 5,
       txt: 'Create your own food ads',
       image: require('../assets/create-ad.png'),
       size: 40,
     },
     {
-      id: 5,
+      id: 6,
       txt: 'Edit and delete posts with your account',
       image: require('../assets/account.png'),
       size: 40,
