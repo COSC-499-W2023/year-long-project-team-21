@@ -37,7 +37,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const [reviewsCount, setReviewsCount] = useState<number | undefined>(
     undefined,
   );
-  const [page, setPageNumber] = useState(1);
 
   /**
    * Handles button press event to log out the user.
@@ -203,13 +202,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
                 endpoint={adEndpoint}
                 getData={fetchUserAds}
                 navigation={navigation}
-                handleEditOnpress={handleEditButtonOnPress}
-                handleLoginOnpress={handleLoginButtonOnPress}
-                userInfo={userInfo}
-                rating={ratings!}
-                reviewsCount={reviewsCount}
-                page={page}
-                setPageNumber={setPageNumber}
               />
             </View>
           </>

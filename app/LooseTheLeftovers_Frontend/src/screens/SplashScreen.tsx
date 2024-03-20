@@ -71,6 +71,7 @@ const SplashScreen = ({ navigation }: { navigation: any }) => {
   const retrieveUserId = async () => {
     const userSesh: Record<string, string> = await retrieveUserSession();
     const userId: string = userSesh['user_id'];
+    
   };
 
   const entranceAnimation = () => {

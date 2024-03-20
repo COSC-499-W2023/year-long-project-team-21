@@ -38,31 +38,31 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [whichHeader, setWhichHeader] = useState('');
   const [range, setRange] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(1);
   const disableLocationIcon = '../assets/location.png';
 
   useEffect(() => {
-    function updateDataFetchingMethod() {
-      if (locationPermission === 'GRANTED') {
-        setWhichHeader('location-enabled');
-        try {
-          setGetDataFunction(() => getAdsLocation);
-        } catch (error) {
-          console.error('Error getting location:', error);
-          setGetDataFunction(() => fetchAds);
-        }
-      } else {
-        setWhichHeader('location-disabled');
-        setGetDataFunction(() => fetchAds);
-      }
-      setIsLoading(false);
-    }
-    updateDataFetchingMethod();
+    postFetchHandler();
   }, [locationPermission, range]); // This effect depends on locationPermission
 
-  useEffect(()=>{
-    setPageNumber(1)
-  },[range])
+  /*
+   * @function
+   *
+   */
+  function postFetchHandler() {
+    if (locationPermission === 'GRANTED') {
+      setWhichHeader('location-enabled');
+      try {
+        setGetDataFunction(() => getAdsLocation);
+      } catch (error) {
+        console.error('Error getting location:', error);
+        setGetDataFunction(() => fetchAds);
+      }
+    } else if (locationPermission !== 'GRANTED' || range === 'None') {
+      setWhichHeader('location-disabled');
+      setGetDataFunction(() => fetchAds);
+    }
+    setIsLoading(false);
+  }
 
   async function fetchAds(pageNumber: number) {
     console.log(pageNumber);
@@ -83,17 +83,11 @@ const Home = ({ navigation }: { navigation: any }) => {
         latitude: pos.latitude,
         longitude: pos.longitude,
         range: range,
-        page:pageNumber
+        page: pageNumber,
       };
       // create endpoint for ads/location with pageNumber that gets updated by PostListRenderer for lazyloading
-      //const adLocEndpointWPage = `${adsLocation}?page=${pageNumber}`;
       // call the backend endpoint
-      const payload = await axios.post(
-        adsLocation,
-        body,
-        djangoConfig(),
-      );
-      // return nothing... FOR NOW
+      const payload = await axios.post(adsLocation, body, djangoConfig());
       return payload;
     } catch (error) {
       console.log(`There was an error getting the location ${error} `);
@@ -132,12 +126,7 @@ const Home = ({ navigation }: { navigation: any }) => {
    * @description
    * Renders the header for the home screen, displaying a title and a `SelectRangeBar`.
    */
-  // @Todo consider making this a component
-
-  useEffect(() => {
-    console.log('YUCKY!');
-  }, [range]);
-
+  // TODO onsider making this a component
   const renderHeader_Location = (): React.ReactNode => {
     return (
       <View style={postListStyles.listHeder}>
@@ -195,8 +184,6 @@ const Home = ({ navigation }: { navigation: any }) => {
               endpoint={adEndpoint}
               navigation={navigation}
               getData={getDataFunction}
-              page={pageNumber}
-              setPageNumber={setPageNumber}
             />
           )}
         </View>

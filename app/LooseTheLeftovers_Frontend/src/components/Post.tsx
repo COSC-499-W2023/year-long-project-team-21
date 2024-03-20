@@ -93,10 +93,6 @@ const Post: React.FC<PostProps> = ({
     }).start();
   };
 
-  useEffect(() => {
-    console.log('ack!');
-  }, []);
-
   /**
    * Handles the press out event for scaling animation.
    *

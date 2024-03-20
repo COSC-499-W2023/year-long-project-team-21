@@ -17,17 +17,9 @@ import Icon from './Icon';
 import Texts from './Text';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
-  whichHeader,
   endpoint,
   getData,
   navigation,
-  page,
-  setPageNumber,
-  userInfo,
-  handleEditOnpress,
-  handleLoginOnpress,
-  rating,
-  reviewsCount,
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const screenWidth = Dimensions.get('window').width;
@@ -35,6 +27,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const [fetchAllowed, setFetchAllowed] = useState(true);
   const [loadedAllAds, setLoadedAllAds] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [pageNumber, setPageNumber] = useState(1);
 
   // Function to fetch data when the screen gains focus
   const fetchDataOnFocus = () => {
@@ -51,15 +44,15 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
 
   /*
    * useEffect hook listens for changes in fetchAllowed. Initial component render sets fetchAllowed to true, enabling fetchData to call the backend API for 3 ads to render.
-   * After rendering items, fetchData sets fetchAllowed to false. Once user scrolls to the bottom of the page, fetchAllowed is set to true, which calls the backend again.
+   * After rendering items, fetchData sets fetchAllowed to false. Once user scrolls to the bottom of the pageNumber, fetchAllowed is set to true, which calls the backend again.
    * Potential performance gains here by only listening if fetchAllowed is true
    */
   useEffect(() => {
-    if (fetchAllowed) fetchData(page);
+    if (fetchAllowed) fetchData(pageNumber);
   }, [fetchAllowed]);
 
   useEffect(() => {
-    // Reset posts and current page when getData changes
+    // Reset posts and current pageNumber when getData changes
     setPosts([]);
     setPageNumber(1);
     setFetchAllowed(true);
@@ -110,18 +103,16 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
    *
    * @throws {Error} Throws an error if there is an issue fetching the data.
    */
-  const fetchData = async (page: number) => {
+  const fetchData = async (pageNumber: number) => {
     try {
-      const payload = await getData(page);
+      const payload = await getData(pageNumber);
       const response = payload.status;
       // if the response is 200, then we will display the ads, if it is a 204, then let's get rid of the  'loading' indicator.
       if (response == 200) {
-        let data = filterData(payload.data);
-        data = filterExistingData(data);
-        setPosts(prevData => [...prevData, ...data]);
-        if (!getData.toString().includes('fetchUserAds')) {
-          setPageNumber(prevPage => prevPage + 1);
-        }
+        const data = filterData(payload.data);
+        const filtered_data = filterExistingData(data);
+        setPosts(prevData => [...prevData, ...filtered_data]);
+        setPageNumber(pageNumber + 1);
       } else if (response == 204) {
         setLoadedAllAds(true);
       }

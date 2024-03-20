@@ -11,11 +11,8 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ setRange }) => {
     { key: '10 km', value: 10 },
     { key: '20 km', value: 20 },
     { key: '30 km', value: 30 },
+    { key: 'All', value: 'All' },
   ]);
-
-  useEffect(() => {
-    console.log('rendered');
-  }, []);
 
   const handleRangeChange = (newRange: string) => {
     setRange(newRange);

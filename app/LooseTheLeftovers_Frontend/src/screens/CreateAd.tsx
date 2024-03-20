@@ -44,9 +44,9 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   const categories = [
     { key: 'none', value: 'None' },
-    { key: 'vegan', value: 'Vegan' },
-    { key: 'gluten free', value: 'Gluten-free' },
-    { key: 'peanut free', value: 'Peanut-free' },
+    { key: 'vegan', value: 'vegan' },
+    { key: 'gluten free', value: 'gluten-free' },
+    { key: 'peanut free', value: 'peanut-free' },
   ];
 
   // Default RN switch won't allow to pass styles for it
@@ -230,11 +230,15 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   const goBack = () => {
     navigation.goBack();
-  }
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header leftIconSource= {require("../assets/back_arrow_white.png")} onLeftPress = {goBack} title="Create Post" />
+      <Header
+        leftIconSource={require('../assets/back_arrow_white.png')}
+        onLeftPress={goBack}
+        title="Create Post"
+      />
 
       <ScrollView>
         <View style={styles.formContainer}>

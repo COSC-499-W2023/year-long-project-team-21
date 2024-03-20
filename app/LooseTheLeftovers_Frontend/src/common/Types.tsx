@@ -370,8 +370,6 @@ interface PostListRendererProps {
   userInfo?: { username: string; email: string };
   rating?: number;
   reviewsCount?: number;
-  page: number;
-  setPageNumber: any;
 }
 
 interface SelectRangeBarProps {

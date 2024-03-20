@@ -89,7 +89,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     };
     getSessionAndSetUserId();
   }, []);
-    
+
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
     checkDietaryOption(adData.category);
@@ -202,10 +202,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       );
     };
 
-  const handlePressMessage = () => {
-    console.log("View_Post passes:", postId, adData.username, adData.title);
-    navigation.navigate('Chat', { adId: postId, username: adData.username, title: adData.title });
-  };
+    const handlePressMessage = () => {
+      console.log('View_Post passes:', postId, adData.username, adData.title);
+      navigation.navigate('Chat', {
+        adId: postId,
+        username: adData.username,
+        title: adData.title,
+      });
+    };
 
     /**
      * Renders the delete button component.
