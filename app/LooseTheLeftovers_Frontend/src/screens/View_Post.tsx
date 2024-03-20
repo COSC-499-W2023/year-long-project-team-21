@@ -54,8 +54,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
-  const [posterId, setPosterId] = useState('');
-  const [currentUserId, setCurrentUserId] = useState(null);
+  const [user_id, setUserId] = useState('');
+  const [your_id, setCurrentUserId] = useState(null);
 
   // Get current user id
   useEffect(() => {
@@ -108,7 +108,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         data.image = BASE_URL + data.image;
         setAdData(data);
         setIsLoading(false);
-        setPosterId(data.user_id);
+        setUserId(data.user_id);
       } else {
         // Exit or show a screen
         console.log('error retrieving payload');
@@ -131,9 +131,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
           <View style={styles.ratings}>
-            <Ratings
-              backgroundColor={global.tertiary}
-              readonly={true}></Ratings>
+            <Ratings backgroundColor={global.tertiary} readonly={true} />
           </View>
           <Title style={styles.expiry}>{adData.expiry}</Title>
           <Text style={styles.description}>{adData.description}</Text>
@@ -145,7 +143,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             showGlutenFreeIcon,
             showVeganIcon,
           )}
-          {currentUserId !== posterId && (
+          {your_id !== user_id && (
             <View style={styles.message_button}>
               <Button
                 title="message"
@@ -167,16 +165,28 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   }
 
   const handlePressMessage = async () => {
-    const messageContent = 'start text';
     try {
-      const response = await ChatService.sendMessage(
-        posterId,
-        postId,
-        messageContent,
-      );
-      navigation.navigate('Chat', { adId: postId, receiverId: posterId });
+      const response = await ChatService.checkHistory(user_id, postId);
+
+      if (response) {
+        console.log('View_Post: Chat exists');
+        navigation.navigate('Chat', {
+          user_id: user_id,
+          ad_id: postId,
+          new_chat: false,
+          your_id: your_id,
+        });
+      } else {
+        console.log('View_Post: No history');
+        navigation.navigate('Chat', {
+          user_id: user_id,
+          ad_id: postId,
+          new_chat: true,
+          your_id: your_id,
+        });
+      }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error('View_Post: Error sending message:', error);
     }
   };
 
