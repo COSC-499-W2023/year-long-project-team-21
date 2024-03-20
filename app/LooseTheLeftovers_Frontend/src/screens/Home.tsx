@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Dimensions, Alert } from 'react-native';
 import { global } from '../common/global_styles';
 import { adEndpoint, adsLocation } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
@@ -36,14 +36,30 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [getDataFunction, setGetDataFunction] =
     useState<GetDataFunctionType>(null);
   const [whichHeader, setWhichHeader] = useState('');
-  const [range, setRange] = useState(10);
+  const [range, setRange] = useState('10');
   const [isLoading, setIsLoading] = useState(true);
   const disableLocationIcon = '../assets/location.png';
 
   useEffect(() => {
     postFetchHandler();
-  }, [locationPermission, range]); // This effect depends on locationPermission
+  }, [locationPermission, range]);
 
+  /**
+   * @function
+   * @description
+   * useEffect hook listens to the range state and dictates which fetch logic to send to PostListRenderer once that state changes. This is needed because Range can be set to 'All',
+   * requiring PostListRenderer to return all ads
+   */
+
+  useEffect(() => {
+    //
+    if (range !== 'All') {
+      setGetDataFunction(() => getAdsLocation);
+    } else {
+      console.log('we got here');
+      setGetDataFunction(() => fetchAds);
+    }
+  }, [range]);
   /*
    * @function
    *
@@ -54,10 +70,10 @@ const Home = ({ navigation }: { navigation: any }) => {
       try {
         setGetDataFunction(() => getAdsLocation);
       } catch (error) {
-        console.error('Error getting location:', error);
+        Alert.alert('Error getting location, retrieving posts nearby');
         setGetDataFunction(() => fetchAds);
       }
-    } else if (locationPermission !== 'GRANTED' || range === 'None') {
+    } else if (locationPermission !== 'GRANTED') {
       setWhichHeader('location-disabled');
       setGetDataFunction(() => fetchAds);
     }
@@ -90,7 +106,11 @@ const Home = ({ navigation }: { navigation: any }) => {
       const payload = await axios.post(adsLocation, body, djangoConfig());
       return payload;
     } catch (error) {
+      console.log(range);
       console.log(`There was an error getting the location ${error} `);
+      //Alert.alert(
+      //'There was an error retrieving posts nearby. Try again later',
+      //);
       return [];
     }
   }
@@ -139,7 +159,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         </View>
         <View style={postListStyles.titleContainer}>
           <Title style={postListStyles.title} testID="header title">
-            Showing posts {range} km around you
+            Showing posts within {range} Km
           </Title>
         </View>
       </View>
