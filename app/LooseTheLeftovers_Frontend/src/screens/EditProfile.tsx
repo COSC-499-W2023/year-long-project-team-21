@@ -101,6 +101,11 @@ const EditProfile = ({
     }
   };
 
+  /**
+   * Handles the update of user password.
+   *
+   * @returns {void}
+   */
   const handleUpdatePassword = async () => {
     console.log('old password: ', oldPass);
     console.log('new password: ', newPass);
@@ -151,6 +156,11 @@ const EditProfile = ({
     }
   };
 
+  /**
+   * Wiggles the state to the left.
+   *
+   * @returns {void}
+   */
   const wiggleStatetoLeft = () => {
     if (isRightVisible) {
       setisRightVisible(false);
@@ -166,6 +176,11 @@ const EditProfile = ({
     }
   };
 
+  /**
+   * Wiggles the state to the right.
+   *
+   * @returns {void}
+   */
   const wiggleStatetoRight = () => {
     if (isLeftVisible) {
       setisRightVisible(true);
@@ -180,6 +195,11 @@ const EditProfile = ({
     }
   };
 
+  /**
+   * Renders the wiggle clicks for toggling between Personal Info and Password sections.
+   *
+   * @returns {JSX.Element} Rendered wiggle clicks.
+   */
   const renderWiggleClicks = () => {
     return (
       <View style={styles.wiggleClicks}>
@@ -206,6 +226,11 @@ const EditProfile = ({
     );
   };
 
+  /**
+   * Renders the message for password mismatch.
+   *
+   * @returns {JSX.Element} Rendered password mismatch message.
+   */
   const renderPasswordUnmatchMessage = () => {
     return (
       <Text style={styles.passwordStrengthWarningContainer}>
@@ -214,6 +239,11 @@ const EditProfile = ({
     );
   };
 
+  /**
+   * Renders the message for empty input.
+   *
+   * @returns {JSX.Element} Rendered empty input message.
+   */
   const renderInputEmptyMessage = () => {
     return (
       <Text style={styles.passwordStrengthWarningContainer}>
@@ -222,6 +252,11 @@ const EditProfile = ({
     );
   };
 
+  /**
+   * Renders the message for incorrect old password.
+   *
+   * @returns {JSX.Element} Rendered incorrect old password message.
+   */
   const renderPasswordEUncorrectMessage = () => {
     return (
       <Text style={styles.passwordStrengthWarningContainer}>
@@ -230,6 +265,11 @@ const EditProfile = ({
     );
   };
 
+  /**
+   * Renders the message for email format error.
+   *
+   * @returns {JSX.Element} Rendered email format error message.
+   */
   const renderEmailFormatErrorMessage = () => {
     return (
       <Text style={styles.passwordStrengthWarningContainer}>
@@ -238,6 +278,11 @@ const EditProfile = ({
     );
   };
 
+  /**
+   * Renders the password strength message.
+   *
+   * @returns {JSX.Element} Rendered password strength message.
+   */
   const renderPasswordStrengthMessage = () => {
     let passStrengthColor = changePasswordStrengthColor(
       passwordStrength(newPass).id,
@@ -269,6 +314,12 @@ const EditProfile = ({
     );
   };
 
+  /**
+   * Changes password strength color based on strength ID.
+   *
+   * @param {number} strengthId - Strength ID.
+   * @returns {string} Color corresponding to the strength.
+   */
   const changePasswordStrengthColor = (strengthId: number) => {
     switch (strengthId) {
       case 0:
