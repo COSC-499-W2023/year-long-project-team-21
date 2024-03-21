@@ -17,6 +17,7 @@ import GoBackIcon from '../components/GoBackIcon';
 
 const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [username, setUsername] = useState('Messages');
   const { ad_id, user_id, new_chat, your_id } = route.params;
 
   console.log(
@@ -26,6 +27,8 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     user_id,
     'new_chat:',
     new_chat,
+    'your_id:',
+    your_id,
   );
 
   useEffect(() => {
@@ -33,9 +36,9 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
       const fetchHistory = async () => {
         try {
           const history = await ChatService.fetchChatUpdates(user_id, ad_id);
+          const receiverUsername = history[0]?.username;
           const formattedMessages = history.map((msg: any) => {
             const createdAt = new Date(msg.time_sent);
-            console.log('Chat: useEffect, createdAt:', createdAt);
             return {
               _id: msg.id,
               text: msg.msg,
@@ -49,6 +52,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
             (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime(),
           );
           setMessages(formattedMessages);
+          setUsername(receiverUsername);
         } catch (error) {
           console.error('Chat: Error fetching chat history:', error);
         }
@@ -116,7 +120,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
       {/* Header */}
       <TabBarTop
         LeftIcon={<GoBackIcon />}
-        MiddleIcon={<Text style={styles.title}>Messages</Text>}
+        MiddleIcon={<Text style={styles.title}>{username}</Text>}
       />
 
       {/* Chat */}

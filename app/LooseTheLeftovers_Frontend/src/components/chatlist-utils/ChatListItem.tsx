@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import styles from '../../styles/chatListStyles';
-import { ChatListItemProps } from '../../common/Types';
 
 /**
  * ChatListItem component.
@@ -24,16 +24,38 @@ import { ChatListItemProps } from '../../common/Types';
  * )
  */
 
-const ChatListItem: React.FC<ChatListItemProps & { navigation: any }> = ({ chat, onPress, navigation }) => {
+const ChatListItem: React.FC<{
+  chat: {
+    id: string;
+    user_id: number;
+    ad_id: number;
+    msg: string;
+    time_sent: string;
+    username: string;
+  };
+  navigation: any;
+  your_id: any;
+}> = ({ chat, navigation, your_id }) => {
   const handlePress = () => {
-    // Navigate to Chat screen, passing the chat ID as a parameter
-    navigation.navigate('Chat', { chatId: chat.id });
+    navigation.navigate('Chat', {
+      user_id: chat.user_id,
+      ad_id: chat.ad_id,
+      your_id: your_id,
+      new_chat: false,
+    });
   };
 
+  const lastMessageTime = formatDistanceToNow(parseISO(chat.time_sent), {
+    addSuffix: true,
+  });
+
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.chatItem} testID="chatlist-item-test">
-      <Text style={styles.chatItemName}>{chat.name}</Text>
-      <Text style={styles.chatItemMessage}>{chat.lastMessage}</Text>
+    <TouchableOpacity onPress={handlePress} style={styles.chatItem}>
+      <View style={styles.chatItemHeader}>
+        <Text style={styles.chatItemName}>{chat.username}</Text>
+        <Text style={styles.chatItemTime}>{lastMessageTime}</Text>
+      </View>
+      <Text style={styles.chatItemMessage}>{chat.msg}</Text>
     </TouchableOpacity>
   );
 };
