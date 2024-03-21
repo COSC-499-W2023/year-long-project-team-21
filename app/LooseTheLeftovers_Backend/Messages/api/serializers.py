@@ -32,15 +32,21 @@ class MessageSerializer(serializers.Serializer):
         return ad
 
 class GetMessageSerializer(serializers.Serializer):
-    id = serializers.PrimaryKeyRelatedField(queryset=Message.objects.all())
     msg = serializers.CharField(max_length=1000)
     sender_id = serializers.IntegerField()
     receiver_id = serializers.IntegerField()
     ad_id = serializers.IntegerField()
     time_sent = serializers.DateTimeField()
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['username'] = self.context['username']
+
+        return representation
+
 class LastMessageSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     username = serializers.CharField()
     msg = serializers.CharField(max_length=1000)
+    ad_id = serializers.IntegerField()
     time_sent = serializers.DateTimeField()

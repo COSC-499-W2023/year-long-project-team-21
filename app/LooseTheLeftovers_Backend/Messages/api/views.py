@@ -130,6 +130,9 @@ def get_messages(request, other_user_id):
     request_user_id = request.user.id
     ad_id = request.GET.get('ad_id')
 
+    # get username of other user
+    username = CustomUser.objects.get(pk=other_user_id).username
+
     # retrieve messages where the request user is the sender
     messages_sent = Message.objects \
         .filter(ad_id=ad_id) \
@@ -152,7 +155,8 @@ def get_messages(request, other_user_id):
     try:
         # if neither query returned result, return http 204 no content response
         if len(messages_sent) == 0 and len(messages_received) == 0:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            response = {"message": "No messages found"}
+            return Response(response, status=status.HTTP_204_NO_CONTENT)
         
         # if there are no messages sent and only received, return received messages
         if len(messages_sent) == 0:
@@ -160,7 +164,7 @@ def get_messages(request, other_user_id):
             # paginate results
             msg_paginator = Paginator(messages_received, 6)
             msg_page = msg_paginator.page(page_number)
-            serializer_received = GetMessageSerializer(msg_page, many=True)
+            serializer_received = GetMessageSerializer(msg_page, many=True, context={'username': username})
             return Response(
                 serializer_received.data,
                 status=status.HTTP_200_OK,
@@ -172,7 +176,7 @@ def get_messages(request, other_user_id):
             # paginate results
             msg_paginator = Paginator(messages_sent, 6)
             msg_page = msg_paginator.page(page_number)
-            serializer_sent = GetMessageSerializer(msg_page, many=True)
+            serializer_sent = GetMessageSerializer(msg_page, many=True, context={'username': username})
             return Response(
                 serializer_sent.data,
                 status=status.HTTP_200_OK,
@@ -188,7 +192,7 @@ def get_messages(request, other_user_id):
         msg_page = msg_paginator.page(page_number)
 
         # serialize to json and return response
-        serializer_sent = GetMessageSerializer(msg_page, many=True)
+        serializer_sent = GetMessageSerializer(msg_page, many=True, context={'username': username})
         return Response(
             serializer_sent.data,
             status=status.HTTP_200_OK,
@@ -240,7 +244,7 @@ def get_last_message_per_conversation(request):
             (Q(receiver_id=user) & Q(sender_id=request_user)) | (Q(receiver_id=request_user) & Q(sender_id=user))
         ).last()
         # append as dictionary to list
-        last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent})
+        last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent, "ad_id": last_message.ad_id})
     
     try:
         # put result into pages
