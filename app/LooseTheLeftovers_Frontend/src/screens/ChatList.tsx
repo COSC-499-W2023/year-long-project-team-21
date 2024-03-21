@@ -20,38 +20,69 @@ import ChatListEmptyComponent from '../components/chatlist-utils/ChatListEmpty';
 const ChatList = ({ navigation }: { navigation: any }) => {
   const [chats, setChats] = useState<ChatType[]>([]);
   const [your_id, setCurrentUserId] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
   const title = 'Messsages';
   const testID = 'title-test';
 
+  useEffect(() => {
+    const getSessionAndSetUserId = async () => {
+      const session = await retrieveUserSession();
+      if (session && session.user_id) {
+        setCurrentUserId(session.user_id);
+      }
+    };
+  
+    getSessionAndSetUserId();
+  }, []);  
+
+  const fetchAndSetChats = async () => {
+    try {
+      const lastMessages = await ChatService.getLastMessage();
+      const chatsWithUniqueId = lastMessages.map((chat: { user_id: any; ad_id: any; }) => ({
+        ...chat,
+        id: `${chat.user_id}_${chat.ad_id}`,
+      }));
+
+      // Compare fetched chats with the current state to decide on re-rendering
+      if (!areChatsEqual(chats, chatsWithUniqueId)) {
+        setChats(chatsWithUniqueId);
+      }
+    } catch (error) {
+      console.error('ChatList: Error fetching last messages:', error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
-      const getSessionAndSetUserId = async () => {
-        const session = await retrieveUserSession();
-        if (session && session.user_id) {
-          setCurrentUserId(session.user_id);
-        }
-      };
+      setIsFocused(true);
+      fetchAndSetChats(); // Initial fetch
 
-      const fetchLastMessages = async () => {
-        try {
-          const lastMessages = await ChatService.getLastMessage();
-          const chatsWithUniqueId = lastMessages.map(
-            (chat: { user_id: any; ad_id: any }) => ({
-              ...chat,
-              id: `${chat.user_id}_${chat.ad_id}`,
-            }),
-          );
-          console.log('Chats with Unique ID:', chatsWithUniqueId);
-          setChats(chatsWithUniqueId);
-        } catch (error) {
-          console.error('ChatList: Error fetching last messages:', error);
-        }
-      };
+      const interval = setInterval(fetchAndSetChats, 30000); // 30-second interval
 
-      getSessionAndSetUserId();
-      fetchLastMessages();
-    }, []),
+      return () => {
+        clearInterval(interval); // Clear interval on blur
+        setIsFocused(false);
+      };
+    }, [])
   );
+
+  useEffect(() => {
+    if (!isFocused) {
+      // When not in focus, fetch every 5 minutes
+      const interval = setInterval(fetchAndSetChats, 300000); // 5-minute interval
+      return () => clearInterval(interval);
+    }
+  }, [isFocused]);
+
+  const areChatsEqual = (currentChats: string | any[], newChats: string | any[]) => {
+    if (currentChats.length !== newChats.length) return false;
+
+    for (let i = 0; i < currentChats.length; i++) {
+      if (currentChats[i].time_sent !== newChats[i].time_sent) return false;
+    }
+
+    return true;
+  };
 
   const renderItem: ListRenderItem<ChatType> = ({ item }) => {
     return (
