@@ -390,15 +390,19 @@ interface CategoryRenderProps {
  *
  * @typedef {Object} ChatType
  * @property {number} id - The unique id for the chat.
- * @property {string} name - The name of the user.
- * @property {string} lastMessage - The most recent message sent.
+ * @property {number} user_id - The user ID of the other person in the conversation.
+ * @property {number} ad_id - The ad ID related to the chat.
+ * @property {string} name - The name of the other user in the chat.
+ * @property {string} lastMessage - The most recent message sent in the chat.
  * @property {string} timestamp - The timestamp of the last message, formatted as a string.
  */
 type ChatType = {
-  id: number;
-  name: string;
-  lastMessage: string;
-  timestamp: string;
+  id: string;
+  user_id: number;
+  ad_id: number;
+  username: string;
+  msg: string;
+  time_sent: string;
 };
 
 /**

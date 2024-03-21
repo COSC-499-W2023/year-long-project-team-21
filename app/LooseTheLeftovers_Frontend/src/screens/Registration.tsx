@@ -103,7 +103,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       setCredentialsFilledInError(false);
       setPasswordStrengthError(false);
       try {
-        const apiUrl = 'http://10.0.2.2:8000/users/';
+        const apiUrl = 'http://192.168.1.224:8000/users/';
 
         const response = await axios.post(apiUrl, {
           username: username,

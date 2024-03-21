@@ -9,15 +9,26 @@ const styles = StyleSheet.create({
     borderColor: global.tertiary,
     borderRadius: 15,
   },
+  chatItemHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
   chatItemName: {
     color: global.secondary,
     fontWeight: 'bold',
     fontSize: 18,
-    marginBottom: 5,
+    flex: 1,
+    marginRight: 10,
   },
   chatItemMessage: {
     color: global.secondary,
     fontSize: 15,
+  },
+  chatItemTime: {
+    color: global.secondary,
+    fontSize: 14,
   },
   title: {
     fontSize: 20,

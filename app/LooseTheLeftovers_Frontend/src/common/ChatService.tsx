@@ -3,18 +3,6 @@ import { messages } from './API';
 import axios from 'axios';
 
 class ChatService {
-  static async fetchLastMessage() {
-    try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
-      const response = await secureApiReqInstance.get(messages);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch chats:', error);
-      throw error;
-    }
-  }
-
   static async sendMessage(
     receiver_id: string,
     ad_id: string,
@@ -44,7 +32,9 @@ class ChatService {
       const secureApiReqInstance = await SecureAPIReq.createInstance();
       const endpoint = `/messages/${user_id}?ad_id=${ad_id}&page=${page}`;
       const response = await secureApiReqInstance.get(endpoint);
+
       console.log(response.data);
+
       return response.data;
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -63,13 +53,39 @@ class ChatService {
       const response = await secureApiReqInstance.get(endpoint);
 
       const hasHistory = response.data.length > 0;
-      console.log(`ChatService: Chat history exists`, response.data);
+      console.log(`ChatService: Chat history`, response.data);
       return hasHistory;
     } catch (error) {
       console.error('ChatService: Failed to check chat history:', error);
       throw error;
     }
   }
+
+  static async getLastMessage() {
+    try {
+      const secureApiReqInstance = await SecureAPIReq.createInstance();
+      const response = await secureApiReqInstance.get(messages);
+
+      console.log('ChatService: getLastMessage response:', response.data);
+
+      return response.data;
+    } catch (error) {
+      console.error('ChatService: Failed to get last messages:', error);
+      throw error;
+    }
+  }
+
+  static async getUserById(user_id: string) {
+    try {
+      const secureApiReqInstance = await SecureAPIReq.createInstance();
+      const response = await secureApiReqInstance.get(`/users/${user_id}`);
+      console.log("getUserById response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("ChatService: Failed to get user details:", error);
+      throw error;
+    }
+  }  
 }
 
 export default ChatService;

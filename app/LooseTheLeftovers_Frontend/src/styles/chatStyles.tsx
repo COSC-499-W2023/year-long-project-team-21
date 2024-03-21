@@ -8,6 +8,13 @@ const styles = StyleSheet.create({
     color: global.primary,
     textAlign: 'center',
   },
+  tabBarTopWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+  },
 });
 
 export default styles;
