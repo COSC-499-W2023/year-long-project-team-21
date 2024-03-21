@@ -39,7 +39,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
 
     {
       id: 4,
-      txt: 'See how long food will expire in',
+      txt: 'see the expiery based on the color of the post',
       image: require('../assets/expiry.png'),
       size: 80,
     },
