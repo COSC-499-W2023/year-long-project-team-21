@@ -74,6 +74,18 @@ class ChatService {
       throw error;
     }
   }
+
+  static async getUserById(user_id: string) {
+    try {
+      const secureApiReqInstance = await SecureAPIReq.createInstance();
+      const response = await secureApiReqInstance.get(`/users/${user_id}`);
+      console.log("getUserById response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("ChatService: Failed to get user details:", error);
+      throw error;
+    }
+  }  
 }
 
 export default ChatService;

@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: global.tertiary,
     borderRadius: 15,
-    marginBottom: 10,
   },
   chatItemHeader: {
     flexDirection: 'row',

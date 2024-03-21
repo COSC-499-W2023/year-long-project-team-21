@@ -32,6 +32,17 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   );
 
   useEffect(() => {
+    const fetchUsernameForNewChat = async () => {
+      try {
+        const user = await ChatService.getUserById(user_id);
+        if (user && user.username) {
+          setUsername(user.username); // Set the username for new chat
+        }
+      } catch (error) {
+        console.error('Chat: Error fetching user details:', error);
+      }
+    };
+
     if (!new_chat) {
       const fetchHistory = async () => {
         try {
@@ -59,6 +70,8 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
       };
 
       fetchHistory();
+    } else {
+      fetchUsernameForNewChat();
     }
   }, [ad_id, user_id, new_chat]);
 
@@ -118,10 +131,12 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   return (
     <SafeAreaView style={globalscreenstyles.container}>
       {/* Header */}
-      <TabBarTop
-        LeftIcon={<GoBackIcon />}
-        MiddleIcon={<Text style={styles.title}>{username}</Text>}
-      />
+      <View style={styles.tabBarTopWrapper}>
+        <TabBarTop
+          LeftIcon={<GoBackIcon />}
+          MiddleIcon={<Text style={styles.title}>{username}</Text>}
+        />
+      </View>
 
       {/* Chat */}
       <GiftedChat

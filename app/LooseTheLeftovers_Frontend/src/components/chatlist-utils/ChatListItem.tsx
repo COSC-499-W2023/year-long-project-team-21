@@ -52,7 +52,7 @@ const ChatListItem: React.FC<{
   return (
     <TouchableOpacity onPress={handlePress} style={styles.chatItem}>
       <View style={styles.chatItemHeader}>
-        <Text style={styles.chatItemName}>{chat.username}</Text>
+        <Text style={styles.chatItemName}>{chat.username + " ad:" + chat.ad_id}</Text>
         <Text style={styles.chatItemTime}>{lastMessageTime}</Text>
       </View>
       <Text style={styles.chatItemMessage}>{chat.msg}</Text>

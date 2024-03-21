@@ -13,6 +13,7 @@ import TabBarBottom from '../components/TabBarBottom';
 import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import AccountIcon from '../components/AccountIcon';
+import GoBackIcon from '../components/GoBackIcon';
 import ChatListItem from '../components/chatlist-utils/ChatListItem';
 import ChatListEmptyComponent from '../components/chatlist-utils/ChatListEmpty';
 
@@ -40,6 +41,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
               id: `${chat.user_id}_${chat.ad_id}`,
             }),
           );
+          console.log('Chats with Unique ID:', chatsWithUniqueId);
           setChats(chatsWithUniqueId);
         } catch (error) {
           console.error('ChatList: Error fetching last messages:', error);
@@ -63,6 +65,9 @@ const ChatList = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={globalscreenstyles.container}>
       {/* Header */}
       <TabBarTop
+        LeftIcon={
+          <GoBackIcon />
+        }
         MiddleIcon={
           <Text style={styles.title} testID={testID}>
             {title}
