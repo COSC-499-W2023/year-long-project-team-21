@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
+import polars as pl
 
 from Users.models import CustomUser
 from Messages.models import Message
@@ -56,6 +57,7 @@ class MessageHandler(APIView):
             Response: Response object with the messages as json. Messages will be sorted from newest to oldest
 
         """
+        print(Message.objects.model._meta.db_table)
 
         # Manually authenticate user
         permission = IsAuthenticated()
@@ -222,26 +224,37 @@ def get_last_message_per_conversation(request):
     """
     # query all messages the requesting user is a sender or receiver
     request_user = request.user.id
-    receivers = Message.objects.filter(sender_id=request_user).values_list('receiver_id')
-    senders = Message.objects.filter(receiver_id=request_user).values_list('sender_id')
+    receivers = Message.objects.filter(sender_id=request_user).values_list('receiver_id', 'ad_id')
+    senders = Message.objects.filter(receiver_id=request_user).values_list('sender_id', 'ad_id')
 
-    # convert query result to set of unique user ids the requesting user has converstations with
-    conversation_list = set()
-    for item in receivers:
-        conversation_list.add(item[0])
-    for item in senders:
-        conversation_list.add(item[0])
+    # convert query result to df to get unique values 
+    conversation_list = list(receivers) + list(senders)
+    D = {'user_id': [], 'ad_id': []}
+    for user_id, ad_id in conversation_list:
+        D.get('user_id').append(user_id)
+        D.get('ad_id').append(ad_id)
+    
+    df = pl.DataFrame._from_dict(D)
+
+    print(df.glimpse())
+
+    df = df.unique()
+
+    print(df.glimpse())
 
     # get username, msg, time_sent for last message in each conversation
         # user represents the other person in the converstation with the request user
     last_msg_list = []
-    for user in conversation_list:
+    for row in df.iter_rows():
+
+        user = row[0]
+        ad_id = row[1]
 
         # get username
         username = CustomUser.objects.get(pk=user).username
         # get last message in conversation
         last_message = Message.objects.filter(
-            (Q(receiver_id=user) & Q(sender_id=request_user)) | (Q(receiver_id=request_user) & Q(sender_id=user))
+            (Q(receiver_id=user) & Q(sender_id=request_user) & Q(ad_id=ad_id)) | (Q(receiver_id=request_user) & Q(sender_id=user) & Q(ad_id=ad_id))
         ).last()
         # append as dictionary to list
         last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent, "ad_id": last_message.ad_id})
