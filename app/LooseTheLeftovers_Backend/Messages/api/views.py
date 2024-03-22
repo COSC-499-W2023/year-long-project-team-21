@@ -234,12 +234,7 @@ def get_last_message_per_conversation(request):
         D.get('ad_id').append(ad_id)
     
     df = pl.DataFrame._from_dict(D)
-
-    print(df.glimpse())
-
     df = df.unique()
-
-    print(df.glimpse())
 
     # get username, msg, time_sent for last message in each conversation
         # user represents the other person in the converstation with the request user
