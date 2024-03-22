@@ -42,7 +42,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
         ...chat,
         id: `${chat.user_id}_${chat.ad_id}`,
       }))
-      .sort((a: { time_sent: string | number | Date; }, b: { time_sent: string | number | Date; }) => new Date(b.time_sent).getTime() - new Date(a.time_sent).getTime());
+      .sort((a: { time_sent: Date; }, b: { time_sent: Date; }) => new Date(b.time_sent).getTime() - new Date(a.time_sent).getTime());
 
       // Compare fetched chats with the current state to decide on re-rendering
       if (!areChatsEqual(chats, chatsWithUniqueId)) {

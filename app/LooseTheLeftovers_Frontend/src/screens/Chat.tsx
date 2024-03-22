@@ -32,49 +32,56 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     your_id,
   );
 
-  useEffect(() => {
-    const fetchUsernameForNewChat = async () => {
-      try {
-        const user = await ChatService.getUserById(user_id);
-        if (user && user.username) {
-          setUsername(user.username); // Set the username for new chat
-        }
-      } catch (error) {
-        console.error('Chat: Error fetching user details:', error);
-      }
-    };
+  const fetchHistory = async () => {
+    try {
+      const history = await ChatService.fetchChatUpdates(user_id, ad_id);
+      const receiverUsername = history[0]?.username;
+      const formattedMessages = history.map((msg: { time_sent: Date; id: any; msg: any; sender_id: any; }) => {
+        const createdAt = new Date(msg.time_sent);
+        return {
+          _id: msg.id,
+          text: msg.msg,
+          createdAt: createdAt,
+          user: {
+            _id: msg.sender_id,
+          },
+        };
+      });
+      formattedMessages.sort(
+        (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime(),
+      );
+      const newMessagesString = JSON.stringify(formattedMessages);
+      const currentMessagesString = JSON.stringify(messages);
 
+      if (newMessagesString !== currentMessagesString) {
+        setMessages(formattedMessages);
+      }
+      setUsername(receiverUsername);
+    } catch (error) {
+      console.error('Chat: Error fetching chat history:', error);
+    }
+  };
+
+  const fetchUsernameForNewChat = async () => {
+    try {
+      const user = await ChatService.getUserById(user_id);
+      if (user && user.username) {
+        setUsername(user.username);
+      }
+    } catch (error) {
+      console.error('Chat: Error fetching user details:', error);
+    }
+  };
+
+  useEffect(() => {
     if (typeof title !== 'undefined') {
       setAdTitle(title);
     }
 
     if (!new_chat) {
-      const fetchHistory = async () => {
-        try {
-          const history = await ChatService.fetchChatUpdates(user_id, ad_id);
-          const receiverUsername = history[0]?.username;
-          const formattedMessages = history.map((msg: any) => {
-            const createdAt = new Date(msg.time_sent);
-            return {
-              _id: msg.id,
-              text: msg.msg,
-              createdAt: createdAt,
-              user: {
-                _id: msg.sender_id,
-              },
-            };
-          });
-          formattedMessages.sort(
-            (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime(),
-          );
-          setMessages(formattedMessages);
-          setUsername(receiverUsername);
-        } catch (error) {
-          console.error('Chat: Error fetching chat history:', error);
-        }
-      };
-
       fetchHistory();
+      const intervalId = setInterval(fetchHistory, 15000); // 15 seconds interval
+      return () => clearInterval(intervalId); // Clear interval on component unmount
     } else {
       fetchUsernameForNewChat();
     }
