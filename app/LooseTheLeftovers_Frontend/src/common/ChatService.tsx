@@ -85,7 +85,19 @@ class ChatService {
       console.error("ChatService: Failed to get user details:", error);
       throw error;
     }
-  }  
+  }
+
+  static async getAdTitle(ad_id: number) {
+    try {
+      const secureApiReqInstance = await SecureAPIReq.createInstance();
+      const response = await secureApiReqInstance.get(`/ads/${ad_id}`);
+      console.log("getAdTitle response:", response.data);
+      return response.data.title;
+    } catch (error) {
+      console.error("ChatService: Failed to get ad title:", error);
+      throw error;
+    }
+  }
 }
 
 export default ChatService;

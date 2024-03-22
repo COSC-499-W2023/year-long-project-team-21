@@ -18,7 +18,8 @@ import GoBackIcon from '../components/GoBackIcon';
 const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [username, setUsername] = useState('Messages');
-  const { ad_id, user_id, new_chat, your_id } = route.params;
+  const [adTitle, setAdTitle] = useState('');
+  const { ad_id, user_id, new_chat, your_id, title } = route.params;
 
   console.log(
     'Chat: ad_id:',
@@ -42,6 +43,10 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
         console.error('Chat: Error fetching user details:', error);
       }
     };
+
+    if (typeof title !== 'undefined') {
+      setAdTitle(title);
+    }
 
     if (!new_chat) {
       const fetchHistory = async () => {
@@ -134,7 +139,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
       <View style={styles.tabBarTopWrapper}>
         <TabBarTop
           LeftIcon={<GoBackIcon />}
-          MiddleIcon={<Text style={styles.title}>{username}</Text>}
+          MiddleIcon={<Text style={styles.title}>{`${username}${adTitle ? `, ${adTitle}` : ''}`}</Text>}
         />
       </View>
 

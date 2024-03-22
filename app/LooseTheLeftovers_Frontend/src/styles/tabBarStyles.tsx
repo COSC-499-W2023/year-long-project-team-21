@@ -7,6 +7,7 @@ const tabBarStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: global.tertiary,
+    paddingBottom: 5,
   },
   containerBottom: {
     flex: 0.075,
@@ -28,7 +29,6 @@ const tabBarStyles = StyleSheet.create({
   },
   rightBottom: {
     paddingTop: '4%',
-
     alignItems: 'center',
     flex: 1 / 3,
   },
@@ -43,7 +43,6 @@ const tabBarStyles = StyleSheet.create({
   },
   rightTop: {
     paddingTop: '4%',
-
     alignItems: 'center',
     flex: 1 / 3,
   },

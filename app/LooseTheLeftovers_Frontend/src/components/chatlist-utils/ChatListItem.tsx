@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { formatDistanceToNow, parseISO } from 'date-fns';
+import ChatService from '../../common/ChatService';
 import styles from '../../styles/chatListStyles';
 
 /**
@@ -36,10 +37,27 @@ const ChatListItem: React.FC<{
   navigation: any;
   your_id: any;
 }> = ({ chat, navigation, your_id }) => {
+  const [title, setTitle] = useState<string>('Loading ad title...');
+
+  useEffect(() => {
+    const fetchAdTitle = async () => {
+      try {
+        const title = await ChatService.getAdTitle(chat.ad_id);
+        setTitle(title);
+      } catch (error) {
+        console.error('ChatListItem: Error fetching ad title:', error);
+        setTitle('Ad title unavailable'); // Fallback text
+      }
+    };
+
+    fetchAdTitle();
+  }, [chat.ad_id]);
+
   const handlePress = () => {
     navigation.navigate('Chat', {
       user_id: chat.user_id,
       ad_id: chat.ad_id,
+      title: title,
       your_id: your_id,
       new_chat: false,
     });
@@ -52,7 +70,7 @@ const ChatListItem: React.FC<{
   return (
     <TouchableOpacity onPress={handlePress} style={styles.chatItem}>
       <View style={styles.chatItemHeader}>
-        <Text style={styles.chatItemName}>{chat.username + " ad:" + chat.ad_id}</Text>
+        <Text style={styles.chatItemName}>{`${chat.username} — ${title}`}</Text>
         <Text style={styles.chatItemTime}>{lastMessageTime}</Text>
       </View>
       <Text style={styles.chatItemMessage}>{chat.msg}</Text>

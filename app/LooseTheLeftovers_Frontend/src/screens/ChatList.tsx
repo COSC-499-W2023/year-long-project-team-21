@@ -33,7 +33,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
     };
   
     getSessionAndSetUserId();
-  }, []);  
+  }, []);
 
   const fetchAndSetChats = async () => {
     try {
@@ -41,7 +41,8 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       const chatsWithUniqueId = lastMessages.map((chat: { user_id: any; ad_id: any; }) => ({
         ...chat,
         id: `${chat.user_id}_${chat.ad_id}`,
-      }));
+      }))
+      .sort((a: { time_sent: string | number | Date; }, b: { time_sent: string | number | Date; }) => new Date(b.time_sent).getTime() - new Date(a.time_sent).getTime());
 
       // Compare fetched chats with the current state to decide on re-rendering
       if (!areChatsEqual(chats, chatsWithUniqueId)) {
@@ -57,7 +58,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       setIsFocused(true);
       fetchAndSetChats(); // Initial fetch
 
-      const interval = setInterval(fetchAndSetChats, 30000); // 30-second interval
+      const interval = setInterval(fetchAndSetChats, 15000); // 15-second interval
 
       return () => {
         clearInterval(interval); // Clear interval on blur
