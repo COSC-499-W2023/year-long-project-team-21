@@ -47,7 +47,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       console.log(category);
     });
 
-    const payload = await axios.get(adEndpointWithPage, djangoConfig());
+    //const payload = await axios.get(adEndpointWithPage, djangoConfig());
   }, [selectedCategories]);
 
   useEffect(() => {
