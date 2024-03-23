@@ -204,7 +204,7 @@ const EditProfile = ({
     return (
       <View style={styles.wiggleClicks}>
         <View>
-          <TouchableOpacity onPress={() => wiggleStatetoRight()}>
+          <TouchableOpacity onPress={() => wiggleStatetoRight()} testID='leftClick'>
             <Text style={{ ...styles.leftClick, color: rightColor }}>
               {' '}
               Personal Info{' '}
@@ -215,7 +215,7 @@ const EditProfile = ({
           <Text> </Text>
         </View>
         <View>
-          <TouchableOpacity onPress={() => wiggleStatetoLeft()}>
+          <TouchableOpacity onPress={() => wiggleStatetoLeft()} testID='rightClick'>
             <Text style={{ ...styles.rightClick, color: leftColor }}>
               {' '}
               Password{' '}
@@ -341,27 +341,28 @@ const EditProfile = ({
       colors={['#251D3A', global.background]}
       start={{ x: 1, y: 0 }}>
       <View>
-        <Text style={styles.titleContainer}>Edit Profile</Text>
+        <Text style={styles.titleContainer} testID='title'>Edit Profile</Text>
       </View>
       {isRightVisible && (
         <>
           {renderWiggleClicks()}
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer}>FIRST NAME : </Text>
+            <Text style={styles.inputFieldTitleContainer} testID='firstNameInputTitle'>FIRST NAME : </Text>
             <InputField
               placeholder={'First name'}
               onChangeText={newNameText => setFirstname(newNameText)}
-              value={firstname}></InputField>
+              value={firstname}
+              ></InputField>
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer}>LAST NAME : </Text>
+            <Text style={styles.inputFieldTitleContainer} testID='lastNameInputTitle'>LAST NAME : </Text>
             <InputField
               placeholder={'Last name'}
               onChangeText={newNameText => setLastname(newNameText)}
               value={lastname}></InputField>
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer}>EMAIL : </Text>
+            <Text style={styles.inputFieldTitleContainer} testID='emailInputTitle'>EMAIL : </Text>
             <InputField
               placeholder={'Email'}
               onChangeText={newText => setNewEmail(newText)}
@@ -375,14 +376,14 @@ const EditProfile = ({
         <>
           {renderWiggleClicks()}
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer}>OLD PASSWORD : </Text>
+            <Text style={styles.inputFieldTitleContainer} testID='oldPasswordInputTitle'>OLD PASSWORD : </Text>
             <InputField
               placeholder={'Old Password'}
               onChangeText={oldPass => setOldPass(oldPass)}
               value={oldPass}></InputField>
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer}>NEW PASSWORD : </Text>
+            <Text style={styles.inputFieldTitleContainer} testID='newPasswordInputTitle'>NEW PASSWORD : </Text>
             <InputField
               placeholder={'New Password'}
               onChangeText={newPass => setNewPass(newPass)}
@@ -390,7 +391,7 @@ const EditProfile = ({
             {!(newPass == '') && renderPasswordStrengthMessage()}
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer}>
+            <Text style={styles.inputFieldTitleContainer} testID='confirmPasswordInputTitle'>
               CONFIRM PASSWORD :{' '}
             </Text>
             <InputField
@@ -408,7 +409,7 @@ const EditProfile = ({
           backgroundcolor="red"
           buttonSize={150}
           onPress={handleCancelEditing}
-          title="Cancel"></Button>
+          title="Cancel" testID='cancelButton'></Button>
         <Button
           buttonSize={150}
           onPress={
@@ -416,7 +417,7 @@ const EditProfile = ({
               ? handleNewProfileInfoSubmission
               : handleUpdatePassword
           }
-          title="Update"></Button>
+          title="Update" testID='updateButton'></Button>
       </View>
     </LinearGradient>
   );
