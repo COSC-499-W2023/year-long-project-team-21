@@ -203,7 +203,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     };
 
     const handlePressMessage = () => {
-      console.log('View_Post passes:', postId, adData.username, adData.title);
       navigation.navigate('Chat', {
         adId: postId,
         username: adData.username,

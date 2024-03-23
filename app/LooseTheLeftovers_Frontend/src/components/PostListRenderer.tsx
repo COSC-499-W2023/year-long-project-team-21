@@ -2,19 +2,10 @@ import React, { useState, useEffect, memo, useCallback } from 'react';
 import { View, FlatList, Text, Dimensions } from 'react-native';
 import { PostListRendererProps, PostProps } from '../common/Types';
 import { BASE_URL } from '../common/API';
-import CategoryRender from './Category-Utils/CategoryRender';
 import { useFocusEffect } from '@react-navigation/native';
 
 import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
-
-import profileStyles from '../styles/profileStyles';
-import UserInfo from '../components/UserInfo';
-import Button from './Button';
-import Ratings from './Ratings';
-import { global } from '../common/global_styles';
-import Icon from './Icon';
-import Texts from './Text';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   endpoint,
@@ -147,39 +138,6 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
         />
       </View>
     );
-  };
-
-  //this is where the category info created. If more categories are needed add them here.
-  const categoryInfo = [
-    {
-      name: 'gluten-free',
-      imageSource: require('../assets/gluten-free.png'),
-      size: 35,
-    },
-    {
-      name: 'nut-free',
-      imageSource: require('../assets/nut.png'),
-      size: 35,
-    },
-    {
-      name: 'vegan',
-      imageSource: require('../assets/vegan.png'),
-      size: 35,
-    },
-  ];
-
-  //this prints out the category name if the corresponding icon is pressed. It also prints out if it is selected or deselected.
-  const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
-    // Updated state based on the previous state to avoid mutations
-    setSelectedCategories(prevCategories => {
-      if (isSelected) {
-        console.log('Category', categoryName, 'has been selected.');
-        return [...prevCategories, categoryName];
-      } else {
-        console.log('Category', categoryName, 'has been deselected.');
-        return prevCategories.filter(category => category !== categoryName);
-      }
-    });
   };
 
   /**

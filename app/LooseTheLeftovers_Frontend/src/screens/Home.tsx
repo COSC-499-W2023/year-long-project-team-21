@@ -24,6 +24,7 @@ import axios from 'axios';
 import generatePostListStyles from '../styles/postListStyles';
 import SelectRangeBar from '../components/SelectRangeBar';
 import Icon from '../components/Icon';
+import CategoryRender from '../components/Category-Utils/CategoryRender';
 
 // @TODO move this to Types.tsx
 type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
@@ -39,6 +40,15 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [range, setRange] = useState('10');
   const [isLoading, setIsLoading] = useState(true);
   const disableLocationIcon = '../assets/location.png';
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    selectedCategories.forEach(category => {
+      console.log(category);
+    });
+
+    const payload = await axios.get(adEndpointWithPage, djangoConfig());
+  }, [selectedCategories]);
 
   useEffect(() => {
     postFetchHandler();
@@ -56,7 +66,6 @@ const Home = ({ navigation }: { navigation: any }) => {
     if (range !== 'All') {
       setGetDataFunction(() => getAdsLocation);
     } else {
-      console.log('we got here');
       setGetDataFunction(() => fetchAds);
     }
   }, [range]);
@@ -106,11 +115,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       const payload = await axios.post(adsLocation, body, djangoConfig());
       return payload;
     } catch (error) {
-      console.log(range);
       console.log(`There was an error getting the location ${error} `);
-      //Alert.alert(
-      //'There was an error retrieving posts nearby. Try again later',
-      //);
       return [];
     }
   }
@@ -139,6 +144,37 @@ const Home = ({ navigation }: { navigation: any }) => {
         return renderHeader_Location();
       }
     }
+  };
+
+  //this is where the category info created. If more categories are needed add them here.
+  const categoryInfo = [
+    {
+      name: 'gluten-free',
+      imageSource: require('../assets/gluten-free.png'),
+      size: 35,
+    },
+    {
+      name: 'nut-free',
+      imageSource: require('../assets/nut.png'),
+      size: 35,
+    },
+    {
+      name: 'vegan',
+      imageSource: require('../assets/vegan.png'),
+      size: 35,
+    },
+  ];
+
+  //this prints out the category name if the corresponding icon is pressed. It also prints out if it is selected or deselected.
+  const handleCategoryPress = (categoryName: string, isSelected: boolean) => {
+    // Updated state based on the previous state to avoid mutations
+    setSelectedCategories(prevCategories => {
+      if (isSelected) {
+        return [...prevCategories, categoryName];
+      } else {
+        return prevCategories.filter(category => category !== categoryName);
+      }
+    });
   };
 
   /**
@@ -196,6 +232,10 @@ const Home = ({ navigation }: { navigation: any }) => {
           LeftIcon={<Logo size={55}></Logo>}
           RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
         <View style={globalscreenstyles.middle}>
+          <CategoryRender
+            selectedCategories={selectedCategories}
+            onCategoryPress={handleCategoryPress}
+            categoryInfo={categoryInfo}></CategoryRender>
           {renderHeader_Handler()}
           {isLoading ? (
             ''
