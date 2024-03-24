@@ -501,7 +501,9 @@ def get_ads_category(request):
 
     category_filters = Q()
     for category_name in categories:
-        category_filters |= Q(category=category_name)
+        category_filters &= Q(category=category_name)
+
+    print(category_filters)
 
     try:
 
@@ -515,8 +517,7 @@ def get_ads_category(request):
         # gets data for the current page
         ad_page = ad_paginator.page(pageNumber)
 
-        print(ad_page)
-
+        # serialize data
         ad_serializer = ReturnAdvertismentSerializer(ad_page, many=True)
 
         # return response dependant on data in the response
