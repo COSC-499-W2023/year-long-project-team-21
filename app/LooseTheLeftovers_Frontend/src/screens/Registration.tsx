@@ -6,7 +6,6 @@ import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
 import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../components/Logo';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -37,6 +36,8 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const [credentialFilledInError, setCredentialsFilledInError] =
     useState(false);
   const [apiRequestError, setApiRequestError] = useState(false);
+  const [emailExistsError, setEmailExistsError] = useState(false);
+  const [usernameExistsError, setUsernameExistsError] = useState(false);
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
   //set input text from the text box so that we can handle credential (Email)
   const handleEmail = (input: string) => {
@@ -83,6 +84,8 @@ const Registration = ({ navigation }: { navigation: any }) => {
     setServerError(false);
     setPasswordStrengthError(false);
     setApiRequestError(false);
+    setEmailExistsError(false);
+    setUsernameExistsError(false);
     if (email == '' || username == '' || password1 == '' || password2 == '') {
       setCredentialsFilledInError(true);
     } else if (password1 !== password2) {
@@ -117,6 +120,8 @@ const Registration = ({ navigation }: { navigation: any }) => {
         // Check response successful
         if (response.status === 200) {
           setApiRequestError(false);
+          setEmailExistsError(false);
+          setUsernameExistsError(false);
           setUsername('');
           setEmail('');
           setPassword1('');
@@ -128,8 +133,27 @@ const Registration = ({ navigation }: { navigation: any }) => {
         }
       } catch (error: any) {
         //red text error produced by requesting error
-        setApiRequestError(true);
-        console.log(error);
+        const apiError: any = error;
+        if (
+          apiError.response?.data &&
+          JSON.stringify(apiError.response.data).includes(
+            'A user with that email already exists.',
+          )
+        ) {
+          setEmailExistsError(true);
+        }
+
+        if (
+          apiError.response?.data &&
+          JSON.stringify(apiError.response.data).includes(
+            'A user with that username already exists.',
+          )
+        ) {
+          setUsernameExistsError(true);
+        }
+        {
+          setApiRequestError(true);
+        }
       }
     }
   };
@@ -208,6 +232,16 @@ const Registration = ({ navigation }: { navigation: any }) => {
         {apiRequestError && (
           <Text style={{ color: global.error, fontSize: 15 }}>
             Request error, unable to process.
+          </Text>
+        )}
+        {emailExistsError && (
+          <Text style={{ color: global.error, fontSize: 15 }}>
+            A user with that email already exists
+          </Text>
+        )}
+        {usernameExistsError && (
+          <Text style={{ color: global.error, fontSize: 15 }}>
+            A user with that username already exists
           </Text>
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}
