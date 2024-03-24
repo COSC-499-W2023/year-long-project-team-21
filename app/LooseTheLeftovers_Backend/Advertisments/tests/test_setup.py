@@ -85,7 +85,6 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
 
         # create 5 test ads
         self.ad_1 = Advertisment.objects.create(
-<<<<<<< HEAD
             user_id=1,
             title="Apples",
             description="Some apples",
@@ -118,42 +117,6 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
             title="Take out",
             description="Some leftovers",
             category="Unknown",
-=======
-            user_id=self.user_1.id,
-            title='Apples',
-            description='Some apples',
-            category= 'vegan',
-            expiry='2024-01-25T12:30:00.000000Z',
-            latitude=49.8875083,
-            longitude=-119.496064
-
-        )
-        self.ad_2 = Advertisment.objects.create(
-            user_id=self.user_1.id,
-            title='Bananas',
-            description='Some bananas',
-            category='vegan',
-            expiry="2024-03-25T12:30:00.000000Z"
-        )
-        self.ad_3 = Advertisment.objects.create(
-            user_id=self.user_1.id,
-            title='Pasta',
-            description='Vegetarian pasta',
-            category='Vegetarian',
-            expiry='2024-01-25T12:30:00.000000Z',
-        )
-        self.ad_4 = Advertisment.objects.create(
-            user_id=self.user_2.id,
-            title='Pizza',
-            description='Pepperoni',
-            category='None',
-        )
-        self.ad_5 = Advertisment.objects.create(
-            user_id=self.user_2.id,
-            title='Take out',
-            description='Some leftovers',
-            category='Unknown',
->>>>>>> 9b8bb5d7312a90a9620fe56dbf0dd7f471a5123e
         )
 
         # create 5 test AdvertismentImages

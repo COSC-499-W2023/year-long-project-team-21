@@ -48,7 +48,7 @@
             "user_id": 2,
             "title": "Pasta",
             "description": "Homemade pasta",
-            "category": "nut",
+            "category": "peanut-free",
             "expiry": "2024-02-03T12:34:56.000000Z",
             "created": "2024-01-30T12:30:00.000000Z",
             "location": "POINT (-119.393555 49.939806)"
@@ -193,7 +193,7 @@
             "user_id": 3,
             "title": "Chocolate Chip Cookies",
             "description": "Home backed. Gluten free",
-            "category": "nut, vegan, gluten-free",
+            "category": "peanut-free, vegan, gluten-free",
             "created": "2024-01-30T12:30:00.000000Z",
             "expiry": "2024-02-08T12:34:56.000000Z",
             "location": "POINT (-119.403049 49.939236)"

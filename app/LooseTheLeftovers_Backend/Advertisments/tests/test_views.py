@@ -1,14 +1,11 @@
 from datetime import date, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.fields.files import ImageFieldFile
-<<<<<<< HEAD
 from .test_setup import (
     TestSetUpCreateAdvertisment,
     TestSetUpRetrieveAdvertisment,
     TestSetupLocatonAds,
 )
-=======
->>>>>>> 9b8bb5d7312a90a9620fe56dbf0dd7f471a5123e
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
@@ -133,25 +130,7 @@ class TestCreateAd(TestSetUpCreateAdvertisment):
         self.assertEqual(new_ad.description, "Three Bananas")
         self.assertIsInstance(new_ad_image.image, ImageFieldFile)
 
-<<<<<<< HEAD
-    def test_create_ad_with_put_request(self):
-        """
-        Test if ad can be created via PUT request. Expect HTTP_405_METHOD_NOT_ALLOWED response
-        """
-        client = APIClient()
 
-        # post request and assert valid response
-        response = client.put(
-            self.__ad_url,
-            self.valid_data,
-            HTTP_AUTHORIZATION="Bearer " + self.token,
-            format="multipart",
-        )
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-=======
->>>>>>> 9b8bb5d7312a90a9620fe56dbf0dd7f471a5123e
 class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
 
     def test_get_single_ad(self):
@@ -358,8 +337,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(len(all_ads), 3)
         self.assertEqual(len(all_images), 3)
 
-<<<<<<< HEAD
-=======
+
 class TestUpdateAds(TestSetUpRetrieveAdvertisment):
 
     __ad_url = reverse("create-ad")
@@ -370,29 +348,29 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
         """
         client = APIClient()
         data = {
-            'ad_id': self.ad_1.id,
-            'title': "Updated title",
-            'description': self.ad_1.description,
-            'category': "Fruit",
-            'expiry': self.ad_1.expiry,
-            'latitude': self.ad_1.latitude,
-            'longitude': self.ad_1.longitude,
+            "ad_id": self.ad_1.id,
+            "title": "Updated title",
+            "description": self.ad_1.description,
+            "category": "Fruit",
+            "expiry": self.ad_1.expiry,
+            "latitude": self.ad_1.latitude,
+            "longitude": self.ad_1.longitude,
         }
         # post request and assert valid response
         response = client.put(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="json",
         )
 
-        # assert HTTP_200 response 
+        # assert HTTP_200 response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # get updated ad and assert title was updated
         updated_ad = Advertisment.objects.get(pk=self.ad_1.id)
-        self.assertEqual(updated_ad.title, "Updated title")       
-    
+        self.assertEqual(updated_ad.title, "Updated title")
+
     def test_update_ad_no_authentication(self):
         """
         Test if ad can be updated via PUT request without
@@ -400,13 +378,13 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
         """
         client = APIClient()
         data = {
-            'ad_id': self.ad_1.id,
-            'title': "Updated title",
-            'description': self.ad_1.description,
-            'category': self.ad_1.category,
-            'expiry': self.ad_1.expiry,
-            'latitude': self.ad_1.latitude,
-            'longitude': self.ad_1.longitude,
+            "ad_id": self.ad_1.id,
+            "title": "Updated title",
+            "description": self.ad_1.description,
+            "category": self.ad_1.category,
+            "expiry": self.ad_1.expiry,
+            "latitude": self.ad_1.latitude,
+            "longitude": self.ad_1.longitude,
         }
 
         # post request and assert valid response
@@ -426,20 +404,20 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
         """
         client = APIClient()
         data = {
-            'ad_id': self.ad_5.id,
-            'title': "Updated title",
-            'description': self.ad_1.description,
-            'category': self.ad_1.category,
-            'expiry': self.ad_1.expiry,
-            'latitude': self.ad_1.latitude,
-            'longitude': self.ad_1.longitude,
+            "ad_id": self.ad_5.id,
+            "title": "Updated title",
+            "description": self.ad_1.description,
+            "category": self.ad_1.category,
+            "expiry": self.ad_1.expiry,
+            "latitude": self.ad_1.latitude,
+            "longitude": self.ad_1.longitude,
         }
 
         # post request and assert valid response
         response = client.put(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="json",
         )
 
@@ -453,14 +431,14 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
         """
         client = APIClient()
         data = {
-            'ad_id': self.ad_1.id,
+            "ad_id": self.ad_1.id,
         }
 
         # post request and assert valid response
         response = client.delete(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="json",
         )
 
@@ -472,8 +450,7 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             deleted_ad = Advertisment.objects.get(pk=self.ad_1.id)
         except ObjectDoesNotExist as e:
             self.assertTrue(True)
-            
-    
+
     def test_delete_ad_no_authentication(self):
         """
         Test if ad can be deleted via DELETE request.
@@ -481,7 +458,7 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
         """
         client = APIClient()
         data = {
-            'ad_id': self.ad_5.id,
+            "ad_id": self.ad_5.id,
         }
 
         # post request and assert valid response
@@ -501,20 +478,20 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
         """
         client = APIClient()
         data = {
-            'ad_id': self.ad_5.id,
+            "ad_id": self.ad_5.id,
         }
 
         # post request and assert valid response
         response = client.delete(
             self.__ad_url,
             data,
-            HTTP_AUTHORIZATION='Bearer ' + self.token,
+            HTTP_AUTHORIZATION="Bearer " + self.token,
             format="json",
         )
 
         # assert HTTP_400 response
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
->>>>>>> 9b8bb5d7312a90a9620fe56dbf0dd7f471a5123e
+
 
 class ExpiryDateTests(APITestCase):
 
@@ -590,13 +567,9 @@ class TestRetrieveLocationAds(TestSetupLocatonAds):
         status_code = response.status_code
         data = response.data
 
+        print(response.data)
+
         # there should be 3 responses
         self.assertEqual(len(data), 3)
 
         self.assertEqual(status_code, status.HTTP_200_OK)
-
-        # todo, could make sure that locations are precise,  but I am going to assume they are for now
-
-        for ad in data:
-            print(ad)
-            print("\n")

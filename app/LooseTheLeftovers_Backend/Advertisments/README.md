@@ -4,27 +4,27 @@
 
 Advertisments holds all ads created by users. Below is the table schema:
 
-| Field_Name  | Type          | Comment             |
-| ----------- | ------------- | -----------         |
-| id          | int           | primary key         |
-| user_id     | int           | FK to Users         |
-| title       | varchar(50)   |                     |
-| description | varchar(500)  |                     |
-| category    | varchar(20)   |                     |
-| expiry      | datetime      |                     |
-| created     | datetime      | auto field          |
-| view_count  | int           |                     |
-| is_active   | boolean       |                     |
-| location    | point         |                     |
+| Field_Name  | Type         | Comment     |
+| ----------- | ------------ | ----------- |
+| id          | int          | primary key |
+| user_id     | int          | FK to Users |
+| title       | varchar(50)  |             |
+| description | varchar(500) |             |
+| category    | varchar(20)  |             |
+| expiry      | datetime     |             |
+| created     | datetime     | auto field  |
+| view_count  | int          |             |
+| is_active   | boolean      |             |
+| location    | point        |             |
 
 AdvertismentImage stores the images for each ad. There is a OneToOne relationship between this table
 and Advertisments
 
-| Field_Name  | Type          | Comment             |
-| ----------- | ------------- | -----------         |
-| id          | int           | primary key         |
-| ad_id       | int           | FK to Advertisments |
-| image       | imag          |                     |
+| Field_Name | Type | Comment             |
+| ---------- | ---- | ------------------- |
+| id         | int  | primary key         |
+| ad_id      | int  | FK to Advertisments |
+| image      | imag |                     |
 
 ### GET Advertisments
 
@@ -46,3 +46,14 @@ The POST request should contain the following data passed as a multipart JSON:
     category
     expiry
     image
+
+### Categories:
+
+There are 3 current categories:
+
+- None,
+- peanut-free,
+- glutten-free,
+- vegan
+
+Expressions from the backend must match this pattern.
