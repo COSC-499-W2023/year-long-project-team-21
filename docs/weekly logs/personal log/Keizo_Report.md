@@ -1,6 +1,6 @@
 # Keizo Kato Personal Weekly Log
 
-3/11 to 3/17
+3/18 to 3/24
 
 Username: Keizo410
 
@@ -11,13 +11,12 @@ Username: Keizo410
 
 ## Completed Features For This Week
 
-- Adding restriction for email format, input length, and etc on profile page.
-- Fixing edit profile wiggle bar color.
+- writing test for edit profile
 
 ## Features in progress
 
-- Writing test for edit profile. 
+- Waiting for review on edit profile
 
 ## Types of Tasks Worked On
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/3c12de61-d177-465c-ac2a-32894aef6e34)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/fbae33dc-2c8e-418a-acb1-46d7b1d3106b)
