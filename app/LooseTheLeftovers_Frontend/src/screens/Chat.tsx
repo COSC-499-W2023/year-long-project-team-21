@@ -10,10 +10,11 @@ import {
 import styles from '../styles/chatStyles';
 import { global } from '../common/global_styles';
 import globalscreenstyles from '../common/global_ScreenStyles';
-
 import ChatService from '../common/ChatService';
+
 import TabBarTop from '../components/TabBarTop';
 import GoBackIcon from '../components/GoBackIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -32,36 +33,6 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     your_id,
   );
 
-  const fetchHistory = async () => {
-    try {
-      const history = await ChatService.fetchChatUpdates(user_id, ad_id);
-      const receiverUsername = history[0]?.username;
-      const formattedMessages = history.map((msg: { time_sent: Date; id: any; msg: any; sender_id: any; }) => {
-        const createdAt = new Date(msg.time_sent);
-        return {
-          _id: msg.id,
-          text: msg.msg,
-          createdAt: createdAt,
-          user: {
-            _id: msg.sender_id,
-          },
-        };
-      });
-      formattedMessages.sort(
-        (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime(),
-      );
-      const newMessagesString = JSON.stringify(formattedMessages);
-      const currentMessagesString = JSON.stringify(messages);
-
-      if (newMessagesString !== currentMessagesString) {
-        setMessages(formattedMessages);
-      }
-      setUsername(receiverUsername);
-    } catch (error) {
-      console.error('Chat: Error fetching chat history:', error);
-    }
-  };
-
   const fetchUsernameForNewChat = async () => {
     try {
       const user = await ChatService.getUserById(user_id);
@@ -73,19 +44,72 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     }
   };
 
-  useEffect(() => {
-    if (typeof title !== 'undefined') {
-      setAdTitle(title);
-    }
+  const sortMessagesByDate = (messages: any[]) => {
+    return messages.sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+  };
 
-    if (!new_chat) {
-      fetchHistory();
-      const intervalId = setInterval(fetchHistory, 15000); // 15 seconds interval
-      return () => clearInterval(intervalId); // Clear interval on component unmount
-    } else {
-      fetchUsernameForNewChat();
+  const updateMessages = (newMessages: React.SetStateAction<IMessage[]>) => {
+    const newMessagesString = JSON.stringify(newMessages);
+    const currentMessagesString = JSON.stringify(messages);
+  
+    if (newMessagesString !== currentMessagesString) {
+      setMessages(newMessages);
     }
-  }, [ad_id, user_id, new_chat]);
+  };  
+
+  const formatMessages = (history: any[]) => {
+    return history.map((msg) => {
+      const createdAt = new Date(msg.time_sent);
+      return {
+        _id: msg.id,
+        text: msg.msg,
+        createdAt: createdAt,
+        user: {
+          _id: msg.sender_id,
+        },
+      };
+    });
+  };
+
+  const fetchHistory = async () => {
+    try {
+      const history = await ChatService.fetchChatUpdates(user_id, ad_id);
+      const receiverUsername = history[0]?.username;
+      setUsername(receiverUsername);
+  
+      // Format
+      const formattedMessages = formatMessages(history);
+
+      // Sort
+      const sortedMessages = sortMessagesByDate(formattedMessages);
+
+      // Update
+      updateMessages(sortedMessages);
+    } catch (error) {
+      console.error('Chat: Error fetching chat history:', error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      // Navigated from View_Post
+      if (typeof title !== 'undefined') {
+        setAdTitle(title);
+      }
+  
+      // Fetch history for existing chat
+      if (!new_chat) {
+        fetchHistory();
+        const intervalId = setInterval(fetchHistory, 15000); // 15 seconds interval
+        return () => clearInterval(intervalId); // Clear interval on blur or component unmount
+      } else {
+        // Fetch username for new chat
+        fetchUsernameForNewChat();
+      }
+    }, [])
+  );
 
   const onSend = useCallback(
     (messages: IMessage[] = []) => {

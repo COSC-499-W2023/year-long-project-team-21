@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, FlatList, Text, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -19,8 +19,8 @@ import ChatListEmptyComponent from '../components/chatlist-utils/ChatListEmpty';
 
 const ChatList = ({ navigation }: { navigation: any }) => {
   const [chats, setChats] = useState<ChatType[]>([]);
-  const [your_id, setCurrentUserId] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
+  const your_id = useRef(null);
   const title = 'Messsages';
   const testID = 'title-test';
 
@@ -28,7 +28,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
     const getSessionAndSetUserId = async () => {
       const session = await retrieveUserSession();
       if (session && session.user_id) {
-        setCurrentUserId(session.user_id);
+        your_id.current = session.user_id;
       }
     };
   
