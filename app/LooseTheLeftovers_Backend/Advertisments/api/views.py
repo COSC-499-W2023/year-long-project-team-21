@@ -141,9 +141,6 @@ class AdvertismentHandler(APIView):
             Response: Response object with the ad data and a HTTP_201_OK response
 
         """
-        print("request")
-        print(request.data)
-
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -154,7 +151,6 @@ class AdvertismentHandler(APIView):
 
         # Validate ad to delete exists
         try:
-
             ad_id = request.data["ad_id"]
             ad = Advertisment.objects.get(pk=ad_id)
         except:
@@ -439,7 +435,6 @@ def get_ads_location(request):
     req_range = serializer.validated_data["range"]
     req_longitude = serializer.validated_data["longitude"]
     req_latitude = serializer.validated_data["latitude"]
-    page_number = serializer.validated_data["page"]
 
     # create a Point for the user using GeoDjango
     user_location = Point(req_longitude, req_latitude)
@@ -459,6 +454,7 @@ def get_ads_location(request):
         ad_paginator = Paginator(nearby_ads, 3)
 
         # gets data for the current page
+        page_number = request.GET.get("page")
         if page_number is None:
             page_number = 1
         ad_page = ad_paginator.page(page_number)
@@ -502,8 +498,6 @@ def get_ads_category(request):
     category_filters = Q()
     for category_name in categories:
         category_filters &= Q(category=category_name)
-
-    print(category_filters)
 
     try:
 

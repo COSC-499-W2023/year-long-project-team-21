@@ -163,4 +163,3 @@ class LocationSerializer(serializers.Serializer):
     range = serializers.FloatField(write_only=True)
     longitude = serializers.FloatField(write_only=True)
     latitude = serializers.FloatField(write_only=True)
-    page = serializers.IntegerField(write_only=True)
