@@ -33,9 +33,10 @@ class ChatService {
       const endpoint = `/messages/${user_id}?ad_id=${ad_id}&page=${page}`;
       const response = await secureApiReqInstance.get(endpoint);
 
-      console.log(response.data);
+      // console.log(response.data);
+      // console.log(`ChatService: fetch for user_id: ${user_id}, ad_id: ${ad_id}, page: ${page}`);
 
-      return response.data;
+      return response;
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error('Axios error response:', error.response);
@@ -66,7 +67,7 @@ class ChatService {
       const secureApiReqInstance = await SecureAPIReq.createInstance();
       const response = await secureApiReqInstance.get(messages);
 
-      console.log('ChatService: getLastMessage response:', response.data);
+      // console.log('ChatService: getLastMessage response:', response.data);
 
       return response.data;
     } catch (error) {
@@ -91,7 +92,7 @@ class ChatService {
     try {
       const secureApiReqInstance = await SecureAPIReq.createInstance();
       const response = await secureApiReqInstance.get(`/ads/${ad_id}`);
-      console.log("getAdTitle response:", response.data);
+      // console.log("getAdTitle response:", response.data);
       return response.data.title;
     } catch (error) {
       console.error("ChatService: Failed to get ad title:", error);

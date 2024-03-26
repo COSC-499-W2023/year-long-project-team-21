@@ -18,20 +18,13 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [lastMessages, setLastMessages] = useState<IMessage[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMorePages, setHasMorePages] = useState(true);
   const [username, setUsername] = useState('Messages');
   const [adTitle, setAdTitle] = useState('');
   const { ad_id, user_id, new_chat, your_id, title } = route.params;
-
-  console.log(
-    'Chat: ad_id:',
-    ad_id,
-    'user_id:',
-    user_id,
-    'new_chat:',
-    new_chat,
-    'your_id:',
-    your_id,
-  );
+  let tempMessages: any[] = [];
 
   const fetchUsernameForNewChat = async () => {
     try {
@@ -43,21 +36,6 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
       console.error('Chat: Error fetching user details:', error);
     }
   };
-
-  const sortMessagesByDate = (messages: any[]) => {
-    return messages.sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-    );
-  };
-
-  const updateMessages = (newMessages: React.SetStateAction<IMessage[]>) => {
-    const newMessagesString = JSON.stringify(newMessages);
-    const currentMessagesString = JSON.stringify(messages);
-  
-    if (newMessagesString !== currentMessagesString) {
-      setMessages(newMessages);
-    }
-  };  
 
   const formatMessages = (history: any[]) => {
     return history.map((msg) => {
@@ -73,9 +51,65 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     });
   };
 
+  const sortMessagesByDate = (messages: any[]) => {
+    return messages.sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+  };
+
+  const updateMessages = (newMessages: React.SetStateAction<IMessage[]>) => {
+    const newMessagesString = JSON.stringify(newMessages);
+    const currentMessagesString = JSON.stringify(messages);
+  
+    if (newMessagesString !== currentMessagesString) {
+      setMessages(newMessages);
+    }
+  };
+
+  const removeDuplicates = (messages: IMessage[]): IMessage[] => {
+    const unique: { [key: string]: IMessage } = {};
+    messages.forEach((msg) => {
+      unique[msg._id] = msg;
+    });
+    return Object.values(unique);
+  };
+
+  const fetchAllMessages = async (currentPage: number) => {
+    try {
+      const response = await ChatService.fetchChatUpdates(user_id, ad_id, currentPage);
+
+      if (response.data && response.data.length > 0) {
+        const newMessages = formatMessages(response.data);
+        tempMessages = [...tempMessages, ...newMessages];
+      }
+
+      if (response.data.length < 6 || response.status === 204) {
+        setHasMorePages(false);
+        
+        const uniqueMessages = removeDuplicates(tempMessages);
+        const sortedMessages = sortMessagesByDate(uniqueMessages);
+        
+        setMessages(sortedMessages);
+        setLastMessages(sortedMessages.slice(Math.max(sortedMessages.length - 6, 0)));
+        tempMessages = [];
+        return;
+      } else {
+        console.log('Chat: page', currentPage + 1);
+        fetchAllMessages(currentPage + 1);
+      }
+    } catch (error) {
+      console.error('Error fetching chat messages:', error);
+    }
+  };
+
+  useEffect(() => {
+    console.log('Recent 6:', lastMessages);
+  }, [lastMessages]);  
+
   const fetchHistory = async () => {
     try {
       const history = await ChatService.fetchChatUpdates(user_id, ad_id);
+      console.log('Chat: history length:', history.length);
       const receiverUsername = history[0]?.username;
       setUsername(receiverUsername);
   
@@ -101,9 +135,9 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   
       // Fetch history for existing chat
       if (!new_chat) {
-        fetchHistory();
-        const intervalId = setInterval(fetchHistory, 15000); // 15 seconds interval
-        return () => clearInterval(intervalId); // Clear interval on blur or component unmount
+        fetchAllMessages(1);
+        // const intervalId = setInterval(fetchHistory, 15000); // 15 seconds interval
+        // return () => clearInterval(intervalId); // Clear interval on blur or component unmount
       } else {
         // Fetch username for new chat
         fetchUsernameForNewChat();
