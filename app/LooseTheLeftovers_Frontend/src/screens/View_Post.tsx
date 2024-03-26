@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   StyleProp,
@@ -55,14 +55,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
   const [user_id, setUserId] = useState('');
-  const [your_id, setCurrentUserId] = useState(null);
+  const your_id = useRef(null);
 
   // Get current user id
   useEffect(() => {
     const getSessionAndSetUserId = async () => {
       const session = await retrieveUserSession();
       if (session && session.user_id) {
-        setCurrentUserId(session.user_id);
+        your_id.current = session.user_id;
       }
     };
     getSessionAndSetUserId();
@@ -143,7 +143,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             showGlutenFreeIcon,
             showVeganIcon,
           )}
-          {your_id !== user_id && (
+          {your_id.current !== user_id && (
             <View style={styles.message_button}>
               <Button
                 title="message"
