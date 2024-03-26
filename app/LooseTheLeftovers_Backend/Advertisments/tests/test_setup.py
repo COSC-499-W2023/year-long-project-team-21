@@ -1,4 +1,5 @@
 import PIL, os
+from datetime import datetime, timedelta
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
@@ -85,38 +86,40 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
 
         # create 5 test ads
         self.ad_1 = Advertisment.objects.create(
-            user_id=1,
+            user_id=self.user_1.id,
             title="Apples",
             description="Some apples",
             category="vegan",
-            expiry="2024-01-25T12:30:00.000000Z",
+            expiry=datetime.now() + timedelta(days=10),
             location=Point(49.8875083, -119.496064),
         )
         self.ad_2 = Advertisment.objects.create(
-            user_id=1,
+            user_id=self.user_1.id,
             title="Bananas",
             description="Some bananas",
             category="vegan",
-            expiry="2024-02-25T12:30:00.000000Z",
+            expiry=datetime.now() + timedelta(days=7),
         )
         self.ad_3 = Advertisment.objects.create(
-            user_id=1,
+            user_id=self.user_1.id,
             title="Pasta",
             description="Vegetarian pasta",
             category="Vegetarian",
-            expiry="2024-01-25T12:30:00.000000Z",
+            expiry=datetime.now() + timedelta(days=-1),
         )
         self.ad_4 = Advertisment.objects.create(
-            user_id=2,
+            user_id=self.user_2.id,
             title="Pizza",
             description="Pepperoni",
             category="None",
+            expiry=datetime.now() + timedelta(days=-2),
         )
         self.ad_5 = Advertisment.objects.create(
-            user_id=2,
+            user_id=self.user_2.id,
             title="Take out",
             description="Some leftovers",
             category="Unknown",
+            expiry=datetime.now() + timedelta(days=3),
         )
 
         # create 5 test AdvertismentImages
@@ -233,7 +236,7 @@ class TestSetupLocatonAds(APITestCase):
             location=Point(-123.096721, 49.120063),
         )
 
-        # create 5 test AdvertismentImages
+        # create 7 test AdvertismentImages
         self.image_1 = AdvertismentImage.objects.create(
             ad_id=self.ad_1,
             image="app/LooseTheLeftovers_Backend/media/images/12345.PNG",

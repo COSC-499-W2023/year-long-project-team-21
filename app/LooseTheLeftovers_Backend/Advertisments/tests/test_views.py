@@ -143,7 +143,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # specific user id to get all ads for
         # this may have to be modified (also in assert statement) as more tests are added.
         # a correct primary key to use depends on how many tests run before this one
-        specific_ad_id = 30
+        specific_ad_id = self.ad_2.id
 
         # create get request using kwargs
         specific_ad_url = reverse("specific-ad", kwargs={"ad_id": specific_ad_id})
@@ -155,7 +155,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert ad matching primary key is returned
-        self.assertEqual(response.data["id"], 30)
+        self.assertEqual(response.data["id"], self.ad_2.id)
 
         # assert path to image is included
         self.assertEqual(
@@ -164,7 +164,7 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         )
 
         # assert expiry in correct format is included
-        self.assertEqual(response.data["expiry"], "2 weeks")
+        self.assertEqual(response.data["expiry"], "1 week")
 
     def test_get_users_ads(self):
         """
@@ -353,8 +353,8 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             "description": self.ad_1.description,
             "category": "Fruit",
             "expiry": self.ad_1.expiry,
-            "latitude": self.ad_1.latitude,
-            "longitude": self.ad_1.longitude,
+            "latitude": -119.397873,
+            "longitude": 50.088470,
         }
         # post request and assert valid response
         response = client.put(
@@ -383,8 +383,8 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             "description": self.ad_1.description,
             "category": self.ad_1.category,
             "expiry": self.ad_1.expiry,
-            "latitude": self.ad_1.latitude,
-            "longitude": self.ad_1.longitude,
+            "latitude": -119.397873,
+            "longitude": 50.088470,
         }
 
         # post request and assert valid response
@@ -409,8 +409,8 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             "description": self.ad_1.description,
             "category": self.ad_1.category,
             "expiry": self.ad_1.expiry,
-            "latitude": self.ad_1.latitude,
-            "longitude": self.ad_1.longitude,
+            "latitude": -119.397873,
+            "longitude": 50.088470,
         }
 
         # post request and assert valid response
@@ -442,7 +442,7 @@ class TestUpdateAds(TestSetUpRetrieveAdvertisment):
             format="json",
         )
 
-        # assert HTTP_400 response
+        # assert HTTP_200 response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # assert ad is deleted
@@ -567,9 +567,6 @@ class TestRetrieveLocationAds(TestSetupLocatonAds):
         status_code = response.status_code
         data = response.data
 
-        print(response.data)
-
         # there should be 3 responses
         self.assertEqual(len(data), 3)
-
         self.assertEqual(status_code, status.HTTP_200_OK)
