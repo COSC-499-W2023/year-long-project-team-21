@@ -21,7 +21,7 @@ const EditProfile = ({
   const unWiggledColor = 'white';
   const [oldPass, setOldPass] = useState('');
   const [newPass, setNewPass] = useState('');
-  const [confirmPass, setCofrimPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [lastname, setLastname] = useState('');
   const [firstname, setFirstname] = useState('');
@@ -34,7 +34,7 @@ const EditProfile = ({
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
   const [isEmailValidFormat, setIsEmailValidFormat] = useState(true);
   const [isInputNotEmpty, setIsInputNotEmpty] = useState(true);
-
+  const [showEmailInvalid, setShowEmailInvalid] = useState(false);
   /**
    * Handles button press event to cancel profile editing.
    *
@@ -79,13 +79,11 @@ const EditProfile = ({
             setLastname('');
             setNewEmail('');
             navigation.navigate('DoneEdit');
-          } else {
-            //red text error produced by server
-            console.log(`Server returned status code: ${response.status}`);
-          }
+          } 
         } catch (error: any) {
           if (error.response.status === 400) {
             console.log('400 error: ', error);
+            setShowEmailInvalid(true)
           } else if (error.response.status === 500) {
             console.log('Internal Server Erorr. ');
           }
@@ -130,7 +128,7 @@ const EditProfile = ({
             console.log('request submitted');
             setOldPass('');
             setNewPass('');
-            setCofrimPass('');
+            setConfirmPass('');
             navigation.navigate('DoneEdit');
           } else {
             console.log(`Server returned status code: ${response.status}`);
@@ -172,7 +170,7 @@ const EditProfile = ({
       setIsPasswordCorrect(true);
       setOldPass('');
       setNewPass('');
-      setCofrimPass('');
+      setConfirmPass('');
     }
   };
 
@@ -192,6 +190,7 @@ const EditProfile = ({
       setLastname('');
       setFirstname('');
       setNewEmail('');
+      setShowEmailInvalid(false);
     }
   };
 
@@ -278,6 +277,19 @@ const EditProfile = ({
     );
   };
 
+    /**
+   * Renders the message for email validation error.
+   *
+   * @returns {JSX.Element} Rendered email format error message.
+   */
+    const renderEmailValidationErrorMessage = () => {
+      return (
+        <Text style={styles.passwordStrengthWarningContainer}>
+          Your email is already in use.
+        </Text>
+      );
+    };
+
   /**
    * Renders the password strength message.
    *
@@ -352,23 +364,24 @@ const EditProfile = ({
               placeholder={'First name'}
               onChangeText={newNameText => setFirstname(newNameText)}
               value={firstname}
-              ></InputField>
+              />
           </View>
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer} testID='lastNameInputTitle'>LAST NAME : </Text>
             <InputField
               placeholder={'Last name'}
               onChangeText={newNameText => setLastname(newNameText)}
-              value={lastname}></InputField>
+              value={lastname}/>
           </View>
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer} testID='emailInputTitle'>EMAIL : </Text>
             <InputField
               placeholder={'Email'}
               onChangeText={newText => setNewEmail(newText)}
-              value={newEmail}></InputField>
+              value={newEmail}/>
             {!isEmailValidFormat && renderEmailFormatErrorMessage()}
             {!isInputNotEmpty && renderInputEmptyMessage()}
+            {showEmailInvalid&&renderEmailValidationErrorMessage()}
           </View>
         </>
       )}
@@ -380,14 +393,14 @@ const EditProfile = ({
             <InputField
               placeholder={'Old Password'}
               onChangeText={oldPass => setOldPass(oldPass)}
-              value={oldPass}></InputField>
+              value={oldPass}/>
           </View>
           <View style={styles.inputFieledContainer}>
             <Text style={styles.inputFieldTitleContainer} testID='newPasswordInputTitle'>NEW PASSWORD : </Text>
             <InputField
               placeholder={'New Password'}
               onChangeText={newPass => setNewPass(newPass)}
-              value={newPass}></InputField>
+              value={newPass}/>
             {!(newPass == '') && renderPasswordStrengthMessage()}
           </View>
           <View style={styles.inputFieledContainer}>
@@ -396,8 +409,8 @@ const EditProfile = ({
             </Text>
             <InputField
               placeholder={'Confirm Password'}
-              onChangeText={confirmPass => setCofrimPass(confirmPass)}
-              value={confirmPass}></InputField>
+              onChangeText={confirmPass => setConfirmPass(confirmPass)}
+              value={confirmPass}/>
             {!isPasswordEmpty && renderInputEmptyMessage()}
             {!isPasswordMatch && renderPasswordUnmatchMessage()}
             {!isPasswordCorrect && renderPasswordEUncorrectMessage()}
