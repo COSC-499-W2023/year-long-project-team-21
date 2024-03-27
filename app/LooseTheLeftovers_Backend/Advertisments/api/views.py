@@ -41,6 +41,9 @@ class AdvertismentHandler(APIView):
         if request.META["PATH_INFO"] == "/ads/location/":
             return get_ads_location(request)
 
+        if request.META["PATH_INFO"] == "/ads/categories/location":
+            return get_ads_category_location(request)
+
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -495,12 +498,9 @@ def get_ads_category(request):
         response = {"message": "Endpoint expecting category / pageNumber"}
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
-    category_filters = Q()
-    for category_name in categories:
-        category_filters &= Q(category=category_name)
+    category_filters = parse_categories(categories)
 
     try:
-
         categorized_ads = (
             Advertisment.objects.filter(category_filters)
         ).prefetch_related("ad_image")
@@ -529,7 +529,67 @@ def get_ads_category(request):
 
 
 def get_ads_category_location(request):
-    print("Penis")
+    # serialize incoming data
+    serializer = LocationSerializer(data=request.data)
+
+    # return a 400 if it is a bad request
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # retrieve requesting user's range, longitude, latitude, and categories
+    req_range = serializer.validated_data["range"]
+    req_longitude = serializer.validated_data["longitude"]
+    req_latitude = serializer.validated_data["latitude"]
+    req_categories = set(
+        serializer.validated_data["categories"]
+    )  # cast string to a set with a wrapper
+
+    # Create a complex query
+    category_filters = parse_categories(req_categories)
+
+    # create a Point for the user using GeoDjango
+    user_location = Point(req_longitude, req_latitude)
+
+    # filter ads nearby based on radius, append a location which is the distance between the long/lat, and then retrieve images
+    try:
+        nearby_ads = (
+            Advertisment.objects.filter(
+                location__distance_lt=(user_location, D(km=req_range))
+            )
+            .filter(category_filters)
+            .annotate(distance=Distance("location", user_location))
+            .order_by("distance")
+            .prefetch_related("ad_image")
+        )
+
+        # put query results into pages
+        ad_paginator = Paginator(nearby_ads, 3)
+
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+
+        ad_serializer = ReturnAdvertismentSerializer(ad_page, many=True)
+
+        # return response dependant on data in the response
+        if ad_serializer.data is not None:
+            return Response(
+                ad_serializer.data,
+                status=status.HTTP_200_OK,
+            )
+
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # when index for page is out of bounds return 204 response
+    except EmptyPage as e:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        print("this is the error " + str(e))
+        return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def parse_categories(categories):

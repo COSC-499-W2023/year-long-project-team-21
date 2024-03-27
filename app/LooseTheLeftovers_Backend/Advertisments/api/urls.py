@@ -8,4 +8,9 @@ urlpatterns = [
     path("", AdvertismentHandler.as_view(), name="create-ad"),
     path("location/", AdvertismentHandler.as_view(), name="location-ads"),
     path("categories/", AdvertismentHandler.as_view(), name="category-ads"),
+    path(
+        "categories/location",
+        AdvertismentHandler.as_view(),
+        name="category-location-ads",
+    ),
 ]

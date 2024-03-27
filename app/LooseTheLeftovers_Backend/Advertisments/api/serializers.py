@@ -45,7 +45,7 @@ class AdvertismentSerializer(serializers.Serializer):
 
         ad = Advertisment.objects.create(user_id=user.id, **validated_data)
         return ad
-    
+
     def update(self, instance, validated_data):
         """
         update method executes when AdvertismentSerializer.save() is called in advertisements/api/views.py
@@ -55,10 +55,10 @@ class AdvertismentSerializer(serializers.Serializer):
 
         Returns an instance of the Advertisment that was saved.
         """
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.category = validated_data.get('category', instance.category)
-        instance.expiry = validated_data.get('expiry', instance.expiry)
+        instance.title = validated_data.get("title", instance.title)
+        instance.description = validated_data.get("description", instance.description)
+        instance.category = validated_data.get("category", instance.category)
+        instance.expiry = validated_data.get("expiry", instance.expiry)
         instance.save()
         return instance
 
@@ -163,3 +163,4 @@ class LocationSerializer(serializers.Serializer):
     range = serializers.FloatField(write_only=True)
     longitude = serializers.FloatField(write_only=True)
     latitude = serializers.FloatField(write_only=True)
+    categories = serializers.CharField(required=False)
