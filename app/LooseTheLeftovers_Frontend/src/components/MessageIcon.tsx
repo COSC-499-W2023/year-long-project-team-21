@@ -1,14 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { type AllIconProps } from '../common/Types';
 
 /**
  * Icon component.
  *
  * A clickable MessageIcon component that be used in various parts of the application including tab.
- * Takes you to the ChatList screen.
+ * Will take you to the ChatList screen.
  *
  * @component
  * @param {IconProps} props - The props for the Icon component.
@@ -19,34 +20,27 @@ import { type AllIconProps } from '../common/Types';
  * @example
  */
 
-// creates the parameters we're sending
+// Creates the parameters we're sending
 type RootStackParamList = {
   ChatList: { name: string };
 };
 
-// uses all icon prop for the interface
-const MessageIcon: React.FC<AllIconProps> = ({ size = 30 }) => {
-  //creates a navigation hook
+// Uses all icon prop for the interface
+const MessageIcon: React.FC<AllIconProps> = ({ size = 34 }) => {
+  // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChatList'>>();
 
-  // link to image
-  const image = '../assets/message.png';
-
-  // navigates to ChatList and sends parameters
+  // Navigates to ChatList and sends parameters
   const goToChatList = () => {
     navigation.navigate('ChatList', { name: 'MessageIcon' });
   };
 
-  // call this to display and icon image. No need to input anything to the component, will automatically
-  // set the image size and navigation, good for reusability.
+  // Call this to display and icon image. No need to input anything to the component, will automatically
+  // set the image size and navigation
   return (
     <TouchableOpacity onPress={goToChatList} testID={'MessageIconTest'}>
-      <Image
-        source={require(image)}
-        style={[{ width: size, height: size }]}
-        resizeMode="contain"
-      />
+      <Icon name='chatbubble' size={size} style={[{ color: 'white' }]}/>
     </TouchableOpacity>
   );
 };

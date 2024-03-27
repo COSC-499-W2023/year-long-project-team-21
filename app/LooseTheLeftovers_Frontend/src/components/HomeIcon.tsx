@@ -1,14 +1,15 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { type AllIconProps } from '../common/Types';
 
 /**
  * Icon component.
  *
- * A clickable homeicon component that be used in various parts of the application including tab.
- * Will take you to the home sreen
+ * A clickable HomeIcon component that be used in various parts of the application including tab.
+ * Will take you to the Home screen.
  *
  * @component
  * @param {IconProps} props - The props for the Icon component.
@@ -19,34 +20,27 @@ import { type AllIconProps } from '../common/Types';
  * @example
  */
 
-//creates the parameters we're sending
+// Creates the parameters we're sending
 type RootStackParamList = {
   Home: { name: string };
 };
 
-//uses all icon prop for the interface
-const HomeIcon: React.FC<AllIconProps> = ({ size = 25 }) => {
-  //creates a navigation hook
+// Uses all icon prop for the interface
+const HomeIcon: React.FC<AllIconProps> = ({ size = 28 }) => {
+  // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
-  //link to image
-  const image = '../assets/home.png';
-
-  //navigates to Home and sends parameters
+  // Navigates to Home and sends parameters
   const goToHomeScreen = () => {
     navigation.navigate('Home', { name: 'HomeIcon' });
   };
 
-  //call this to display and icon image. No need to input anything to the component, will automatically
-  //set the image size and navigation. Yhis is Good for reusability.
+  // Call this to display and icon image. No need to input anything to the component, will automatically
+  //set the image size and navigation
   return (
     <TouchableOpacity onPress={goToHomeScreen} testID={'HomeIconTest'}>
-      <Image
-        source={require(image)}
-        style={[{ width: size, height: size }]}
-        resizeMode="contain"
-      />
+      <Icon name='home' size={size} style={[{ color: 'white' }]} />
     </TouchableOpacity>
   );
 };
