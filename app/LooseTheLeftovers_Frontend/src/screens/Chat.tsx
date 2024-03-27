@@ -1,5 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   GiftedChat,
   IMessage,
@@ -14,7 +15,6 @@ import ChatService from '../common/ChatService';
 
 import TabBarTop from '../components/TabBarTop';
 import GoBackIcon from '../components/GoBackIcon';
-import { useFocusEffect } from '@react-navigation/native';
 
 const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -24,6 +24,25 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   const [adTitle, setAdTitle] = useState('');
   const { ad_id, user_id, new_chat, your_id, title } = route.params;
   let tempMessages: any[] = [];
+
+  useFocusEffect(
+    useCallback(() => {
+      // If navigated from View_Post
+      if (typeof title !== 'undefined') {
+        setAdTitle(title);
+      }
+
+      // Fetch history for existing chat
+      if (!new_chat) {
+        fetchAllMessages(1);
+        const intervalId = setInterval(fetchPageOne, 5000); // 15 seconds interval
+        return () => clearInterval(intervalId); // Clear interval on blur or component unmount
+      } else {
+        // Fetch username for new chat
+        fetchUsernameForNewChat();
+      }
+    }, []),
+  );
 
   const fetchUsernameForNewChat = async () => {
     try {
@@ -37,7 +56,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   };
 
   const formatMessages = (history: any[]) => {
-    return history.map((msg) => {
+    return history.map(msg => {
       const createdAt = new Date(msg.time_sent);
       return {
         _id: msg.id,
@@ -58,15 +77,38 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
 
   const removeDuplicates = (messages: IMessage[]): IMessage[] => {
     const unique: { [key: string]: IMessage } = {};
-    messages.forEach((msg) => {
+    messages.forEach(msg => {
       unique[msg._id] = msg;
     });
     return Object.values(unique);
   };
 
+  const areMessagesEqual = (
+    messagesA: string | any[],
+    messagesB: string | any[],
+  ) => {
+    // Check length
+    if (messagesA.length !== messagesB.length) {
+      return false;
+    }
+
+    // Compare each message
+    for (let i = 0; i < messagesA.length; i++) {
+      // Compare id of each message
+      if (messagesA[i]._id !== messagesB[i]._id) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const fetchAllMessages = async (currentPage: number) => {
     try {
-      const response = await ChatService.fetchChatUpdates(user_id, ad_id, currentPage);
+      const response = await ChatService.fetchChatUpdates(
+        user_id,
+        ad_id,
+        currentPage,
+      );
 
       if (response.data && response.data.length > 0) {
         const newMessages = formatMessages(response.data);
@@ -78,12 +120,14 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
 
       if (response.data.length < 6 || response.status === 204) {
         setHasMorePages(false);
-        
+
         const uniqueMessages = removeDuplicates(tempMessages);
         const sortedMessages = sortMessagesByDate(uniqueMessages);
-        
+
         setMessages(sortedMessages);
-        setLastMessages(sortedMessages.slice(Math.max(sortedMessages.length - 6, 0)));
+        setLastMessages(
+          sortedMessages.slice(Math.max(sortedMessages.length - 6, 0)),
+        );
         tempMessages = [];
         return;
       } else {
@@ -94,39 +138,22 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     }
   };
 
-  useEffect(() => {
-    console.log('Recent 6:', lastMessages);
-  }, [lastMessages]);
-
-  const areMessagesEqual = (messagesA: string | any[], messagesB: string | any[]) => {
-    // Check if both the same length
-    if (messagesA.length !== messagesB.length) {
-      return false;
-    }
-  
-    // Compare each message in the arrays
-    for (let i = 0; i < messagesA.length; i++) {
-      // Compare the unique id of each message
-      if (messagesA[i]._id !== messagesB[i]._id) {
-        return false; // Found a mismatch
-      }
-    }
-  
-    // All match
-    return true;
-  };
-
   const fetchPageOne = async () => {
     try {
       const response = await ChatService.fetchChatUpdates(user_id, ad_id, 1);
-      
+
       const newMessages = formatMessages(response.data);
-      const uniqueMessages = removeDuplicates([...newMessages, ...tempMessages]);
+      const uniqueMessages = removeDuplicates([
+        ...newMessages,
+        ...tempMessages,
+      ]);
       const sortedMessages = sortMessagesByDate(uniqueMessages);
-  
-      const lastFetchedMessages = sortedMessages.slice(Math.max(sortedMessages.length - 6, 0));
+
+      const lastFetchedMessages = sortedMessages.slice(
+        Math.max(sortedMessages.length - 6, 0),
+      );
       if (!areMessagesEqual(lastFetchedMessages, lastMessages)) {
-        setMessages((currentMessages) => {
+        setMessages(currentMessages => {
           const combinedMessages = [...currentMessages, ...newMessages];
           const uniqueMessages = removeDuplicates(combinedMessages);
           return sortMessagesByDate(uniqueMessages);
@@ -138,37 +165,16 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      // Navigated from View_Post
-      if (typeof title !== 'undefined') {
-        setAdTitle(title);
-      }
-  
-      // Fetch history for existing chat
-      if (!new_chat) {
-        fetchAllMessages(1);
-        const intervalId = setInterval(fetchPageOne, 5000); // 15 seconds interval
-        return () => clearInterval(intervalId); // Clear interval on blur or component unmount
-      } else {
-        // Fetch username for new chat
-        fetchUsernameForNewChat();
-      }
-    }, [])
-  );
-
   const onSend = useCallback(
     (messages: IMessage[] = []) => {
       messages.forEach(async message => {
         try {
           await ChatService.sendMessage(user_id, ad_id, message.text);
+          fetchPageOne();
         } catch (error) {
           console.error('Chat: Failed to send message:', error);
         }
       });
-      setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, messages),
-      );
     },
     [ad_id, user_id],
   );
@@ -216,7 +222,9 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
       <View style={styles.tabBarTopWrapper}>
         <TabBarTop
           LeftIcon={<GoBackIcon />}
-          MiddleIcon={<Text style={styles.title}>{`${username}${adTitle ? `, ${adTitle}` : ''}`}</Text>}
+          MiddleIcon={
+            <Text style={styles.title}>{`${username}${adTitle ? `, ${adTitle}` : ''}`}</Text>
+          }
         />
       </View>
 
