@@ -17,7 +17,7 @@ export const adCategories: string = '/ads/categories/';
 export const adsLocation: string = '/ads/location/';
 
 // endpoint for ads/location/categories
-export const adsLocationCategories: string = 'adsLocationCategories';
+export const adsLocationCategories: string = '/ads/categories/location';
 
 // endpoint for individual user's ad
 export const usersAds: string = '/ads/users/';

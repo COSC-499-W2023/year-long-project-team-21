@@ -465,6 +465,8 @@ interface RatingProps {
   onFinishRating?: (rating: number) => void;
 }
 
+type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -491,4 +493,5 @@ export {
   type ChatType,
   type ChatListItemProps,
   type RatingProps,
+  type GetDataFunctionType,
 };

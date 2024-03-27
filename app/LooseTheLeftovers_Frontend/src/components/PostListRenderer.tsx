@@ -8,6 +8,7 @@ import generatePostListStyles from '../styles/postListStyles';
 import Post from './Post';
 
 const PostListRenderer: React.FC<PostListRendererProps> = ({
+  whichHeader,
   endpoint,
   getData,
   navigation,
@@ -164,6 +165,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       maxToRenderPerBatch={3}
       windowSize={2}
       removeClippedSubviews={true}
+      ListHeaderComponent={whichHeader}
       ListFooterComponent={ListFooterComponent}
       onEndReached={() => {
         setFetchAllowed(true);

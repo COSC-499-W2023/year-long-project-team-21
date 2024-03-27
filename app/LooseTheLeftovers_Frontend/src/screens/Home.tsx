@@ -15,6 +15,7 @@ import {
 } from '../common/LocationServices';
 import { useGlobal } from '../common/GlobalContext';
 import { Title } from 'react-native-paper';
+import { GetDataFunctionType } from '../common/Types';
 
 import globalscreenstyles from '../common/global_ScreenStyles';
 import Logo from '../components/Logo';
@@ -32,27 +33,21 @@ import SelectRangeBar from '../components/SelectRangeBar';
 import Icon from '../components/Icon';
 import CategoryRender from '../components/Category-Utils/CategoryRender';
 
-// @TODO move this to Types.tsx
-type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
-
 const Home = ({ navigation }: { navigation: any }) => {
-  // Retrieve screen dimensions to adapt styles dynamically
   const screenWidth = Dimensions.get('window').width;
   const postListStyles = generatePostListStyles(screenWidth);
 
-  // Use global state or context for location permissions
   const { locationPermission, updateLocationPermission } = useGlobal();
 
-  // State management for data fetching and UI rendering
   const [getDataFunction, setGetDataFunction] =
     useState<GetDataFunctionType>(null);
-  const [whichHeader, setWhichHeader] = useState('');
+
   const [range, setRange] = useState('10');
-  const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [whichHeader, setWhichHeader] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  // assets
-  const disableLocationIcon = '../assets/location.png';
+  const [isLoading, setIsLoading] = useState(true);
 
   const categoryInfo = [
     {
@@ -72,6 +67,8 @@ const Home = ({ navigation }: { navigation: any }) => {
     },
   ];
 
+  /****************************************************************** USE EFFECT HOOKS AND BACKEND HANDLER ******************************************************************/
+
   /**
    * @description This useEffect hook is used to trigger the postFetchHandler function whenever there is a change in the
    * locationPermission or range values. The postFetchHandler function encapsulates the logic for fetching posts based on the
@@ -81,9 +78,48 @@ const Home = ({ navigation }: { navigation: any }) => {
    */
   useEffect(() => {
     postFetchHandler();
-  }, [locationPermission, range, selectedCategories]);
+  }, [locationPermission, range, selectedCategories, search]);
 
-  /****************************************************************** CATEGORY LOGIC ******************************************************************/
+  /**
+   * @function postFetchHandler
+   * @description Handles the logic for determining how to fetch posts based on the current location permission and range settings.
+   * If the location permission is granted and the range is not 'All', it attempts to set the data fetching function to `getAdsLocation`.
+   *  In case of any error during this process, it falls back to `getAllAds`. If the location permission is not granted or the range is 'All',
+   * it defaults to using `getAllAds`. Additionally, this function updates the header state based on the location permission status and ensures that the loading state is set to false.
+   */
+  function postFetchHandler() {
+    // location permissions are enabled and a range is specified
+    if (locationPermission === 'GRANTED' && range !== 'All') {
+      // set location-enabled to be the displayed header
+      setWhichHeader('location-enabled');
+      // retrieve categories nearby
+      if (selectedCategories.length > 0) {
+        setGetDataFunction(() => getCategorizedLocationAds);
+      }
+      // retrieve ads nearby
+      else {
+        setGetDataFunction(() => getAdsLocation);
+      }
+    }
+    //  location permissions are disabled or a range is set to 'All'
+    else if (locationPermission === 'DENIED' || range === 'All') {
+      // set correct header based on if location services are granted or not
+      locationPermission === 'GRANTED'
+        ? setWhichHeader('location-enabled')
+        : setWhichHeader('location-disabled');
+      // retrieve categories
+      if (selectedCategories.length > 0) {
+        setGetDataFunction(() => getCategorizedAds);
+      }
+      // retrieve all ads
+      else {
+        setGetDataFunction(() => getAllAds);
+      }
+    }
+    setIsLoading(false);
+  }
+
+  /****************************************************************** CATEGORY AND SEARCH STATE UPDATING ******************************************************************/
 
   /**
    * @function handleCategoryPress
@@ -105,51 +141,11 @@ const Home = ({ navigation }: { navigation: any }) => {
     });
   }
 
-  /****************************************************************** BACKEND HANDLERS ******************************************************************/
-
-  /**
-   * @function postFetchHandler
-   * @description Handles the logic for determining how to fetch posts based on the current location permission and range settings.
-   * If the location permission is granted and the range is not 'All', it attempts to set the data fetching function to `getAdsLocation`.
-   *  In case of any error during this process, it falls back to `getAllAds`. If the location permission is not granted or the range is 'All',
-   * it defaults to using `getAllAds`. Additionally, this function updates the header state based on the location permission status and ensures that the loading state is set to false.
-   */
-  function postFetchHandler() {
-    switch (true) {
-      // location permissions are enabled and a range is specified
-      case locationPermission === 'GRANTED' && range !== 'All':
-        // set location-enabled to be the displayed header
-        setWhichHeader('location-enabled');
-        // retrieve categories nearby
-        if (selectedCategories.length > 0) {
-          setGetDataFunction(() => getCategorizedLocationAds);
-        }
-        // retrieve ads nearby
-        else {
-          setGetDataFunction(() => getAdsLocation);
-        }
-        break;
-
-      //  location permissions are disabled or a range is set to 'All'
-      case locationPermission === 'DENIED' || range === 'All':
-        // set correct header based on if location services are granted or not
-        locationPermission === 'GRANTED'
-          ? setWhichHeader('location-enabled')
-          : setWhichHeader('location-disabled');
-        // retrieve categories
-        if (selectedCategories.length > 0) {
-          setGetDataFunction(() => getCategorizedAds);
-        }
-        // retrieve all ads
-        else {
-          setGetDataFunction(() => getAllAds);
-        }
-        break;
-    }
-    setIsLoading(false);
+  function updateSearch(search: string) {
+    setSearch(search);
   }
 
-  /****************************************************************** BACKEND LOGIC ******************************************************************/
+  /****************************************************************** BACKEND REQUEST LOGIC ******************************************************************/
 
   /**
    * @function getAllAds
@@ -202,7 +198,17 @@ const Home = ({ navigation }: { navigation: any }) => {
       return [];
     }
   }
-  // TODO there is a bug where this is called twice?
+
+  /**
+   * @function getCategorizedAds
+   * @description Asynchronously retrieves categorized ads by constructing a dynamic endpoint using
+   * the provided page number and selected categories. The function appends each category as a query
+   * parameter to the endpoint and makes a GET request to fetch the ads. If an error occurs, it logs
+   * the error and returns an empty array.
+   * @param {number} pageNumber - The page number for the ads to be retrieved, used for pagination.
+   * @returns {Promise<Object[]>} A promise that resolves to an array of ad objects if the request is successful,
+   *                              or an empty array if an error occurs.
+   */
   async function getCategorizedAds(pageNumber: number) {
     // create and endpoint with a page parameter
     let endpoint = `${adCategories}?page=${pageNumber}`;
@@ -224,14 +230,52 @@ const Home = ({ navigation }: { navigation: any }) => {
     }
   }
 
+  /**
+   * @function getCategorizedLocationAds
+   * @description Asynchronously retrieves ads based on the user's location and selected categories.
+   * The function first obtains the user's location, constructs a request body with the location data,
+   * selected categories, and the requested page number, then makes a POST request to retrieve the relevant ads.
+   * If an error occurs during this process, an empty array is returned and the error is logged.
+   *
+   * @param {number} pageNumber - The page number of ads to retrieve, used for pagination.
+   * @returns {Promise<Object[]>} A promise that resolves to an array of ad objects if the request is successful,
+   *                              or an empty array if an error occurs.
+   */
   async function getCategorizedLocationAds(pageNumber: number) {
-    console.log('this is categories location');
+    try {
+      // retrieve users location permission
+      const pos = await getLocation();
+      // extract longitude and latitude and set it as the body
+      const body = {
+        latitude: pos.latitude,
+        longitude: pos.longitude,
+        range: range,
+        page: pageNumber,
+        categories: selectedCategories.join(', '),
+      };
+      // call the backend endpoint
+      const payload = await axios.post(
+        adsLocationCategories,
+        body,
+        djangoConfig(),
+      );
+      //return payload;
+      return payload;
+    } catch (error) {
+      console.log(`There was an error getting the location ${error} `);
+      return [];
+    }
   }
-
-  async function searchAds(pageNumber: number) {}
 
   /****************************************************************** LOCATION HANDLERS ******************************************************************/
 
+  /**
+   * @function enableLocation
+   * @description Asynchronously requests location permissions from the user. If the user grants permission,
+   * the function updates the location permission state to 'GRANTED'. If the user denies permission, it triggers
+   * an alert informing the user that location services are required and provides an option to open the app
+   * settings or cancel the action. There is a noted bug where permissions can be enabled, but an error still occurs.
+   */
   async function enableLocation() {
     // get location permissions
     let answer = await getLocationPermissionAndroid();
@@ -257,23 +301,65 @@ const Home = ({ navigation }: { navigation: any }) => {
     }
   }
 
+  /****************************************************************** HEADER HANDLERS ******************************************************************/
+
+  /**
+   * @function disableLocation
+   * @description Updates the state to indicate that location permissions have been denied. This function
+   * is typically called to explicitly set the location permission status to 'DENIED' within the application's state management.
+   */
   function disableLocation() {
     // update state
     updateLocationPermission('DENIED');
   }
 
-  function renderHeader_Handler(): React.ReactNode {
-    switch (whichHeader) {
-      case 'location-disabled': {
-        return renderHeader_Default();
-      }
-      case 'location-enabled': {
-        return renderHeader_Location();
-      }
-    }
+  function categoryHeader(): React.ReactNode {
+    return (
+      <CategoryRender
+        selectedCategories={selectedCategories}
+        onCategoryPress={handleCategoryPress}
+        categoryInfo={categoryInfo}></CategoryRender>
+    );
   }
 
-  const renderHeader_Location = (): React.ReactNode => {
+  /**
+   * @function renderHeader_Handler
+   * @description Determines and returns the appropriate header component based on the current location
+   * state indicated by 'whichHeader'. It switches between a default header, a location-specific header,
+   * and includes the category header in each case.
+   * - 'location-disabled': Renders the default header along with the category header.
+   * - 'location-enabled': Renders a header that likely includes location-related information along with the category header.
+   * @returns {React.ReactNode} The React node that corresponds to the selected header components or null
+   */
+  function renderHeader_Handler(): React.ReactElement | null {
+    switch (whichHeader) {
+      case 'location-disabled':
+        return (
+          <>
+            {renderHeader_Default()}
+            {categoryHeader()}
+          </>
+        );
+      case 'location-enabled':
+        return (
+          <>
+            {renderHeader_Location()}
+            {categoryHeader()}
+          </>
+        );
+      default:
+        return null; // It's good practice to handle the default case
+    }
+  }
+  /**
+   * @function renderHeader_Location
+   * @description Renders the header component for the scenario where the location services are enabled. This header includes a location
+   * disable icon, a range selection bar, and conditional text that displays based on the selected range. If the range is set to 'All',
+   * it shows text indicating all posts are being shown; otherwise, it displays text indicating that posts are being shown nearby.
+   * @returns {React.ReactNode} The React component representing the location-enabled header.
+   */
+  function renderHeader_Location(): React.ReactNode {
+    const disableLocationIcon = '../assets/location.png';
     return (
       <View style={postListStyles.listHeder}>
         <View style={postListStyles.dropdownHeader}>
@@ -283,17 +369,20 @@ const Home = ({ navigation }: { navigation: any }) => {
             onPress={disableLocation}></Icon>
           <SelectRangeBar setRange={setRange} />
         </View>
-        <View style={postListStyles.titleContainer}>
-          <Title style={postListStyles.title} testID="header title">
-            Showing posts within {range} Km
-          </Title>
-        </View>
+        {/* If range is equal to 'All', then show "showing all posts" nearby text. If not, then let's show that the post is nearby" */}
+        {range === 'All' ? allAdsText() : showingAdsNearby()}
       </View>
     );
-  };
+  }
 
-  // @Todo consider making this a component
-  const renderHeader_Default = (): React.ReactNode => {
+  /**
+   * @function renderHeader_Default
+   * @description Renders the default header component, which includes an icon to enable location services.
+   * When the icon is pressed, it triggers the `enableLocation` function. The header also displays a text component
+   * indicating that all ads are being shown.
+   * @returns {React.ReactNode} The React component representing the default header.
+   */
+  function renderHeader_Default(): React.ReactNode {
     const enableLocationIcon = '../assets/location-zero.png';
     return (
       <View style={postListStyles.listHeder}>
@@ -303,14 +392,44 @@ const Home = ({ navigation }: { navigation: any }) => {
             size={50}
             onPress={enableLocation}></Icon>
         </View>
-        <View style={postListStyles.titleContainer}>
-          <Title style={postListStyles.title} testID="header title">
-            Showing All Posts
-          </Title>
-        </View>
+        {allAdsText()}
       </View>
     );
-  };
+  }
+
+  /**
+   * @function allAdsText
+   * @description Renders a React component displaying a text message "Showing All Posts". This component is typically
+   * used in headers to indicate that all available posts are being displayed, without any filtering or restrictions
+   * based on location or other criteria.
+   * @returns {React.ReactNode} A React component that displays the "Showing All Posts" message.
+   */
+  function allAdsText(): React.ReactNode {
+    return (
+      <View style={postListStyles.titleContainer}>
+        <Title style={postListStyles.title} testID="header title">
+          Showing All Posts
+        </Title>
+      </View>
+    );
+  }
+
+  /**
+   * @function showingAdsNearby
+   * @description Renders a React component displaying a message indicating that the posts shown are within a
+   * certain range. The range is dynamically displayed based on the 'range' state or prop available in the function's scope.
+   * This component is typically used in headers to inform users about the geographical filtering applied to the posts being displayed.
+   * @returns {React.ReactNode} A React component that displays the message about the range within which posts are being shown.
+   */
+  function showingAdsNearby(): React.ReactNode {
+    return (
+      <View style={postListStyles.titleContainer}>
+        <Title style={postListStyles.title} testID="header title">
+          Showing posts within {range} Km
+        </Title>
+      </View>
+    );
+  }
 
   return (
     <View style={globalscreenstyles.container}>
@@ -322,15 +441,11 @@ const Home = ({ navigation }: { navigation: any }) => {
           LeftIcon={<Logo size={55}></Logo>}
           RightIcon={<MessageIcon></MessageIcon>}></TabBarTop>
         <View style={globalscreenstyles.middle}>
-          <CategoryRender
-            selectedCategories={selectedCategories}
-            onCategoryPress={handleCategoryPress}
-            categoryInfo={categoryInfo}></CategoryRender>
-          {renderHeader_Handler()}
           {isLoading ? (
             ''
           ) : (
             <PostListRenderer
+              whichHeader={renderHeader_Handler}
               endpoint={adEndpoint}
               navigation={navigation}
               getData={getDataFunction}
