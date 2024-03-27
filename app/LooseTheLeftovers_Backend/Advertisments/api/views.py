@@ -534,15 +534,14 @@ def get_ads_category_location(request):
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
+        print("we got here")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, latitude, and categories
     req_range = serializer.validated_data["range"]
     req_longitude = serializer.validated_data["longitude"]
     req_latitude = serializer.validated_data["latitude"]
-    req_categories = set(
-        serializer.validated_data["categories"]
-    )  # cast string to a set with a wrapper
+    req_categories = serializer.validated_data["categories"].split(",")
 
     # Create a complex query
     category_filters = parse_categories(req_categories)
