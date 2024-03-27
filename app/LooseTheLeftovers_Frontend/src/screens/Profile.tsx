@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   ActivityIndicator,
@@ -20,6 +20,7 @@ import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
 import LinearGradient from 'react-native-linear-gradient';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
@@ -98,6 +99,13 @@ const Profile = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     fetchUserInfo();
   }, []);
+
+   // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen.
+   useFocusEffect(
+    useCallback(() => {
+      fetchUserInfo();
+    }, []),
+  );
 
   const [ratings, setRatings] = useState<number | undefined>(undefined);
   const [reviewsCount, setReviewsCount] = useState<number | undefined>(
