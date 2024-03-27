@@ -527,56 +527,16 @@ def get_ads_category(request):
     except Exception as e:
         return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+def get_ads_category_location(request):
+    print("Penis")
+
+
+def parse_categories(categories):
+    """'
+    Function returns a Q() complex query with all the categories, needed to programmically sort an N amount of categories.
     """
-    try:
-        category = request.GET.get("category")
-    except:
-        response = {"message": "Endpoint expecting category"}
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        # get ads for the category provided
-        ads = Advertisment.objects.filter(category__icontains=category)
-
-        # get images for all ads returned
-        ad_images = AdvertismentImage.objects.filter(ad_id__in=ads)
-
-    except:
-        # if nothing found return 204 response
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    try:
-        # put query results into pages
-        ad_paginator = Paginator(ads, 3)
-        image_paginator = Paginator(ad_images, 3)
-
-        # gets data for the current page
-        page_number = request.GET.get("page")
-        if page_number is None:
-            page_number = 1
-        ad_page = ad_paginator.page(page_number)
-        image_page = image_paginator.page(page_number)
-
-        # send each page to serializer to package data
-        serializer = ReturnAdvertismentSerializer(ad_page, many=True)
-        image_serializer = ImageSerializer(image_page, many=True)
-
-        # merge results into one data structure
-        combined_data = []
-        for ad, image in zip(serializer.data, image_serializer.data):
-            combined = {**ad, **image}  # Merge two dictionaries
-            combined_data.append(combined)
-
-        return Response(
-            combined_data,
-            status=status.HTTP_200_OK,
-        )
-
-    # when index for page is out of bounds return 204 response
-    except EmptyPage as e:
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    except Exception as e:
-        # send problem response and server error
-        response = {"message": "Error retrieving ads by category", "error": str(e)}
-        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    """
+    category_filters = Q()
+    for category_name in categories:
+        category_filters &= Q(category=category_name)
+    return category_filters

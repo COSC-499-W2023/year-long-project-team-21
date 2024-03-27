@@ -104,7 +104,7 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
             user_id=self.user_1.id,
             title="Pasta",
             description="Vegetarian pasta",
-            category="Vegetarian",
+            category="peanut-free",
             expiry=datetime.now() + timedelta(days=-1),
         )
         self.ad_4 = Advertisment.objects.create(
@@ -118,7 +118,7 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
             user_id=self.user_2.id,
             title="Take out",
             description="Some leftovers",
-            category="Unknown",
+            category="gluten-free",
             expiry=datetime.now() + timedelta(days=3),
         )
 
@@ -148,7 +148,7 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
         return super().tearDown()
 
 
-class TestSetupLocatonAds(APITestCase):
+class TestSetupLocationAds(APITestCase):
 
     lake_country_long = -119.397873
     lake_country_lat = 50.088470

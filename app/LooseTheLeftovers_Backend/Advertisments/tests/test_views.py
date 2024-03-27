@@ -4,7 +4,7 @@ from django.db.models.fields.files import ImageFieldFile
 from .test_setup import (
     TestSetUpCreateAdvertisment,
     TestSetUpRetrieveAdvertisment,
-    TestSetupLocatonAds,
+    TestSetupLocationAds,
 )
 from django.urls import reverse
 from rest_framework import status
@@ -337,6 +337,59 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         self.assertEqual(len(all_ads), 3)
         self.assertEqual(len(all_images), 3)
 
+    def get_ads_categories(self):
+
+        # ********************************** testing no categories **********************************
+
+        client = APIClient()
+
+        # create get request using kwargs
+        # ads_categories = reverse("categories", kwargs={"ad_id": specific_ad_id})
+
+        ads_categories = reverse("category-ads")
+
+        # send request
+        response = client.get(ads_categories)
+
+        # Since the URL did not include parameters, an error is expected
+        self.assertEqual(response.status_code, 400)
+
+        # ********************************** testing no page **********************************
+
+        ## adding categories, but no pages
+        ads_categories_no_page = ads_categories + "?key1=peanut-free"
+
+        response = client.get(ads_categories_no_page)
+
+        self.assertEqual(response.status_code, 400)
+
+        # ********************************** testing categories **********************************
+
+        # categories but with a page
+        ads_categories_peanut = ads_categories + "?page=1&key1=peanut-free"
+
+        response = client.get(ads_categories_peanut)
+
+        payload = response.data
+
+        self.assertEqual(len(payload), 1)
+
+        ads_categories_vegan = ads_categories + "?page=1&key1=vegan"
+
+        response = client.get(ads_categories_vegan)
+
+        payload = response.data
+
+        self.assertEqual(len(payload), 2)
+
+        ads_categories_gluten_free = ads_categories + "?page=1&key1=gluten-free"
+
+        response = client.get(ads_categories_gluten_free)
+
+        payload = response.data
+
+        self.assertEqual(len(payload), 1)
+
 
 class TestUpdateAds(TestSetUpRetrieveAdvertisment):
 
@@ -544,7 +597,7 @@ class ExpiryDateTests(APITestCase):
         self.assertEqual(result["expiry"], "2 weeks")
 
 
-class TestRetrieveLocationAds(TestSetupLocatonAds):
+class TestRetrieveLocationAds(TestSetupLocationAds):
 
     def test_retrieve_ads_near_10km_lake_country(self):
         # creata client to make requests

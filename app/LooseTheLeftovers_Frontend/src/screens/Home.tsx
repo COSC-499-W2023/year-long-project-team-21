@@ -61,7 +61,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       size: 35,
     },
     {
-      name: 'nut-free',
+      name: 'peanut-free',
       imageSource: require('../assets/nut.png'),
       size: 35,
     },
@@ -84,14 +84,6 @@ const Home = ({ navigation }: { navigation: any }) => {
   }, [locationPermission, range, selectedCategories]);
 
   /****************************************************************** CATEGORY LOGIC ******************************************************************/
-
-  function parseCategories() {
-    console.log(selectedCategories);
-
-    selectedCategories.forEach(category => {
-      console.log(category);
-    });
-  }
 
   /**
    * @function handleCategoryPress
@@ -122,12 +114,11 @@ const Home = ({ navigation }: { navigation: any }) => {
    *  In case of any error during this process, it falls back to `getAllAds`. If the location permission is not granted or the range is 'All',
    * it defaults to using `getAllAds`. Additionally, this function updates the header state based on the location permission status and ensures that the loading state is set to false.
    */
-
-  // TODO rewrite as a swtich statement with several different categories...
   function postFetchHandler() {
     switch (true) {
       // location permissions are enabled and a range is specified
       case locationPermission === 'GRANTED' && range !== 'All':
+        // set location-enabled to be the displayed header
         setWhichHeader('location-enabled');
         // retrieve categories nearby
         if (selectedCategories.length > 0) {
@@ -139,8 +130,9 @@ const Home = ({ navigation }: { navigation: any }) => {
         }
         break;
 
-      //  location permissions are disabled  or a range is specified
+      //  location permissions are disabled or a range is set to 'All'
       case locationPermission === 'DENIED' || range === 'All':
+        // set correct header based on if location services are granted or not
         locationPermission === 'GRANTED'
           ? setWhichHeader('location-enabled')
           : setWhichHeader('location-disabled');
@@ -210,10 +202,26 @@ const Home = ({ navigation }: { navigation: any }) => {
       return [];
     }
   }
-
+  // TODO there is a bug where this is called twice?
   async function getCategorizedAds(pageNumber: number) {
-    const adEndpointWithPage = `${adCategories}?page=${pageNumber}`;
-    console.log('this is categories');
+    // create and endpoint with a page parameter
+    let endpoint = `${adCategories}?page=${pageNumber}`;
+    // dynamically add category parameters to afformentioned url depending on amount of categories
+    selectedCategories.forEach((category, index) => {
+      const key = `key${(index + 1).toString()}`;
+      endpoint = `${endpoint}&${key}=${category}`;
+    });
+
+    try {
+      // make request
+      const payload = await axios.get(endpoint, djangoConfig());
+      // return response to post-list-renderer
+      return payload;
+    } catch (error) {
+      console.log(`There was an issue retriving categorized ads ${error}`);
+      // return a blank response to post list renderer
+      return [];
+    }
   }
 
   async function getCategorizedLocationAds(pageNumber: number) {
