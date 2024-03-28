@@ -33,11 +33,10 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const [usernameLengthError, setUsernameLengthError] = useState(false);
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [apiRequestErrorMessage, setApiRequestErrorMessage] = useState('');
   const [credentialFilledInError, setCredentialsFilledInError] =
     useState(false);
   const [apiRequestError, setApiRequestError] = useState(false);
-  const [emailExistsError, setEmailExistsError] = useState(false);
-  const [usernameExistsError, setUsernameExistsError] = useState(false);
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
   //set input text from the text box so that we can handle credential (Email)
   const handleEmail = (input: string) => {
@@ -84,8 +83,6 @@ const Registration = ({ navigation }: { navigation: any }) => {
     setServerError(false);
     setPasswordStrengthError(false);
     setApiRequestError(false);
-    setEmailExistsError(false);
-    setUsernameExistsError(false);
     if (email == '' || username == '' || password1 == '' || password2 == '') {
       setCredentialsFilledInError(true);
     } else if (password1 !== password2) {
@@ -120,8 +117,6 @@ const Registration = ({ navigation }: { navigation: any }) => {
         // Check response successful
         if (response.status === 200) {
           setApiRequestError(false);
-          setEmailExistsError(false);
-          setUsernameExistsError(false);
           setUsername('');
           setEmail('');
           setPassword1('');
@@ -133,27 +128,20 @@ const Registration = ({ navigation }: { navigation: any }) => {
         }
       } catch (error: any) {
         //red text error produced by requesting error
-        const apiError: any = error;
-        if (
-          apiError.response?.data &&
-          JSON.stringify(apiError.response.data).includes(
-            'A user with that email already exists.',
-          )
-        ) {
-          setEmailExistsError(true);
-        }
+        setApiRequestError(true);
 
-        if (
-          apiError.response?.data &&
-          JSON.stringify(apiError.response.data).includes(
-            'A user with that username already exists.',
-          )
-        ) {
-          setUsernameExistsError(true);
-        }
-        {
-          setApiRequestError(true);
-        }
+        const apiError: any = error;
+
+        console.log(apiError.response?.data);
+        //this recevieves error message
+        const errors = apiError.response?.data;
+
+        //this parses the error message
+        const extractedValues = Object.values(errors).flat();
+        const errorMessages = extractedValues.join(' ');
+
+        //this sends the error message to be displayed
+        setApiRequestErrorMessage(errorMessages);
       }
     }
   };
@@ -231,17 +219,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         {/* When the apiRquestError is true, the red text tells following. */}
         {apiRequestError && (
           <Text style={{ color: global.error, fontSize: 15 }}>
-            Request error, unable to process.
-          </Text>
-        )}
-        {emailExistsError && (
-          <Text style={{ color: global.error, fontSize: 15 }}>
-            A user with that email already exists
-          </Text>
-        )}
-        {usernameExistsError && (
-          <Text style={{ color: global.error, fontSize: 15 }}>
-            A user with that username already exists
+            {apiRequestErrorMessage || 'Request error, unable to process.'}
           </Text>
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}
