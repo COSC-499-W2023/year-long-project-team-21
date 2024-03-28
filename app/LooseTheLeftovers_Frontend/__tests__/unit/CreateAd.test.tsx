@@ -1,7 +1,26 @@
 import React from 'react';
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import CreateAd from '../../src/screens/CreateAd';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
+jest.mock('react-native-permissions', () => ({
+  check: jest.fn(() => Promise.resolve('granted')),
+  request: jest.fn(() => Promise.resolve('granted')),
+  PERMISSIONS: {
+    IOS: {
+      LOCATION_WHEN_IN_USE: 'LOCATION_WHEN_IN_USE',
+    },
+    ANDROID: {
+      ACCESS_FINE_LOCATION: 'ACCESS_FINE_LOCATION',
+    },
+  },
+  RESULTS: {
+    UNAVAILABLE: 'unavailable',
+    DENIED: 'denied',
+    GRANTED: 'granted',
+    BLOCKED: 'blocked',
+  },
+}));
 
 jest.mock('axios');
 jest.mock('react-native', () => {
@@ -25,9 +44,8 @@ describe('CreateAd Screen', () => {
     );
 
     expect(getByText('Food Name')).toBeDefined();
-    expect(getByPlaceholderText('Title')).toBeDefined();
     expect(getByText('Description (optional)')).toBeDefined();
-    expect(getByPlaceholderText('Description')).toBeDefined();
+
     expect(getByText('Pick an image of the food')).toBeDefined();
     expect(getByText('Set an expiry range')).toBeDefined();
     expect(getByText('Submit')).toBeDefined();

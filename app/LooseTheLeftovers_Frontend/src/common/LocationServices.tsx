@@ -1,23 +1,12 @@
-import Geolocation, {
-  GeoCoordinates,
-  GeoPosition,
-} from 'react-native-geolocation-service';
-import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import { Linking, PermissionsAndroid, Platform } from 'react-native';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
-/** 
- * I just feel that LocationService is too complex for what we need. I want to try and see if I can simplify it. I don't think we need a class... 
- * I will write tests after I get everything that I need. I'm just kinda winging this one... 
- * My thoughts are though that I can save some preferences here: 
- *          - whether they want to never use it agian
- *          - 
-
-
 /**
-   * Opens the device settings for the app.
-   * @throws {Error} Throws an error if an issue occurs.
-   * @private
-   */
+ * Opens the device settings for the app.
+ * @throws {Error} Throws an error if an issue occurs.
+ * @private
+ */
 export function openSettings() {
   try {
     if (Platform.OS === 'ios') {
@@ -31,110 +20,67 @@ export function openSettings() {
 }
 
 /**
- * Requests location permission on iOS.
- * @returns {Promise<boolean>} True if permission granted, false otherwise.
- * @throws {Error} Throws an error if an issue occurs.
- */
-export async function getLocationPermissionIOS() {
-  try {
-    const permission = Platform.select({
-      ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      android: null, // For Android, return null or handle differently if needed
-    });
-
-    if (!permission) {
-      console.log('Unsupported platform for iOS location permission');
-      return false;
-    }
-
-    const result = await request(permission);
-
-    if (result === RESULTS.GRANTED) {
-      console.log('You can use Geolocation');
-      return true;
-    } else if (result === RESULTS.DENIED) {
-      console.log('Geolocation permission denied');
-      return false;
-    } else if (result === RESULTS.BLOCKED) {
-      console.log('Geolocation permission denied and blocked');
-      return false;
-    }
-
-    console.log('You cannot use Geolocation');
-    return false;
-  } catch (error: any) {
-    console.log(`Error getLocationPermissionIOS: ${error.message}`);
-    return false;
-  }
-}
-
-//asks location permission. Returns boolean value depending on the status.
-/**
  * Asks location permission on Android.
  * @returns {Promise<boolean>} True if permission granted, false otherwise.
  * @throws {Error} Throws an error if an issue occurs.
  */
-/*
-export async function getLocationPermissionAndroid() {
+export async function getLocationPermission() {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Location Access',
-        message: 'Please enable location services to access ads nearby.',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      return true;
-    } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      Alert.alert('Location Services must be enabled');
-      return false;
-    } else {
-      console.log('Location permission denied or not answered yet.');
-      return false;
+    if (Platform.OS === 'android') {
+      const permissions = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      ]);
+
+      const fineLocationGranted =
+        permissions[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION] ===
+        PermissionsAndroid.RESULTS.GRANTED;
+      const coarseLocationGranted =
+        permissions[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION] ===
+        PermissionsAndroid.RESULTS.GRANTED;
+
+      return fineLocationGranted || coarseLocationGranted;
+    } else if (Platform.OS === 'ios') {
+      // Request appropriate iOS permission
+      // Choose between WHEN_IN_USE or ALWAYS based on your app's requirement
+      const permissionResult = await request(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      return permissionResult === RESULTS.GRANTED;
     }
   } catch (error) {
-    console.log(`Error getLocationPermissionAndroid: ${error}`);
-    throw new Error(
-      `An error occurred while requesting location permission: ${error}`,
-    );
-  }
-}*/
-export async function getLocationPermissionAndroid() {
-  try {
-    const permissions = await PermissionsAndroid.requestMultiple([
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-    ]);
-
-    const fineLocationGranted =
-      permissions[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION] ===
-      PermissionsAndroid.RESULTS.GRANTED;
-    const coarseLocationGranted =
-      permissions[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION] ===
-      PermissionsAndroid.RESULTS.GRANTED;
-
-    if (fineLocationGranted || coarseLocationGranted) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error(`Error getLocationPermissionAndroid: ${error}`);
+    console.error(`Error getLocationPermission: ${error}`);
     throw new Error(
       `An error occurred while requesting location permissions: ${error}`,
     );
   }
 }
 
-// likely could use a handler here to depcipher between IOS and android device
-// this needs to be tested
+/**
+ * Checks the location permission status for the application on the current platform.
+ *
+ * This function determines the current location permission status by checking the appropriate
+ * permission based on the platform (Android or iOS). For Android, it checks for `ACCESS_FINE_LOCATION`.
+ * For iOS, it checks for `LOCATION_WHEN_IN_USE` (you can change this to `LOCATION_ALWAYS`
+ * based on your app's requirement). The function returns a string representing the permission status.
+ *
+ * @returns {Promise<string>} A promise that resolves with a string representing the current permission status.
+ * Possible return values are 'UNAVAILABLE', 'DENIED', 'LIMITED', 'GRANTED', 'BLOCKED', or 'UNKNOWN'.
+ * If an error occurs, the promise resolves with the error object.
+ */
 export async function checkLocationPermission() {
   try {
-    const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    let permission: any;
+    if (Platform.OS === 'android') {
+      permission = PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+    } else if (Platform.OS === 'ios') {
+      // Choose the appropriate iOS permission for your app
+      permission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+      // For always permission, use PERMISSIONS.IOS.LOCATION_ALWAYS
+    }
+
+    const result = await check(permission);
     switch (result) {
       case RESULTS.UNAVAILABLE:
         return 'UNAVAILABLE';
@@ -146,12 +92,25 @@ export async function checkLocationPermission() {
         return 'GRANTED';
       case RESULTS.BLOCKED:
         return 'BLOCKED';
+      default:
+        return 'UNKNOWN'; // A safety case for unknown results
     }
   } catch (error) {
     return error;
   }
 }
 
+/**
+ * Retrieves the current geographic location of the device.
+ *
+ * This function asynchronously obtains the device's current geographic location using the Geolocation API.
+ * It returns a promise that resolves with the latitude and longitude of the device. If the location cannot be
+ * retrieved due to an error (e.g., permission issues, location services disabled), the promise is rejected
+ * with an error message.
+ *
+ * @returns {Promise<{latitude: number, longitude: number}>} A promise that resolves with an object containing
+ * the latitude and longitude of the device's current location.
+ */
 export async function getLocation(): Promise<{
   latitude: number;
   longitude: number;

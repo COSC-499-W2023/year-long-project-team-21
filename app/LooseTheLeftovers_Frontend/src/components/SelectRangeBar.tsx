@@ -19,25 +19,21 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ setRange }) => {
   };
 
   return (
-    <SelectList
-      data={items}
-      save={'value'}
-      setSelected={setRange}
-      search={false}
-      placeholder="Select Range"
-      boxStyles={styles.boxStyles}
-      inputStyles={styles.inputStyles}
-      dropdownStyles={styles.dropdownStyles}
-      dropdownTextStyles={styles.dropdownTextStyles}
-      arrowicon={<Icon source={require('../assets/drop_3.png')} size={13} />}
-    />
+    <View testID={'select-radius-dropdown'}>
+      <SelectList
+        data={items}
+        save={'value'}
+        setSelected={setRange}
+        search={false}
+        placeholder="Select Range"
+        boxStyles={styles.boxStyles}
+        inputStyles={styles.inputStyles}
+        dropdownStyles={styles.dropdownStyles}
+        dropdownTextStyles={styles.dropdownTextStyles}
+        arrowicon={<Icon source={require('../assets/drop_3.png')} size={13} />}
+      />
+    </View>
   );
 };
 
 export default memo(SelectRangeBar);
-
-/*const [items, setItems] = useState([
-    { key: '10 km', value: '10', testID: 'dropdown-item-10' },
-    { key: '20 km', value: '20', testID: 'dropdown-item-20' },
-    { key: '30 km', value: '30', testID: 'dropdown-item-30' },
-  ]);*/

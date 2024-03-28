@@ -9,6 +9,7 @@ import {
 } from '../common/EncryptedSession';
 import { checkLocationPermission } from '../common/LocationServices';
 import { useGlobal } from '../common/GlobalContext';
+import { View } from 'react-native';
 
 const SplashScreen = ({ navigation }: { navigation: any }) => {
   const { updateFirstLaunch, updateLocationPermission } = useGlobal();
@@ -71,7 +72,6 @@ const SplashScreen = ({ navigation }: { navigation: any }) => {
   const retrieveUserId = async () => {
     const userSesh: Record<string, string> = await retrieveUserSession();
     const userId: string = userSesh['user_id'];
-    
   };
 
   const entranceAnimation = () => {
@@ -95,20 +95,22 @@ const SplashScreen = ({ navigation }: { navigation: any }) => {
   }, [fadeAnim]);
 
   return (
-    <Animated.View style={{ ...styles.container, opacity: fadeAnim }}>
-      <LinearGradient
-        style={styles.gradient}
-        colors={[global.purple, global.background]}
-        start={{ x: 1, y: 0 }}>
-        <Icon source={require('../assets/logo-with-name.png')} size={200} />
-        <ActivityIndicator size="large" color="#FFFFFF" />
-        {error ? (
-          <Text style={styles.errorText}>{error}</Text>
-        ) : (
-          <Text style={styles.loadingText}>{pun}</Text>
-        )}
-      </LinearGradient>
-    </Animated.View>
+    <View testID={'SplashScreen'}>
+      <Animated.View style={{ ...styles.container, opacity: fadeAnim }}>
+        <LinearGradient
+          style={styles.gradient}
+          colors={[global.purple, global.background]}
+          start={{ x: 1, y: 0 }}>
+          <Icon source={require('../assets/logo-with-name.png')} size={200} />
+          <ActivityIndicator size="large" color="#FFFFFF" />
+          {error ? (
+            <Text style={styles.errorText}>{error}</Text>
+          ) : (
+            <Text style={styles.loadingText}>{pun}</Text>
+          )}
+        </LinearGradient>
+      </Animated.View>
+    </View>
   );
 };
 

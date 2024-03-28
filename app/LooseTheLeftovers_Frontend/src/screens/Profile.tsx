@@ -121,12 +121,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
       setRatings(0);
     }
   };
-
-  /*
-   * I don't love this I am just super tired rn and this isn't a good way of doing this idk
-   * would be more elegant to handle it as global state
-   */
-
   useEffect(() => {
     getUserID();
   }, []);
@@ -156,6 +150,36 @@ const Profile = ({ navigation }: { navigation: any }) => {
     return payload;
   }
 
+  function profileHeader(): React.ReactElement {
+    return (
+      <View style={profileStyles.userinfocontainer}>
+        <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
+        <View style={postListStyles.editIconContainer}>
+          <Icon
+            source={require('../assets/edit_white.png')}
+            size={25}
+            onPress={handleEditButtonOnPress}
+          />
+        </View>
+        <View style={profileStyles.ratingContainer}>
+          <Ratings
+            startingValue={ratings}
+            readonly={true}
+            backgroundColor={global.tertiary}></Ratings>
+          <Texts
+            textsColor={global.secondary}
+            textsSize={15}
+            texts={`(${reviewsCount} Reviews)`}></Texts>
+        </View>
+        <View style={profileStyles.button_container}>
+          <View>
+            <Button onPress={handleLoginButtonOnPress!} title="Logout"></Button>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <LinearGradient
       style={globalscreenstyles.container}
@@ -164,44 +188,15 @@ const Profile = ({ navigation }: { navigation: any }) => {
       <TabBarTop LeftIcon={<Logo size={55} />} RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
         {isLoading ? (
-          <ActivityIndicator size="large" /> // or <Text>Loading...</Text> if you just want text
+          <ActivityIndicator size="large" />
         ) : (
           <>
-            <View style={profileStyles.userinfocontainer}>
-              <UserInfo
-                userInfo={userInfo!}
-                userInfoKeys={['username', 'email']}
-              />
-              <View style={postListStyles.editIconContainer}>
-                <Icon
-                  source={require('../assets/edit_white.png')}
-                  size={25}
-                  onPress={handleEditButtonOnPress}
-                />
-              </View>
-              <View style={profileStyles.ratingContainer}>
-                <Ratings
-                  startingValue={ratings}
-                  readonly={true}
-                  backgroundColor={global.tertiary}></Ratings>
-                <Texts
-                  textsColor={global.secondary}
-                  textsSize={15}
-                  texts={`(${reviewsCount} Reviews)`}></Texts>
-              </View>
-              <View style={profileStyles.button_container}>
-                <View>
-                  <Button
-                    onPress={handleLoginButtonOnPress!}
-                    title="Logout"></Button>
-                </View>
-              </View>
-            </View>
             <View style={profileStyles.viewPost}>
               <PostListRenderer
                 endpoint={adEndpoint}
                 getData={fetchUserAds}
                 navigation={navigation}
+                whichHeader={profileHeader}
               />
             </View>
           </>

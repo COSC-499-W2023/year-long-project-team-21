@@ -165,7 +165,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
       maxToRenderPerBatch={3}
       windowSize={2}
       removeClippedSubviews={true}
-      ListHeaderComponent={whichHeader}
+      ListHeaderComponent={whichHeader ? whichHeader : null}
       ListFooterComponent={ListFooterComponent}
       onEndReached={() => {
         setFetchAllowed(true);

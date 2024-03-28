@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Dimensions, Alert } from 'react-native';
 import { global } from '../common/global_styles';
+import { useIsFocused } from '@react-navigation/native';
 import {
   adEndpoint,
   adsLocation,
@@ -9,7 +10,7 @@ import {
 } from '../common/API';
 import { djangoConfig } from '../common/NetworkRequest';
 import {
-  getLocationPermissionAndroid,
+  getLocationPermission,
   openSettings,
   getLocation,
 } from '../common/LocationServices';
@@ -48,6 +49,7 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
 
   const categoryInfo = [
     {
@@ -80,11 +82,18 @@ const Home = ({ navigation }: { navigation: any }) => {
     postFetchHandler();
   }, [locationPermission, range, selectedCategories, search]);
 
+  useEffect(() => {
+    if (isFocused) {
+      console.log('hello?');
+      postFetchHandler();
+    }
+  }, [isFocused]);
+
   /**
    * @function postFetchHandler
-   * @description Handles the logic for determining how to fetch posts based on the current location permission and range settings.
+   * @description Handles the logic for determining how to fetch posts based on the current location permission, category selection, and range settings.
    * If the location permission is granted and the range is not 'All', it attempts to set the data fetching function to `getAdsLocation`.
-   *  In case of any error during this process, it falls back to `getAllAds`. If the location permission is not granted or the range is 'All',
+   * In case of any error during this process, it falls back to `getAllAds`. If the location permission is not granted or the range is 'All',
    * it defaults to using `getAllAds`. Additionally, this function updates the header state based on the location permission status and ensures that the loading state is set to false.
    */
   function postFetchHandler() {
@@ -192,6 +201,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       };
       // call the backend endpoint
       const payload = await axios.post(adsLocation, body, djangoConfig());
+      console.log(payload);
       return payload;
     } catch (error) {
       console.log(`There was an error getting the location ${error} `);
@@ -278,13 +288,12 @@ const Home = ({ navigation }: { navigation: any }) => {
    */
   async function enableLocation() {
     // get location permissions
-    let answer = await getLocationPermissionAndroid();
+    let answer = await getLocationPermission();
     // only perform location services if user enables them
     if (answer) {
       // update state.
       updateLocationPermission('GRANTED');
     } else {
-      // TODO: bug here. Permissions are enabled but a bug occurs
       Alert.alert(
         'Location Permission Required',
         'You must enable location services to use this feature.',
@@ -329,26 +338,26 @@ const Home = ({ navigation }: { navigation: any }) => {
    * and includes the category header in each case.
    * - 'location-disabled': Renders the default header along with the category header.
    * - 'location-enabled': Renders a header that likely includes location-related information along with the category header.
-   * @returns {React.ReactNode} The React node that corresponds to the selected header components or null
+   * @returns {React.ReactElement} The React element that corresponds to the selected header components or null
    */
   function renderHeader_Handler(): React.ReactElement | null {
     switch (whichHeader) {
       case 'location-disabled':
         return (
           <>
-            {renderHeader_Default()}
             {categoryHeader()}
+            {renderHeader_Default()}
           </>
         );
       case 'location-enabled':
         return (
           <>
-            {renderHeader_Location()}
             {categoryHeader()}
+            {renderHeader_Location()}
           </>
         );
       default:
-        return null; // It's good practice to handle the default case
+        return null;
     }
   }
   /**

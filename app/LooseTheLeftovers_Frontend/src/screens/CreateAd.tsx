@@ -274,6 +274,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="Description"
             />
           </View>
           <InputField
