@@ -138,7 +138,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
     passwordStrengthValue: string,
   ): string => {
     if (passwordStrengthValue !== 'Strong') {
-      return ' (needs capital letters, numbers and symbols )';
+      return '(needs 10 chararacters, capitals, numbers and symbols)';
     } else {
       return '';
     }
