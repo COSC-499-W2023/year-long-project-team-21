@@ -58,7 +58,7 @@ const generateHomeScreenCardStyles = (
     },
     card_title_style: {
       color: global.secondary, // could be black in light mode
-      fontSize: 0.036 * screenWidth,
+      fontSize: 0.04 * screenWidth,
       width: 0.4 * screenWidth,
     },
     card_expiry_style: {

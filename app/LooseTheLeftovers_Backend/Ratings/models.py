@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Rating(models.Model):
-    rating = models.FloatField()
+    rating = models.IntegerField()
     giver_id = models.IntegerField()
     receiver_id = models.IntegerField()
 

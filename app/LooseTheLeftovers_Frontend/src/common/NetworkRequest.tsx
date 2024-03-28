@@ -228,20 +228,15 @@ export class SecureAPIReq {
    * @returns {Promise<any>} - The response from the DELETE request.
    * @throws {Error} - Throws an error if the request fails.
    */
-  public async delete(endpoint: string, body:any, params?: { [key: string]: any }) {
+  public async delete(endpoint: string, params?: { [key: string]: any }) {
     try {
       const headers = await this.createSecureHeader();
-      if (headers)return this.instance.delete(endpoint, { 
-        params,
-        headers,
-        data: body // Assuming 'body' is the variable containing the request body
-    });
+      if (headers) return this.instance.delete(endpoint, { params, headers });
       return NavigationService.navigate('Login');
     } catch (e) {
       throw new Error(`${(e as Error).message}`);
     }
   }
-
 
   /**
    * Creates secure headers for requests.

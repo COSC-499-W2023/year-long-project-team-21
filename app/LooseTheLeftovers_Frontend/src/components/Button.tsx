@@ -44,12 +44,15 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   return (
+    <>
+      <View style={styles.space} />
       <TouchableOpacity
         style={[styles.button, buttonStyles]}
         onPress={onPress}
         testID={testID}>
         <Text style={[styles.buttonText, textStyles]}>{title}</Text>
       </TouchableOpacity>
+    </>
   );
 };
 
