@@ -74,6 +74,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
+    console.log(endpoint)
     navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 
@@ -123,8 +124,8 @@ const Post: React.FC<PostProps> = ({
               cardStyles.card_dietaryIcons_wrapper_style,
               cardStyles.dietary_icon_style,
               showNutIcon,
-              showVeganIcon,
               showGlutenFreeIcon,
+              showVeganIcon,
             )}
             <View style={cardStyles.card_image_wrapper_style}>
               {renderPostImage(cardStyles.post_image_style, image, 135)}

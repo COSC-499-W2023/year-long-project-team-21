@@ -116,3 +116,27 @@ describe('CreateAd Screen - ImagePicker', () => {
     });
   });
 });
+
+describe('CreateAd Screen - Expiry Switch', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders the expiry switch and updates state on toggle', () => {
+    const { getByTestId, queryByTestId } = render(
+      <CreateAd navigation={undefined} />,
+    );
+    const expirySwitch = getByTestId('switch-test');
+
+    // Check if the slider is present
+    expect(queryByTestId('slider-test')).toBeDefined();
+
+    // Toggle to disable the slider
+    fireEvent(expirySwitch, 'onValueChange', false);
+    expect(queryByTestId('slider-test')).toBeNull();
+
+    // Toggle to re-enable the slider
+    fireEvent(expirySwitch, 'onValueChange', true);
+    expect(queryByTestId('slider-test')).toBeDefined();
+  });
+});

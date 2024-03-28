@@ -1,4 +1,6 @@
 from rest_framework.test import APITestCase
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from Users.models import CustomUser
 
 
@@ -21,15 +23,11 @@ class TestSetUpCreateAccount(APITestCase):
         self.test_user = CustomUser.objects.create_user(
             username="test",
             password="test123",
-            latitude=49.887673,
-            longitude=-119.495465,
         )
         # save temp user credentials in db
         self.test_account = {
             "username": "test",
             "password": "test123",
-            "latitude": 49.887673,
-            "longitude": -119.495465,
         }
         # call APITestCase.setUp()
         return super().setUp()
@@ -38,4 +36,34 @@ class TestSetUpCreateAccount(APITestCase):
         # delete user
         self.test_user = CustomUser.objects.get(username="test")
         self.test_user.delete()
+        return super().tearDown()
+
+class TestSetUpUpdateAccount(APITestCase):
+
+    def setUp(self):
+        # create 2 test users
+        self.username_1 = "user_1"
+        self.password_2 = "123"
+        self.user_1 = CustomUser.objects.create_user(
+            username=self.username_1,
+            password=self.password_2
+        )
+        self.user_1.save()
+
+        self.username_1 = "user_2"
+        self.password_2 = "456"
+        self.user_2 = CustomUser.objects.create_user(
+            username=self.username_1,
+            password=self.password_2
+        )
+        self.user_2.save()
+
+        # get token for user_1
+        token = RefreshToken.for_user(self.user_1)
+        self.token = str(token.access_token)
+        self.refresh = str(token)
+
+        return super().setUp()
+
+    def tearDown(self):
         return super().tearDown()

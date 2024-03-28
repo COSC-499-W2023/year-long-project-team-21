@@ -30,7 +30,7 @@ class AdvertismentHandler(APIView):
             Also has to contain an image to include with the ad
 
         Returns:
-            Response: Response object with the ad data and a HTTP_201_OK response
+            Response: Response object with the ad data and a HTTP_201_CREATED response
         """
         # Manually authenticate user
         permission = IsAuthenticated()
@@ -91,6 +91,66 @@ class AdvertismentHandler(APIView):
         # ad_id and user_id not provided: get all ads in database
         return retrieve_all_advertisments(request)
 
+    def put(self, request, *args, **kwargs):
+        '''
+        Handle PUT requests to update an existing ad. Requires authentication so valid token must
+        be included in the request header.
+
+        Request should include these fields in the data body as JSON
+            - title
+            - description (optional)
+            - category
+            - expiry datetime (optional)
+                - expected format = 'yyyy-mm-ddThh:mm:ss:nnnnnnZ
+            
+        Returns:
+            Response: Response object with the ad data and a HTTP_201_OK response
+
+        '''
+        # Manually authenticate user
+        permission = IsAuthenticated()
+        if not permission.has_permission(request, self):
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        # call function to create the ad
+        return update_advertisment(request)
+
+    def delete(self, request, *args, **kwargs):
+        '''
+        Handle DELETE requests to delete an existing ad in the database. 
+        Requires authentication so valid token must be included in the request header.
+
+        Request should include these fields in the data body as JSON
+            - ad_id
+            
+        Returns:
+            Response: Response object with the ad data and a HTTP_201_OK response
+
+        '''
+        # Manually authenticate user
+        permission = IsAuthenticated()
+        if not permission.has_permission(request, self):
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        
+        # Validate ad to delete exists
+        try:
+            ad_id = request.data['ad_id']
+            ad = Advertisment.objects.get(pk=ad_id)
+        except:
+            return Response({"detail": "Post to delete does no exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate ad to delete was created by the person who made the request
+        if ad.user_id != request.user.id:
+            return Response({"detail": "You cannot delete someone else's post!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # call function to create the ad
+        ad.delete()
+        return Response({"detail": "Post deleted."}, status=status.HTTP_200_OK)
 
 def create_advertisment(request):
     """
@@ -155,6 +215,38 @@ def create_advertisment(request):
     # return 201 response indicating ad was created successfully
     return Response(ad_serializer.validated_data, status=status.HTTP_201_CREATED)
 
+def update_advertisment(request):
+    """
+    Any PUT request is passed to this method. Updates an existing ad in the database.
+    
+    Will return 201 CREATED response if successful.
+    """
+    # validate ad being updated exists
+    try:
+        ad_id = request.data['ad_id']
+        ad = Advertisment.objects.get(pk=ad_id)
+    except:
+        return Response({"detail": "Post to update does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # validate ad being updated was created by requesting user
+    if ad.user_id != request.user.id:
+        return Response({"detail": "Cannot update post created by another user."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # pass new ad data to serializer and validate passed data
+        ad_serializer = AdvertismentSerializer(ad, data=request.data)
+        if ad_serializer.is_valid():
+            # if valid save updated ad
+            ad_serializer.save() 
+            return Response(ad_serializer.validated_data, status=status.HTTP_200_OK)
+        else:
+            # if serializer returned errors on validation return errors and HTTP_400 status
+            return Response(ad_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        # if error occurs return error message and detail with HTTP_500 status
+        response = {"message": "Error updating post", "error": str(e)}
+        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def retrieve_single_advertisment(ad_id):
     """
@@ -204,8 +296,7 @@ def retrieve_advertisments_for_user(request, user_id):
         user_ads = Advertisment.objects.filter(user_id=user_id)
         user_ad_images = AdvertismentImage.objects.filter(ad_id__in=user_ads)
     except:
-        response = {"message": "No ad found"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     try:
         # put query results into pages
@@ -236,8 +327,7 @@ def retrieve_advertisments_for_user(request, user_id):
 
     # when index for page is out of bounds return 204 response       
     except EmptyPage as e:
-        response = {"message": "Last page reached"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         # send problem response and server error
@@ -266,8 +356,7 @@ def retrieve_all_advertisments(request):
         all_ads = Advertisment.objects.all().defer('description')
         all_images = AdvertismentImage.objects.all()
     except:
-        response = {"message": "No ad found"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
     try:
         # put query results into pages
@@ -298,8 +387,7 @@ def retrieve_all_advertisments(request):
     
     # when index for page is out of bounds return 204 response 
     except EmptyPage as e:
-        response = {"message": "Last page reached"}
-        return Response(response, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}

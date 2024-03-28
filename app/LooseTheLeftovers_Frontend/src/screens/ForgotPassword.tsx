@@ -48,7 +48,9 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
             value={confirmedPassword}
           />
         </View>
+        <View style={styles.buttonContainer}>
         <Button title="Reset Password" onPress={handleResetPassword} />
+        </View>
       </LinearGradient>
     </>
   );

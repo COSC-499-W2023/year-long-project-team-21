@@ -4,11 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
-from Users.models import CustomUser
+from django.contrib.auth.hashers import check_password
 
+from Users.models import CustomUser
 from Users.api.serializers import RegistrationSerializer
 from Users.api.serializers import TokenObtainPairSerializerUserId
 from Users.api.serializers import UserSerializer
+from Users.api.serializers import UpdateUserSerializer
 
 
 class TokenObtainPairSerializerUserId(TokenObtainPairView):
@@ -76,7 +78,34 @@ class UsersHandler(APIView):
         # return user(s) data
         return retrieve_user(user_id)
 
+    def put(self, request, *args, **kwargs):
+        """
+        Handle PUT requests to update a user's profile. Requires authentication.
 
+        Args:
+            request (HttpRequest): The request object.
+            
+            The request should have these fields in the body as json:
+                -email
+                -firstname
+                -lastname
+
+        Returns:
+            Response: Response object with the user data and HTTP status dependent on user auth and sucess
+        """
+        # Manually check if the incoming request has permission to resource
+        permission = IsAuthenticated()
+        if not permission.has_permission(request, self):
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        
+        if 'new_password' in request.data.keys():
+            return update_password(request)
+        else:
+            return update_user(request)
+        
 def register_user(request):
     """
     POST request to handle user creation. Returns a authentication token
@@ -136,7 +165,7 @@ def retrieve_user(user_id):
     if user_id is None:
         try:
             # query users
-            users = CustomUser.objects.all()
+            users = CustomUser.objects.all().order_by("id")
             # send to serializer to package data
             serializer = UserSerializer(users, many=True)
             # send response, 200 ok
@@ -158,3 +187,63 @@ def retrieve_user(user_id):
             # send problem response and server error
             response = {"message": "Error retrieving users: user does not exist"}
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+def update_user(request):
+    """
+    PUT request to update a user's information.
+    Uses the UpdateUserSerializer class to validate input and update the
+    user instance.
+
+    Fields that can be updated
+        -email
+        -firstname
+        -lastname
+    """
+    # get user_id from request
+    try:
+        user_id = request.user.id
+        user = CustomUser.objects.get(pk=user_id)
+
+        serializer = UpdateUserSerializer(user, request.data)
+        if serializer.is_valid():
+            # if valid save updated ad
+            serializer.save() 
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        else:
+            # if serializer returned errors on validation return errors and HTTP_400 status
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    except Exception as e:
+        # if error occurs return error message and detail with HTTP_500 status
+        response = {"message": "Error updating post", "error": str(e)}
+        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def update_password(request):
+    """
+    PUT request to update a user's password.
+    Uses the UpdatePasswordSerializer class to validate input and update the
+    password for the user.
+
+    Request must contain
+        -old_password
+        -new_password
+        -confirm_password
+    """
+    old_password = request.data['old_password']
+    new_password = request.data['new_password']
+    confirm_password = request.data['confirm_password']
+    
+    # if user didn't enter their correct password return error message and HTTP 401 response
+    if not check_password(old_password, request.user.password):
+        return Response({'detail': 'Incorrect password entered'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # if user didn't enter same password twice return error message and HTTP 400 response
+    if new_password != confirm_password:
+        return Response({'detail': 'Passwords must match'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # old password entered correct and new passwords match:
+    #   save new password and return message and HTTP 200 response
+    user = request.user
+    user.set_password(new_password)
+    user.save()
+    return Response({'detail': 'Password changed successfully'}, status=status.HTTP_200_OK)
