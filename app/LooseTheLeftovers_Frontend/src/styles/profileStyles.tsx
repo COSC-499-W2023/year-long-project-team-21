@@ -16,7 +16,7 @@ const profileStyles = StyleSheet.create({
   profileText: {
     textAlign: 'center',
     color: global.secondary,
-    fontSize: 23,
+    fontSize: 18,
   },
   item: {
     alignItems: 'center',
