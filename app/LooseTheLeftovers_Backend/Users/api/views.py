@@ -205,7 +205,11 @@ def update_user(request):
         user = CustomUser.objects.get(pk=user_id)
 
         # if any required fields are not included in request set them to user's current value
-        data = request.data.dict()
+        if type(request.data) != dict:
+            data = request.data.dict()
+        else:
+            data = request.data
+
         if "email" not in data.keys():
             data['email'] = user.email
         else:
@@ -221,7 +225,7 @@ def update_user(request):
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
             except Exception as e: # no email was found, good to continue
-                print(str(e))
+                pass
 
         if "first_name" not in data.keys():
             data['first_name'] = user.first_name
