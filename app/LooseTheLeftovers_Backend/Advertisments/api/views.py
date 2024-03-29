@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -14,7 +15,6 @@ from Advertisments.models import Advertisment, AdvertismentImage
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import *
-from datetime import date
 
 
 class AdvertismentHandler(APIView):
@@ -331,7 +331,7 @@ def retrieve_advertisments_for_user(request, user_id):
     """
     try:
         # query all ads and their images for passed user
-        user_ads = Advertisment.objects.filter(user_id=user_id)
+        user_ads = Advertisment.objects.filter(user_id=user_id).filter(expiry__gt=datetime.now())
         user_ad_images = AdvertismentImage.objects.filter(ad_id__in=user_ads)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -391,8 +391,11 @@ def retrieve_all_advertisments(request):
     """
     try:
         # query all ads and their images
-        all_ads = Advertisment.objects.all().defer("description")
-        all_images = AdvertismentImage.objects.all()
+        all_ads = Advertisment.objects.filter(
+            Q(expiry__gt=datetime.now()) | Q(expiry=None)
+        ).defer("description")
+    
+        all_images = AdvertismentImage.objects.filter(ad_id__in=all_ads)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -453,6 +456,7 @@ def get_ads_location(request):
     try:
         nearby_ads = (
             Advertisment.objects.filter(
+                Q(expiry__gt=datetime.now()) | Q(expiry=None),
                 location__distance_lt=(user_location, D(km=req_range))
             )
             .annotate(distance=Distance("location", user_location))
@@ -464,7 +468,7 @@ def get_ads_location(request):
         ad_paginator = Paginator(nearby_ads, 3)
 
         # gets data for the current page
-        page_number = request.GET.get("page")
+        page_number = request.POST.get("page")
         if page_number is None:
             page_number = 1
         ad_page = ad_paginator.page(page_number)
@@ -509,7 +513,9 @@ def get_ads_category(request):
 
     try:
         categorized_ads = (
-            Advertisment.objects.filter(category_filters)
+            Advertisment.objects.filter(
+                Q(expiry__gt=datetime.now()) | Q(expiry=None),
+                category_filters)
         ).prefetch_related("ad_image")
 
         # put query results into pages
@@ -536,12 +542,18 @@ def get_ads_category(request):
 
 
 def get_ads_category_location(request):
+    
+    
     # serialize incoming data
     serializer = LocationSerializer(data=request.data)
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # also check if categories included (optional in serializer but required in this method)
+    if not "categories" in serializer.validated_data.keys():
+        return Response({"message": "Endpoint expecting categories"}, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, latitude, and categories
     req_range = serializer.validated_data["range"]
@@ -559,6 +571,7 @@ def get_ads_category_location(request):
     try:
         nearby_ads = (
             Advertisment.objects.filter(
+                Q(expiry__gt=datetime.now()) | Q(expiry=None),
                 location__distance_lt=(user_location, D(km=req_range))
             )
             .filter(category_filters)
