@@ -12,7 +12,7 @@ class TestModels(TestSetUpSendMessage):
             sender_id=self.user_1.id,
             receiver_id=self.user_2.id,
             time_sent="2024-02-10T12:30:00.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
 
         # assert msg exists
