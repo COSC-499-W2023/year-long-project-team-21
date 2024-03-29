@@ -262,8 +262,15 @@ def update_advertisment(request):
         )
 
     try:
+        # if required fields are missing set them to the ad's current value
+        data = request.data.dict()
+        if "title" not in request.data.keys():
+            data["title"] = ad.title
+        if "category" not in request.data.keys():
+            data["category"] = ad.category
+
         # pass new ad data to serializer and validate passed data
-        ad_serializer = AdvertismentSerializer(ad, data=request.data)
+        ad_serializer = AdvertismentSerializer(ad, data=data)
         if ad_serializer.is_valid():
             # if valid save updated ad
             ad_serializer.save()
@@ -534,7 +541,6 @@ def get_ads_category_location(request):
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
-        print("we got here")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, latitude, and categories
