@@ -208,6 +208,21 @@ def update_user(request):
         data = request.data.dict()
         if "email" not in data.keys():
             data['email'] = user.email
+        else:
+            try:
+                # if email was provided check it doesn't already exist
+                user_email = CustomUser.objects.get(email=data["email"]).email
+
+                # if it exists check it is not the same as the user's current email
+                if user_email == user.email:
+                    raise Exception
+
+                response = {"message": "This email is in use by another user"}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+            except Exception as e: # no email was found, good to continue
+                print(str(e))
+
         if "first_name" not in data.keys():
             data['first_name'] = user.first_name
         if "last_name" not in data.keys():
