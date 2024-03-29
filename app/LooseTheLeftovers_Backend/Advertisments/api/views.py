@@ -263,7 +263,11 @@ def update_advertisment(request):
 
     try:
         # if required fields are missing set them to the ad's current value
-        data = request.data.dict()
+        if type(request.data) != dict:
+            data = request.data.dict()
+        else:
+            data = request.data
+
         if "title" not in request.data.keys():
             data["title"] = ad.title
         if "category" not in request.data.keys():
@@ -606,7 +610,6 @@ def get_ads_category_location(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
-        print("this is the error " + str(e))
         return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
