@@ -20,17 +20,15 @@ describe('CreateAd Screen', () => {
   });
 
   it('renders the CreateAd screen correctly', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
-    expect(getByText('Food Name')).toBeDefined();
-    expect(getByPlaceholderText('Title')).toBeDefined();
-    expect(getByText('Description (optional)')).toBeDefined();
-    expect(getByPlaceholderText('Description')).toBeDefined();
-    expect(getByText('Pick an image of the food')).toBeDefined();
-    expect(getByText('Set an expiry range')).toBeDefined();
-    expect(getByText('Submit')).toBeDefined();
+    expect(getByTestId('test-title')).toBeDefined();
+    expect(getByTestId('test-title-input')).toBeDefined();
+    expect(getByTestId('test-description')).toBeDefined();
+    expect(getByTestId('test-description-input')).toBeDefined();
+    expect(getByTestId('test-pick-img')).toBeDefined();
+    expect(getByTestId('test-expiry')).toBeDefined();
+    expect(getByTestId('test-submit')).toBeDefined();
   });
 });
 
@@ -43,8 +41,21 @@ describe('CreateAd Screen - InputFields', () => {
     const { getByPlaceholderText } = render(
       <CreateAd navigation={undefined} />,
     );
-    const titleInput = getByPlaceholderText('Title');
 
+    /** Some weird testID behaviour, accessing the same component via testID and placeholder
+     * has different results. Placeholder works just fine (and it will do for now), testID
+     * for the same code and the same test returns undefined.
+     *
+     * const titleInput = getByTestId('test-title-input');
+     * fireEvent.changeText(titleInput, 'Delicious Pizza');
+     * expect(titleInput.props.value).toBe('Delicious Pizza');
+     *
+     * Output:
+     * Expected: "Delicious Pizza"
+     * Received: undefined
+     */
+
+    const titleInput = getByPlaceholderText('Title (25 character limit)');
     fireEvent.changeText(titleInput, 'Delicious Pizza');
     expect(titleInput.props.value).toBe('Delicious Pizza');
   });
@@ -53,10 +64,12 @@ describe('CreateAd Screen - InputFields', () => {
     const { getByPlaceholderText } = render(
       <CreateAd navigation={undefined} />,
     );
-    const descriptionInput = getByPlaceholderText('Description');
 
-    fireEvent.changeText(descriptionInput, 'A tasty homemade pizza');
-    expect(descriptionInput.props.value).toBe('A tasty homemade pizza');
+    const titleInput = getByPlaceholderText(
+      'Description (200 character limit)',
+    );
+    fireEvent.changeText(titleInput, 'A tasty homemade pizza');
+    expect(titleInput.props.value).toBe('A tasty homemade pizza');
   });
 });
 

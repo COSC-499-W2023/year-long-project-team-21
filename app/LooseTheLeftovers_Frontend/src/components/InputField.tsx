@@ -39,6 +39,7 @@ const InputField: React.FC<InputFieldProps> = ({
   multiline,
   width,
   maxLength,
+  testID,
 }: InputFieldProps) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
@@ -66,7 +67,7 @@ const InputField: React.FC<InputFieldProps> = ({
   };
 
   return (
-    <View style={combinedInputContainerStyle}>
+    <View style={combinedInputContainerStyle} testID={testID}>
       <TextInput
         style={inputStyle}
         placeholder={placeholder}
