@@ -204,7 +204,16 @@ def update_user(request):
         user_id = request.user.id
         user = CustomUser.objects.get(pk=user_id)
 
-        serializer = UpdateUserSerializer(user, request.data)
+        # if any required fields are not included in request set them to user's current value
+        data = request.data.dict()
+        if "email" not in data.keys():
+            data['email'] = user.email
+        if "first_name" not in data.keys():
+            data['first_name'] = user.first_name
+        if "last_name" not in data.keys():
+            data['last_name'] = user.last_name
+
+        serializer = UpdateUserSerializer(user, data)
         if serializer.is_valid():
             # if valid save updated ad
             serializer.save() 
@@ -215,7 +224,7 @@ def update_user(request):
         
     except Exception as e:
         # if error occurs return error message and detail with HTTP_500 status
-        response = {"message": "Error updating post", "error": str(e)}
+        response = {"message": "Error updating profile", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 def update_password(request):
