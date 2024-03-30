@@ -173,11 +173,15 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   const goBack = () => {
     navigation.goBack();
-  }
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header leftIconSource= {require("../assets/back_arrow_white.png")} onLeftPress = {goBack} title="Create Post" />
+      <Header
+        leftIconSource={require('../assets/back_arrow_white.png')}
+        onLeftPress={goBack}
+        title="Create Post"
+      />
 
       <ScrollView>
         <View style={styles.formContainer}>
@@ -188,6 +192,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={22}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-title"
             />
           </View>
           <InputField
@@ -195,6 +200,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
+            testID="test-title-input"
             maxLength={15}
           />
           {fieldError.titleError !== '' && (
@@ -213,6 +219,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={22}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-description"
             />
           </View>
           <InputField
@@ -224,6 +231,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             multiline={true}
             width="100%"
             maxLength={200}
+            testID="test-description-input"
           />
 
           {/* Category */}
@@ -267,6 +275,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={22}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-pick-img"
             />
           </View>
           <View style={styles.imagePickerContainer}>
@@ -291,6 +300,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 textsSize={22}
                 textsColor={global.secondary}
                 textsWeight="bold"
+                testID="test-expiry"
               />
               <Switch
                 trackColor={{
@@ -330,7 +340,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 />
               </View>
             )}
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button
+              title="Submit"
+              onPress={handleSubmit}
+              testID="test-submit"
+            />
           </View>
         </View>
       </ScrollView>
