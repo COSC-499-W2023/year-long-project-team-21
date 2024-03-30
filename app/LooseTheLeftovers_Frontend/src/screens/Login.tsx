@@ -9,6 +9,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
+import { useChat } from '../common/ChatContext';
 
 /**
  * Login component.
@@ -26,6 +27,7 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { updateLoggedIn } = useChat();
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
@@ -35,6 +37,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
+        updateLoggedIn(true);
         navigation.navigate('Home');
       } catch (error) {
         setErrorMessage(

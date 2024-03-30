@@ -7,9 +7,9 @@ import styles from '../../styles/chatListStyles';
 /**
  * ChatListItem component.
  *
- * A list item component for displaying a single chat in a list. Shows the chat's name and
- * the last message sent. When pressed, triggers an action defined by the `onPress` prop,
- * in the fututre to navigate to the Chat screen.
+ * A list item component for displaying a single chat in a list. Shows the chat's name,
+ * the last message sent, and when the last message was sent/received. When pressed,
+ * navigates to respective Chat.
  *
  * @component
  * @example
@@ -37,7 +37,7 @@ const ChatListItem: React.FC<{
   navigation: any;
   your_id: any;
 }> = ({ chat, navigation, your_id }) => {
-  const [title, setTitle] = useState<string>('Loading ad title...');
+  const [title, setTitle] = useState<string>('loading title...');
 
   useEffect(() => {
     const fetchAdTitle = async () => {
@@ -46,7 +46,7 @@ const ChatListItem: React.FC<{
         setTitle(title);
       } catch (error) {
         console.error('ChatListItem: Error fetching ad title:', error);
-        setTitle('Ad title unavailable'); // Fallback text
+        setTitle('unavailable');
       }
     };
 

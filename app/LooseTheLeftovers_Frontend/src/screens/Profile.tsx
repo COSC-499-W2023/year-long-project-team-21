@@ -19,12 +19,14 @@ import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
 import Button from '../components/Button';
+import { useChat } from '../common/ChatContext';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
   const [data, setData] = useState('');
+  const { updateLoggedIn } = useChat();
 
   const handleButtonOnPress = async () => {
     try {
@@ -34,6 +36,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
       if (session) {
         // Remove the user session
         await removeUserSession();
+        updateLoggedIn(false);
         navigation.navigate('Registration');
       } else {
         throw new Error('No active user session found');
