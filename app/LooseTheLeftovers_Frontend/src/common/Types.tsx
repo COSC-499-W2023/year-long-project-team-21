@@ -429,7 +429,29 @@ interface RatingProps {
   showRating?: boolean;
   readonly?: boolean;
   onFinishRating?: (rating: number) => void;
-}
+};
+
+/**
+ * ChatContextType type definition for ChatContext.
+ *
+ * The structure and types of values for the ChatContext, which includes
+ * the current user's ID, an array of chat messages, the logged-in status, and functions
+ * to update the logged-in status and the focus state of the ChatList component.
+ *
+ * @typedef {Object} ChatContextType
+ * @property {string | null} your_id - The current user's ID. `null` if the user is not logged in.
+ * @property {ChatType[]} chats - An array of chat data, the last message in each chat.
+ * @property {boolean} loggedIn - A boolean indicating whether the user is currently logged in.
+ * @property {(value: boolean) => void} updateLoggedIn - A function to update the `loggedIn` state. Accepts a boolean.
+ * @property {(value: boolean) => void} updateFocus - A function to update the focus state of the ChatList component. Accepts a boolean indicating whether the ChatList is in focus.
+ */
+interface ChatContextType {
+  your_id: string | null;
+  chats: ChatType[];
+  loggedIn: boolean;
+  updateLoggedIn: (value: boolean) => void;
+  updateFocus: (value: boolean) => void;
+};
 
 export {
   type ButtonProps,
@@ -456,4 +478,5 @@ export {
   type ChatType,
   type ChatListItemProps,
   type RatingProps,
+  type ChatContextType,
 };
