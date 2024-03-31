@@ -1,8 +1,7 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { type AllIconProps } from '../common/Types';
 
 /**
@@ -26,10 +25,13 @@ type RootStackParamList = {
 };
 
 // Uses all icon prop for the interface
-const MessageIcon: React.FC<AllIconProps> = ({ size = 34 }) => {
+const MessageIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
   // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChatList'>>();
+
+  const dot = require('../assets/bubble-dot.png');
+  const noDot = require('../assets/bubble.png');
 
   // Navigates to ChatList and sends parameters
   const goToChatList = () => {
@@ -37,10 +39,14 @@ const MessageIcon: React.FC<AllIconProps> = ({ size = 34 }) => {
   };
 
   // Call this to display and icon image. No need to input anything to the component, will automatically
-  // set the image size and navigation
+  // set the image size and navigations
   return (
     <TouchableOpacity onPress={goToChatList} testID={'MessageIconTest'}>
-      <Icon name='chatbubble' size={size} style={[{ color: 'white' }]}/>
+      <Image
+        source={noDot}
+        style={[{ width: size, height: size }]}
+        resizeMode="contain"
+      />
     </TouchableOpacity>
   );
 };
