@@ -16,6 +16,8 @@ import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
 import Conversation_Ended from '../screens/Conversation_Ended';
 import DoneEdit from '../screens/DoneEdit';
+import DoneResetPW from '../screens/DoneResetPW';
+import PasswordReset from '../screens/PasswordReset';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +37,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Forgot_Password"
         component={ForgotPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PasswordReset"
+        component={PasswordReset}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -80,6 +87,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="DoneEdit"
         component={DoneEdit}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DoneResetPW"
+        component={DoneResetPW}
         options={{ headerShown: false }}
       />
       <Stack.Screen

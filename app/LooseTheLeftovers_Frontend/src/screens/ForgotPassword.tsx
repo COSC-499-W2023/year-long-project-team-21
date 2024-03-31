@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Texts from '../components/Text';
 import { Text } from 'react-native';
 import styles from '../styles/loginStyle';
@@ -30,8 +30,18 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
 
   const validator = require('validator');
 
+  // Clear states when navigating away
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      setEmail('');
+      setErrorMessage('');
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   const handleEmail = (input: string) => {
     setEmail(input);
+    setErrorMessage('');
   };
 
   const verifyEmail = () => {
@@ -70,11 +80,10 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
     if (!validator.isEmail(email)) {
       verifyEmail();
     } else {
-      // else, reset error any existing error message, and try calling the backend. Any error the backend generates will populate the error field. Knarly
-      setErrorMessage('');
+      // Any error the backend generates will populate the error field. Knarly
       let payload: any = await apiCall();
       if (payload.status == 200) {
-        console.log('oh my god');
+        navigation.navigate('PasswordReset');
       }
     }
   };
@@ -97,7 +106,7 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
 
         <Texts
           textsColor="white"
-          texts="We get it, mistakes can happen. Please enter the email address associated with your account and we will send you a password reset link."
+          texts="We get it, mistakes can happen. Please enter the email address associated with your account and we will send you a password reset link right away."
           textsSize={14}
         />
 
