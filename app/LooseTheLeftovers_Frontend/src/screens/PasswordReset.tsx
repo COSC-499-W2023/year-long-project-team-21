@@ -159,9 +159,13 @@ const PasswordReset: React.FC<PasswordResetProps> = ({ navigation, route }) => {
       colors={[global.purple, global.background]}
       start={{ x: 1, y: 0 }}>
       <Icon source={require('../assets/logo-with-name.png')} size={200} />
-      <Title title="New Password" titleSize={30} />
+      <Title title="Reset Password" titleSize={30} />
       <Title
-        title="Enter the verification code sent to your email"
+        title={
+          showPasswordFields
+            ? 'Enter in a new password'
+            : 'Enter the verification code sent to your email'
+        }
         titleSize={15}
       />
 

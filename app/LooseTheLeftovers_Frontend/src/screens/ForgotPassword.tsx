@@ -30,14 +30,7 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
 
   const validator = require('validator');
 
-  // Clear states when navigating away
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
-      setEmail('');
-      setErrorMessage('');
-    });
-    return unsubscribe;
-  }, [navigation]);
+  /********************************** EMAIL LOGIC  **********************************/
 
   const handleEmail = (input: string) => {
     setEmail(input);
@@ -50,6 +43,23 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
     );
     setErrorMessage(funnyEmailErrorMessages[randomIndex]);
   };
+
+  /********************************** ON BUTTON HANDLERS  **********************************/
+
+  const handleButtonOnPress = async () => {
+    // Display an email message if the email is not, well, an email
+    if (!validator.isEmail(email)) {
+      verifyEmail();
+    } else {
+      // Any error the backend generates will populate the error field. Knarly
+      let payload: any = await apiCall();
+      if (payload.status == 200) {
+        navigation.navigate('PasswordReset');
+      }
+    }
+  };
+
+  /********************************** BACKEND API CALLS **********************************/
 
   const handleNetworkError = (error: any) => {
     if (axios.isAxiosError(error) && error.response) {
@@ -75,19 +85,6 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  const handleButtonOnPress = async () => {
-    // Display an email message if the email is not, well, an email
-    if (!validator.isEmail(email)) {
-      verifyEmail();
-    } else {
-      // Any error the backend generates will populate the error field. Knarly
-      let payload: any = await apiCall();
-      if (payload.status == 200) {
-        navigation.navigate('PasswordReset');
-      }
-    }
-  };
-
   return (
     <>
       <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
@@ -106,7 +103,7 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
 
         <Texts
           textsColor="white"
-          texts="We get it, mistakes can happen. Please enter the email address associated with your account and we will send you a password reset link right away."
+          texts="We get it, mistakes can happen. Please enter the email address associated with your account and we will send you a verification code."
           textsSize={14}
         />
 
