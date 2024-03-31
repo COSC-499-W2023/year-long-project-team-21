@@ -14,9 +14,6 @@ class Advertisment(models.Model):
 
     location = geomodels.PointField(geography=True, blank=True, null=True)
 
-    # latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.000000)
-    # longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.000000)
-
     def __str__(self):
         return str(self.pk) + ": " + self.title
 
