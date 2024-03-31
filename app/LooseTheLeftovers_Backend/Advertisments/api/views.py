@@ -486,7 +486,7 @@ def get_ads_category(request):
 
     # retrieve all the categories parameter from the request
     categories = set()
-    pageNumber = None
+    pageNumber = 1
     for key, value in request.query_params.items():
         if key != "page":
             categories.add(value)
@@ -494,7 +494,7 @@ def get_ads_category(request):
             pageNumber = value
 
     # return an error if there isn't any categories
-    if len(categories) == 0 or pageNumber == None:
+    if len(categories) == 0:
         response = {"message": "Endpoint expecting category / pageNumber"}
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
@@ -521,6 +521,7 @@ def get_ads_category(request):
                 status=status.HTTP_200_OK,
             )
     # when index for page is out of bounds return 204 response
+
     except EmptyPage as e:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -534,7 +535,6 @@ def get_ads_category_location(request):
 
     # return a 400 if it is a bad request
     if not serializer.is_valid():
-        print("we got here")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, latitude, and categories
@@ -549,7 +549,7 @@ def get_ads_category_location(request):
     # create a Point for the user using GeoDjango
     user_location = Point(req_longitude, req_latitude)
 
-    # filter ads nearby based on radius, append a location which is the distance between the long/lat, and then retrieve images
+    # filter ads nearby based on radius, append a location which is the distance between the long/lat, filter by ategory, and then retrieve images
     try:
         nearby_ads = (
             Advertisment.objects.filter(
@@ -597,5 +597,5 @@ def parse_categories(categories):
     """
     category_filters = Q()
     for category_name in categories:
-        category_filters &= Q(category=category_name)
+        category_filters &= Q(category__icontains=category_name)
     return category_filters
