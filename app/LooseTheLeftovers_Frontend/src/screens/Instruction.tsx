@@ -5,12 +5,7 @@ import Title from '../components/Title';
 import Texts from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
-import { SecureAPIReq } from '../common/NetworkRequest';
-import {
-  removeUserSession,
-  retrieveUserSession,
-} from '../common/EncryptedSession';
-import axios from 'axios';
+import { global } from '../common/global_styles';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
   const handleButtonOnPress = () => {
@@ -39,7 +34,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
 
     {
       id: 4,
-      txt: 'see the expiery based on the color of the post',
+      txt: 'see the expiery based on the post color',
       image: require('../assets/expiry.png'),
       size: 80,
     },
@@ -84,7 +79,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
         <Texts // Displays the first text
           textsSize={20}
           texts="This is an app to share left over food to others in need"
-          textsColor={global.secondary}
+          textsColor={global.primary}
           // The list below displays the entire instruction and images
         />
 
