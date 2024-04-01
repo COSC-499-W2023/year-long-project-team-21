@@ -1,6 +1,6 @@
 # Sten Korver Personal Weekly Log
 
-03/18 to 03/24
+03/25 to 03/31
 
 Username: Rev-Rok
 
@@ -8,20 +8,21 @@ Username: Rev-Rok
 
 * Participate team meetings
 * Backend bugfixes
-  * Get last messages for all uer's conversations should also include ad_id
-  * Update profile should not need all fields in request
-  * Update ad should not need all fields provided to update
   * Expired ads should never be returned in results
+  * Messages delete when ad is deleted or closed
+     * Messages are connected to an ad   
+  
 
 ### Completed Features For This Week:
 * Backend bugfixes
-  * Get last messages for all uer's conversations should also include ad_id
-  * Update profile should not need all fields in request
-  * Update ad should not need all fields provided to update
+  * Expired ads should never be returned in results
+  * Messages delete when ad is deleted or closed
+     * Messages are connected to an ad
 
 ### Types of Tasks Worked On:
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/d6e6a6f4-0c05-4f83-8be5-f2b71c7f875d)
 
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/a5383420-7d75-4312-9dc5-97b83f510608)
+
 
 
 
