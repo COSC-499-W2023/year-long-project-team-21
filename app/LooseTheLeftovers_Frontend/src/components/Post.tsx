@@ -59,6 +59,14 @@ const Post: React.FC<PostProps> = ({
    * @param {string} category - The category of the post.
    * @returns {void}
    */
+
+  function checkTitleLength(title: string): string {
+    if (title.length > 14) {
+      return title.substring(0, 14) + '...';
+    } else {
+      return title;
+    }
+  }
   const checkDietaryOption = (category: string) => {
     const dietaryOptions = category.split(',').map(option => option.trim());
     setShowNutAllergyIcon(dietaryOptions.includes('peanut-free'));
@@ -118,7 +126,12 @@ const Post: React.FC<PostProps> = ({
       <Card style={cardStyles.card_front}>
         <Card.Content>
           <View style={cardStyles.front_container}>
-            <Title style={cardStyles.card_title_style}>{title}</Title>
+            <Title style={cardStyles.card_title_style}>
+              {checkTitleLength(title)}
+            </Title>
+            <Title style={cardStyles.card_distance_style}>
+              {distance !== undefined && ` ${distance} km away`}
+            </Title>
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
             {render_Icons(
               cardStyles.card_dietaryIcons_wrapper_style,
