@@ -15,6 +15,8 @@ except for a few final pull requests that have to be reviewed and merged.
 
 ## Completed tasks for this week
 - messages complete
+- backend get ads by filtering for location and category(s)
+- forgot password
 - bug fixes: 
   - ui touch ups
   - backend will never return expired ads
