@@ -2,7 +2,8 @@ Team 21 - 03/25 to 03/31
 
 ## Overview
 
-This week we continued working on bug fixes and finishing up features. 
+This week we worked on making some final minor changes and finishing up bugfixes. Our app is now nearly complete
+except for a few final pull requests that have to be reviewed and merged.
 
 ## Quick reminder for usernames
 
@@ -13,19 +14,25 @@ This week we continued working on bug fixes and finishing up features.
 * rogeonee - Egor Bezriadin
 
 ## Completed tasks for this week
-- 
+- messages complete
+- bug fixes: 
+  - ui touch ups
+  - backend will never return expired ads
+  - backend messages delete when ad is closed/deleted
+ 
 
 ## Tasks in progress
-- 
-
-
+- Reviewing and merging pull requests
+- Minor last cosmetic changes to front end
 
 ## Project board
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/89c4cdbc-af18-4e61-95fd-519026a8dd9f)
 
 
 
 
 ## Burn Up Chart
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/3f299568-125d-4383-8ada-ce76995cde62)
 
 
 
