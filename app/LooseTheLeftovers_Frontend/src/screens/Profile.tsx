@@ -53,7 +53,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
    * @returns {void}
    */
   const handleEditButtonOnPress = async () => {
-    console.log('edit profile!');
     navigation.navigate('EditProfile', { userId: userID });
   };
 
