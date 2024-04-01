@@ -1,22 +1,23 @@
 # Nicholas Chamberlain Personal Weekly Log
 
-3/18 to 3/24
+3/25 to 3/31
 
 Username: n3c777
 
 ## My Features For This Week
 
--Some other bugs fixed
+-No suprises here but more bugs and small features
 
 ## Completed Features For This Week
 
--redo instructions page. No has new instruction, and if the user clicks on the logo they are taken to the instructions page
--fixed registration page, now gives proper errors when a user enters a taken email/username
+-account profile deafualt picture. Now the profile page has a defualt profile picture that is non customizable
+-screen transition. Instead of the white loading page that happens in between screen transitions now it is the background grey we use. This makes transitions more smooth.
+-Login/Registration info bug. There was an issue where the login/registration info would be left in the input fields after they leave the page(even when logging out this was an issue). Now everytime someone leaves the login/register page, the information dissapears.
 
 ## Features in progress
 
--profile page default profile picture
+-fixing character limit update on home page.
 
 ## Types of Tasks Worked On
 
-![individual log week 11 t2](https://i.postimg.cc/1RvjwqR5/March-24.png)
+![individual log week 12 t2](https://i.postimg.cc/MKjJ742S/march-31.png)
