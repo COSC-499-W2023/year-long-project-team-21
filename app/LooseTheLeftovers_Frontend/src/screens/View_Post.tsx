@@ -138,7 +138,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         const user_ratings: any = await newReq.get(`/ratings/${user_id}`);
         data.ratings = user_ratings.data.rating;
         data.count = user_ratings.data.count;
-        console.log('Ratings', data.ratings);
         if (data.ratings === undefined) {
           data.ratings = 0;
         }
