@@ -243,7 +243,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             style={[{ color: card_color_dict.middleColor }, styles.expiry]}>
             {adData.expiry}
           </Title>
-          <Text style={styles.description}>{adData.description}</Text>
+
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
@@ -265,6 +265,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
                   ({adData.count})
                 </Text>
               </View>
+              <Text style={styles.description}>{adData.description}</Text>
             </View>
           </View>
 

@@ -82,7 +82,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
-    console.log(endpoint)
+    console.log(endpoint);
     navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 
@@ -128,9 +128,6 @@ const Post: React.FC<PostProps> = ({
           <View style={cardStyles.front_container}>
             <Title style={cardStyles.card_title_style}>
               {checkTitleLength(title)}
-            </Title>
-            <Title style={cardStyles.card_distance_style}>
-              {distance !== undefined && ` ${distance} km away`}
             </Title>
             <Title style={cardStyles.card_expiry_style}>{expiryDate}</Title>
             {render_Icons(
