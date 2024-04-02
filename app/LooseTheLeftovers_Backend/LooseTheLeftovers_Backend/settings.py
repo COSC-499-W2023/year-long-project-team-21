@@ -184,6 +184,17 @@ SIMPLE_JWT = {
 }
 
 '''
+Configuration for email token validation
+'''
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "django_rest_passwordreset.tokens.RandomNumberTokenGenerator",
+    "OPTIONS": {
+        "min_number": 1500,
+        "max_number": 9999
+    }
+}
+
+'''
 Email configuration for "forgot password" 
 '''
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -191,4 +202,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "losetheleftovers@gmail.com"
-EMAIL_HOST_PASSWORD = "StrongSystemPassword1337!"
+EMAIL_HOST_PASSWORD = "ibaq lrcj zljg dbtl"
+

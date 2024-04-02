@@ -103,7 +103,7 @@ const ForgotPassword = ({ navigation }: { navigation: any }) => {
 
         <Texts
           textsColor="white"
-          texts="We get it, mistakes can happen. Please enter the email address associated with your account and we will send you a verification code."
+          texts="Enter account email to recieve verification code"
           textsSize={14}
         />
 
