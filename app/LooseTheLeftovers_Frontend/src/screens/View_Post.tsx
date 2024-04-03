@@ -117,11 +117,11 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
 
       newReq = await SecureAPIReq.createInstance();
 
-      const user_details: any = await newReq.get(`users/${user_id}`);
+      const user_details: any = await newReq.get(`users/${user_id}/`);
 
       try {
         //append ratings and ratings count
-        const user_ratings: any = await newReq.get(`/ratings/${user_id}`);
+        const user_ratings: any = await newReq.get(`/ratings/${user_id}/`);
         data.ratings = user_ratings.data.rating;
         data.count = user_ratings.data.count;
       } catch {
