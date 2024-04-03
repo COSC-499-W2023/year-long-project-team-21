@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Octicons';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import ChatService from '../../common/ChatService';
+import { useChat } from '../../common/ChatContext';
+import { global } from '../../common/global_styles';
 import styles from '../../styles/chatListStyles';
 
 /**
@@ -33,11 +36,13 @@ const ChatListItem: React.FC<{
     msg: string;
     time_sent: string;
     username: string;
+    read: boolean;
   };
   navigation: any;
   your_id: any;
 }> = ({ chat, navigation, your_id }) => {
   const [title, setTitle] = useState<string>('loading title...');
+  const { markChatAsReadById } = useChat();
 
   useEffect(() => {
     const fetchAdTitle = async () => {
@@ -54,6 +59,8 @@ const ChatListItem: React.FC<{
   }, [chat.ad_id]);
 
   const handlePress = () => {
+    if (!chat.read) markChatAsReadById(chat.id);
+
     navigation.navigate('Chat', {
       user_id: chat.user_id,
       ad_id: chat.ad_id,
@@ -73,7 +80,14 @@ const ChatListItem: React.FC<{
         <Text style={styles.chatItemName}>{`${chat.username} — ${title}`}</Text>
         <Text style={styles.chatItemTime}>{lastMessageTime}</Text>
       </View>
-      <Text style={styles.chatItemMessage}>{chat.msg}</Text>
+      {!chat.read ? (
+        <View style={styles.unreadContainer}>
+          <Text style={styles.chatItemMessageUnread}>{chat.msg}</Text>
+          <Icon name="dot-fill" size={20} style={[{ color: global.primary }]} />
+        </View>
+      ) : (
+        <Text style={styles.chatItemMessage}>{chat.msg}</Text>
+      )}
     </TouchableOpacity>
   );
 };

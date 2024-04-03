@@ -3,6 +3,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type AllIconProps } from '../common/Types';
+import { useChat } from '../common/ChatContext';
 
 /**
  * Icon component.
@@ -13,7 +14,7 @@ import { type AllIconProps } from '../common/Types';
  * @component
  * @param {IconProps} props - The props for the Icon component.
  * @param {ImageSourcePropType} props.source - The image source for the icon.
- * @param {number} [props.size=45] - The size of the icon.
+ * @param {number} [props.size] - The size of the icon.
  * @param {() => void} props.onPress - Callback function to execute when the icon is pressed.
  * @param {string} [props.testID] - Optional test identifier for the component.
  * @example
@@ -26,6 +27,7 @@ type RootStackParamList = {
 
 // Uses all icon prop for the interface
 const MessageIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
+  const { hasUnread } = useChat();
   // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChatList'>>();
@@ -43,7 +45,7 @@ const MessageIcon: React.FC<AllIconProps> = ({ size = 40 }) => {
   return (
     <TouchableOpacity onPress={goToChatList} testID={'MessageIconTest'}>
       <Image
-        source={noDot}
+        source={hasUnread ? dot : noDot}
         style={[{ width: size, height: size }]}
         resizeMode="contain"
       />

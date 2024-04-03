@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   chatItemMessage: {
     color: global.secondary,
     fontSize: 15,
+    marginBottom: 5,
   },
   chatItemTime: {
     color: global.secondary,
@@ -45,6 +46,17 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: global.secondary,
+  },
+  chatItemMessageUnread: {
+    color: global.secondary,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  unreadContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
   },
 });
 

@@ -174,7 +174,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           user_id: user_id,
           ad_id: postId,
           new_chat: false,
-          your_id: your_id,
+          your_id: your_id.current,
         });
       } else {
         console.log('View_Post: No history');
@@ -182,7 +182,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           user_id: user_id,
           ad_id: postId,
           new_chat: true,
-          your_id: your_id,
+          your_id: your_id.current,
         });
       }
     } catch (error) {
