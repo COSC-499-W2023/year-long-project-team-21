@@ -310,7 +310,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             dropdownStyles={styles.dropdownStyles}
             dropdownTextStyles={styles.dropdownTextStyles}
             arrowicon={
-              <Icon source={require('../assets/drop_3.png')} size={13} />
+              <Icon source={require('../assets/drop_3.png')} size={18} />
             }
           />
           {fieldError.categoryError !== '' && (

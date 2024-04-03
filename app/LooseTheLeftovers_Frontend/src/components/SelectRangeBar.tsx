@@ -30,7 +30,7 @@ const SelectRangeBar: React.FC<SelectRangeBarProps> = ({ setRange }) => {
         inputStyles={styles.inputStyles}
         dropdownStyles={styles.dropdownStyles}
         dropdownTextStyles={styles.dropdownTextStyles}
-        arrowicon={<Icon source={require('../assets/drop_3.png')} size={13} />}
+        arrowicon={<Icon source={require('../assets/drop_3.png')} size={18} />}
       />
     </View>
   );
