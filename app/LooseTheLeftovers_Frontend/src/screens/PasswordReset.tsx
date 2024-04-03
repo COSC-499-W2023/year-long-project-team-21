@@ -154,6 +154,8 @@ const PasswordReset: React.FC<PasswordResetProps> = ({ navigation, route }) => {
   };
 
   return (
+    <>
+    <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
     <LinearGradient
       style={styles.LoginContainer}
       colors={[global.purple, global.background]}
@@ -174,6 +176,7 @@ const PasswordReset: React.FC<PasswordResetProps> = ({ navigation, route }) => {
         <Texts texts={errorMessage} textsSize={14} textsColor="red" />
       )}
     </LinearGradient>
+    </>
   );
 };
 

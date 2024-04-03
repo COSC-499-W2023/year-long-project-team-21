@@ -189,8 +189,8 @@ Configuration for email token validation
 DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
     "CLASS": "django_rest_passwordreset.tokens.RandomNumberTokenGenerator",
     "OPTIONS": {
-        "min_number": 1500,
-        "max_number": 9999
+        "min_number": 10000,
+        "max_number": 99999
     }
 }
 
