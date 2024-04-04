@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import TabBarTop from '../components/TabBarTop';
 import AccountIcon from '../components/AccountIcon';
@@ -56,8 +53,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
    * @returns {void}
    */
   const handleEditButtonOnPress = async () => {
-    console.log('edit profile!');
-    navigation.navigate("EditProfile", {userId: userID})
+    navigation.navigate('EditProfile', { userId: userID });
   };
 
   /**
@@ -100,8 +96,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
     fetchUserInfo();
   }, []);
 
-   // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen.
-   useFocusEffect(
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen.
+  useFocusEffect(
     useCallback(() => {
       fetchUserInfo();
     }, []),
