@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { global } from '../common/global_styles';
 
-const ReviewStyles = StyleSheet.create({
+const Conversation_EndedStyles = StyleSheet.create({
   Title: {
     flex: 0.4,
     justifyContent: 'flex-end',
@@ -12,6 +12,7 @@ const ReviewStyles = StyleSheet.create({
     color: global.secondary,
     marginLeft: '10%',
     marginRight: '10%',
+    marginBottom: '10%',
     textAlign: 'center',
     textAlignVertical: 'bottom',
   },
@@ -27,4 +28,4 @@ const ReviewStyles = StyleSheet.create({
   },
 });
 
-export default ReviewStyles;
+export default Conversation_EndedStyles;

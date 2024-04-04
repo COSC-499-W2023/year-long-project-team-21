@@ -12,6 +12,7 @@ import View_Post from '../screens/View_Post';
 import ChatList from '../screens/ChatList';
 import Reviews from '../screens/Reivews';
 import Chat from '../screens/Chat';
+import Conversation_Ended from '../screens/Conversation_Ended';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Chat"
         component={Chat}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Conversation_Ended"
+        component={Conversation_Ended}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

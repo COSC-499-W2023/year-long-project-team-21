@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
   GiftedChat,
   IMessage,
@@ -27,8 +28,8 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
 
   /**
    * @useFocusEffect
-   * @description This effect handles the initialization logic when the chat screen gains focus. For new chats, it 
-   * fetches the username of the chat partner. For existing chats, it fetches the entire chat history, and sets up 
+   * @description This effect handles the initialization logic when the chat screen gains focus. For new chats, it
+   * fetches the username of the chat partner. For existing chats, it fetches the entire chat history, and sets up
    * a regular interval to fetch the most recent messages, ensuring the chat stays updated. The interval is cleared
    * when the component loses focus or is unmounted, ensuring updates are only fetched when the chat is in focus.
    */
@@ -99,7 +100,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   /**
    * @function sortMessagesByDate
    * @description Sorts an array of message objects by their creation date in descending order. Ensures the most
-   * recent messages appear first in the list. Based on the `createdAt` property of each message object, which is 
+   * recent messages appear first in the list. Based on the `createdAt` property of each message object, which is
    * expected to be a Date instance.
    *
    * @param {Array<Object>} messages - An array of message objects to be sorted. Each message object must include
@@ -115,7 +116,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
 
   /**
    * @function removeDuplicates
-   * @description Removes duplicate messages based on their unique _id. Creates a new array that only includes 
+   * @description Removes duplicate messages based on their unique _id. Creates a new array that only includes
    * one instance of each message, identified by unique ids. It's an additional precaution, even though the backend is
    * expected to enforce unique IDs for each message.
    *
@@ -135,7 +136,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   /**
    * @function areMessagesEqual
    * @description Compares two arrays of message objects to determine if they are identical. Based
-   * on the `_id` of each message. Typically used to compare the most recent messages fetched against 
+   * on the `_id` of each message. Typically used to compare the most recent messages fetched against
    * the most recent local messages, to decide whether the chat's state needs updating. Equality is determined by
    * the same length of both arrays and each corresponding message having matching `_id`s.
    *
@@ -165,12 +166,12 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   /**
    * @function fetchAllMessages
    * @description Fetches the entire chat history. Invoked when the chat component comes into focus.
-   * Accumulates messages from each page into a temporary array, `tempMessages`, applying deduplication and sorting 
-   * before updating the chat state. Goes on recursively until all pages have been fetched or a page with fewer than 6 
-   * messages (or no messages) is encountered. Additionally, the function updates the interface to display the username 
+   * Accumulates messages from each page into a temporary array, `tempMessages`, applying deduplication and sorting
+   * before updating the chat state. Goes on recursively until all pages have been fetched or a page with fewer than 6
+   * messages (or no messages) is encountered. Additionally, the function updates the interface to display the username
    * of the receiver if the chat is not new.
    *
-   * @param {number} currentPage - The current page number to fetch from the server, starting from 1. Increments with each 
+   * @param {number} currentPage - The current page number to fetch from the server, starting from 1. Increments with each
    * recursive call until the chat history is fully loaded or the end of history is indicated by the server response 204.
    */
   const fetchAllMessages = async (currentPage: number) => {
@@ -211,10 +212,10 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
 
   /**
    * @function fetchPageOne
-   * @description Fetches the 6 most recent messages from the server, to ensure the chat history is up to date. 
+   * @description Fetches the 6 most recent messages from the server, to ensure the chat history is up to date.
    * Triggered at regular intervals after the initial complete chat history has been loaded. Compares the newly fetched
-   *  messages against the currently known last 6 messages to determine if there are any new updates. If new messages 
-   * are found, they are merged into the existing chat history, maintaining uniqueness and chronological order. Imitates 
+   *  messages against the currently known last 6 messages to determine if there are any new updates. If new messages
+   * are found, they are merged into the existing chat history, maintaining uniqueness and chronological order. Imitates
    * real time updates.
    *
    * The comparison with the local last six messages serves to minimize unnecessary updates to the chat
@@ -257,7 +258,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
    * Designed to work with arrays of messages, accommodating the potential for sending
    * multiple messages simultaneously, although typically it will be used to send single messages.
    *
-   * @param {Array<IMessage>} messages - An array of message objects to be sent. Each object includes 
+   * @param {Array<IMessage>} messages - An array of message objects to be sent. Each object includes
    * `message.text`, receiver's id (`user_id`), and `ad_id`.
    */
   const onSend = useCallback(
@@ -273,6 +274,11 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
     },
     [ad_id, user_id],
   );
+
+  const finish = () => {
+    console.log('finish pressed');
+    navigation.navigate('Conversation_Ended', { ad_id, user_id });
+  };
 
   const renderBubble = (props: any) => {
     return (
@@ -318,7 +324,20 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
         <TabBarTop
           LeftIcon={<GoBackIcon />}
           MiddleIcon={
-            <Text style={styles.title}>{`${username}${adTitle ? `, ${adTitle}` : ''}`}</Text>
+            <Text style={styles.title}>{`${username}${
+              adTitle ? `, ${adTitle}` : ''
+            }`}</Text>
+          }
+          RightIcon={
+            <View style={styles.rightIconWrapper}>
+              <TouchableOpacity onPress={finish} testID={'finish-test'}>
+                <Icon
+                  name="exit-outline"
+                  size={30}
+                  style={[{ color: 'white' }]}
+                />
+              </TouchableOpacity>
+            </View>
           }
         />
       </View>

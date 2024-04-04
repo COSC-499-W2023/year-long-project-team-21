@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
+import { SecureAPIReq } from '../../src/common/NetworkRequest';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import ReviewStyles from '../styles/ReviewStyles';
 import Ratings from '../components/Ratings';
 import Button from '../components/Button';
-import { SecureAPIReq } from '../../src/common/NetworkRequest';
 
 const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
-  const { receiverId } = route.params;
+  const { user_id } = route.params;
 
   const [rating, setRating] = useState<number>(0);
   const [isRatingPressed, setIsRatingPressed] = useState<boolean>(false);
@@ -25,7 +25,7 @@ const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
       const endpoint = '/ratings/';
       const ratingInfo = {
         rating: rating,
-        receiver_id: receiverId,
+        receiver_id: user_id,
       };
       setRating(0);
       setIsRatingPressed(false);
