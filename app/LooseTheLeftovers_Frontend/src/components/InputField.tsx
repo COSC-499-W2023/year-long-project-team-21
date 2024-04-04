@@ -23,6 +23,7 @@ import { type InputFieldProps } from '../common/Types';
  * @param {string | number} props.value - The initial value of the input field.
  * @param {boolean} [props.secureTextEntry=false] - Enables secure text entry for sensitive information like passwords.
  * @param {boolean} props.multiline - Optional prop to make InputField multiline, capped at 10.
+ * @param {boolean} props.maxLength - Optional prop to make InputField multiline, capped at 10.
  * @example
  * <InputField
  *   placeholder="Username"
@@ -37,6 +38,8 @@ const InputField: React.FC<InputFieldProps> = ({
   secureTextEntry = false,
   multiline,
   width,
+  maxLength,
+  testID,
 }: InputFieldProps) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
@@ -74,6 +77,8 @@ const InputField: React.FC<InputFieldProps> = ({
         placeholderTextColor={global.secondary}
         multiline={multiline}
         numberOfLines={multiline ? 1 : 1} // Default is one-line
+        maxLength={maxLength}
+        testID={testID}
       />
 
       {secureTextEntry && ( // Render if secureTextEntry is true

@@ -2,8 +2,6 @@ import React from 'react';
 import {
   render,
   waitFor,
-  fireEvent,
-  userEvent,
 } from '@testing-library/react-native';
 import PostListRenderer from '../src/components/PostListRenderer';
 import { NavigationContainer } from '@react-navigation/native';

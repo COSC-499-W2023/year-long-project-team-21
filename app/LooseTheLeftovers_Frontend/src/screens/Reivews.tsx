@@ -5,6 +5,7 @@ import globalscreenstyles from '../common/global_ScreenStyles';
 import ReviewStyles from '../styles/ReviewStyles';
 import Ratings from '../components/Ratings';
 import Button from '../components/Button';
+import { SecureAPIReq } from '../../src/common/NetworkRequest';
 
 const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
   const { user_id } = route.params;

@@ -171,10 +171,17 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     return expiryDate.toISOString();
   };
 
+  const goBack = () => {
+    navigation.goBack();
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header title="Create Post" />
+      <Header
+        leftIconSource={require('../assets/back_arrow_white.png')}
+        onLeftPress={goBack}
+        title="Create Post"
+      />
 
       <ScrollView>
         <View style={styles.formContainer}>
@@ -185,13 +192,16 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={22}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-title"
             />
           </View>
           <InputField
-            placeholder="Title"
+            placeholder="Title (25 character limit)"
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
+            testID="test-title-input"
+            maxLength={15}
           />
           {fieldError.titleError !== '' && (
             <Texts
@@ -209,16 +219,19 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={22}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-description"
             />
           </View>
           <InputField
-            placeholder="Description"
+            placeholder="Description (200 character limit)"
             onChangeText={newDescription =>
               handleFieldChange('description', newDescription)
             }
             value={adData.description}
             multiline={true}
             width="100%"
+            maxLength={200}
+            testID="test-description-input"
           />
 
           {/* Category */}
@@ -262,13 +275,12 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={22}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-pick-img"
             />
           </View>
           <View style={styles.imagePickerContainer}>
             <ImagePickerButton
-              onImagePicked={newimage =>
-                handleFieldChange('image', newimage)
-              }
+              onImagePicked={newimage => handleFieldChange('image', newimage)}
             />
           </View>
           {fieldError.imageError !== '' && (
@@ -288,6 +300,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 textsSize={22}
                 textsColor={global.secondary}
                 textsWeight="bold"
+                testID="test-expiry"
               />
               <Switch
                 trackColor={{
@@ -327,7 +340,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 />
               </View>
             )}
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button
+              title="Submit"
+              onPress={handleSubmit}
+              testID="test-submit"
+            />
           </View>
         </View>
       </ScrollView>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Texts from '../components/Text';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 import styles from '../styles/loginStyle';
 import { loginReq } from '../common/NetworkRequest';
 import LinearGradient from 'react-native-linear-gradient';
@@ -77,6 +77,11 @@ const Login = ({ navigation }: { navigation: any }) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('Forgot_Password');
+  };
+
   return (
     <>
       <LinearGradient
@@ -120,6 +125,7 @@ const Login = ({ navigation }: { navigation: any }) => {
           textsColor="white"
           texts="Forgot password?"
           textsSize={14}
+          onPress={() => handleForgotPassword()}
         />
         <Text style={{ marginTop: 30 }}>
           <Texts

@@ -22,7 +22,7 @@ import {
  */
 
 interface ButtonProps {
-  onPress: () => void;
+  onPress: () => any;
   title: string;
   textColor?: string;
   borderColor?: string;
@@ -76,6 +76,8 @@ interface IconProps {
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
  * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
+ * @property {boolean} maxLength - Optional character limit.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface InputFieldProps {
@@ -86,6 +88,8 @@ interface InputFieldProps {
   placeholderTextColor?: string;
   multiline?: boolean;
   width?: string | number;
+  maxLength?: number;
+  testID?: string;
 }
 
 /**
@@ -254,6 +258,9 @@ interface AdDataProps {
   title: string;
   image: string;
   color: string;
+  ratings?: number;
+  username?: string;
+  count?: number;
 }
 
 /**
@@ -357,6 +364,11 @@ interface PostListRendererProps {
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
+  handleLoginOnpress?: ()=> any;
+  handleEditOnpress?: () => any;
+  userInfo?: { username: string, email: string};
+  rating?: number;
+  reviewsCount?: number;
 }
 
 interface SelectRangeBarProps {

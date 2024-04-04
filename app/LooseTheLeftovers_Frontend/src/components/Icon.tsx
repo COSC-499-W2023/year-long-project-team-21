@@ -33,7 +33,7 @@ const Icon: React.FC<IconProps> = ({
 }) => {
   return (
     <TouchableOpacity
-      activeOpacity={1}
+      activeOpacity={0.5}
       onPress={onPress}
       testID={testID}
       style={containerStyle}>

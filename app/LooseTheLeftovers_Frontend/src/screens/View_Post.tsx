@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 import axios from 'axios';
@@ -34,10 +35,39 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
+import { djangoConfig, SecureAPIReq } from '../common/NetworkRequest';
+import { BASE_URL, adEndpoint, usersAds } from '../common/API';
+import axios from 'axios';
+import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
+import LinearGradient from 'react-native-linear-gradient';
+import { retrieveUserSession } from '../common/EncryptedSession';
 
+/**
+ * React component for viewing a post.
+ *
+ * @component
+ * @param {object} props - The props object.
+ * @param {object} props.navigation - The navigation object.
+ * @param {object} props.route - The route object.
+ * @returns {JSX.Element} A JSX Element representing the View_Post component.
+ */
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
-  // Put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. It'll be overwritten anyway.
+
+  // retrieve endpoint and postId from Post.tsx
+  const { postId, endpoint } = route.params;
+  interface data {
+    category: '';
+    description: '';
+    expiry: '';
+    title: '';
+    image: any;
+    color: 'expiry_long';
+    username: '';
+    ratings: 0;
+    count: 0;
+  }
+  //put default image/color instead of image type at this point. Confusing and giving error due to typescript nature. itll be overwritten anyway.
   const [adData, setAdData] = useState<AdDataProps>({
     category: '',
     description: '',
@@ -45,6 +75,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     title: '',
     image: require('../assets/logo.png'),
     color: 'expiry_long',
+    username: '',
+    ratings: 0,
+    count: 0,
   });
   // Retrieve endpoint and postId from Post.tsx
   const { postId, endpoint } = route.params;
@@ -54,6 +87,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [showNutIcon, setShowNutAllergyIcon] = useState(false);
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [user_id, setUserId] = useState('');
   const your_id = useRef(null);
 
@@ -66,8 +100,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       }
     };
     getSessionAndSetUserId();
-  }, []);
-
+  }, []);  
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
     checkDietaryOption(adData.category);
@@ -91,11 +124,41 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const fetchBackend = async () => {
     try {
       const viewAds: string = endpoint + postId + '/';
-      const payload: any = await axios.get(viewAds, djangoConfig());
-      let data: JSON = payload.data;
+      let payload: any;
+      let newReq: any;
+
+      //load both at the same time
+      await Promise.all([
+        axios.get(viewAds, djangoConfig()).then(response => {
+          payload = response;
+        }),
+        SecureAPIReq.createInstance().then(instance => {
+          newReq = instance;
+        }),
+      ]);
+
+      let data: data = payload.data;
+      const user_id = (data as any).user_id;
+
+      newReq = await SecureAPIReq.createInstance();
+
+      const user_details: any = await newReq.get(`users/${user_id}`);
+
+      try {
+        //append ratings and ratings count
+        const user_ratings: any = await newReq.get(`/ratings/${user_id}`);
+        data.ratings = user_ratings.data.rating;
+        data.count = user_ratings.data.count;
+      } catch {
+        //if there are no ratings, set both to zero
+        data.ratings = 0;
+        data.count = 0;
+      }
+
+      //append username to data
+      data.username = user_details.data.username;
       return data;
     } catch (e) {
-      // Display an error screen would be nice.
       console.log(e);
       return undefined;
     }
@@ -104,6 +167,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   useEffect(() => {
     const populateState = async () => {
       const data: any = await fetchBackend();
+
       if (data && data.image) {
         data.image = BASE_URL + data.image;
         setAdData(data);
@@ -126,16 +190,86 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
     console.log(adData.category);
+
+    /**
+     * Renders the message button component.
+     *
+     * @function
+     * @private
+     * @returns {JSX.Element} The rendered message button component.
+     */
+    const renderMessageButton = () => {
+      return (
+        <View style={styles.message_button}>
+          <Button
+            title="message"
+            onPress={() => {
+              console.log('hi');
+            }}
+            borderRadius={0.05 * Dimensions.get('window').width}
+            backgroundcolor={card_color_dict.middleColor}
+            borderColor={card_color_dict.middleColor}
+            textColor={global.secondary}
+          />
+        </View>
+      );
+    };
+
+    /**
+     * Renders the delete button component.
+     *
+     * @function
+     * @private
+     * @returns {JSX.Element} The rendered delete button component.
+     */
+    const renderDeleteButton = () => {
+      return (
+        <View style={styles.message_button}>
+          <Button
+            title="Delete"
+            onPress={() => setIsVisible(true)}
+            borderRadius={0.05 * Dimensions.get('window').width}
+            backgroundcolor={card_color_dict.middleColor}
+            borderColor={card_color_dict.middleColor}
+            textColor={global.secondary}
+          />
+        </View>
+      );
+    };
+
+    /**
+     * Checks if the previous page is the Profile page.
+     *
+     * @function
+     * @private
+     * @returns {boolean} Indicates whether the previous page is the Profile page.
+     */
+    const IsPrevPageProfile = () => {
+      const routes = navigation.getState()?.routes;
+      const prevRoute = routes[routes.length - 2];
+      return prevRoute?.name === 'Profile';
+    };
+
+    /**
+     * Renders either the delete button or the message button based on the previous page.
+     *
+     * @function
+     * @private
+     * @returns {JSX.Element} The rendered button component.
+     */
+    const renderButton = () => {
+      return IsPrevPageProfile() ? renderDeleteButton() : renderMessageButton();
+    };
+
     return (
       <Card style={style}>
         <Card.Content style={styles.front_container}>
           <Title style={styles.title}>{adData.title}</Title>
-          <View style={styles.ratings}>
-            <Ratings backgroundColor={global.tertiary} readonly={true} />
-          </View>
-          <Title style={styles.expiry}>{adData.expiry}</Title>
+          <Title
+            style={[{ color: card_color_dict.middleColor }, styles.expiry]}>
+            {adData.expiry}
+          </Title>
           <Text style={styles.description}>{adData.description}</Text>
-
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
@@ -143,21 +277,90 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             showGlutenFreeIcon,
             showVeganIcon,
           )}
-          {your_id.current !== user_id && (
-            <View style={styles.message_button}>
-              <Button
-                title="message"
-                onPress={handlePressMessage}
-                borderRadius={0.05 * Dimensions.get('window').width}
-                backgroundcolor={card_color_dict.middleColor}
-                borderColor={card_color_dict.middleColor}
-                textColor={global.secondary}
-              />
+          <View>
+            <View style={styles.userInfo}>
+              <Text style={styles.userName}>
+                {adData.username} {'  '}
+              </Text>
+              <View style={styles.ratings}>
+                <Ratings
+                  startingValue={adData.ratings}
+                  backgroundColor={global.tertiary}
+                  readonly={true}></Ratings>
+                <Text style={{ color: global.secondary }}>
+                  ({adData.count})
+                </Text>
+              </View>
             </View>
-          )}
+          </View>
+
+          {renderButton()}
         </Card.Content>
       </Card>
     );
+  };
+
+  /**
+   * Renders the delete confirmation modal.
+   *
+   * @function
+   * @private
+   * @returns {JSX.Element} The rendered delete confirmation modal.
+   */
+  const renderDeleteConfimation = () => {
+    return (
+      <Modal visible={isVisible}>
+        <LinearGradient
+          style={styles.modal_container}
+          colors={['#251D3A', global.background]}
+          start={{ x: 1, y: 0 }}>
+          <Text style={styles.modal_title}>
+            Are you sure to delete this post?
+          </Text>
+          <View style={styles.modal_button_container}>
+            <Button
+              backgroundcolor="red"
+              buttonSize={150}
+              onPress={() => setIsVisible(false)}
+              title="Cancel"></Button>
+            <Button
+              buttonSize={150}
+              onPress={deletePost}
+              title="Confirm"></Button>
+          </View>
+        </LinearGradient>
+      </Modal>
+    );
+  };
+
+  /**
+   * Deletes the post.
+   *
+   * @function
+   * @private
+   * @returns {void}
+   */
+  const deletePost = async () => {
+    console.log('post delete request starts...');
+    setIsVisible(true);
+    try {
+      const deleteAds: string = adEndpoint;
+      console.log(deleteAds);
+      console.log(postId);
+      const req: any = await SecureAPIReq.createInstance();
+      const payload: any = await req.delete(deleteAds, {
+        ad_id: postId,
+      });
+      console.log(payload.status);
+      if (payload.status == 200) {
+        console.log('deletion completed!');
+        navigation.navigate('DoneDelete');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log('post delete request ends...');
+    }
   };
 
   if (isLoading) {
@@ -203,6 +406,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           {render_Card_Front(styles.card_front)}
         </View>
       </View>
+      {renderDeleteConfimation()}
       <TabBarBottom
         LeftIcon={<HomeIcon />}
         MiddleIcon={<CreateAdIcon />}

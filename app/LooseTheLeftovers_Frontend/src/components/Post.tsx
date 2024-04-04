@@ -74,6 +74,7 @@ const Post: React.FC<PostProps> = ({
    * @returns {void}
    */
   const handleCardClick = () => {
+    console.log(endpoint)
     navigation.navigate('View_Post', { postId: id, endpoint: endpoint });
   };
 

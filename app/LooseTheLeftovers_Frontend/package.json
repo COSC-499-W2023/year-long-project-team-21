@@ -50,6 +50,7 @@
     "react-navigation-hoc": "^1.0.1",
     "react-password-strength-bar": "^0.4.1",
     "tinycolor2": "^1.6.0",
+    "validator": "^13.11.0",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
