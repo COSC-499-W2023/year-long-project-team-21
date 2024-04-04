@@ -5,12 +5,7 @@ import Title from '../components/Title';
 import Texts from '../components/Text';
 import Button from '../components/Button';
 import TextImage from '../components/TextImage';
-import { SecureAPIReq } from '../common/NetworkRequest';
-import {
-  removeUserSession,
-  retrieveUserSession,
-} from '../common/EncryptedSession';
-import axios from 'axios';
+import { global } from '../common/global_styles';
 
 const Instruction = ({ navigation }: { navigation: any }) => {
   const handleButtonOnPress = () => {
@@ -26,24 +21,31 @@ const Instruction = ({ navigation }: { navigation: any }) => {
     },
     {
       id: 2,
-      txt: 'Select the range',
-      image: require('../assets/select-range.png'),
-      size: 100,
+      txt: 'Turn on Location',
+      image: require('../assets/location.png'),
+      size: 40,
     },
     {
       id: 3,
-      txt: 'See how long food will expire in',
+      txt: 'Select the radius',
+      image: require('../assets/select-radius.png'),
+      size: 140,
+    },
+
+    {
+      id: 4,
+      txt: 'see the expiery based on the post color',
       image: require('../assets/expiry.png'),
       size: 80,
     },
     {
-      id: 4,
+      id: 5,
       txt: 'Create your own food ads',
       image: require('../assets/create-ad.png'),
       size: 40,
     },
     {
-      id: 5,
+      id: 6,
       txt: 'Edit and delete posts with your account',
       image: require('../assets/account.png'),
       size: 40,
@@ -77,7 +79,7 @@ const Instruction = ({ navigation }: { navigation: any }) => {
         <Texts // Displays the first text
           textsSize={20}
           texts="This is an app to share left over food to others in need"
-          textsColor={global.secondary}
+          textsColor={global.primary}
           // The list below displays the entire instruction and images
         />
 
