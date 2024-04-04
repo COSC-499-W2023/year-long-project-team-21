@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import { SecureAPIReq } from '../../src/common/NetworkRequest';
+import { SecureAPIReq } from '../common/NetworkRequest';
+import { ratings } from '../common/API';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import ReviewStyles from '../styles/ReviewStyles';
 import Ratings from '../components/Ratings';
 import Button from '../components/Button';
-import { SecureAPIReq } from '../../src/common/NetworkRequest';
 
 const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
   const { user_id } = route.params;
@@ -23,7 +23,7 @@ const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
       }
       const newReq: any = await SecureAPIReq.createInstance();
 
-      const endpoint = '/ratings/';
+      const endpoint = ratings;
       const ratingInfo = {
         rating: rating,
         receiver_id: user_id,

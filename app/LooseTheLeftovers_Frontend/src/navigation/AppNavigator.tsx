@@ -11,7 +11,7 @@ import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
 import View_Post from '../screens/View_Post';
 import ChatList from '../screens/ChatList';
-import Reviews from '../screens/Reivews';
+import Reviews from '../screens/Reviews';
 import Chat from '../screens/Chat';
 import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
