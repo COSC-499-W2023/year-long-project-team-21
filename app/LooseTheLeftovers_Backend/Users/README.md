@@ -61,6 +61,19 @@ If new_password and confirm_password do not match, the backend will return a HTT
 Note the backend differentiates between the two different PUT requests by checking if 'new_password' field is
 supplied.
 
+## Password Reset 
+
+credentials. 
+username: losetheleftovers@gmail.com
+password: StrongSystemPassword1337!
+
+In setting up your own gmail for this, there are important steps you must follow. 
+    - 1) create a new account 
+    - 2) enable 2FA. This is needed for the SMTP server to work (sending emails, bassically). Google does not allow apps like this one to use their servier without a code. 
+    - 3) Follow these instructions in making an app password: https://support.google.com/accounts/answer/185833?hl=en
+    - 3) ext: I had to search for "App Passwords" in the top left hand corner... 
+    - 4) Use the generated string in place of "EMAIL_HOST_PASSWORD" in settings.py
+
 ### Overview
 
 This post request is first handled by the LooseTheLeftovers_Backend `urls.py` file. It takes that request and sends it to the Users app, that is what the `users/` portion of the POST request means. The Users own `urls.py` handles the incoming POST request and sends it along to `register_user`. `register_user` recieves the HTTP request and calls `RegistrationSerializer` to deserialize the incoming JSON into a CustomUser model while validating the data. Think of the serializer as a bridge between the `urls.py` and the `views.py` file. `RegistarationSerializer` may raise errors which are passed to `register_user` if the incoming passwords are not the same, username is already in use and if the email is already in use. Upon successful model creation, `register_user` will query and retrieve the authentication token created for that user and send that as the response. In the `models.py` folder, anytime a new CustomUser model is created, a new authentication token is created as well.

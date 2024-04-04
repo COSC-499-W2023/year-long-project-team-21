@@ -5,7 +5,7 @@ import { navigationRef } from './src/navigation/NavigationService';
 
 const App = () => {
   return (
-    <NavigationContainer ref={navigationRef} data-testid="navigation-container" >
+    <NavigationContainer ref={navigationRef} data-testid="navigation-container">
       <AppNavigator />
     </NavigationContainer>
   );
