@@ -26,4 +26,8 @@ export const usersAds: string = '/ads/users/';
 // endpoint for users
 export const users: string = '/users/';
 
+// endpoint for last messages
 export const messages: string = '/messages/';
+
+// endpoint for ratings
+export const ratings: string = '/ratings/';

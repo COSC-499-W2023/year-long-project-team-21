@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { SecureAPIReq } from '../common/NetworkRequest';
+import { adEndpoint } from '../common/API';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
 import Conversation_EndedStyles from '../styles/conversation_EndedStyles';
@@ -15,14 +16,14 @@ const Conversation_Ended = ({
 }) => {
   const { ad_id, user_id } = route.params;
 
-  console.log(user_id);
   const handleNoOnPress = () => {
     navigation.navigate('Reviews', { user_id });
   };
+
   const handleYesOnPress = async () => {
     const newReq: any = await SecureAPIReq.createInstance();
 
-    const endpoint = '/ads/';
+    const endpoint = adEndpoint;
     const deleteInfo = {
       ad_id: ad_id,
     };
