@@ -147,6 +147,16 @@ const Registration = ({ navigation }: { navigation: any }) => {
     }, []),
   );
 
+  const getPasswordStrengthMessage = (
+    passwordStrengthValue: string,
+  ): string => {
+    if (passwordStrengthValue !== 'Strong') {
+      return '(needs 10 chararacters, capitals, numbers and symbols)';
+    } else {
+      return '';
+    }
+  };
+
   return (
     <LinearGradient
       //the key forces a Re-render of the page:
@@ -227,7 +237,11 @@ const Registration = ({ navigation }: { navigation: any }) => {
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}
         {password1 && passwordStrengthError && (
-          <Text style={{ color: global.secondary, fontSize: 15 }}>
+          <Text
+            style={{
+              color: global.secondary,
+              fontSize: 15,
+            }}>
             Password Strength:{' '}
             <Text
               style={{
@@ -236,6 +250,15 @@ const Registration = ({ navigation }: { navigation: any }) => {
               }}>
               {passwordStrength(password1).value}
             </Text>
+            <View>
+              <Text
+                style={{
+                  color: passwordStrengthColor(passwordStrength(password1).id)
+                    .color,
+                }}>
+                {getPasswordStrengthMessage(passwordStrength(password1).value)}
+              </Text>
+            </View>
           </Text>
         )}
         <View>
