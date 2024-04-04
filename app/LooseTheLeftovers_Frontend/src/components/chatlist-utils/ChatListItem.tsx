@@ -44,6 +44,7 @@ const ChatListItem: React.FC<{
   const [title, setTitle] = useState<string>('loading title...');
   const { markChatAsReadById } = useChat();
 
+  // Fetches ad title to display
   useEffect(() => {
     const fetchAdTitle = async () => {
       try {

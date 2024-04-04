@@ -19,7 +19,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [inFocus, setInFocus] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const firstFetch = useRef(true);
-  const unread = useRef(0);
+  const unread = useRef(0); // Tracks the number of chats with read=false for MessageIcon notification dot
 
   /**
    * Sets or removes `your_id` depending on logged in/out state.
@@ -185,6 +185,12 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
 
+  /**
+   * Updates `read` flag.
+   *
+   * @param {ChatType[]} currentChats - Current local chats.
+   * @param {ChatType[]} newChats - Newly fetched chats.
+   */
   const updateChatsAndUnreadStatus = (
     currentChats: ChatType[],
     newChats: ChatType[],
@@ -205,10 +211,14 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
 
     // Update state
     setChats(updatedChats);
-    console.log('ChatContext: updateChats trigger');
     if (hasNewUnread) setHasUnread(true);
   };
 
+  /**
+   * Changes `read` flag to true by ID.
+   *
+   * @param {string} chatId - ID of particular chat (usually user_id + ad_id).
+   */
   const markChatAsReadById = (chatId: string) => {
     setChats(prevChats => {
       return prevChats.map(chat => {

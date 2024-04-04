@@ -1,28 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+
+import profileStyles from '../styles/profileStyles';
 import globalscreenstyles from '../common/global_ScreenStyles';
-import TabBarTop from '../components/TabBarTop';
-import AccountIcon from '../components/AccountIcon';
-import HomeIcon from '../components/HomeIcon';
-import CreateAdIcon from '../components/CreateAdIcon';
-import TabBarBottom from '../components/TabBarBottom';
-import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
+import { SecureAPIReq } from '../../src/common/NetworkRequest';
+import { adEndpoint, usersAds } from '../common/API';
+import { useChat } from '../common/ChatContext';
 import {
   removeUserSession,
   retrieveUserSession,
 } from '../../src/common/EncryptedSession';
-import { SecureAPIReq } from '../../src/common/NetworkRequest';
+
 import PostListRenderer from '../components/PostListRenderer';
-import { adEndpoint, usersAds } from '../common/API';
-import profileStyles from '../styles/profileStyles';
-import Button from '../components/Button';
-import { useChat } from '../common/ChatContext';
-import LinearGradient from 'react-native-linear-gradient';
-import { useFocusEffect } from '@react-navigation/native';
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import AccountIcon from '../components/AccountIcon';
+import HomeIcon from '../components/HomeIcon';
+import CreateAdIcon from '../components/CreateAdIcon';
+import MessageIcon from '../components/MessageIcon';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const [userID, setUserId] = useState('');
@@ -62,7 +60,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
    */
   const handleEditButtonOnPress = async () => {
     console.log('edit profile!');
-    navigation.navigate("EditProfile", {userId: userID})
+    navigation.navigate('EditProfile', { userId: userID });
   };
 
   /**
@@ -105,8 +103,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
     fetchUserInfo();
   }, []);
 
-   // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen.
-   useFocusEffect(
+  // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen.
+  useFocusEffect(
     useCallback(() => {
       fetchUserInfo();
     }, []),

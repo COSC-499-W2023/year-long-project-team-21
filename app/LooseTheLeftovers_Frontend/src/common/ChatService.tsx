@@ -1,23 +1,24 @@
 import { SecureAPIReq } from './NetworkRequest';
-import { messages } from './API';
-import axios from 'axios';
+import { messages, users, adEndpoint } from './API';
 
 class ChatService {
-  static async sendMessage(
-    receiver_id: string,
-    ad_id: string,
-    message: string,
-  ) {
+  /**
+   * Sends a single message, makes POST request to /messages/.
+   *
+   * @param {number} user_id - The ID of the user who will receive the message.
+   * @param {number} ad_id - The ID of the advertisement the message is related to.
+   * @param {string} message - The content of the message.
+   * @returns {Promise<Object>} - A promise that resolves to the response data from the server.
+   */
+  static async sendMessage(user_id: number, ad_id: number, message: string) {
     try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
       const messageData = {
         msg: message,
-        receiver_id: receiver_id,
+        receiver_id: user_id,
         ad_id: ad_id,
       };
-
-      console.log('ChatService: messageData:', messageData);
-
+      // console.log('ChatService: messageData:', messageData);
       const response = await secureApiReqInstance.post(messages, messageData);
       console.log(response.data);
       return response.data;
@@ -27,30 +28,40 @@ class ChatService {
     }
   }
 
-  static async fetchChatUpdates(user_id: any, ad_id: any, page = 1) {
+  /**
+   * Fetches messages by page, defaults to page 1. Page 1 is the most recent messages.
+   * Sends a GET request to /messages/<user_id>?ad_id=<ad_id>&page=<page>.
+   *
+   * @param {number} user_id - The ID of the user.
+   * @param {number} ad_id - The ID of the related ad.
+   * @param {number} [page=1] - The page number of the chat history to fetch.
+   * @returns {Promise<Object>} An array of messages, one page = six messages.
+   */
+  static async fetchChatUpdates(user_id: number, ad_id: number, page = 1) {
     try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
-      const endpoint = `/messages/${user_id}?ad_id=${ad_id}&page=${page}`;
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
+      const endpoint = `${messages}${user_id}?ad_id=${ad_id}&page=${page}`;
       const response = await secureApiReqInstance.get(endpoint);
-
-      // console.log(response.data);
-      // console.log(`ChatService: fetch for user_id: ${user_id}, ad_id: ${ad_id}, page: ${page}`);
-
       return response;
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error response:', error.response);
-      } else {
-        console.error('An unexpected error occurred:', error);
-      }
+    } catch (error) {
+      console.error('ChatService: Failed to check chat history:', error);
       throw error;
     }
   }
 
-  static async checkHistory(user_id: string, ad_id: string) {
+  /**
+   * Checks whether the current user has an existing chat with particular user
+   * regarding particular ad. Sends GET request to /messages/<user_id>?ad_id=<ad_id>,
+   * returns page 1 by default.
+   *
+   * @param {string} user_id - The ID of the other user.
+   * @param {number} ad_id - The ID of the related ad.
+   * @returns {boolean} - A `true` if response is not empty, `false` otherwise.
+   */
+  static async checkHistory(user_id: string, ad_id: number): Promise<boolean> {
     try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
-      const endpoint = `/messages/${user_id}?ad_id=${ad_id}`;
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
+      const endpoint = `${messages}${user_id}?ad_id=${ad_id}`;
       const response = await secureApiReqInstance.get(endpoint);
 
       const hasHistory = response.data.length > 0;
@@ -62,13 +73,15 @@ class ChatService {
     }
   }
 
+  /**
+   * Fetches last message from each conversation user currently has, sends GET request to /messages/.
+   *
+   * @returns {Promise<Array>} - An array containing the last message from each of the user's chat conversations.
+   */
   static async getLastMessage() {
     try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
       const response = await secureApiReqInstance.get(messages);
-
-      // console.log('ChatService: getLastMessage response:', response.data);
-
       return response.data;
     } catch (error) {
       console.error('ChatService: Failed to get last messages:', error);
@@ -76,26 +89,37 @@ class ChatService {
     }
   }
 
-  static async getUserById(user_id: string) {
+  /**
+   * Fetches a particular user info by ID. Sends GET request to /users/<user_id>.
+   *
+   * @param {number} user_id - The ID of the other user.
+   * @returns {Promise<Array>} - An array with info about user.
+   */
+  static async getUserById(user_id: number) {
     try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
-      const response = await secureApiReqInstance.get(`/users/${user_id}`);
-      console.log("getUserById response:", response.data);
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
+      const response = await secureApiReqInstance.get(`${users}${user_id}`);
+      console.log('getUserById response:', response.data);
       return response.data;
     } catch (error) {
-      console.error("ChatService: Failed to get user details:", error);
+      console.error('ChatService: Failed to get user details:', error);
       throw error;
     }
   }
 
+  /**
+   * Fetches ad title by ID. Sends GET request to /ads/<ad_id>.
+   *
+   * @param {number} ad_id - The ID of an ad.
+   * @returns {string} - Title of the ad.
+   */
   static async getAdTitle(ad_id: number) {
     try {
-      const secureApiReqInstance = await SecureAPIReq.createInstance();
-      const response = await secureApiReqInstance.get(`/ads/${ad_id}`);
-      // console.log("getAdTitle response:", response.data);
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
+      const response = await secureApiReqInstance.get(`${adEndpoint}${ad_id}`);
       return response.data.title;
     } catch (error) {
-      console.error("ChatService: Failed to get ad title:", error);
+      console.error('ChatService: Failed to get ad title:', error);
       throw error;
     }
   }

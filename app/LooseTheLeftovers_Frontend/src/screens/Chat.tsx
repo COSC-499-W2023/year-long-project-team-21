@@ -214,7 +214,7 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
    * @function fetchPageOne
    * @description Fetches the 6 most recent messages from the server, to ensure the chat history is up to date.
    * Triggered at regular intervals after the initial complete chat history has been loaded. Compares the newly fetched
-   *  messages against the currently known last 6 messages to determine if there are any new updates. If new messages
+   * messages against the currently known last 6 messages to determine if there are any new updates. If new messages
    * are found, they are merged into the existing chat history, maintaining uniqueness and chronological order. Imitates
    * real time updates.
    *

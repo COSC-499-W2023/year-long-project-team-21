@@ -9,13 +9,17 @@ import {
   Modal,
 } from 'react-native';
 import { Card, Title } from 'react-native-paper';
+import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 
 import generateViewPostStyles from '../styles/view_postStyles';
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
 import { retrieveUserSession } from '../common/EncryptedSession';
-
+import { djangoConfig, SecureAPIReq } from '../common/NetworkRequest';
+import { BASE_URL, adEndpoint } from '../common/API';
+import { AdDataProps } from '../common/Types';
+import ChatService from '../common/ChatService';
 import {
   renderPostImage,
   render_Card_Back,
@@ -23,10 +27,6 @@ import {
   render_Icons,
   assignColor,
 } from '../common/postUtils';
-import { djangoConfig } from '../common/NetworkRequest';
-import { BASE_URL } from '../common/API';
-import { AdDataProps } from '../common/Types';
-import ChatService from '../common/ChatService';
 
 import Button from '../components/Button';
 import TabBarTop from '../components/TabBarTop';
@@ -35,13 +35,7 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
-import { djangoConfig, SecureAPIReq } from '../common/NetworkRequest';
-import { BASE_URL, adEndpoint, usersAds } from '../common/API';
-import axios from 'axios';
-import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
-import LinearGradient from 'react-native-linear-gradient';
-import { retrieveUserSession } from '../common/EncryptedSession';
 
 /**
  * React component for viewing a post.
@@ -53,9 +47,6 @@ import { retrieveUserSession } from '../common/EncryptedSession';
  * @returns {JSX.Element} A JSX Element representing the View_Post component.
  */
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
-
-  // retrieve endpoint and postId from Post.tsx
-  const { postId, endpoint } = route.params;
   interface data {
     category: '';
     description: '';
@@ -100,7 +91,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       }
     };
     getSessionAndSetUserId();
-  }, []);  
+  }, []);
+
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
     checkDietaryOption(adData.category);
@@ -204,7 +196,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           <Button
             title="message"
             onPress={() => {
-              console.log('hi');
+              handlePressMessage()
             }}
             borderRadius={0.05 * Dimensions.get('window').width}
             backgroundcolor={card_color_dict.middleColor}
@@ -258,7 +250,13 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
      * @returns {JSX.Element} The rendered button component.
      */
     const renderButton = () => {
-      return IsPrevPageProfile() ? renderDeleteButton() : renderMessageButton();
+      if (IsPrevPageProfile()) {
+        return renderDeleteButton();
+      } else if (your_id.current == user_id) {
+        return null;
+      } else {
+        return renderMessageButton();
+      }
     };
 
     return (
