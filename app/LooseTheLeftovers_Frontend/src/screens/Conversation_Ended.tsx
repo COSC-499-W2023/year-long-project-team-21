@@ -30,7 +30,6 @@ const Conversation_Ended = ({
 
     try {
       await newReq.delete(endpoint, deleteInfo);
-      console.log('ad is succesfully deleted');
     } catch (error) {
       console.error('there was an error in deleting post', error);
     }

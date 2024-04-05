@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import styles from '../styles/registrationStyles';
-import { global } from '../common/global_styles';
-import axios from 'axios';
+import { Text, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
-import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../components/Logo';
+import axios from 'axios';
+
+import styles from '../styles/registrationStyles';
+import { global } from '../common/global_styles';
+import { BASE_URL, users } from '../common/API';
+
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -103,7 +105,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       setCredentialsFilledInError(false);
       setPasswordStrengthError(false);
       try {
-        const apiUrl = 'http://192.168.1.224:8000/users/';
+        const apiUrl = `${BASE_URL}${users}`;
 
         const response = await axios.post(apiUrl, {
           username: username,

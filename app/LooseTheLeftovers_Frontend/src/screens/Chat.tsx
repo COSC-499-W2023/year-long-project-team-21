@@ -276,7 +276,6 @@ const Chat = ({ navigation, route }: { navigation: any; route: any }) => {
   );
 
   const finish = () => {
-    console.log('finish pressed');
     navigation.navigate('Conversation_Ended', { ad_id, user_id });
   };
 

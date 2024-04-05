@@ -151,7 +151,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       data.username = user_details.data.username;
       return data;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return undefined;
     }
   };
@@ -181,7 +181,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @returns {JSX.Element} The rendered front card component.
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
-    console.log(adData.category);
 
     /**
      * Renders the message button component.
@@ -339,25 +338,18 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @returns {void}
    */
   const deletePost = async () => {
-    console.log('post delete request starts...');
     setIsVisible(true);
     try {
       const deleteAds: string = adEndpoint;
-      console.log(deleteAds);
-      console.log(postId);
       const req: any = await SecureAPIReq.createInstance();
       const payload: any = await req.delete(deleteAds, {
         ad_id: postId,
       });
-      console.log(payload.status);
       if (payload.status == 200) {
-        console.log('deletion completed!');
         navigation.navigate('DoneDelete');
       }
     } catch (error) {
-      console.log(error);
-    } finally {
-      console.log('post delete request ends...');
+      console.error(error);
     }
   };
 
@@ -370,7 +362,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       const response = await ChatService.checkHistory(user_id, postId);
 
       if (response) {
-        console.log('View_Post: Chat exists');
         navigation.navigate('Chat', {
           user_id: user_id,
           ad_id: postId,
@@ -378,7 +369,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           your_id: your_id.current,
         });
       } else {
-        console.log('View_Post: No history');
         navigation.navigate('Chat', {
           user_id: user_id,
           ad_id: postId,

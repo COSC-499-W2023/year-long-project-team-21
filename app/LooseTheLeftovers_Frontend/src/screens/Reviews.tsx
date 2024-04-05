@@ -32,9 +32,6 @@ const Reviews = ({ route, navigation }: { route: any; navigation: any }) => {
       setIsRatingPressed(false);
       await newReq.post(endpoint, ratingInfo);
 
-      // Log the response to the console if you need to
-      //console.log('API Response:', res);
-
       navigation.navigate('Home');
     } catch (error) {
       const apiError = error as any;

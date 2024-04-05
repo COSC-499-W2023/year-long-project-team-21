@@ -40,12 +40,10 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     const fetchInterval = inFocus ? 10000 : 20000; // 10 second or 2 minute interval
 
     if (loggedIn) {
-      console.log('ChatContext: inFocus:', inFocus);
       fetchAndSetChats();
       interval = setInterval(fetchAndSetChats, fetchInterval);
     } else {
       setChats([]);
-      console.log('ChatContext: Logged out, chats reset');
     }
 
     return () => {
@@ -86,7 +84,6 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
    */
   const fetchAndSetChats = async () => {
     try {
-      console.log('ChatContext: firstFetch:', firstFetch.current);
       const lastMessages = await ChatService.getLastMessage();
       const formattedChats = formatChats(lastMessages);
 
@@ -97,7 +94,6 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         updateChatsAndUnreadStatus(chats, formattedChats);
       }
 
-      console.log('ChatContext: updated chats:', formattedChats);
     } catch (error) {
       console.error('ChatList: Error fetching last messages:', error);
     }

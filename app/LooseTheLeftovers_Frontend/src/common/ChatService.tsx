@@ -18,9 +18,7 @@ class ChatService {
         receiver_id: user_id,
         ad_id: ad_id,
       };
-      // console.log('ChatService: messageData:', messageData);
       const response = await secureApiReqInstance.post(messages, messageData);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('ChatService: Failed to send message:', error);
@@ -51,8 +49,8 @@ class ChatService {
 
   /**
    * Checks whether the current user has an existing chat with particular user
-   * regarding particular ad. Sends GET request to /messages/<user_id>?ad_id=<ad_id>,
-   * returns page 1 by default.
+   * regarding particular ad. Sends GET request to /messages/<user_id>?ad_id=<ad_id>
+   * via fetchChatUpdates, checks page 1.
    *
    * @param {string} user_id - The ID of the other user.
    * @param {number} ad_id - The ID of the related ad.
@@ -60,12 +58,11 @@ class ChatService {
    */
   static async checkHistory(user_id: string, ad_id: number): Promise<boolean> {
     try {
-      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
-      const endpoint = `${messages}${user_id}?ad_id=${ad_id}`;
-      const response = await secureApiReqInstance.get(endpoint);
-
-      const hasHistory = response.data.length > 0;
-      console.log(`ChatService: Chat history`, response.data);
+      // Use fetchChatUpdates
+      const response = await this.fetchChatUpdates(parseInt(user_id, 10), ad_id, 1);
+  
+      // If response length > 0 => history exists, return true
+      const hasHistory = response.data && response.data.length > 0;
       return hasHistory;
     } catch (error) {
       console.error('ChatService: Failed to check chat history:', error);
@@ -99,7 +96,6 @@ class ChatService {
     try {
       const secureApiReqInstance: any = await SecureAPIReq.createInstance();
       const response = await secureApiReqInstance.get(`${users}${user_id}`);
-      console.log('getUserById response:', response.data);
       return response.data;
     } catch (error) {
       console.error('ChatService: Failed to get user details:', error);
