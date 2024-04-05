@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
-import { View, FlatList, Text, Dimensions } from 'react-native';
+import { Image, View, FlatList, Text, Dimensions } from 'react-native';
 import { PostListRendererProps, PostProps } from '../common/Types';
 import { Title } from 'react-native-paper';
 import SelectRangeBar from './SelectRangeBar';
@@ -15,6 +15,7 @@ import Ratings from './Ratings';
 import { global } from '../common/global_styles';
 import Icon from './Icon';
 import Texts from './Text';
+
 const PostListRenderer: React.FC<PostListRendererProps> = ({
   isHeaderInNeed,
   endpoint,
@@ -25,7 +26,7 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   handleEditOnpress,
   handleLoginOnpress,
   rating,
-  reviewsCount
+  reviewsCount,
 }) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [range, setRange] = useState('');
@@ -220,6 +221,10 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
   const renderHeader_Profile = React.memo(() => {
     return (
       <View style={profileStyles.userinfocontainer}>
+        <Image
+          style={profileStyles.profilePicture}
+          source={require('../assets/account.png')}
+        />
         <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
         <View style={postListStyles.editIconContainer}>
           <Icon
@@ -234,15 +239,13 @@ const PostListRenderer: React.FC<PostListRendererProps> = ({
             readonly={true}
             backgroundColor={global.tertiary}></Ratings>
           <Texts
-             textsColor={global.secondary}
-             textsSize={15}
-             texts={`(${reviewsCount} Reviews)`}></Texts>
+            textsColor={global.secondary}
+            textsSize={15}
+            texts={`(${reviewsCount} Reviews)`}></Texts>
         </View>
         <View style={profileStyles.button_container}>
           <View>
-            <Button
-              onPress={handleLoginOnpress!}
-              title="Logout"></Button>
+            <Button onPress={handleLoginOnpress!} title="Logout"></Button>
           </View>
         </View>
       </View>

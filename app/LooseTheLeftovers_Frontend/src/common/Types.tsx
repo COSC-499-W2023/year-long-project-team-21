@@ -96,10 +96,12 @@ interface InputFieldProps {
  * Logo Props interface for the Logo component.
  *
  * @interface
+ * @property {() => void} onPress - Callback function executed when the button is pressed.
  * @param {number} props.LogoSize - Change the size of the Logo.
  */
 
 interface LogoProps {
+  onPress?: () => void;
   LogoSize?: number;
 }
 
@@ -364,9 +366,9 @@ interface PostListRendererProps {
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
-  handleLoginOnpress?: ()=> any;
+  handleLoginOnpress?: () => any;
   handleEditOnpress?: () => any;
-  userInfo?: { username: string, email: string};
+  userInfo?: { username: string; email: string };
   rating?: number;
   reviewsCount?: number;
 }

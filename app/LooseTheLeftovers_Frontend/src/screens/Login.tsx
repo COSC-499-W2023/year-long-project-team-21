@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
 import { useChat } from '../common/ChatContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 /**
  * Login component.
@@ -28,6 +29,19 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { updateLoggedIn } = useChat();
+  //this forces a Re-render of the page:
+  const [key, setKey] = useState(Math.random());
+
+  //this resets values after the page is focused.
+  useFocusEffect(
+    React.useCallback(() => {
+      setUsername('');
+      setPassword('');
+      setErrorMessage('');
+      setKey(Math.random());
+      return () => {};
+    }, []),
+  );
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
@@ -82,9 +96,12 @@ const Login = ({ navigation }: { navigation: any }) => {
     navigation.navigate('Forgot_Password');
   };
 
+
   return (
     <>
       <LinearGradient
+        //the key forces the re-render
+        key={key}
         style={styles.LoginContainer}
         colors={[global.purple, global.background]}
         start={{ x: 1, y: 0 }}>

@@ -43,7 +43,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
         // Remove the user session
         await removeUserSession();
         updateLoggedIn(false);
-        navigation.navigate('Registration');
+        navigation.navigate('Login');
       } else {
         throw new Error('No active user session found');
       }
@@ -59,7 +59,6 @@ const Profile = ({ navigation }: { navigation: any }) => {
    * @returns {void}
    */
   const handleEditButtonOnPress = async () => {
-    console.log('edit profile!');
     navigation.navigate('EditProfile', { userId: userID });
   };
 

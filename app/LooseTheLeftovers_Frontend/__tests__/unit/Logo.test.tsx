@@ -1,12 +1,31 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import Logo from '../../src/components/Logo';
 
-describe('Logo component', () => {
-  test('renders each part of the logo', () => {
-    const { getByTestId } = render(<Logo />);
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: jest.fn(),
+}));
 
-    // Assert each part of the logo text is rendered
-    expect(getByTestId('HomeIconTest')).toBeDefined();
+describe('HomeIcon Component', () => {
+  it('navigates to Instruction screen when clicked', () => {
+    // Mock the navigation object
+    const mockNavigate = jest.fn();
+    jest
+      .spyOn(require('@react-navigation/native'), 'useNavigation')
+      .mockReturnValue({
+        navigate: mockNavigate,
+      });
+
+    // Render the component
+    const { getByTestId } = render(<Logo size={45} testID="LogoTest" />);
+
+    // Simulate a click on the image
+    fireEvent.press(getByTestId('LogoTest'));
+
+    // Check if navigate was called with the correct parameters
+    expect(mockNavigate).toHaveBeenCalledWith('Instruction', {
+      name: 'Logo',
+    });
   });
 });

@@ -20,7 +20,7 @@ const CategoryRender: React.FC<CategoryRenderProps> = ({
   onCategoryPress,
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    propSelectedCategories,
+    propSelectedCategories || [],
   );
 
   //toggles selection
