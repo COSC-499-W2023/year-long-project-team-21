@@ -4,6 +4,7 @@ import { checkHasLaunched, getHasLaunched } from '../common/EncryptedSession';
 
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
+import ForgotPassword from '../screens/ForgotPassword';
 import Instruction from '../screens/Instruction';
 import CreateAd from '../screens/CreateAd';
 import Home from '../screens/Home';
@@ -17,6 +18,9 @@ import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
 import Conversation_Ended from '../screens/Conversation_Ended';
 import Chat from '../screens/Chat';
+import DoneEdit from '../screens/DoneEdit';
+import DoneResetPW from '../screens/DoneResetPW';
+import PasswordReset from '../screens/PasswordReset';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,18 +38,18 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Reviews"
-        component={Reviews}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Conversation_Ended"
-        component={Conversation_Ended}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="Registration"
         component={Registration}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Forgot_Password"
+        component={ForgotPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PasswordReset"
+        component={PasswordReset}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -56,6 +60,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -79,13 +88,18 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Profile"
-        component={Profile}
+        name="EditProfile"
+        component={EditProfile}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
+        name="DoneEdit"
+        component={DoneEdit}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DoneResetPW"
+        component={DoneResetPW}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -96,6 +110,16 @@ const AppNavigator = () => {
       <Stack.Screen
         name="Chat"
         component={Chat}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Reviews"
+        component={Reviews}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Conversation_Ended"
+        component={Conversation_Ended}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

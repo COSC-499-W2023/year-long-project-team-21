@@ -76,7 +76,8 @@ interface IconProps {
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
  * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
- *  @property {boolean} maxLength - optional character limit
+ * @property {boolean} maxLength - Optional character limit.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface InputFieldProps {
@@ -88,16 +89,19 @@ interface InputFieldProps {
   multiline?: boolean;
   width?: string | number;
   maxLength?: number;
+  testID?: string;
 }
 
 /**
  * Logo Props interface for the Logo component.
  *
  * @interface
+ * @property {() => void} onPress - Callback function executed when the button is pressed.
  * @param {number} props.LogoSize - Change the size of the Logo.
  */
 
 interface LogoProps {
+  onPress?: () => void;
   LogoSize?: number;
 }
 

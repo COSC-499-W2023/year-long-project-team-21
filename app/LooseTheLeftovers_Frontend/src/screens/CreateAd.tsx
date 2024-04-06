@@ -3,10 +3,7 @@ import { View, ScrollView, Switch, Image, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
-import {
-  getLocationPermissionAndroid,
-  getLocation,
-} from '../common/LocationServices';
+import { getLocationPermission, getLocation } from '../common/LocationServices';
 import { AdDataProps } from '../common/Types';
 import { SecureAPIReq } from '../common/NetworkRequest';
 import { adEndpoint } from '../common/API';
@@ -249,6 +246,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-title"
             />
           </View>
           <InputField
@@ -256,6 +254,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             onChangeText={newTitle => handleFieldChange('title', newTitle)}
             value={adData.title}
             width="100%"
+            testID="test-title-input"
             maxLength={15}
           />
           {fieldError.titleError !== '' && (
@@ -274,7 +273,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
-              testID="Description"
+              testID="test-description"
             />
           </View>
           <InputField
@@ -286,6 +285,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             multiline={true}
             width="100%"
             maxLength={200}
+            testID="test-description-input"
           />
 
           {/* Category */}
@@ -329,6 +329,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
               textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-pick-img"
             />
           </View>
           <View style={styles.imagePickerContainer}>
@@ -383,6 +384,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 textsSize={20}
                 textsColor={global.secondary}
                 textsWeight="bold"
+                testID="test-expiry"
               />
               <Switch
                 trackColor={{
@@ -422,7 +424,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 />
               </View>
             )}
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button
+              title="Submit"
+              onPress={handleSubmit}
+              testID="test-submit"
+            />
           </View>
         </View>
       </ScrollView>

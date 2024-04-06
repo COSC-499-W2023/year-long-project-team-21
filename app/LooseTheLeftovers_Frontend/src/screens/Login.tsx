@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
 import { useGlobal } from '../common/GlobalContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 /**
  * Login component.
@@ -28,6 +29,19 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  //this forces a Re-render of the page:
+  const [key, setKey] = useState(Math.random());
+
+  //this resets values after the page is focused.
+  useFocusEffect(
+    React.useCallback(() => {
+      setUsername('');
+      setPassword('');
+      setErrorMessage('');
+      setKey(Math.random());
+      return () => {};
+    }, []),
+  );
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
@@ -79,9 +93,16 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
     setPassword(input);
     setErrorMessage(''); // Clear the error message when the user starts typing again
   };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('Forgot_Password');
+  };
+
   return (
     <>
       <LinearGradient
+        //the key forces the re-render
+        key={key}
         style={styles.LoginContainer}
         colors={[global.purple, global.background]}
         start={{ x: 1, y: 0 }}>
@@ -122,6 +143,7 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
           textsColor="white"
           texts="Forgot password?"
           textsSize={14}
+          onPress={() => handleForgotPassword()}
         />
         <Text style={{ marginTop: 30 }}>
           <Texts

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
-import { View, FlatList, Text, Dimensions } from 'react-native';
+import { Image, View, FlatList, Text, Dimensions } from 'react-native';
 import { PostListRendererProps, PostProps } from '../common/Types';
 import { BASE_URL } from '../common/API';
 import { useFocusEffect } from '@react-navigation/native';

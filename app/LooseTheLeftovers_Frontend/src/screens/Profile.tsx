@@ -51,7 +51,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
       if (session) {
         // Remove the user session
         await removeUserSession();
-        navigation.navigate('Registration');
+        navigation.navigate('Login');
       } else {
         throw new Error('No active user session found');
       }

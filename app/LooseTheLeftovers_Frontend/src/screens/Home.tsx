@@ -84,7 +84,6 @@ const Home = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     if (isFocused) {
-      console.log('hello?');
       postFetchHandler();
     }
   }, [isFocused]);
@@ -201,7 +200,6 @@ const Home = ({ navigation }: { navigation: any }) => {
       };
       // call the backend endpoint
       const payload = await axios.post(adsLocation, body, djangoConfig());
-      console.log(payload);
       return payload;
     } catch (error) {
       console.log(`There was an error getting the location ${error} `);

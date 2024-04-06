@@ -39,16 +39,15 @@ describe('CreateAd Screen', () => {
   });
 
   it('renders the CreateAd screen correctly', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
-    expect(getByText('Food Name')).toBeDefined();
-    expect(getByText('Description (optional)')).toBeDefined();
-
-    expect(getByText('Pick an image of the food')).toBeDefined();
-    expect(getByText('Set an expiry range')).toBeDefined();
-    expect(getByText('Submit')).toBeDefined();
+    expect(getByTestId('test-title')).toBeDefined();
+    expect(getByTestId('test-title-input')).toBeDefined();
+    expect(getByTestId('test-description')).toBeDefined();
+    expect(getByTestId('test-description-input')).toBeDefined();
+    expect(getByTestId('test-pick-img')).toBeDefined();
+    expect(getByTestId('test-expiry')).toBeDefined();
+    expect(getByTestId('test-submit')).toBeDefined();
   });
 });
 
@@ -58,23 +57,19 @@ describe('CreateAd Screen - InputFields', () => {
   });
 
   it('allows entering a title in the Title InputField', () => {
-    const { getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
-    const titleInput = getByPlaceholderText('Title');
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
+    const titleInput = getByTestId('test-title-input');
     fireEvent.changeText(titleInput, 'Delicious Pizza');
     expect(titleInput.props.value).toBe('Delicious Pizza');
   });
 
   it('allows entering a description in the Description InputField', () => {
-    const { getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
-    const descriptionInput = getByPlaceholderText('Description');
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
-    fireEvent.changeText(descriptionInput, 'A tasty homemade pizza');
-    expect(descriptionInput.props.value).toBe('A tasty homemade pizza');
+    const descInput = getByTestId('test-description-input');
+    fireEvent.changeText(descInput, 'A tasty homemade pizza');
+    expect(descInput.props.value).toBe('A tasty homemade pizza');
   });
 });
 
