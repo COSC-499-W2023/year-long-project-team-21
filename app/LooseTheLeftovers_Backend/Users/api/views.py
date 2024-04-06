@@ -207,12 +207,40 @@ def update_user(request):
         -firstname
         -lastname
     """
-    # get user_id from request
+     # get user_id from request
     try:
         user_id = request.user.id
         user = CustomUser.objects.get(pk=user_id)
 
-        serializer = UpdateUserSerializer(user, request.data)
+        # if any required fields are not included in request set them to user's current value
+        if type(request.data) != dict:
+            data = request.data.dict()
+        else:
+            data = request.data
+
+        if "email" not in data.keys():
+            data['email'] = user.email
+        else:
+            try:
+                # if email was provided check it doesn't already exist
+                user_email = CustomUser.objects.get(email=data["email"]).email
+
+                # if it exists check it is not the same as the user's current email
+                if user_email == user.email:
+                    raise Exception
+
+                response = {"message": "This email is in use by another user"}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+            except Exception as e: # no email was found, good to continue
+                pass
+
+        if "first_name" not in data.keys():
+            data['first_name'] = user.first_name
+        if "last_name" not in data.keys():
+            data['last_name'] = user.last_name
+
+        serializer = UpdateUserSerializer(user, data)
         if serializer.is_valid():
             # if valid save updated ad
             serializer.save() 
@@ -223,7 +251,7 @@ def update_user(request):
         
     except Exception as e:
         # if error occurs return error message and detail with HTTP_500 status
-        response = {"message": "Error updating post", "error": str(e)}
+        response = {"message": "Error updating profile", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 def update_password(request):
