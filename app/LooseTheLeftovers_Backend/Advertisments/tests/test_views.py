@@ -255,8 +255,8 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
     def test_get_all_ads_second_page(self):
         """
         Test if the second page of ads can be retrieved with a GET request.
-        5 ads in total are created in test setup and 3 are returned per page.
-        The second page should therefore have 2 ads on it
+        6 ads in total (but 2 expired) are created in test setup and 3 are returned 
+        per page. The second page should therefore have 1 ad on it
         """
         client = APIClient()
 
@@ -269,8 +269,8 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert valid response
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # assert 2 ads returned
-        self.assertEqual(len(response.data), 2)
+        # assert 1 ad returned
+        self.assertEqual(len(response.data), 1)
 
     def test_get_all_ads_page_out_of_bounds(self):
         """
@@ -324,8 +324,8 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert there are 5 ads (and images) before function call
         all_ads = Advertisment.objects.all()
         all_images = AdvertismentImage.objects.all()
-        self.assertEqual(len(all_ads), 5)
-        self.assertEqual(len(all_images), 5)
+        self.assertEqual(len(all_ads), 6)
+        self.assertEqual(len(all_images), 6)
 
         # call function; currently set to return the number of ads deleted
         number_deleted_ads = delete_expired_ads()
@@ -334,8 +334,8 @@ class TestRetrieveAds(TestSetUpRetrieveAdvertisment):
         # assert there are now 3 ads (and images) left in the database
         all_ads = Advertisment.objects.all()
         all_images = AdvertismentImage.objects.all()
-        self.assertEqual(len(all_ads), 3)
-        self.assertEqual(len(all_images), 3)
+        self.assertEqual(len(all_ads), 4)
+        self.assertEqual(len(all_images), 4)
 
     def get_ads_categories(self):
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -14,7 +15,6 @@ from Advertisments.models import Advertisment, AdvertismentImage
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import *
-from datetime import date
 
 
 class AdvertismentHandler(APIView):
@@ -262,8 +262,19 @@ def update_advertisment(request):
         )
 
     try:
+        # if required fields are missing set them to the ad's current value
+        if type(request.data) != dict:
+            data = request.data.dict()
+        else:
+            data = request.data
+
+        if "title" not in request.data.keys():
+            data["title"] = ad.title
+        if "category" not in request.data.keys():
+            data["category"] = ad.category
+
         # pass new ad data to serializer and validate passed data
-        ad_serializer = AdvertismentSerializer(ad, data=request.data)
+        ad_serializer = AdvertismentSerializer(ad, data=data)
         if ad_serializer.is_valid():
             # if valid save updated ad
             ad_serializer.save()
@@ -324,7 +335,7 @@ def retrieve_advertisments_for_user(request, user_id):
     """
     try:
         # query all ads and their images for passed user
-        user_ads = Advertisment.objects.filter(user_id=user_id)
+        user_ads = Advertisment.objects.filter(user_id=user_id).filter(expiry__gt=datetime.now())
         user_ad_images = AdvertismentImage.objects.filter(ad_id__in=user_ads)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -384,8 +395,11 @@ def retrieve_all_advertisments(request):
     """
     try:
         # query all ads and their images
-        all_ads = Advertisment.objects.all().defer("description")
-        all_images = AdvertismentImage.objects.all()
+        all_ads = Advertisment.objects.filter(
+            Q(expiry__gt=datetime.now()) | Q(expiry=None)
+        ).defer("description")
+    
+        all_images = AdvertismentImage.objects.filter(ad_id__in=all_ads)
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -446,6 +460,7 @@ def get_ads_location(request):
     try:
         nearby_ads = (
             Advertisment.objects.filter(
+                Q(expiry__gt=datetime.now()) | Q(expiry=None),
                 location__distance_lt=(user_location, D(km=req_range))
             )
             .annotate(distance=Distance("location", user_location))
@@ -457,7 +472,7 @@ def get_ads_location(request):
         ad_paginator = Paginator(nearby_ads, 3)
 
         # gets data for the current page
-        page_number = request.GET.get("page")
+        page_number = request.POST.get("page")
         if page_number is None:
             page_number = 1
         ad_page = ad_paginator.page(page_number)
@@ -495,14 +510,16 @@ def get_ads_category(request):
 
     # return an error if there isn't any categories
     if len(categories) == 0:
-        response = {"message": "Endpoint expecting category / pageNumber"}
+        response = {"message": "Endpoint expecting category"}
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
     category_filters = parse_categories(categories)
 
     try:
         categorized_ads = (
-            Advertisment.objects.filter(category_filters)
+            Advertisment.objects.filter(
+                Q(expiry__gt=datetime.now()) | Q(expiry=None),
+                category_filters)
         ).prefetch_related("ad_image")
 
         # put query results into pages
@@ -521,7 +538,6 @@ def get_ads_category(request):
                 status=status.HTTP_200_OK,
             )
     # when index for page is out of bounds return 204 response
-
     except EmptyPage as e:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -536,6 +552,10 @@ def get_ads_category_location(request):
     # return a 400 if it is a bad request
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # also check if categories included (optional in serializer but required in this method)
+    if not "categories" in serializer.validated_data.keys():
+        return Response({"message": "Endpoint expecting categories"}, status=status.HTTP_400_BAD_REQUEST)
 
     # retrieve requesting user's range, longitude, latitude, and categories
     req_range = serializer.validated_data["range"]
@@ -548,11 +568,11 @@ def get_ads_category_location(request):
 
     # create a Point for the user using GeoDjango
     user_location = Point(req_longitude, req_latitude)
-
-    # filter ads nearby based on radius, append a location which is the distance between the long/lat, filter by ategory, and then retrieve images
+    # filter ads nearby based on radius, append a location which is the distance between the long/lat, filter by category, and then retrieve images
     try:
         nearby_ads = (
             Advertisment.objects.filter(
+                Q(expiry__gt=datetime.now()) | Q(expiry=None),
                 location__distance_lt=(user_location, D(km=req_range))
             )
             .filter(category_filters)
@@ -587,7 +607,6 @@ def get_ads_category_location(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
-        print("this is the error " + str(e))
         return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
