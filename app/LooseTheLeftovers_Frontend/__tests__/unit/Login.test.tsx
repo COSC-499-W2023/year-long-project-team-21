@@ -2,7 +2,9 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import * as GlobalHook from '../../src/common/GlobalContext';
 import Login from '../../src/screens/Login';
+import { GlobalContextType } from '../../src/common/Types';
 
 jest.mock('axios');
 jest.mock('react-native', () => {
@@ -15,6 +17,13 @@ const navigation = {
   navigate: jest.fn(), // Mocking the navigate function
 };
 
+// mocking first login
+const route = {
+  params: {
+    firstLaunch: true,
+  },
+};
+
 describe('Login component', () => {
   beforeEach(() => {
     jest.clearAllMocks(); // Clear all mocks including axios
@@ -22,7 +31,7 @@ describe('Login component', () => {
 
   it('renders correctly', () => {
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     // Check if the username and password input fields are rendered
@@ -38,7 +47,9 @@ describe('Login component', () => {
   });
 
   it('handles input changes', () => {
-    const { getByPlaceholderText } = render(<Login navigation={navigation} />);
+    const { getByPlaceholderText } = render(
+      <Login navigation={navigation} route={route} />,
+    );
 
     // Simulate user input in the username field
     fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
@@ -53,7 +64,7 @@ describe('Login component', () => {
   it('handles button press - success', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     const { getByPlaceholderText, getByTestId, queryByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     // Simulate user input in the username field
@@ -93,7 +104,7 @@ describe('Login component', () => {
     };
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     // Simulate user input and button press
@@ -107,13 +118,48 @@ describe('Login component', () => {
     });
   });
 
+  it('navigates to the Home screen on successful n+ login', async () => {
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    // Mock a successful API response
+    mockedAxios.post.mockResolvedValueOnce({
+      status: 200,
+      data: { token: 'fake_token' },
+    });
+
+    // mocking has launched before
+    const route = {
+      params: {
+        firstLaunch: false,
+      },
+    };
+
+    const navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
+
+    const { getByPlaceholderText, getByTestId } = render(
+      <Login navigation={navigation} route={route} />,
+    );
+
+    // Simulate user input and button press
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'testpassword');
+    fireEvent.press(getByTestId('loginButton'));
+
+    await waitFor(() => {
+      // Check if navigation was triggered with the correct screen name
+      expect(navigation.navigate).toHaveBeenCalledWith('Home');
+    });
+  });
+
   it('handles button press - failure to send API request', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     // Mock a failed API response
     mockedAxios.post.mockRejectedValueOnce(new Error('API error'));
 
     const { getByPlaceholderText, getByTestId, queryByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     // Simulate user input in the username field
@@ -146,7 +192,7 @@ describe('Login component', () => {
   it('handles button press - failure to login with invalid credentials', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     const { getByPlaceholderText, getByTestId, queryByTestId, debug } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     fireEvent.changeText(getByPlaceholderText('Username'), 'wrongtestuser');
@@ -168,11 +214,11 @@ describe('Login component', () => {
       { timeout: 1000 },
     );
 
-      // Check if the expected success/failure message is displayed
-      expect(errorMessageElement.props.children).toBe(
-        'Error: Failed to login or retrieve token'
-      );
-    });
+    // Check if the expected success/failure message is displayed
+    expect(errorMessageElement.props.children).toBe(
+      'Error: Failed to login or retrieve token',
+    );
+  });
 
   it('stores JWT token on successful login', async () => {
     const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -183,7 +229,7 @@ describe('Login component', () => {
     });
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     // Simulate user input and button press
@@ -205,7 +251,7 @@ describe('Login component', () => {
     mockedAxios.post.mockRejectedValueOnce(new Error('Invalid credentials'));
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Login navigation={navigation} />,
+      <Login navigation={navigation} route={route} />,
     );
 
     // Simulate user input with invalid credentials

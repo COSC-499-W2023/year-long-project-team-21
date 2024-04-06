@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Texts from '../components/Text';
 import { Text } from 'react-native';
 import styles from '../styles/loginStyle';
@@ -9,6 +9,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
+import { useGlobal } from '../common/GlobalContext';
 import { useFocusEffect } from '@react-navigation/native';
 
 /**
@@ -23,7 +24,8 @@ import { useFocusEffect } from '@react-navigation/native';
  * // Usage
  * <Login />
  */
-const Login = ({ navigation }: { navigation: any }) => {
+const Login = ({ navigation, route }: { navigation: any; route: any }) => {
+  const { firstLaunch } = useGlobal();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,12 +51,15 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        navigation.navigate('Home');
+        if (firstLaunch) {
+          navigation.navigate('Instruction');
+        } else {
+          navigation.navigate('Home');
+        }
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,
         );
-        //console.log(errorMessage);
       }
     }
   };
@@ -92,7 +97,6 @@ const Login = ({ navigation }: { navigation: any }) => {
   const handleForgotPassword = () => {
     navigation.navigate('Forgot_Password');
   };
-
 
   return (
     <>

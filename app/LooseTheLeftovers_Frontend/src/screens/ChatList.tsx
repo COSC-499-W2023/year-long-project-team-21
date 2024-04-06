@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/chatListStyles';
@@ -12,12 +12,62 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import AccountIcon from '../components/AccountIcon';
 import ChatListItem from '../components/chatlist-utils/ChatListItem';
 import ChatListEmptyComponent from '../components/chatlist-utils/ChatListEmpty';
-
-import chatData from '../assets/dummy_chats.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import GoBackIcon from '../components/GoBackIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ChatList = ({ navigation }: { navigation: any }) => {
-  const title = 'Messsages';
+  const [chats, setChats] = useState<ChatType[]>([]);
+
+  const title = 'Messages';
   const testID = 'title-test';
+
+  // TS sucks
+  const loadChatMetadata = async () => {
+    let keys = [];
+    try {
+      keys = await AsyncStorage.getAllKeys();
+  
+      const lastMsgKeys = keys.filter(key => key.startsWith('lastMsg-'));
+      const stores = await AsyncStorage.multiGet(lastMsgKeys);
+      const chatsWithPossibleDuplicates = stores.map((result, i, store) => {
+        let key = store[i][0];
+        let value = JSON.parse(store[i][1]);
+        return {
+          key,
+          adId: value.adId,
+          username: value.username,
+          lastMessage: value.lastMessage,
+          timestamp: value.timestamp,
+        };
+      });
+  
+      // Filter out duplicate keys
+      const chats = chatsWithPossibleDuplicates.reduce((acc, current) => {
+        if (!acc.some(chat => chat.key === current.key)) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+  
+      return chats;
+    } catch (e) {
+      console.error('Failed to load chat metadata:', e);
+      return [];
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const chats = await loadChatMetadata();
+        setChats(chats);
+      };
+  
+      fetchData();
+        return () => {};
+    }, [])
+  );
 
   const renderItem: ListRenderItem<ChatType> = ({ item }) => (
     <ChatListItem
@@ -25,15 +75,20 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       onPress={chatId => {
         console.log('Pressed chat:', chatId);
       }}
+      navigation={navigation}
     />
   );
 
-  const keyExtractor = (item: ChatType) => item.id.toString();
+  // temporary
+  const keyExtractor = (item: ChatType) => `${item.username}-${item.adId}`;
 
   return (
     <SafeAreaView style={globalscreenstyles.container}>
       {/* Header */}
       <TabBarTop
+        LeftIcon={
+          <GoBackIcon />
+        }
         MiddleIcon={
           <Text style={styles.title} testID={testID}>
             {title}
@@ -44,7 +99,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       {/* FlatList */}
       <View style={globalscreenstyles.middle}>
         <FlatList
-          data={chatData}
+          data={chats}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           ListEmptyComponent={ChatListEmptyComponent}

@@ -124,7 +124,6 @@ export const renderPostImage = (
   size?: number,
 ) => {
   const imageSize = size ? { width: size, height: size } : {};
-  console.log(source);
   // @TODO fix the type-error for source
   return (
     <Image

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { checkHasLaunched, getHasLaunched } from '../common/EncryptedSession';
 
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
@@ -10,11 +11,13 @@ import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import DoneScreen from '../screens/Done';
 import View_Post from '../screens/View_Post';
+import SplashScreen from '../screens/SplashScreen';
 import ChatList from '../screens/ChatList';
 import Reviews from '../screens/Reivews';
 import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
 import Conversation_Ended from '../screens/Conversation_Ended';
+import Chat from '../screens/Chat';
 import DoneEdit from '../screens/DoneEdit';
 import DoneResetPW from '../screens/DoneResetPW';
 import PasswordReset from '../screens/PasswordReset';
@@ -24,6 +27,11 @@ const Stack = createNativeStackNavigator();
 const AppNavigator = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={Login}
@@ -97,6 +105,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="ChatList"
         component={ChatList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
         options={{ headerShown: false }}
       />
       <Stack.Screen

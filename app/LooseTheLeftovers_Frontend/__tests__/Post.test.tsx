@@ -14,7 +14,7 @@ describe('Post Component', () => {
   };
 
   it('renders without crashing', () => {
-    // color and endipoint should be assigned to render properly
+    // color and endpoint should be assigned to render properly
     const { getByText, getByTestId } = render(
       <Post color={'expiry_short'} {...mockPost} />,
     );

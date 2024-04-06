@@ -2,13 +2,18 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
+from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage
 from Advertisments.api.serializers import (
     AdvertismentSerializer,
     ImageSerializer,
     ReturnAdvertismentSerializer,
+    LocationSerializer,
 )
 from Advertisments.models import Advertisment, AdvertismentImage
+from django.contrib.gis.measure import D
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import *
 from datetime import date
 
 
@@ -32,6 +37,13 @@ class AdvertismentHandler(APIView):
         Returns:
             Response: Response object with the ad data and a HTTP_201_CREATED response
         """
+
+        if request.META["PATH_INFO"] == "/ads/location/":
+            return get_ads_location(request)
+
+        if request.META["PATH_INFO"] == "/ads/categories/location":
+            return get_ads_category_location(request)
+
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -63,6 +75,9 @@ class AdvertismentHandler(APIView):
                       If multiple ads are returned they will be returned as a list
 
         """
+        if request.META["PATH_INFO"] == "/ads/categories/":
+            return get_ads_category(request)
+
         # if request to create-ads endpoint was made via GET, return 405 response
         if request.META["PATH_INFO"] == "/ads/create":
             return Response(
@@ -92,7 +107,7 @@ class AdvertismentHandler(APIView):
         return retrieve_all_advertisments(request)
 
     def put(self, request, *args, **kwargs):
-        '''
+        """
         Handle PUT requests to update an existing ad. Requires authentication so valid token must
         be included in the request header.
 
@@ -102,11 +117,11 @@ class AdvertismentHandler(APIView):
             - category
             - expiry datetime (optional)
                 - expected format = 'yyyy-mm-ddThh:mm:ss:nnnnnnZ
-            
+
         Returns:
             Response: Response object with the ad data and a HTTP_201_OK response
 
-        '''
+        """
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -118,17 +133,17 @@ class AdvertismentHandler(APIView):
         return update_advertisment(request)
 
     def delete(self, request, *args, **kwargs):
-        '''
-        Handle DELETE requests to delete an existing ad in the database. 
+        """
+        Handle DELETE requests to delete an existing ad in the database.
         Requires authentication so valid token must be included in the request header.
 
         Request should include these fields in the data body as JSON
             - ad_id
-            
+
         Returns:
             Response: Response object with the ad data and a HTTP_201_OK response
 
-        '''
+        """
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -136,21 +151,28 @@ class AdvertismentHandler(APIView):
                 {"detail": "Authentication credentials were not provided."},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        
+
         # Validate ad to delete exists
         try:
-            ad_id = request.data['ad_id']
+            ad_id = request.data["ad_id"]
             ad = Advertisment.objects.get(pk=ad_id)
         except:
-            return Response({"detail": "Post to delete does no exist."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Post to delete does no exist."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Validate ad to delete was created by the person who made the request
         if ad.user_id != request.user.id:
-            return Response({"detail": "You cannot delete someone else's post!"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "You cannot delete someone else's post!"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # call function to create the ad
         ad.delete()
         return Response({"detail": "Post deleted."}, status=status.HTTP_200_OK)
+
 
 def create_advertisment(request):
     """
@@ -215,29 +237,36 @@ def create_advertisment(request):
     # return 201 response indicating ad was created successfully
     return Response(ad_serializer.validated_data, status=status.HTTP_201_CREATED)
 
+
 def update_advertisment(request):
     """
     Any PUT request is passed to this method. Updates an existing ad in the database.
-    
+
     Will return 201 CREATED response if successful.
     """
     # validate ad being updated exists
     try:
-        ad_id = request.data['ad_id']
+        ad_id = request.data["ad_id"]
         ad = Advertisment.objects.get(pk=ad_id)
     except:
-        return Response({"detail": "Post to update does not exist."}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"detail": "Post to update does not exist."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     # validate ad being updated was created by requesting user
     if ad.user_id != request.user.id:
-        return Response({"detail": "Cannot update post created by another user."}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"detail": "Cannot update post created by another user."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     try:
         # pass new ad data to serializer and validate passed data
         ad_serializer = AdvertismentSerializer(ad, data=request.data)
         if ad_serializer.is_valid():
             # if valid save updated ad
-            ad_serializer.save() 
+            ad_serializer.save()
             return Response(ad_serializer.validated_data, status=status.HTTP_200_OK)
         else:
             # if serializer returned errors on validation return errors and HTTP_400 status
@@ -247,6 +276,7 @@ def update_advertisment(request):
         # if error occurs return error message and detail with HTTP_500 status
         response = {"message": "Error updating post", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 def retrieve_single_advertisment(ad_id):
     """
@@ -267,12 +297,13 @@ def retrieve_single_advertisment(ad_id):
         serializer = ReturnAdvertismentSerializer(ad)
         image_serializer = ImageSerializer(ad_image)
 
-        combined = {**serializer.data, **image_serializer.data}  # Merge two dictionaries
+        combined = {
+            **serializer.data,
+            **image_serializer.data,
+        }  # Merge two dictionaries
 
         # return response data of both serializers and 200 OK response
-        return Response(
-            combined, status=status.HTTP_200_OK
-        )
+        return Response(combined, status=status.HTTP_200_OK)
     except Exception as e:
         # send problem response and server error
         response = {"message": "Error retrieving all ads", "error": str(e)}
@@ -319,13 +350,13 @@ def retrieve_advertisments_for_user(request, user_id):
         for ad, image in zip(serializer.data, image_serializer.data):
             combined = {**ad, **image}  # Merge two dictionaries
             combined_data.append(combined)
-        
+
         return Response(
             combined_data,
             status=status.HTTP_200_OK,
         )
 
-    # when index for page is out of bounds return 204 response       
+    # when index for page is out of bounds return 204 response
     except EmptyPage as e:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -353,11 +384,11 @@ def retrieve_all_advertisments(request):
     """
     try:
         # query all ads and their images
-        all_ads = Advertisment.objects.all().defer('description')
+        all_ads = Advertisment.objects.all().defer("description")
         all_images = AdvertismentImage.objects.all()
     except:
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     try:
         # put query results into pages
         ad_paginator = Paginator(all_ads, 3)
@@ -384,11 +415,187 @@ def retrieve_all_advertisments(request):
             combined_data,
             status=status.HTTP_200_OK,
         )
-    
-    # when index for page is out of bounds return 204 response 
+
+    # when index for page is out of bounds return 204 response
     except EmptyPage as e:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     except Exception as e:
         response = {"message": "Error retrieving all ads", "error": str(e)}
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def get_ads_location(request):
+
+    # serialize incoming data
+    serializer = LocationSerializer(data=request.data)
+
+    # return a 400 if it is a bad request
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # retrieve requesting user's range, longitude, and latitude
+    req_range = serializer.validated_data["range"]
+    req_longitude = serializer.validated_data["longitude"]
+    req_latitude = serializer.validated_data["latitude"]
+
+    # create a Point for the user using GeoDjango
+    user_location = Point(req_longitude, req_latitude)
+
+    # filter ads nearby based on radius, append a location which is the distance between the long/lat, and then retrieve images
+    try:
+        nearby_ads = (
+            Advertisment.objects.filter(
+                location__distance_lt=(user_location, D(km=req_range))
+            )
+            .annotate(distance=Distance("location", user_location))
+            .order_by("distance")
+            .prefetch_related("ad_image")
+        )
+
+        # put query results into pages
+        ad_paginator = Paginator(nearby_ads, 3)
+
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+
+        ad_serializer = ReturnAdvertismentSerializer(ad_page, many=True)
+
+        # return response dependant on data in the response
+        if ad_serializer.data is not None:
+            return Response(
+                ad_serializer.data,
+                status=status.HTTP_200_OK,
+            )
+
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # when index for page is out of bounds return 204 response
+    except EmptyPage as e:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def get_ads_category(request):
+
+    # retrieve all the categories parameter from the request
+    categories = set()
+    pageNumber = 1
+    for key, value in request.query_params.items():
+        if key != "page":
+            categories.add(value)
+        elif key == "page":
+            pageNumber = value
+
+    # return an error if there isn't any categories
+    if len(categories) == 0:
+        response = {"message": "Endpoint expecting category / pageNumber"}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+    category_filters = parse_categories(categories)
+
+    try:
+        categorized_ads = (
+            Advertisment.objects.filter(category_filters)
+        ).prefetch_related("ad_image")
+
+        # put query results into pages
+        ad_paginator = Paginator(categorized_ads, 3)
+
+        # gets data for the current page
+        ad_page = ad_paginator.page(pageNumber)
+
+        # serialize data
+        ad_serializer = ReturnAdvertismentSerializer(ad_page, many=True)
+
+        # return response dependant on data in the response
+        if ad_serializer.data is not None:
+            return Response(
+                ad_serializer.data,
+                status=status.HTTP_200_OK,
+            )
+    # when index for page is out of bounds return 204 response
+
+    except EmptyPage as e:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def get_ads_category_location(request):
+    # serialize incoming data
+    serializer = LocationSerializer(data=request.data)
+
+    # return a 400 if it is a bad request
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # retrieve requesting user's range, longitude, latitude, and categories
+    req_range = serializer.validated_data["range"]
+    req_longitude = serializer.validated_data["longitude"]
+    req_latitude = serializer.validated_data["latitude"]
+    req_categories = serializer.validated_data["categories"].split(",")
+
+    # Create a complex query
+    category_filters = parse_categories(req_categories)
+
+    # create a Point for the user using GeoDjango
+    user_location = Point(req_longitude, req_latitude)
+
+    # filter ads nearby based on radius, append a location which is the distance between the long/lat, filter by ategory, and then retrieve images
+    try:
+        nearby_ads = (
+            Advertisment.objects.filter(
+                location__distance_lt=(user_location, D(km=req_range))
+            )
+            .filter(category_filters)
+            .annotate(distance=Distance("location", user_location))
+            .order_by("distance")
+            .prefetch_related("ad_image")
+        )
+
+        # put query results into pages
+        ad_paginator = Paginator(nearby_ads, 3)
+
+        # gets data for the current page
+        page_number = request.GET.get("page")
+        if page_number is None:
+            page_number = 1
+        ad_page = ad_paginator.page(page_number)
+
+        ad_serializer = ReturnAdvertismentSerializer(ad_page, many=True)
+
+        # return response dependant on data in the response
+        if ad_serializer.data is not None:
+            return Response(
+                ad_serializer.data,
+                status=status.HTTP_200_OK,
+            )
+
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # when index for page is out of bounds return 204 response
+    except EmptyPage as e:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        print("this is the error " + str(e))
+        return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def parse_categories(categories):
+    """'
+    Function returns a Q() complex query with all the categories, needed to programmically sort an N amount of categories.
+    """
+    category_filters = Q()
+    for category_name in categories:
+        category_filters &= Q(category__icontains=category_name)
+    return category_filters

@@ -76,6 +76,20 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [posterId, setPosterId] = useState('');
+
+  // Get current user id
+  useEffect(() => {
+    const getSessionAndSetUserId = async () => {
+      const session = await retrieveUserSession();
+      if (session && session.user_id) {
+        setCurrentUserId(session.user_id);
+      }
+    };
+    getSessionAndSetUserId();
+  }, []);
+
   // Move checkDietaryOption to useEffect to avoid re-renders
   useEffect(() => {
     checkDietaryOption(adData.category);
@@ -147,6 +161,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         data.image = BASE_URL + data.image;
         setAdData(data);
         setIsLoading(false);
+        setPosterId(data.user_id);
       } else {
         // exit or show a screen
         console.log('error retrieving payload');
@@ -176,10 +191,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       return (
         <View style={styles.message_button}>
           <Button
-            title="message"
-            onPress={() => {
-              console.log('hi');
-            }}
+            title="Message"
+            onPress={handlePressMessage}
             borderRadius={0.05 * Dimensions.get('window').width}
             backgroundcolor={card_color_dict.middleColor}
             borderColor={card_color_dict.middleColor}
@@ -187,6 +200,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           />
         </View>
       );
+    };
+
+    const handlePressMessage = () => {
+      navigation.navigate('Chat', {
+        adId: postId,
+        username: adData.username,
+        title: adData.title,
+      });
     };
 
     /**
