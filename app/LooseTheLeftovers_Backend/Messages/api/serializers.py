@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from Advertisments.models import Advertisment
 from Messages.models import Message
 
 class MessageSerializer(serializers.Serializer):
@@ -18,7 +19,6 @@ class MessageSerializer(serializers.Serializer):
 
     msg = serializers.CharField(max_length=1000)
     receiver_id = serializers.IntegerField()
-    ad_id = serializers.IntegerField()
 
     def create(self, validated_data):
         """
@@ -28,15 +28,21 @@ class MessageSerializer(serializers.Serializer):
         Returns an instance of the Message that was saved.
         """
         sender = self.context["request"].user.id
-        ad = Message.objects.create(sender_id=sender, **validated_data)
-        return ad
+        ad = self.context["ad"]
+        msg = Message.objects.create(sender_id=sender, ad_id=ad, **validated_data)
+        return msg
 
 class GetMessageSerializer(serializers.Serializer):
     msg = serializers.CharField(max_length=1000)
     sender_id = serializers.IntegerField()
     receiver_id = serializers.IntegerField()
-    ad_id = serializers.IntegerField()
     time_sent = serializers.DateTimeField()
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation["ad_id"] = self.context["ad_id"]
+
+        return representation
 
 class LastMessageSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()

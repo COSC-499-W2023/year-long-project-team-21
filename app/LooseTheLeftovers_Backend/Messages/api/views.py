@@ -5,6 +5,7 @@ from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 
+from Advertisments.models import Advertisment
 from Users.models import CustomUser
 from Messages.models import Message
 from Messages.api.serializers import MessageSerializer, GetMessageSerializer, LastMessageSerializer
@@ -75,7 +76,7 @@ class MessageHandler(APIView):
             # no user id was passed: return each converstation and the last message
             else:
                 return get_messages(request, user_id)
-                
+                    
         except Exception as e:
             return Response(
                 {"detail": str(e)},
@@ -92,15 +93,20 @@ def send_message(request):
         -ad id
     '''
 
-    # retrieve receiver to validate that it exists
+    # retrieve receiver to validate that it exists and the ad
     try:    
         CustomUser.objects.get(pk=request.data['receiver_id'])
     except:
         return Response("invalid recipient", status=status.HTTP_400_BAD_REQUEST)
-
+    
+    try:
+        ad = Advertisment.objects.get(pk=request.data['ad_id'])
+    except:
+        return Response("invalid advertisment id", status=status.HTTP_400_BAD_REQUEST)
+    
     # deserialize incoming data
     msg_serializer = MessageSerializer(
-        data=request.data, context={"request": request}
+        data=request.data, context={"request": request, "ad": ad}
     )
 
     # validate data in request
@@ -114,8 +120,8 @@ def send_message(request):
 
         # return 201 response indicating ad was created successfully
         return Response(msg_serializer.validated_data, status=status.HTTP_201_CREATED)
-    except:
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def get_messages(request, other_user_id):
@@ -129,17 +135,18 @@ def get_messages(request, other_user_id):
     # get data to query messages from the request
     request_user_id = request.user.id
     ad_id = request.GET.get('ad_id')
+    ad = Advertisment.objects.get(pk=ad_id)
 
     # retrieve messages where the request user is the sender
     messages_sent = Message.objects \
-        .filter(ad_id=ad_id) \
+        .filter(ad_id=ad) \
         .filter(sender_id=request_user_id) \
         .filter(receiver_id=other_user_id) \
         .order_by('time_sent')
     
     # retrieve messages where the request user is the receiver
     messages_received = Message.objects \
-        .filter(ad_id=ad_id) \
+        .filter(ad_id=ad) \
         .filter(sender_id=other_user_id) \
         .filter(receiver_id=request_user_id) \
         .order_by('time_sent')
@@ -153,7 +160,7 @@ def get_messages(request, other_user_id):
         # if neither query returned result, return http 204 no content response
         if len(messages_sent) == 0 and len(messages_received) == 0:
             response = {"message": "No messages found"}
-            return Response(response, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         
         # if there are no messages sent and only received, return received messages
         if len(messages_sent) == 0:
@@ -161,7 +168,7 @@ def get_messages(request, other_user_id):
             # paginate results
             msg_paginator = Paginator(messages_received, 6)
             msg_page = msg_paginator.page(page_number)
-            serializer_received = GetMessageSerializer(msg_page, many=True)
+            serializer_received = GetMessageSerializer(msg_page, context={"ad_id": ad.id}, many=True)
             return Response(
                 serializer_received.data,
                 status=status.HTTP_200_OK,
@@ -173,7 +180,7 @@ def get_messages(request, other_user_id):
             # paginate results
             msg_paginator = Paginator(messages_sent, 6)
             msg_page = msg_paginator.page(page_number)
-            serializer_sent = GetMessageSerializer(msg_page, many=True)
+            serializer_sent = GetMessageSerializer(msg_page, context={"ad_id": ad.id}, many=True)
             return Response(
                 serializer_sent.data,
                 status=status.HTTP_200_OK,
@@ -189,7 +196,7 @@ def get_messages(request, other_user_id):
         msg_page = msg_paginator.page(page_number)
 
         # serialize to json and return response
-        serializer_sent = GetMessageSerializer(msg_page, many=True)
+        serializer_sent = GetMessageSerializer(msg_page, context={"ad_id": ad.id}, many=True)
         return Response(
             serializer_sent.data,
             status=status.HTTP_200_OK,
