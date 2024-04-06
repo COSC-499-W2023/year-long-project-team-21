@@ -10,6 +10,8 @@ import {
 import { checkLocationPermission } from '../common/LocationServices';
 import { useGlobal } from '../common/GlobalContext';
 import { View } from 'react-native';
+import styles from '../styles/loginStyle';
+import splashscreen from '../styles/SplashScreenStyles';
 
 const SplashScreen = ({ navigation }: { navigation: any }) => {
   const { updateFirstLaunch, updateLocationPermission } = useGlobal();
@@ -95,44 +97,24 @@ const SplashScreen = ({ navigation }: { navigation: any }) => {
   }, [fadeAnim]);
 
   return (
-    <View testID={'SplashScreen'}>
-      <Animated.View style={{ ...styles.container, opacity: fadeAnim }}>
+    <>
+      <Animated.View style={{ ...splashscreen.container, opacity: fadeAnim }}>
         <LinearGradient
-          style={styles.gradient}
+          style={styles.LoginContainer}
           colors={[global.purple, global.background]}
           start={{ x: 1, y: 0 }}>
           <Icon source={require('../assets/logo-with-name.png')} size={200} />
           <ActivityIndicator size="large" color="#FFFFFF" />
           {error ? (
-            <Text style={styles.errorText}>{error}</Text>
+            <Text style={splashscreen.errorText}>{error}</Text>
           ) : (
-            <Text style={styles.loadingText}>{pun}</Text>
+            <Text style={splashscreen.loadingText}>{pun}</Text>
           )}
+          <View testID="SplashScreen"></View>
         </LinearGradient>
       </Animated.View>
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  gradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 20,
-    fontSize: 20,
-    color: '#FFFFFF',
-  },
-  errorText: {
-    marginTop: 20,
-    fontSize: 20,
-    color: 'red', // Example error text color
-  },
-});
 
 export default SplashScreen;
