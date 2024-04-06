@@ -12,6 +12,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
 import Icon from '../components/Icon';
+import { useEffect } from 'react';
 
 import { useFocusEffect } from '@react-navigation/native';
 /**
@@ -136,16 +137,14 @@ const Registration = ({ navigation }: { navigation: any }) => {
     }
   };
   //this resets values after the page is focused.
-  useFocusEffect(
-    React.useCallback(() => {
-      setUsername('');
-      setEmail('');
-      setPassword1('');
-      setPassword2('');
-      setKey(Math.random());
-      return () => {};
-    }, []),
-  );
+  useEffect(() => {
+    setUsername('');
+    setEmail('');
+    setPassword1('');
+    setPassword2('');
+    setKey(Math.random());
+    return () => {};
+  }, []);
 
   const getPasswordStrengthMessage = (
     passwordStrengthValue: string,

@@ -10,8 +10,6 @@ import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
 import { useGlobal } from '../common/GlobalContext';
-import { useFocusEffect } from '@react-navigation/native';
-
 /**
  * Login component.
  *
@@ -33,15 +31,14 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
   const [key, setKey] = useState(Math.random());
 
   //this resets values after the page is focused.
-  useFocusEffect(
-    React.useCallback(() => {
-      setUsername('');
-      setPassword('');
-      setErrorMessage('');
-      setKey(Math.random());
-      return () => {};
-    }, []),
-  );
+  useEffect(() => {
+    setUsername('');
+    setPassword('');
+    setErrorMessage('');
+    setKey(Math.random());
+
+    return () => {};
+  }, []);
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
