@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
 import axios from 'axios';
 
-import styles from '../styles/registrationStyles';
-import { global } from '../common/global_styles';
 import { BASE_URL, users } from '../common/API';
-
+import { global } from '../common/global_styles';
+import styles from '../styles/registrationStyles';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
 import Icon from '../components/Icon';
-import { useEffect } from 'react';
 
-import { useFocusEffect } from '@react-navigation/native';
 /**
  * Registration page
  *
@@ -143,7 +140,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         const errors = apiError.response?.data;
 
         //this parses the error message
-        const extractedValues = Object.values(errors).flat();
+        const extractedValues = errors ? Object.values(errors).flat() : [];
         const errorMessages = extractedValues.join(' ');
 
         //this sends the error message to be displayed

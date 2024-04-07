@@ -42,7 +42,7 @@ class ChatService {
       const response = await secureApiReqInstance.get(endpoint);
       return response;
     } catch (error) {
-      console.error('ChatService: Failed to check chat history:', error);
+      console.error('ChatService: Failed to fetch chat updates:', error);
       throw error;
     }
   }
@@ -56,13 +56,13 @@ class ChatService {
    * @param {number} ad_id - The ID of the related ad.
    * @returns {boolean} - A `true` if response is not empty, `false` otherwise.
    */
-  static async checkHistory(user_id: string, ad_id: number): Promise<boolean> {
+  static async checkHistory(user_id: string, ad_id: string) {
     try {
-      // Use fetchChatUpdates
-      const response = await this.fetchChatUpdates(parseInt(user_id, 10), ad_id, 1);
-  
-      // If response length > 0 => history exists, return true
-      const hasHistory = response.data && response.data.length > 0;
+      const secureApiReqInstance: any = await SecureAPIReq.createInstance();
+      const endpoint = `${messages}${user_id}?ad_id=${ad_id}`;
+      const response = await secureApiReqInstance.get(endpoint);
+
+      const hasHistory = response.data.length > 0;
       return hasHistory;
     } catch (error) {
       console.error('ChatService: Failed to check chat history:', error);
