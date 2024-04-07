@@ -83,7 +83,7 @@ const generateHomeScreenCardStyles = (
       height: card_height * 0.8,
       width: card_width * 0.4,
       zIndex: -2,
-      right: 15,
+      right: 0,
       bottom: 0,
       borderRadius: screenWidth * 0.04,
       overflow: 'hidden',

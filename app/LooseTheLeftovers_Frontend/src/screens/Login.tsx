@@ -112,6 +112,7 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
           onChangeText={input => handleUsername(input)}
           value={username}
           width={280}
+          maxLength={20}
         />
         <InputField
           placeholder="Password"
@@ -119,6 +120,7 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
           value={password}
           secureTextEntry={true}
           width={280}
+          maxLength={25}
         />
         {/* Conditionally render the error message */}
         {errorMessage !== '' && (
