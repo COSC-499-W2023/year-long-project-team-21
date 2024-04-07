@@ -1,31 +1,43 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ActivityIndicator, Text, Dimensions } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
 import globalscreenstyles from '../common/global_ScreenStyles';
-import TabBarTop from '../components/TabBarTop';
-import AccountIcon from '../components/AccountIcon';
-import HomeIcon from '../components/HomeIcon';
-import CreateAdIcon from '../components/CreateAdIcon';
-import TabBarBottom from '../components/TabBarBottom';
-import MessageIcon from '../components/MessageIcon';
 import { global } from '../common/global_styles';
 import {
   removeUserSession,
   retrieveUserSession,
 } from '../../src/common/EncryptedSession';
 import { SecureAPIReq } from '../../src/common/NetworkRequest';
-import PostListRenderer from '../components/PostListRenderer';
 import { adEndpoint, usersAds } from '../common/API';
 import profileStyles from '../styles/profileStyles';
-import LinearGradient from 'react-native-linear-gradient';
-import { useFocusEffect } from '@react-navigation/native';
+import generatePostListStyles from '../styles/postListStyles';
+
+import TabBarTop from '../components/TabBarTop';
+import TabBarBottom from '../components/TabBarBottom';
+import AccountIcon from '../components/AccountIcon';
+import HomeIcon from '../components/HomeIcon';
+import CreateAdIcon from '../components/CreateAdIcon';
+import MessageIcon from '../components/MessageIcon';
+import Logo from '../components/Logo';
+import UserInfo from '../components/UserInfo';
+import Button from '../components/Button';
+import Ratings from '../components/Ratings';
+import Texts from '../components/Text';
+import Icon from '../components/Icon';
+import PostListRenderer from '../components/PostListRenderer';
 
 const Profile = ({ navigation }: { navigation: any }) => {
-  const [userID, setUserId] = useState('');
+  const screenWidth = Dimensions.get('window').width;
+  const postListStyles = generatePostListStyles(screenWidth);
+  const [userId, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+  const [ratings, setRatings] = useState<number | undefined>(undefined);
+  const [reviewsCount, setReviewsCount] = useState<number | undefined>(
+    undefined,
+  );
+  const [key, setKey] = useState(Math.random());
 
   /**
    * Handles button press event to log out the user.
@@ -40,7 +52,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
       if (session) {
         // Remove the user session
         await removeUserSession();
-        navigation.navigate('Registration');
+        navigation.navigate('Login');
       } else {
         throw new Error('No active user session found');
       }
@@ -56,8 +68,13 @@ const Profile = ({ navigation }: { navigation: any }) => {
    * @returns {void}
    */
   const handleEditButtonOnPress = async () => {
-    console.log('edit profile!');
-    navigation.navigate("EditProfile", {userId: userID})
+    navigation.navigate('EditProfile', { userId: userId });
+  };
+
+  const getUserID = async () => {
+    const sesh = await retrieveUserSession();
+    const user_id = sesh.user_id;
+    setUserId(user_id);
   };
 
   /**
@@ -65,99 +82,108 @@ const Profile = ({ navigation }: { navigation: any }) => {
    *
    * @returns {void}
    */
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = async (newReq: any) => {
     try {
-      // init class for new request
-      const newReq: any = await SecureAPIReq.createInstance();
-      // Retrieve session data
-      const userSesh: Record<string, string> = await retrieveUserSession();
-      // Gets user id from session data
-      const userId: string = userSesh['user_id'];
-
-      console.log('UserId:', userId);
-      // set state appropriately
-      setUserId(userId);
       // call backend to retrieve
       const res: any = await newReq.get(`users/${userId}/`);
       // set state
       setUserInfo({ username: res.data.username, email: res.data.email });
-      // no longer loading (wonder if nec?)
-      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
     }
   };
 
+  /**
+   * Fetches the rating and review count for a given user.
+   *
+   * This function makes an HTTP GET request to retrieve the user's ratings and review count.
+   * Upon a successful response, it updates the relevant state. If the request fails or if the
+   * user has no ratings, it sets the ratings and review counts to zero.
+   *
+   * @param {object} newReq - The instance of the request object to make the HTTP call.
+   */
+  const fetchRatings = async (newReq: any) => {
+    try {
+      //attaches userid to the url
+      const endpoint = `/ratings/${userId}`;
+      const res = await newReq.get(endpoint);
+      //rating itself
+      setRatings(res.data.rating || 0);
+      setReviewsCount(res.data.count || 0);
+    } catch (error) {
+      const apiError: any = error;
+      console.error(
+        'Failed to fetch rating info:',
+        apiError.response?.status,
+        apiError.response?.data || apiError.message,
+      );
+      //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
+      setReviewsCount(0);
+      setRatings(0);
+    }
+  };
+
+  useEffect(() => {
+    getUserID();
+  }, []);
+
+  useEffect(() => {
+    setKey(Math.random());
+
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const makeReq = async () => {
+      try {
+        const newReq: any = await SecureAPIReq.createInstance();
+        await Promise.all([fetchUserInfo(newReq), fetchRatings(newReq)]);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+
+    if (userId) {
+      makeReq();
+      setIsLoading(false);
+    }
+  }, [userId]);
+
   // function passed down as a prop to handle retrieving ads for users
-  async function fetchAds(pageNumber: number) {
+  async function fetchUserAds(pageNumber: number) {
     const req: any = await SecureAPIReq.createInstance();
-    const endpoint: string = `${usersAds}${userID}/?page=${pageNumber}`;
+    const endpoint: string = `${usersAds}${userId}/?page=${pageNumber}`;
+    console.log(endpoint);
     const payload: any = await req.get(endpoint);
     return payload;
   }
 
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
-
-   // Use useFocusEffect to fetch data when the screen gains focus, aka when the user came back to the screen.
-   useFocusEffect(
-    useCallback(() => {
-      fetchUserInfo();
-    }, []),
-  );
-
-  const [ratings, setRatings] = useState<number | undefined>(undefined);
-  const [reviewsCount, setReviewsCount] = useState<number | undefined>(
-    undefined,
-  );
-
-  /**
-   * Callback function for handling completion of rating.
-   *
-   * @param {number} rating - The rating value.
-   * @returns {void}
-   */
-  //this is for when backend is implementated
-  const ratingCompleted = (rating: number) => {
-    console.log(rating);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //retrieves user id
-        const newReq: any = await SecureAPIReq.createInstance();
-        const userSesh: Record<string, string> = await retrieveUserSession();
-        const userId: string = userSesh['user_id'];
-        //attaches userid to the url
-        const endpoint = `/ratings/${userId}`;
-        console.log('Request Details:', { endpoint });
-        const res = await newReq.get(endpoint);
-        //rating itself
-        setRatings(res.data.rating);
-        //rating count
-        setReviewsCount(res.data.count);
-      } catch (error) {
-        const apiError: any = error;
-        console.error(
-          'Failed to fetch rating info:',
-          apiError.response?.status,
-          apiError.response?.data || apiError.message,
-        );
-        //if it can't retreive ratings it will set it to zero. This accounts for specfically when the user has no ratings yet
-        setReviewsCount(0);
-        setRatings(0);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
+  function profileHeader(): React.ReactElement {
     return (
-      <View style={globalscreenstyles.container}>
-        <ActivityIndicator size="large" />
+      <View style={profileStyles.userinfocontainer}>
+        <UserInfo userInfo={userInfo!} userInfoKeys={['username', 'email']} />
+        <View style={postListStyles.editIconContainer}>
+          <Icon
+            source={require('../assets/edit_white.png')}
+            size={25}
+            onPress={handleEditButtonOnPress}
+          />
+        </View>
+        <View style={profileStyles.ratingContainer}>
+          <Ratings
+            startingValue={ratings}
+            readonly={true}
+            backgroundColor={global.tertiary}></Ratings>
+          <Texts
+            textsColor={global.secondary}
+            textsSize={15}
+            texts={`(${reviewsCount} Reviews)`}></Texts>
+        </View>
+        <View style={profileStyles.button_container}>
+          <View>
+            <Button onPress={handleLoginButtonOnPress!} title="Logout"></Button>
+          </View>
+        </View>
       </View>
     );
   }
@@ -167,21 +193,22 @@ const Profile = ({ navigation }: { navigation: any }) => {
       style={globalscreenstyles.container}
       colors={[global.purple, global.background]}
       start={{ x: 1, y: 0 }}>
-      <TabBarTop RightIcon={<MessageIcon />} />
+      <TabBarTop LeftIcon={<Logo size={55} />} RightIcon={<MessageIcon />} />
       <View style={globalscreenstyles.middle}>
-        <View style={profileStyles.viewPost}>
-          <PostListRenderer
-            isHeaderInNeed={false}
-            endpoint={adEndpoint}
-            getData={fetchAds}
-            navigation={navigation}
-            handleEditOnpress={handleEditButtonOnPress}
-            handleLoginOnpress={handleLoginButtonOnPress}
-            userInfo={userInfo!}
-            rating={ratings!}
-            reviewsCount={reviewsCount}
-          />
-        </View>
+        {isLoading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <>
+            <View style={profileStyles.viewPost}>
+              <PostListRenderer
+                endpoint={adEndpoint}
+                getData={fetchUserAds}
+                navigation={navigation}
+                whichHeader={profileHeader}
+              />
+            </View>
+          </>
+        )}
       </View>
       <TabBarBottom
         LeftIcon={<HomeIcon />}

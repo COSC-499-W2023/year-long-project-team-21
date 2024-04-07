@@ -24,13 +24,18 @@ import { ChatListItemProps } from '../../common/Types';
  * )
  */
 
-const ChatListItem: React.FC<ChatListItemProps> = ({ chat, onPress }) => {
+const ChatListItem: React.FC<ChatListItemProps & { navigation: any }> = ({ chat, onPress, navigation }) => {
+  const handlePress = () => {
+    // Navigate to Chat screen, passing the chat ID as a parameter
+    navigation.navigate('Chat', { adId: chat.adId, username: chat.username });
+  };
+  
   return (
     <TouchableOpacity
-      onPress={() => onPress(chat.id)}
+      onPress={handlePress}
       style={styles.chatItem}
       testID="chatlist-item-test">
-      <Text style={styles.chatItemName}>{chat.name}</Text>
+      <Text style={styles.chatItemName}>{chat.username}</Text>
       <Text style={styles.chatItemMessage}>{chat.lastMessage}</Text>
     </TouchableOpacity>
   );

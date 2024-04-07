@@ -6,13 +6,14 @@ import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
 import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../components/Logo';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
 import Icon from '../components/Icon';
+import { useEffect } from 'react';
 
+import { useFocusEffect } from '@react-navigation/native';
 /**
  * Registration page
  *
@@ -30,10 +31,12 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
+  const [key, setKey] = useState(Math.random());
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
   const [usernameLengthError, setUsernameLengthError] = useState(false);
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [apiRequestErrorMessage, setApiRequestErrorMessage] = useState('');
   const [credentialFilledInError, setCredentialsFilledInError] =
     useState(false);
   const [apiRequestError, setApiRequestError] = useState(false);
@@ -129,13 +132,46 @@ const Registration = ({ navigation }: { navigation: any }) => {
       } catch (error: any) {
         //red text error produced by requesting error
         setApiRequestError(true);
-        console.log(error);
+
+        const apiError: any = error;
+
+        console.log(apiError.response?.data);
+        //this recevieves error message
+        const errors = apiError.response?.data;
+
+        //this parses the error message
+        const extractedValues = Object.values(errors).flat();
+        const errorMessages = extractedValues.join(' ');
+
+        //this sends the error message to be displayed
+        setApiRequestErrorMessage(errorMessages);
       }
+    }
+  };
+  //this resets values after the page is focused.
+  useEffect(() => {
+    setUsername('');
+    setEmail('');
+    setPassword1('');
+    setPassword2('');
+    setKey(Math.random());
+    return () => {};
+  }, []);
+
+  const getPasswordStrengthMessage = (
+    passwordStrengthValue: string,
+  ): string => {
+    if (passwordStrengthValue !== 'Strong') {
+      return '(needs 10 chararacters, capitals, numbers and symbols)';
+    } else {
+      return '';
     }
   };
 
   return (
     <LinearGradient
+      //the key forces a Re-render of the page:
+      key={key}
       style={styles.RegistrationContainer}
       colors={['#251D3A', global.background]}
       start={{ x: 1, y: 0 }}>
@@ -211,12 +247,16 @@ const Registration = ({ navigation }: { navigation: any }) => {
         {/* When the apiRquestError is true, the red text tells following. */}
         {apiRequestError && (
           <Text style={{ color: global.error, fontSize: 15 }}>
-            Request error, unable to process.
+            {apiRequestErrorMessage || 'Request error, unable to process.'}
           </Text>
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}
         {password1 && passwordStrengthError && (
-          <Text style={{ color: global.secondary, fontSize: 15 }}>
+          <Text
+            style={{
+              color: global.secondary,
+              fontSize: 15,
+            }}>
             Password Strength:{' '}
             <Text
               style={{
@@ -225,6 +265,15 @@ const Registration = ({ navigation }: { navigation: any }) => {
               }}>
               {passwordStrength(password1).value}
             </Text>
+            <View>
+              <Text
+                style={{
+                  color: passwordStrengthColor(passwordStrength(password1).id)
+                    .color,
+                }}>
+                {getPasswordStrengthMessage(passwordStrength(password1).value)}
+              </Text>
+            </View>
           </Text>
         )}
         <View>

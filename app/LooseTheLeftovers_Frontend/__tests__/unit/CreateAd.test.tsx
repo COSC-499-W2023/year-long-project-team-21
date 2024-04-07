@@ -1,7 +1,26 @@
 import React from 'react';
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import CreateAd from '../../src/screens/CreateAd';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
+jest.mock('react-native-permissions', () => ({
+  check: jest.fn(() => Promise.resolve('granted')),
+  request: jest.fn(() => Promise.resolve('granted')),
+  PERMISSIONS: {
+    IOS: {
+      LOCATION_WHEN_IN_USE: 'LOCATION_WHEN_IN_USE',
+    },
+    ANDROID: {
+      ACCESS_FINE_LOCATION: 'ACCESS_FINE_LOCATION',
+    },
+  },
+  RESULTS: {
+    UNAVAILABLE: 'unavailable',
+    DENIED: 'denied',
+    GRANTED: 'granted',
+    BLOCKED: 'blocked',
+  },
+}));
 
 jest.mock('axios');
 jest.mock('react-native', () => {
@@ -20,17 +39,15 @@ describe('CreateAd Screen', () => {
   });
 
   it('renders the CreateAd screen correctly', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
-    expect(getByText('Food Name')).toBeDefined();
-    expect(getByPlaceholderText('Title')).toBeDefined();
-    expect(getByText('Description (optional)')).toBeDefined();
-    expect(getByPlaceholderText('Description')).toBeDefined();
-    expect(getByText('Pick an image of the food')).toBeDefined();
-    expect(getByText('Set an expiry range')).toBeDefined();
-    expect(getByText('Submit')).toBeDefined();
+    expect(getByTestId('test-title')).toBeDefined();
+    expect(getByTestId('test-title-input')).toBeDefined();
+    expect(getByTestId('test-description')).toBeDefined();
+    expect(getByTestId('test-description-input')).toBeDefined();
+    expect(getByTestId('test-pick-img')).toBeDefined();
+    expect(getByTestId('test-expiry')).toBeDefined();
+    expect(getByTestId('test-submit')).toBeDefined();
   });
 });
 
@@ -40,23 +57,19 @@ describe('CreateAd Screen - InputFields', () => {
   });
 
   it('allows entering a title in the Title InputField', () => {
-    const { getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
-    const titleInput = getByPlaceholderText('Title');
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
+    const titleInput = getByTestId('test-title-input');
     fireEvent.changeText(titleInput, 'Delicious Pizza');
     expect(titleInput.props.value).toBe('Delicious Pizza');
   });
 
   it('allows entering a description in the Description InputField', () => {
-    const { getByPlaceholderText } = render(
-      <CreateAd navigation={undefined} />,
-    );
-    const descriptionInput = getByPlaceholderText('Description');
+    const { getByTestId } = render(<CreateAd navigation={undefined} />);
 
-    fireEvent.changeText(descriptionInput, 'A tasty homemade pizza');
-    expect(descriptionInput.props.value).toBe('A tasty homemade pizza');
+    const descInput = getByTestId('test-description-input');
+    fireEvent.changeText(descInput, 'A tasty homemade pizza');
+    expect(descInput.props.value).toBe('A tasty homemade pizza');
   });
 });
 

@@ -1,5 +1,34 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 
+// Returns true if the program has launched once before. Returns false if it hasn't, then updates async encrpyted storage.
+export async function checkHasLaunched() {
+  const hasLaunched: any = await getHasLaunched();
+  if (hasLaunched === 'true') {
+    return true;
+  }
+  await setHasLaunched();
+  return false;
+}
+
+// function that retrieves getFirstOpen
+export async function getHasLaunched() {
+  try {
+    const firstOpen: any = await EncryptedStorage.getItem('hasLaunched');
+    return firstOpen;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// function that sets setFirstOpen to true
+export async function setHasLaunched() {
+  try {
+    await EncryptedStorage.setItem('hasLaunched', 'true');
+  } catch (error) {
+    throw error;
+  }
+}
+
 /**
  * Stores user session data securely.
  * @param {string} token - The user's token.

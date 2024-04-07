@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "Messages",
     "Users",
     "Ratings",
-    'django_crontab',
+    "django_crontab",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -47,11 +47,11 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+    "django.contrib.gis",
+    "django_rest_passwordreset",
 ]
 
-CRONJOBS = [
-    ('0 1 * * *', 'Advertisments.cron.delete_expired_ads')
-]
+CRONJOBS = [("0 1 * * *", "Advertisments.cron.delete_expired_ads")]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -95,7 +95,8 @@ WSGI_APPLICATION = "LooseTheLeftovers_Backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("DB_DRIVER", "django.db.backends.postgresql"),
+        # "ENGINE": os.environ.get("DB_DRIVER", "django.db.backends.postgresql"),
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": os.environ.get("PG_DB"),
         "USER": os.environ.get("PG_USER"),
         "PASSWORD": os.environ.get("PG_PASSWORD"),
@@ -181,3 +182,25 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+'''
+Configuration for email token validation
+'''
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "django_rest_passwordreset.tokens.RandomNumberTokenGenerator",
+    "OPTIONS": {
+        "min_number": 10000,
+        "max_number": 99999
+    }
+}
+
+'''
+Email configuration for "forgot password" 
+'''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "losetheleftovers@gmail.com"
+EMAIL_HOST_PASSWORD = "ibaq lrcj zljg dbtl"
+

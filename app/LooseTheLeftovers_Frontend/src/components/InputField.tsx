@@ -39,6 +39,7 @@ const InputField: React.FC<InputFieldProps> = ({
   multiline,
   width,
   maxLength,
+  testID,
 }: InputFieldProps) => {
   const [text, setText] = useState('');
   const [isSecure, setIsSecure] = useState(secureTextEntry);
@@ -77,6 +78,7 @@ const InputField: React.FC<InputFieldProps> = ({
         multiline={multiline}
         numberOfLines={multiline ? 1 : 1} // Default is one-line
         maxLength={maxLength}
+        testID={testID}
       />
 
       {secureTextEntry && ( // Render if secureTextEntry is true

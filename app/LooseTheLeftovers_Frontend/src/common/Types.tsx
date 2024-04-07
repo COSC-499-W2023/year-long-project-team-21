@@ -76,7 +76,8 @@ interface IconProps {
  * @property {string | number} value - The initial value of the input field.
  * @property {boolean} [secureTextEntry=false] - If true, the text input obscures the text entered so that sensitive text like passwords is secure.
  * @property {boolean} multiline - Optional prop to make InputField multiline, capped at 10.
- *  @property {boolean} maxLength - optional character limit
+ * @property {boolean} maxLength - Optional character limit.
+ * @property {string} [testID] - Optional. An identifier used for testing purposes.
  */
 
 interface InputFieldProps {
@@ -88,16 +89,19 @@ interface InputFieldProps {
   multiline?: boolean;
   width?: string | number;
   maxLength?: number;
+  testID?: string;
 }
 
 /**
  * Logo Props interface for the Logo component.
  *
  * @interface
+ * @property {() => void} onPress - Callback function executed when the button is pressed.
  * @param {number} props.LogoSize - Change the size of the Logo.
  */
 
 interface LogoProps {
+  onPress?: () => void;
   LogoSize?: number;
 }
 
@@ -252,10 +256,12 @@ interface UpperBarProps {
 interface AdDataProps {
   category: string;
   description: string;
-  expiry: string;
+  expiry: number;
   title: string;
   image: string;
   color: string;
+  longitude: number;
+  latitude: number;
   ratings?: number;
   username?: string;
   count?: number;
@@ -307,6 +313,7 @@ interface PostProps {
   category: string;
   navigation?: any;
   color: string;
+  distance?: number;
 }
 
 /**
@@ -356,21 +363,43 @@ interface ViewPostProps {
  * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
  */
 interface PostListRendererProps {
-  isHeaderInNeed: boolean;
+  whichHeader?: React.ReactNode;
   endpoint: string;
-  getData: (pagenumber: number) => any;
+  getData: (pagenumber: number) => any | null;
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
-  handleLoginOnpress?: ()=> any;
+  handleLoginOnpress?: () => any;
   handleEditOnpress?: () => any;
-  userInfo?: { username: string, email: string};
+  userInfo?: { username: string; email: string };
   rating?: number;
   reviewsCount?: number;
 }
 
 interface SelectRangeBarProps {
-  onSelectRange: (selectedRange: string) => void;
+  range?: number;
+  setRange: any;
+}
+
+/**
+ * Defines the structure for the global context state used throughout the app.
+ * This includes the state for tracking the first launch status, the current
+ * permission status for accessing location services, and functions to update
+ * these states.
+ *
+ * @interface GlobalContextType
+ * @property {boolean | null} firstLaunch - Indicates whether the app is being launched for the first time. `true` for the first launch, `false` otherwise, and `null` before determination.
+ * @property {string | null} locationPermission - Represents the current status of location services permission as a string. It can be `null` if the permission status has not been determined yet.
+ * @property {Function} updateFirstLaunch - A function to update the `firstLaunch` state. Accepts a `boolean` or `null` value.
+ * @property {Function} updateLocationPermission - A function to update the `locationPermission` state. Accepts a string value representing the new permission status.
+ */
+interface GlobalContextType {
+  firstLaunch: boolean | null;
+  locationPermission: string | null;
+  userId: any;
+  updateFirstLaunch: (value: boolean) => void;
+  updateLocationPermission: (value: string) => void;
+  setUserId: (value: number) => void;
 }
 
 interface CategoryInfo {
@@ -386,6 +415,7 @@ interface CategoryProps {
   onPress: () => void;
   isSelected: boolean;
 }
+
 interface CategoryRenderProps {
   categoryInfo: CategoryInfo[];
   onCategoryPress: (categoryName: string, isSelected: boolean) => void;
@@ -406,9 +436,11 @@ interface CategoryRenderProps {
  */
 type ChatType = {
   id: number;
-  name: string;
+  adId: string;
+  username: string;
   lastMessage: string;
   timestamp: string;
+  title: string;
 };
 
 /**
@@ -437,6 +469,8 @@ interface RatingProps {
   onFinishRating?: (rating: number) => void;
 }
 
+type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -457,9 +491,11 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type GlobalContextType,
   type CategoryRenderProps,
   type CategoryProps,
   type ChatType,
   type ChatListItemProps,
   type RatingProps,
+  type GetDataFunctionType,
 };

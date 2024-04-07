@@ -23,14 +23,14 @@ describe('Get started component', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
     expect(getByText('Welcome!')).toBeTruthy();
   });
-  // Check if first instruction text is rendered
+  //Check if first instruction text is rendered
   it('first instruction renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
     expect(
       getByText('This is an app to share left over food to others in need'),
     ).toBeTruthy();
   });
-  // Check if second instruction text is rendered
+  //Check if second instruction text is rendered
   it('second instruction renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
     expect(getByText('See what others are offering')).toBeTruthy();
@@ -38,11 +38,11 @@ describe('Get started component', () => {
   // Check if third instruction text is rendered
   it('third instruction renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
-    expect(getByText('Select the range')).toBeTruthy();
+    expect(getByText('Turn on Location')).toBeTruthy();
   });
   // Check if text is rendered
   it('Get started button renders correctly', () => {
     const { getByText } = render(<Instruction navigation={navigation} />);
-    expect(getByText('Get Started')).toBeTruthy();
+    expect(getByText('Select the radius')).toBeTruthy();
   });
 });

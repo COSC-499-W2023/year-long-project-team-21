@@ -86,49 +86,49 @@ class TestSetUpGetMessage(APITestCase):
             sender_id=self.user_1.id,
             receiver_id=self.user_2.id,
             time_sent="2024-02-10T12:30:00.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
         self.message_2 = Message.objects.create(
             msg="Wanted to ask about the bananas. They still available?",
             sender_id=self.user_1.id,
             receiver_id=self.user_2.id,
             time_sent="2024-02-10T12:30:05.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
         self.message_3 = Message.objects.create(
             msg="Hello, yes they are",
             sender_id=self.user_2.id,
             receiver_id=self.user_1.id,
             time_sent="2024-02-10T12:45:10.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
         self.message_4 = Message.objects.create(
             msg="When can you pick them up",
             sender_id=self.user_2.id,
             receiver_id=self.user_1.id,
             time_sent="2024-02-10T12:45:20.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
         self.message_5 = Message.objects.create(
             msg="Does tomorrow afternoon work? Maybe 3pm?",
             sender_id=self.user_1.id,
             receiver_id=self.user_2.id,
             time_sent="2024-02-10T20:39:00.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
         self.message_6 = Message.objects.create(
             msg="Ok sounds good",
             sender_id=self.user_2.id,
             receiver_id=self.user_1.id,
             time_sent="2024-02-11T07:20:00.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
         self.message_7 = Message.objects.create(
             msg="My address is 123 1st Street",
             sender_id=self.user_2.id,
             receiver_id=self.user_1.id,
             time_sent="2024-02-10T07:21:00.000000Z",
-            ad_id = self.ad.id
+            ad_id = self.ad
         )
 
         # call APITestCase.setUp()

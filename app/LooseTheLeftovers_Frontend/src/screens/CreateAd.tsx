@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Switch } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Switch, Image, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../common/global_styles';
 import styles from '../styles/createAdStyles';
+import { getLocationPermission, getLocation } from '../common/LocationServices';
 import { AdDataProps } from '../common/Types';
 import { SecureAPIReq } from '../common/NetworkRequest';
 import { adEndpoint } from '../common/API';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { useGlobal } from '../common/GlobalContext';
 
 import Header from '../components/UpperBar';
 import Texts from '../components/Text';
@@ -17,7 +19,9 @@ import Button from '../components/Button';
 import Icon from '../components/Icon';
 
 const CreateAd = ({ navigation }: { navigation: any }) => {
-  const [expiryEnabled, setExpiryEnabled] = useState(true);
+  const { locationPermission, updateLocationPermission } = useGlobal();
+  const [expiryEnabled, setExpiryEnabled] = useState(false);
+  const [sendLocationEnabled, setSendLocationEnabled] = useState(false);
   const [networkError, setNetworkError] = useState('');
   const [fieldError, setFieldError] = useState({
     titleError: '',
@@ -29,16 +33,17 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     title: '',
     description: '',
     category: '',
-    expiry: '',
-    image: '',
-    color: '',
+    expiry: 1,
+    imageUri: '',
+    longitude: 0,
+    latitude: 0,
   });
 
   const categories = [
     { key: 'none', value: 'None' },
-    { key: 'vegan', value: 'Vegan' },
-    { key: 'gluten free', value: 'Gluten-free' },
-    { key: 'peanut free', value: 'Peanut-free' },
+    { key: 'vegan', value: 'vegan' },
+    { key: 'gluten free', value: 'gluten-free' },
+    { key: 'peanut free', value: 'peanut-free' },
   ];
 
   // Default RN switch won't allow to pass styles for it
@@ -48,6 +53,47 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     thumbFalse: global.secondary,
     thumbTrue: global.primary,
   };
+
+  useEffect(() => {
+    async function handleLocation() {
+      if (sendLocationEnabled === true && locationPermission === 'GRANTED') {
+        handleLocationState();
+      } else if (
+        sendLocationEnabled === true &&
+        locationPermission !== 'BLOCKED'
+      ) {
+        const result = await getLocationPermissionAndroid();
+        if (result) {
+          handleLocationState();
+          updateLocationPermission('GRANTED');
+        } else {
+          // if location is not enabled, set slider to false
+          setSendLocationEnabled(false);
+        }
+      } else {
+        // @TODO display an error here infroming the user they have blocked location services for the app
+        setSendLocationEnabled(false);
+      }
+    }
+    handleLocation();
+  }, [sendLocationEnabled]);
+
+  async function handleLocationState() {
+    try {
+      // Retrieve the user's location.
+      const pos = await getLocation();
+
+      // Assign it to the state if it exists, while preserving other adData fields.
+      setAdData(currentAdData => ({
+        ...currentAdData,
+        longitude: pos.longitude,
+        latitude: pos.latitude,
+      }));
+    } catch (error: any) {
+      // Handle the error.
+      console.error('Failed to get location:', error.message);
+    }
+  }
 
   const handleFieldChange = (
     field: keyof AdDataProps,
@@ -96,6 +142,8 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
       const formData = createFormData(adData);
       setNetworkError('');
 
+      console.log(formData);
+
       SecureAPIReq.createInstance()
         .then(async newReq => {
           const res = await newReq.post(adEndpoint, formData);
@@ -138,6 +186,12 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
     formData.append('description', adData.description);
     formData.append('category', adData.category);
 
+    // Adding location if enabled
+    if (sendLocationEnabled) {
+      formData.append('longitude', adData.longitude);
+      formData.append('latitude', adData.latitude);
+    }
+
     // Adding expiry if enabled
     if (expiryEnabled) {
       formData.append('expiry', adData.expiry);
@@ -173,11 +227,15 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
 
   const goBack = () => {
     navigation.goBack();
-  }
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header leftIconSource= {require("../assets/back_arrow_white.png")} onLeftPress = {goBack} title="Create Post" />
+      <Header
+        leftIconSource={require('../assets/back_arrow_white.png')}
+        onLeftPress={goBack}
+        title="Create Post"
+      />
 
       <ScrollView>
         <View style={styles.formContainer}>
@@ -185,9 +243,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <View style={styles.leftAlignedText}>
             <Texts
               texts="Food Name"
-              textsSize={22}
+              textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-title"
             />
           </View>
           <InputField
@@ -196,6 +255,9 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             value={adData.title}
             width="100%"
             maxLength={50}
+
+            testID="test-title-input"
+
           />
           {fieldError.titleError !== '' && (
             <Texts
@@ -210,9 +272,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <View style={styles.leftAlignedText}>
             <Texts
               texts="Description (optional)"
-              textsSize={22}
+              textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-description"
             />
           </View>
           <InputField
@@ -224,13 +287,14 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             multiline={true}
             width="100%"
             maxLength={200}
+            testID="test-description-input"
           />
 
           {/* Category */}
           <View style={styles.leftAlignedText}>
             <Texts
               texts="Category"
-              textsSize={22}
+              textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
             />
@@ -248,7 +312,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             dropdownStyles={styles.dropdownStyles}
             dropdownTextStyles={styles.dropdownTextStyles}
             arrowicon={
-              <Icon source={require('../assets/drop_3.png')} size={13} />
+              <Icon source={require('../assets/drop_3.png')} size={18} />
             }
           />
           {fieldError.categoryError !== '' && (
@@ -264,9 +328,10 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
           <View style={styles.leftAlignedText}>
             <Texts
               texts="Pick an image of the food"
-              textsSize={22}
+              textsSize={20}
               textsColor={global.secondary}
               textsWeight="bold"
+              testID="test-pick-img"
             />
           </View>
           <View style={styles.imagePickerContainer}>
@@ -283,14 +348,45 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             />
           )}
 
+          {/* Location */}
+          <View style={styles.expirySection}>
+            <View style={styles.expiryTitleContainer}>
+              <Texts
+                texts="Include location in your post?"
+                textsSize={20}
+                textsColor={global.secondary}
+                textsWeight="bold"
+              />
+
+              <Switch
+                trackColor={{
+                  false: switchColors.trackFalse,
+                  true: switchColors.trackTrue,
+                }}
+                thumbColor={
+                  sendLocationEnabled
+                    ? switchColors.thumbTrue
+                    : switchColors.thumbFalse
+                }
+                onValueChange={() =>
+                  setSendLocationEnabled(prevState => !prevState)
+                }
+                value={sendLocationEnabled}
+                style={styles.switchStyle}
+                testID="switch-test"
+              />
+            </View>
+          </View>
+
           {/* Expiry */}
           <View style={styles.expirySection}>
             <View style={styles.expiryTitleContainer}>
               <Texts
                 texts="Set an expiry range"
-                textsSize={22}
+                textsSize={20}
                 textsColor={global.secondary}
                 textsWeight="bold"
+                testID="test-expiry"
               />
               <Switch
                 trackColor={{
@@ -330,7 +426,11 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 />
               </View>
             )}
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button
+              title="Submit"
+              onPress={handleSubmit}
+              testID="test-submit"
+            />
           </View>
         </View>
       </ScrollView>

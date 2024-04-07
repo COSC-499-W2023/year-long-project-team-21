@@ -23,6 +23,13 @@ const profileStyles = StyleSheet.create({
     marginVertical: '4%',
     marginHorizontal: '4%',
   },
+  profilePicture: {
+    marginTop: '5%',
+    marginBottom: '-5%',
+    alignSelf: 'center',
+    width: 52,
+    height: 50,
+  },
   title: {
     fontSize: 25,
     color: global.secondary,

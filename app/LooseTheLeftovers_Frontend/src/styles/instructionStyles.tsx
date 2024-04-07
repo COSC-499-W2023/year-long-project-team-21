@@ -18,8 +18,8 @@ const style = StyleSheet.create({
     backgroundColor: global.tertiary,
     alignItems: 'center',
     justifyContent: 'space-around',
-    flex: 1.25,
-    padding: '8%',
+    flex: 1.5,
+    padding: '6%',
   },
   textimage: {
     flexDirection: 'row',
@@ -40,9 +40,6 @@ const style = StyleSheet.create({
     flex: 0.5,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  margin: {
-    // marginBottom: '5%',
   },
 });
 
