@@ -52,11 +52,11 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
       try {
         await loginReq(username, password);
         if (firstLaunch) {
-          updateLoggedIn(true);
           navigation.navigate('Instruction');
-        } else {
           updateLoggedIn(true);
+        } else {
           navigation.navigate('Home');
+          updateLoggedIn(true);
         }
       } catch (error) {
         setErrorMessage(
