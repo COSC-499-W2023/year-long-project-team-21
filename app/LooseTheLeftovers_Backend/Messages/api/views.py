@@ -5,6 +5,7 @@ from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 import polars as pl
+from django.core.exceptions import ObjectDoesNotExist
 
 from Advertisments.models import Advertisment
 from Users.models import CustomUser
@@ -254,6 +255,7 @@ def get_last_message_per_conversation(request):
         user = row[0]
         ad_id = row[1]
 
+    try:
         # get username
         username = CustomUser.objects.get(pk=user).username
         # get last message in conversation
@@ -263,7 +265,6 @@ def get_last_message_per_conversation(request):
         # append as dictionary to list
         last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent, "ad_id": last_message.ad_id.id})
     
-    try:
         # put result into pages
         msg_paginator = Paginator(last_msg_list, 6)
 
@@ -279,6 +280,9 @@ def get_last_message_per_conversation(request):
     
     except EmptyPage:
         return Response(status=status.HTTP_204_NO_CONTENT)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+       
 
 
     
