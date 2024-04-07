@@ -140,7 +140,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         const errors = apiError.response?.data;
 
         //this parses the error message
-        const extractedValues = Object.values(errors).flat();
+        const extractedValues = errors ? Object.values(errors).flat() : [];
         const errorMessages = extractedValues.join(' ');
 
         //this sends the error message to be displayed
