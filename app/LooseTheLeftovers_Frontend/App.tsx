@@ -20,7 +20,7 @@ const App = () => {
         ref={navigationRef}
         data-testid="navigation-container">
         <ChatProvider>
-            <AppNavigator />
+          <AppNavigator />
         </ChatProvider>
       </NavigationContainer>
     </GlobalProvider>

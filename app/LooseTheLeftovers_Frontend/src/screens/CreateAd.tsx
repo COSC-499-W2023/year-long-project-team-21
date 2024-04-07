@@ -62,7 +62,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
         sendLocationEnabled === true &&
         locationPermission !== 'BLOCKED'
       ) {
-        const result = await getLocationPermissionAndroid();
+        const result = await getLocationPermission();
         if (result) {
           handleLocationState();
           updateLocationPermission('GRANTED');
@@ -255,9 +255,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
             value={adData.title}
             width="100%"
             maxLength={50}
-
             testID="test-title-input"
-
           />
           {fieldError.titleError !== '' && (
             <Texts

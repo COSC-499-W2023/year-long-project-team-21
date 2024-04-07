@@ -83,10 +83,8 @@ const Home = ({ navigation }: { navigation: any }) => {
   }, [locationPermission, range, selectedCategories, search]);
 
   useEffect(() => {
-    if (isFocused) {
-      setGetDataFunction(() => getAllAds);
-    }
-  }, [isFocused]);
+    setGetDataFunction(() => getAllAds);
+  }, []);
 
   /**
    * @function postFetchHandler
