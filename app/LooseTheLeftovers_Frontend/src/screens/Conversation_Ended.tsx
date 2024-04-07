@@ -17,7 +17,7 @@ const Conversation_Ended = ({
   const { ad_id, user_id } = route.params;
 
   const handleNoOnPress = () => {
-    navigation.navigate('Reviews', { user_id });
+    navigation.goBack();
   };
 
   const handleYesOnPress = async () => {
