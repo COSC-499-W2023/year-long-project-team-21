@@ -373,7 +373,7 @@ const CreateAd = ({ navigation }: { navigation: any }) => {
                 }
                 value={sendLocationEnabled}
                 style={styles.switchStyle}
-                testID="switch-test"
+                testID="location-switch-test"
               />
             </View>
           </View>

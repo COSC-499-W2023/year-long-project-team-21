@@ -1,10 +1,9 @@
 import React from 'react';
+import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 import TopTabBar from '../../src/components/TabBarTop';
 import BottomTabBar from '../../src/components/TabBarBottom';
-import { Text } from 'react-native';
 import Title from '../../src/components/Title';
-import Logo from '../../src/components/Logo';
 
 //tests if TabBar renders
 describe('TopTabBar', () => {
@@ -18,7 +17,7 @@ it('tests if TopTabBar with LeftIcon, MiddleIcon, and RightIcon renders ', () =>
     <TopTabBar
       LeftIcon={<Text>Left</Text>}
       MiddleIcon={<Title title="testtitle"></Title>}
-      RightIcon={<Logo></Logo>}
+      RightIcon={<Text>Right</Text>}
     />,
   );
 
@@ -38,7 +37,7 @@ it('tests if TabBar with LeftIcon, MiddleIcon, and RightIcon renders ', () => {
     <BottomTabBar
       LeftIcon={<Text>Left</Text>}
       MiddleIcon={<Title title="testtitle"></Title>}
-      RightIcon={<Logo></Logo>}
+      RightIcon={<Text>Right</Text>}
     />,
   );
 

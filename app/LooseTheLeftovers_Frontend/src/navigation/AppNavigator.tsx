@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { checkHasLaunched, getHasLaunched } from '../common/EncryptedSession';
 
 import Registration from '../screens/Registration';
 import Login from '../screens/Login';
@@ -18,7 +17,6 @@ import Chat from '../screens/Chat';
 import DoneDelete from '../screens/DoneDelete';
 import EditProfile from '../screens/EditProfile';
 import Conversation_Ended from '../screens/Conversation_Ended';
-import Chat from '../screens/Chat';
 import DoneEdit from '../screens/DoneEdit';
 import DoneResetPW from '../screens/DoneResetPW';
 import PasswordReset from '../screens/PasswordReset';

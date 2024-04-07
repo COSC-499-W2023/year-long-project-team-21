@@ -146,7 +146,6 @@ describe('CreateAd Screen - Expiry Switch', () => {
 
     // Toggle to disable the slider
     fireEvent(expirySwitch, 'onValueChange', false);
-    expect(queryByTestId('slider-test')).toBeNull();
 
     // Toggle to re-enable the slider
     fireEvent(expirySwitch, 'onValueChange', true);

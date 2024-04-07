@@ -212,14 +212,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       );
     };
 
-    const handlePressMessage = () => {
-      navigation.navigate('Chat', {
-        adId: postId,
-        username: adData.username,
-        title: adData.title,
-      });
-    };
-
     /**
      * Renders the delete button component.
      *
