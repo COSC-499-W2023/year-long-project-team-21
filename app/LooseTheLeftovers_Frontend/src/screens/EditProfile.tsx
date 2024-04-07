@@ -79,11 +79,11 @@ const EditProfile = ({
             setLastname('');
             setNewEmail('');
             navigation.navigate('DoneEdit');
-          } 
+          }
         } catch (error: any) {
           if (error.response.status === 400) {
             console.log('400 error: ', error);
-            setShowEmailInvalid(true)
+            setShowEmailInvalid(true);
           } else if (error.response.status === 500) {
             console.log('Internal Server Erorr. ');
           }
@@ -203,7 +203,9 @@ const EditProfile = ({
     return (
       <View style={styles.wiggleClicks}>
         <View>
-          <TouchableOpacity onPress={() => wiggleStatetoRight()} testID='leftClick'>
+          <TouchableOpacity
+            onPress={() => wiggleStatetoRight()}
+            testID="leftClick">
             <Text style={{ ...styles.leftClick, color: rightColor }}>
               {' '}
               Personal Info{' '}
@@ -214,7 +216,9 @@ const EditProfile = ({
           <Text> </Text>
         </View>
         <View>
-          <TouchableOpacity onPress={() => wiggleStatetoLeft()} testID='rightClick'>
+          <TouchableOpacity
+            onPress={() => wiggleStatetoLeft()}
+            testID="rightClick">
             <Text style={{ ...styles.rightClick, color: leftColor }}>
               {' '}
               Password{' '}
@@ -277,18 +281,18 @@ const EditProfile = ({
     );
   };
 
-    /**
+  /**
    * Renders the message for email validation error.
    *
    * @returns {JSX.Element} Rendered email format error message.
    */
-    const renderEmailValidationErrorMessage = () => {
-      return (
-        <Text style={styles.passwordStrengthWarningContainer}>
-          Your email is already in use.
-        </Text>
-      );
-    };
+  const renderEmailValidationErrorMessage = () => {
+    return (
+      <Text style={styles.passwordStrengthWarningContainer}>
+        Your email is already in use.
+      </Text>
+    );
+  };
 
   /**
    * Renders the password strength message.
@@ -353,35 +357,54 @@ const EditProfile = ({
       colors={['#251D3A', global.background]}
       start={{ x: 1, y: 0 }}>
       <View>
-        <Text style={styles.titleContainer} testID='title'>Edit Profile</Text>
+        <Text style={styles.titleContainer} testID="title">
+          Edit Profile
+        </Text>
       </View>
       {isRightVisible && (
         <>
           {renderWiggleClicks()}
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer} testID='firstNameInputTitle'>FIRST NAME : </Text>
+            <Text
+              style={styles.inputFieldTitleContainer}
+              testID="firstNameInputTitle">
+              FIRST NAME :{' '}
+            </Text>
             <InputField
               placeholder={'First name'}
               onChangeText={newNameText => setFirstname(newNameText)}
               value={firstname}
-              />
+              maxLength={20}
+            />
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer} testID='lastNameInputTitle'>LAST NAME : </Text>
+            <Text
+              style={styles.inputFieldTitleContainer}
+              testID="lastNameInputTitle">
+              LAST NAME :{' '}
+            </Text>
             <InputField
               placeholder={'Last name'}
               onChangeText={newNameText => setLastname(newNameText)}
-              value={lastname}/>
+              value={lastname}
+              maxLength={20}
+            />
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer} testID='emailInputTitle'>EMAIL : </Text>
+            <Text
+              style={styles.inputFieldTitleContainer}
+              testID="emailInputTitle">
+              EMAIL :{' '}
+            </Text>
             <InputField
               placeholder={'Email'}
               onChangeText={newText => setNewEmail(newText)}
-              value={newEmail}/>
+              value={newEmail}
+              maxLength={30}
+            />
             {!isEmailValidFormat && renderEmailFormatErrorMessage()}
             {!isInputNotEmpty && renderInputEmptyMessage()}
-            {showEmailInvalid&&renderEmailValidationErrorMessage()}
+            {showEmailInvalid && renderEmailValidationErrorMessage()}
           </View>
         </>
       )}
@@ -389,28 +412,44 @@ const EditProfile = ({
         <>
           {renderWiggleClicks()}
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer} testID='oldPasswordInputTitle'>OLD PASSWORD : </Text>
+            <Text
+              style={styles.inputFieldTitleContainer}
+              testID="oldPasswordInputTitle">
+              OLD PASSWORD :{' '}
+            </Text>
             <InputField
               placeholder={'Old Password'}
               onChangeText={oldPass => setOldPass(oldPass)}
-              value={oldPass}/>
+              value={oldPass}
+              maxLength={25}
+            />
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer} testID='newPasswordInputTitle'>NEW PASSWORD : </Text>
+            <Text
+              style={styles.inputFieldTitleContainer}
+              testID="newPasswordInputTitle">
+              NEW PASSWORD :{' '}
+            </Text>
             <InputField
               placeholder={'New Password'}
               onChangeText={newPass => setNewPass(newPass)}
-              value={newPass}/>
+              value={newPass}
+              maxLength={25}
+            />
             {!(newPass == '') && renderPasswordStrengthMessage()}
           </View>
           <View style={styles.inputFieledContainer}>
-            <Text style={styles.inputFieldTitleContainer} testID='confirmPasswordInputTitle'>
+            <Text
+              style={styles.inputFieldTitleContainer}
+              testID="confirmPasswordInputTitle">
               CONFIRM PASSWORD :{' '}
             </Text>
             <InputField
               placeholder={'Confirm Password'}
               onChangeText={confirmPass => setConfirmPass(confirmPass)}
-              value={confirmPass}/>
+              value={confirmPass}
+              maxLength={25}
+            />
             {!isPasswordEmpty && renderInputEmptyMessage()}
             {!isPasswordMatch && renderPasswordUnmatchMessage()}
             {!isPasswordCorrect && renderPasswordEUncorrectMessage()}
@@ -422,7 +461,8 @@ const EditProfile = ({
           backgroundcolor="red"
           buttonSize={150}
           onPress={handleCancelEditing}
-          title="Cancel" testID='cancelButton'></Button>
+          title="Cancel"
+          testID="cancelButton"></Button>
         <Button
           buttonSize={150}
           onPress={
@@ -430,7 +470,8 @@ const EditProfile = ({
               ? handleNewProfileInfoSubmission
               : handleUpdatePassword
           }
-          title="Update" testID='updateButton'></Button>
+          title="Update"
+          testID="updateButton"></Button>
       </View>
     </LinearGradient>
   );

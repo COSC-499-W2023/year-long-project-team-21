@@ -78,7 +78,7 @@ describe('Test API requests', () => {
 
     mockAdapter.onPost(endpoint).reply(200, fakeResponse);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.post(endpoint, postData);
 
     expect(response.data).toEqual(fakeResponse);
@@ -93,7 +93,7 @@ describe('Test API requests', () => {
       return [200, fakeResponse];
     });
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.post(endpoint, formData, undefined, true);
 
     expect(response.data).toEqual(fakeResponse);
@@ -110,7 +110,7 @@ describe('Test API requests', () => {
       return [200, fakeResponse];
     });
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
 
     try {
       const response = await api.post(endpoint, postData, params);
@@ -125,7 +125,7 @@ describe('Test API requests', () => {
     const endpoint = '/test-post-error';
     mockAdapter.onPost(endpoint).reply(500);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
 
     await expect(api.post(endpoint, {})).rejects.toThrow(
       'Request failed with status code 500',
@@ -139,7 +139,7 @@ describe('Test API requests', () => {
 
     mockAdapter.onPut(endpoint).reply(200, fakeResponse);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.put(endpoint, updateData);
 
     expect(response.data).toEqual(fakeResponse);
@@ -157,7 +157,7 @@ describe('Test API requests', () => {
     });
 
     try {
-      const api = await SecureAPIReq.createInstance();
+      const api: any = await SecureAPIReq.createInstance();
       const response = await api.put(endpoint, updateData, params);
       expect(response.data).toEqual(fakeResponse);
       console.log(response.data);
@@ -171,7 +171,7 @@ describe('Test API requests', () => {
     const endpoint = '/test-put-error';
     mockAdapter.onPut(endpoint).reply(500);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
 
     await expect(api.put(endpoint, {})).rejects.toThrow(
       'Request failed with status code 500',
@@ -187,7 +187,7 @@ describe('Test API requests', () => {
       return [200, fakeResponse];
     });
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.put(endpoint, updateData);
 
     expect(response.data).toEqual(fakeResponse);
@@ -199,7 +199,7 @@ describe('Test API requests', () => {
 
     mockAdapter.onDelete(endpoint).reply(200, fakeResponse);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.delete(endpoint);
 
     expect(response.data).toEqual(fakeResponse);
@@ -208,11 +208,12 @@ describe('Test API requests', () => {
     const fakeResponse = { data: 'deleted with params' };
     const endpoint = '/test-delete-params';
     const params = { param1: 'one', param2: 'two' };
+    const body = { blank: 'foo' };
 
     mockAdapter.onDelete(endpoint, { params }).reply(200, fakeResponse);
 
-    const api = await SecureAPIReq.createInstance();
-    const response = await api.delete(endpoint, params);
+    const api: any = await SecureAPIReq.createInstance();
+    const response = await api.delete(endpoint, body, params);
 
     expect(response.data).toEqual(fakeResponse);
   });
@@ -220,7 +221,7 @@ describe('Test API requests', () => {
     const endpoint = '/test-delete-error';
     mockAdapter.onDelete(endpoint).reply(500);
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
 
     await expect(api.delete(endpoint)).rejects.toThrow(
       'Request failed with status code 500',
@@ -235,7 +236,7 @@ describe('Test API requests', () => {
       return [200, fakeResponse];
     });
 
-    const api = await SecureAPIReq.createInstance();
+    const api: any = await SecureAPIReq.createInstance();
     const response = await api.delete(endpoint);
 
     expect(response.data).toEqual(fakeResponse);

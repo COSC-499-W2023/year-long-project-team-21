@@ -14,6 +14,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
 import Icon from '../components/Icon';
+import { useEffect } from 'react';
 
 import { useFocusEffect } from '@react-navigation/native';
 /**
@@ -38,6 +39,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const [usernameLengthError, setUsernameLengthError] = useState(false);
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [apiRequestErrorMessage, setApiRequestErrorMessage] = useState('');
   const [credentialFilledInError, setCredentialsFilledInError] =
     useState(false);
   const [apiRequestError, setApiRequestError] = useState(false);
@@ -133,21 +135,31 @@ const Registration = ({ navigation }: { navigation: any }) => {
       } catch (error: any) {
         //red text error produced by requesting error
         setApiRequestError(true);
-        console.log(error);
+
+        const apiError: any = error;
+
+        console.log(apiError.response?.data);
+        //this recevieves error message
+        const errors = apiError.response?.data;
+
+        //this parses the error message
+        const extractedValues = Object.values(errors).flat();
+        const errorMessages = extractedValues.join(' ');
+
+        //this sends the error message to be displayed
+        setApiRequestErrorMessage(errorMessages);
       }
     }
   };
   //this resets values after the page is focused.
-  useFocusEffect(
-    React.useCallback(() => {
-      setUsername('');
-      setEmail('');
-      setPassword1('');
-      setPassword2('');
-      setKey(Math.random());
-      return () => {};
-    }, []),
-  );
+  useEffect(() => {
+    setUsername('');
+    setEmail('');
+    setPassword1('');
+    setPassword2('');
+    setKey(Math.random());
+    return () => {};
+  }, []);
 
   const getPasswordStrengthMessage = (
     passwordStrengthValue: string,
@@ -179,6 +191,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           onChangeText={input => handleEmail(input)}
           value={email}
           width={280}
+          maxLength={30}
         />
         {/* When the emailFormatError is true, the red text tells following. */}
         {emailFormatError && (
@@ -192,6 +205,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           onChangeText={input => handleUsername(input)}
           value={username}
           width={280}
+          maxLength={20}
         />
         {/* When the usernameLengthError is true, the red text tells following. */}
         {usernameLengthError && (
@@ -205,6 +219,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           value={password1}
           secureTextEntry={true}
           width={280}
+          maxLength={25}
         />
         <InputField
           placeholder="Confirm Password"
@@ -212,6 +227,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
           value={password2}
           secureTextEntry={true}
           width={280}
+          maxLength={25}
         />
         {/* When the passwordMatch is true, the red text tells following. */}
         {passwordsMatchError && (
@@ -234,7 +250,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         {/* When the apiRquestError is true, the red text tells following. */}
         {apiRequestError && (
           <Text style={{ color: global.error, fontSize: 15 }}>
-            Request error, unable to process.
+            {apiRequestErrorMessage || 'Request error, unable to process.'}
           </Text>
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}

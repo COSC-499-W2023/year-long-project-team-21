@@ -12,7 +12,7 @@ const categoryInfo = [
   },
 ];
 
-test('CategoryRender component renders correctly', () => {
+test.only('CategoryRender component renders correctly', () => {
   const { getByTestId } = render(
     <CategoryRender
       onCategoryPress={mockOnCategoryPress}

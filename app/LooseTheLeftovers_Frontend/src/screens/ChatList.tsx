@@ -21,6 +21,53 @@ const ChatList = ({ navigation }: { navigation: any }) => {
   const title = 'Messsages';
   const testID = 'title-test';
 
+  // TS sucks
+  const loadChatMetadata = async () => {
+    let keys = [];
+    try {
+      keys = await AsyncStorage.getAllKeys();
+  
+      const lastMsgKeys = keys.filter(key => key.startsWith('lastMsg-'));
+      const stores = await AsyncStorage.multiGet(lastMsgKeys);
+      const chatsWithPossibleDuplicates = stores.map((result, i, store) => {
+        let key = store[i][0];
+        let value = JSON.parse(store[i][1]);
+        return {
+          key,
+          adId: value.adId,
+          username: value.username,
+          lastMessage: value.lastMessage,
+          timestamp: value.timestamp,
+        };
+      });
+  
+      // Filter out duplicate keys
+      const chats = chatsWithPossibleDuplicates.reduce((acc, current) => {
+        if (!acc.some(chat => chat.key === current.key)) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+  
+      return chats;
+    } catch (e) {
+      console.error('Failed to load chat metadata:', e);
+      return [];
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const chats = await loadChatMetadata();
+        setChats(chats);
+      };
+  
+      fetchData();
+        return () => {};
+    }, [])
+  );
+
   useFocusEffect(
     useCallback(() => {
       updateFocus(true);
@@ -37,7 +84,8 @@ const ChatList = ({ navigation }: { navigation: any }) => {
     );
   };
 
-  const keyExtractor = (item: ChatType) => item.id.toString();
+  // temporary
+  const keyExtractor = (item: ChatType) => `${item.username}-${item.adId}`;
 
   return (
     <SafeAreaView style={globalscreenstyles.container}>
@@ -54,6 +102,7 @@ const ChatList = ({ navigation }: { navigation: any }) => {
       {/* FlatList */}
       <View style={globalscreenstyles.middle}>
         <FlatList
+          data={chats}
           data={chats}
           renderItem={renderItem}
           keyExtractor={keyExtractor}

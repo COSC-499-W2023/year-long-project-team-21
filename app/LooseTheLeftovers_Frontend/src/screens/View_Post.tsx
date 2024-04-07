@@ -141,6 +141,12 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         const user_ratings: any = await newReq.get(`/ratings/${user_id}`);
         data.ratings = user_ratings.data.rating;
         data.count = user_ratings.data.count;
+        if (data.ratings === undefined) {
+          data.ratings = 0;
+        }
+        if (data.count === undefined) {
+          data.count = 0;
+        }
       } catch {
         //if there are no ratings, set both to zero
         data.ratings = 0;
@@ -206,6 +212,14 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       );
     };
 
+    const handlePressMessage = () => {
+      navigation.navigate('Chat', {
+        adId: postId,
+        username: adData.username,
+        title: adData.title,
+      });
+    };
+
     /**
      * Renders the delete button component.
      *
@@ -266,7 +280,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
             style={[{ color: card_color_dict.middleColor }, styles.expiry]}>
             {adData.expiry}
           </Title>
-          <Text style={styles.description}>{adData.description}</Text>
+
           {render_Icons(
             styles.dietary_icons_wrapper,
             styles.dietary_icons,
@@ -288,6 +302,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
                   ({adData.count})
                 </Text>
               </View>
+              <Text style={styles.description}>{adData.description}</Text>
             </View>
           </View>
 

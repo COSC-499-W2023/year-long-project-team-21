@@ -11,16 +11,19 @@ const LoadingScreenColor = {
     background: '#2e2e2e',
   },
 };
+import { GlobalProvider } from './src/common/GlobalContext';
+
 const App = () => {
   return (
-    <NavigationContainer
-      theme={LoadingScreenColor}
-      ref={navigationRef}
-      data-testid="navigation-container">
-      <ChatProvider>
-        <AppNavigator />
-      </ChatProvider>
-    </NavigationContainer>
+    <GlobalProvider>
+      <NavigationContainer
+        ref={navigationRef}
+        data-testid="navigation-container">
+        <ChatProvider>
+            <AppNavigator />
+        </ChatProvider>
+      </NavigationContainer>
+    </GlobalProvider>
   );
 };
 

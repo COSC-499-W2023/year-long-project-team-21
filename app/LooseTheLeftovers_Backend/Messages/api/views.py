@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 import polars as pl
 
+from Advertisments.models import Advertisment
 from Users.models import CustomUser
 from Messages.models import Message
 from Messages.api.serializers import MessageSerializer, GetMessageSerializer, LastMessageSerializer
@@ -77,7 +78,7 @@ class MessageHandler(APIView):
             # no user id was passed: return each converstation and the last message
             else:
                 return get_messages(request, user_id)
-                
+                    
         except Exception as e:
             return Response(
                 {"detail": str(e)},
@@ -94,15 +95,20 @@ def send_message(request):
         -ad id
     '''
 
-    # retrieve receiver to validate that it exists
+    # retrieve receiver to validate that it exists and the ad
     try:    
         CustomUser.objects.get(pk=request.data['receiver_id'])
     except:
         return Response("invalid recipient", status=status.HTTP_400_BAD_REQUEST)
-
+    
+    try:
+        ad = Advertisment.objects.get(pk=request.data['ad_id'])
+    except:
+        return Response("invalid advertisment id", status=status.HTTP_400_BAD_REQUEST)
+    
     # deserialize incoming data
     msg_serializer = MessageSerializer(
-        data=request.data, context={"request": request}
+        data=request.data, context={"request": request, "ad": ad}
     )
 
     # validate data in request
@@ -116,8 +122,8 @@ def send_message(request):
 
         # return 201 response indicating ad was created successfully
         return Response(msg_serializer.validated_data, status=status.HTTP_201_CREATED)
-    except:
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def get_messages(request, other_user_id):
@@ -131,20 +137,21 @@ def get_messages(request, other_user_id):
     # get data to query messages from the request
     request_user_id = request.user.id
     ad_id = request.GET.get('ad_id')
+    ad = Advertisment.objects.get(pk=ad_id)
 
     # get username of other user
     username = CustomUser.objects.get(pk=other_user_id).username
 
     # retrieve messages where the request user is the sender
     messages_sent = Message.objects \
-        .filter(ad_id=ad_id) \
+        .filter(ad_id=ad) \
         .filter(sender_id=request_user_id) \
         .filter(receiver_id=other_user_id) \
         .order_by('time_sent')
     
     # retrieve messages where the request user is the receiver
     messages_received = Message.objects \
-        .filter(ad_id=ad_id) \
+        .filter(ad_id=ad) \
         .filter(sender_id=other_user_id) \
         .filter(receiver_id=request_user_id) \
         .order_by('time_sent')

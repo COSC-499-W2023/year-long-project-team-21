@@ -256,10 +256,12 @@ interface UpperBarProps {
 interface AdDataProps {
   category: string;
   description: string;
-  expiry: string;
+  expiry: number;
   title: string;
   image: string;
   color: string;
+  longitude: number;
+  latitude: number;
   ratings?: number;
   username?: string;
   count?: number;
@@ -311,6 +313,7 @@ interface PostProps {
   category: string;
   navigation?: any;
   color: string;
+  distance?: number;
 }
 
 /**
@@ -360,9 +363,9 @@ interface ViewPostProps {
  * @property {isHeaderInNeed} - boolean asking if the Post List needs header for ranger dropdown
  */
 interface PostListRendererProps {
-  isHeaderInNeed: boolean;
+  whichHeader?: React.ReactNode;
   endpoint: string;
-  getData: (pagenumber: number) => any;
+  getData: (pagenumber: number) => any | null;
   location?: [];
   locationPermission?: boolean | null;
   navigation?: any;
@@ -374,7 +377,29 @@ interface PostListRendererProps {
 }
 
 interface SelectRangeBarProps {
-  onSelectRange: (selectedRange: string) => void;
+  range?: number;
+  setRange: any;
+}
+
+/**
+ * Defines the structure for the global context state used throughout the app.
+ * This includes the state for tracking the first launch status, the current
+ * permission status for accessing location services, and functions to update
+ * these states.
+ *
+ * @interface GlobalContextType
+ * @property {boolean | null} firstLaunch - Indicates whether the app is being launched for the first time. `true` for the first launch, `false` otherwise, and `null` before determination.
+ * @property {string | null} locationPermission - Represents the current status of location services permission as a string. It can be `null` if the permission status has not been determined yet.
+ * @property {Function} updateFirstLaunch - A function to update the `firstLaunch` state. Accepts a `boolean` or `null` value.
+ * @property {Function} updateLocationPermission - A function to update the `locationPermission` state. Accepts a string value representing the new permission status.
+ */
+interface GlobalContextType {
+  firstLaunch: boolean | null;
+  locationPermission: string | null;
+  userId: any;
+  updateFirstLaunch: (value: boolean) => void;
+  updateLocationPermission: (value: string) => void;
+  setUserId: (value: number) => void;
 }
 
 interface CategoryInfo {
@@ -390,6 +415,7 @@ interface CategoryProps {
   onPress: () => void;
   isSelected: boolean;
 }
+
 interface CategoryRenderProps {
   categoryInfo: CategoryInfo[];
   onCategoryPress: (categoryName: string, isSelected: boolean) => void;
@@ -472,6 +498,8 @@ interface ChatContextType {
   markChatAsReadById: (value: string) => void;
 };
 
+type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
+
 export {
   type ButtonProps,
   type HeaderProps,
@@ -492,10 +520,12 @@ export {
   type SelectRangeBarProps,
   type ViewPostProps,
   type UserInfoProps,
+  type GlobalContextType,
   type CategoryRenderProps,
   type CategoryProps,
   type ChatType,
   type ChatListItemProps,
   type RatingProps,
   type ChatContextType,
+  type GetDataFunctionType,
 };

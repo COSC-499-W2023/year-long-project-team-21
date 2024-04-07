@@ -17,8 +17,17 @@ export const resetTKVF: string = '/users/password_reset/validate_token/';
 // endpoint for completing password reset
 export const confirmReset: string = '/users/password_reset/confirm/';
 
-// endpoint for create ad
+// endpoint for ads
 export const adEndpoint: string = '/ads/';
+
+// endpoint for ads/categories
+export const adCategories: string = '/ads/categories/';
+
+// endpoint for ads/location/
+export const adsLocation: string = '/ads/location/';
+
+// endpoint for ads/location/categories
+export const adsLocationCategories: string = '/ads/categories/location';
 
 // endpoint for individual user's ad
 export const usersAds: string = '/ads/users/';

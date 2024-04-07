@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Texts from '../components/Text';
 import { Text } from 'react-native';
 import styles from '../styles/loginStyle';
@@ -10,8 +10,7 @@ import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
 import { useChat } from '../common/ChatContext';
-import { useFocusEffect } from '@react-navigation/native';
-
+import { useGlobal } from '../common/GlobalContext';
 /**
  * Login component.
  *
@@ -24,7 +23,8 @@ import { useFocusEffect } from '@react-navigation/native';
  * // Usage
  * <Login />
  */
-const Login = ({ navigation }: { navigation: any }) => {
+const Login = ({ navigation, route }: { navigation: any; route: any }) => {
+  const { firstLaunch } = useGlobal();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -33,15 +33,14 @@ const Login = ({ navigation }: { navigation: any }) => {
   const [key, setKey] = useState(Math.random());
 
   //this resets values after the page is focused.
-  useFocusEffect(
-    React.useCallback(() => {
-      setUsername('');
-      setPassword('');
-      setErrorMessage('');
-      setKey(Math.random());
-      return () => {};
-    }, []),
-  );
+  useEffect(() => {
+    setUsername('');
+    setPassword('');
+    setErrorMessage('');
+    setKey(Math.random());
+
+    return () => {};
+  }, []);
 
   const handleRegisterNav = () => {
     navigation.navigate('Registration');
@@ -51,13 +50,16 @@ const Login = ({ navigation }: { navigation: any }) => {
     if (validateInputs()) {
       try {
         await loginReq(username, password);
-        updateLoggedIn(true);
-        navigation.navigate('Home');
+        if (firstLaunch) {
+          navigation.navigate('Instruction');
+        } else {
+          updateLoggedIn(true);
+          navigation.navigate('Home');
+        }
       } catch (error) {
         setErrorMessage(
           `${error instanceof Error ? error.message : String(error)}`,
         );
-        //console.log(errorMessage);
       }
     }
   };
@@ -96,7 +98,6 @@ const Login = ({ navigation }: { navigation: any }) => {
     navigation.navigate('Forgot_Password');
   };
 
-
   return (
     <>
       <LinearGradient
@@ -114,6 +115,7 @@ const Login = ({ navigation }: { navigation: any }) => {
           onChangeText={input => handleUsername(input)}
           value={username}
           width={280}
+          maxLength={20}
         />
         <InputField
           placeholder="Password"
@@ -121,6 +123,7 @@ const Login = ({ navigation }: { navigation: any }) => {
           value={password}
           secureTextEntry={true}
           width={280}
+          maxLength={25}
         />
         {/* Conditionally render the error message */}
         {errorMessage !== '' && (

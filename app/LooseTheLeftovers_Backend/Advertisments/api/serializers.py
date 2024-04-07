@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from Advertisments.models import Advertisment, AdvertismentImage
 from datetime import date, datetime
+from django.contrib.gis.geos import Point
 
 
 class AdvertismentSerializer(serializers.Serializer):
@@ -33,10 +34,18 @@ class AdvertismentSerializer(serializers.Serializer):
 
         Returns an instance of the Advertisment that was saved.
         """
+        # extract user_id from request to tie to advertisement
         user = self.context["request"].user
+        # use verify location data
+        longitude = validated_data.pop("longitude", None)
+        latitude = validated_data.pop("latitude", None)
+
+        if longitude is not None and latitude is not None:
+            validated_data["location"] = Point(longitude, latitude)
+
         ad = Advertisment.objects.create(user_id=user.id, **validated_data)
         return ad
-    
+
     def update(self, instance, validated_data):
         """
         update method executes when AdvertismentSerializer.save() is called in advertisements/api/views.py
@@ -46,10 +55,10 @@ class AdvertismentSerializer(serializers.Serializer):
 
         Returns an instance of the Advertisment that was saved.
         """
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.category = validated_data.get('category', instance.category)
-        instance.expiry = validated_data.get('expiry', instance.expiry)
+        instance.title = validated_data.get("title", instance.title)
+        instance.description = validated_data.get("description", instance.description)
+        instance.category = validated_data.get("category", instance.category)
+        instance.expiry = validated_data.get("expiry", instance.expiry)
         instance.save()
         return instance
 
@@ -87,6 +96,7 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     Serializer to serialize data when retrieving ads from the database.
     This serializer will also return the primary key when an ad is retrieved.
     """
+
     id = serializers.PrimaryKeyRelatedField(queryset=Advertisment.objects.all())
 
     user_id = serializers.IntegerField()
@@ -95,15 +105,26 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=1000, required=False)
     category = serializers.CharField(max_length=30)
     expiry = serializers.DateTimeField(required=False)
+    distance = serializers.SerializerMethodField()
+    # Nested ImageSerializer
+    image = serializers.ImageField(source="ad_image.image", read_only=True)
 
     def to_representation(self, instance):
         """
-        Convert `expiry` date format to the desired format when serializing.
+        Convert `expiry` date format to the desired format when serializing
         """
         ret = super().to_representation(instance)
         expiry_formatted = self.get_expiry_formatted(ret["expiry"])
         ret.update(expiry_formatted)
+
         return ret
+
+    def get_distance(self, instance):
+        # This method provides the value for the 'distance' field
+        if hasattr(instance, "distance") and instance.distance is not None:
+            # Assuming instance.distance is a Distance object and we want to return kilometers
+            return round(instance.distance.km, 2)
+        return None
 
     def get_expiry_formatted(self, expiry):
         """
@@ -136,3 +157,10 @@ class ReturnAdvertismentSerializer(serializers.Serializer):
         # 1 to 6 days will show as 'n' days (short color)
         else:
             return {"color": "expiry_short", "expiry": str(delta.days) + " days"}
+
+
+class LocationSerializer(serializers.Serializer):
+    range = serializers.FloatField(write_only=True)
+    longitude = serializers.FloatField(write_only=True)
+    latitude = serializers.FloatField(write_only=True)
+    categories = serializers.CharField(required=False)
