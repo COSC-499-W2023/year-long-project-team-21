@@ -84,7 +84,7 @@ const Home = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     if (isFocused) {
-      postFetchHandler();
+      setGetDataFunction(() => getAllAds);
     }
   }, [isFocused]);
 

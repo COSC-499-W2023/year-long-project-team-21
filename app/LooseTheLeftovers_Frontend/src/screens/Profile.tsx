@@ -37,6 +37,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
   const [reviewsCount, setReviewsCount] = useState<number | undefined>(
     undefined,
   );
+  const [key, setKey] = useState(Math.random());
 
   /**
    * Handles button press event to log out the user.
@@ -121,8 +122,15 @@ const Profile = ({ navigation }: { navigation: any }) => {
       setRatings(0);
     }
   };
+
   useEffect(() => {
     getUserID();
+  }, []);
+
+  useEffect(() => {
+    setKey(Math.random());
+
+    return () => {};
   }, []);
 
   useEffect(() => {
