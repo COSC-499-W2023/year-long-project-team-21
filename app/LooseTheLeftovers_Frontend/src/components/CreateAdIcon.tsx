@@ -1,13 +1,15 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { type AllIconProps } from '../common/Types';
+import { global } from '../common/global_styles';
 
 /**
  * Icon component.
  *
- * A clickable homeicon component that be used in various parts of the application including tab.
+ * A clickable CreateAdIcon component that be used in various parts of the application including tab.
  * Takes you to the CreateAd screen.
  *
  * @component
@@ -25,15 +27,10 @@ type RootStackParamList = {
 };
 
 // Uses all icon prop for the interface
-const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
+const CreateAdIcon: React.FC<AllIconProps> = ({ size = 50 }) => {
   // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'CreateAd'>>();
-
-
-  //link to image
-  const image = '../assets/create-ad.png';
-
 
   // Navigates to CreateAd and sends parameters
   const goToCreateAd = () => {
@@ -41,14 +38,10 @@ const CreateAdIcon: React.FC<AllIconProps> = ({ size = 48 }) => {
   };
 
   // Call this to display an icon image. No need to input anything to the component, will automatically
-  // set the image size and navigation, good for reusability.
+  // set the image size and navigation
   return (
     <TouchableOpacity onPress={goToCreateAd} testID={'CreateAdIconTest'}>
-      <Image
-        source={require(image)}
-        style={[{ width: size, height: size }]}
-        resizeMode="contain"
-      />
+      <Icon name='plus-circle' size={size} style={[{ color: global.primary }]}/>
     </TouchableOpacity>
   );
 };

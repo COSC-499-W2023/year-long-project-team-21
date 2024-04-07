@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import styles from '../styles/registrationStyles';
-import { global } from '../common/global_styles';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Text, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
-import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
+
+import { BASE_URL, users } from '../common/API';
+import { global } from '../common/global_styles';
+import styles from '../styles/registrationStyles';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Title from '../components/Title';
 import Icon from '../components/Icon';
-import { useEffect } from 'react';
 
-import { useFocusEffect } from '@react-navigation/native';
 /**
  * Registration page
  *
@@ -106,7 +106,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
       setCredentialsFilledInError(false);
       setPasswordStrengthError(false);
       try {
-        const apiUrl = 'http://10.0.2.2:8000/users/';
+        const apiUrl = `${BASE_URL}${users}`;
 
         const response = await axios.post(apiUrl, {
           username: username,

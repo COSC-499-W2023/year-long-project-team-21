@@ -2,9 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import * as GlobalHook from '../../src/common/GlobalContext';
 import Login from '../../src/screens/Login';
-import { GlobalContextType } from '../../src/common/Types';
 
 jest.mock('axios');
 jest.mock('react-native', () => {

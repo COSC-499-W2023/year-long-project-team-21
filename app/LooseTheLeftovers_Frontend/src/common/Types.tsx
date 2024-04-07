@@ -430,17 +430,21 @@ interface CategoryRenderProps {
  *
  * @typedef {Object} ChatType
  * @property {number} id - The unique id for the chat.
- * @property {string} name - The name of the user.
- * @property {string} lastMessage - The most recent message sent.
- * @property {string} timestamp - The timestamp of the last message, formatted as a string.
+ * @property {number} user_id - The user ID of the other person in the conversation.
+ * @property {number} ad_id - The ad ID related to the chat.
+ * @property {string} name - The name of the other user in the chat.
+ * @property {string} lastMessage - The most recent message sent in the chat.
+ * @property {string} time_sent - The timestamp of the last message, formatted as a string.
+ * @property {boolean} read - The flag whether the message was read or not.
  */
 type ChatType = {
-  id: number;
-  adId: string;
+  id: string;
+  user_id: number;
+  ad_id: number;
   username: string;
-  lastMessage: string;
-  timestamp: string;
-  title: string;
+  msg: string;
+  time_sent: string;
+  read: boolean;
 };
 
 /**
@@ -467,7 +471,32 @@ interface RatingProps {
   showRating?: boolean;
   readonly?: boolean;
   onFinishRating?: (rating: number) => void;
-}
+};
+
+/**
+ * ChatContextType type definition for ChatContext.
+ *
+ * The structure and types of values for the ChatContext, which includes
+ * the current user's ID, an array of chat messages, the logged-in status, and functions
+ * to update the logged-in status and the focus state of the ChatList component.
+ *
+ * @typedef {Object} ChatContextType
+ * @property {string | null} your_id - The current user's ID. `null` if the user is not logged in.
+ * @property {ChatType[]} chats - An array of chat data, the last message in each chat.
+ * @property {boolean} loggedIn - A boolean indicating whether the user is currently logged in.
+ * @property {boolean} hasUnread - A boolean indicating whether the user has unread messages.
+ * @property {(value: boolean) => void} updateLoggedIn - A function to update the `loggedIn` state. Accepts a boolean.
+ * @property {(value: boolean) => void} updateFocus - A function to update the focus state of the ChatList component. Accepts a boolean indicating whether the ChatList is in focus.
+ */
+interface ChatContextType {
+  your_id: string | null;
+  chats: ChatType[];
+  loggedIn: boolean;
+  hasUnread: boolean;
+  updateLoggedIn: (value: boolean) => void;
+  updateFocus: (value: boolean) => void;
+  markChatAsReadById: (value: string) => void;
+};
 
 type GetDataFunctionType = ((pageNumber: number) => Promise<any>) | null;
 
@@ -497,5 +526,6 @@ export {
   type ChatType,
   type ChatListItemProps,
   type RatingProps,
+  type ChatContextType,
   type GetDataFunctionType,
 };

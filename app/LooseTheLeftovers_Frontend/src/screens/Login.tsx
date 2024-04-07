@@ -10,6 +10,8 @@ import Button from '../components/Button';
 import { global } from '../common/global_styles';
 import Icon from '../components/Icon';
 import { useGlobal } from '../common/GlobalContext';
+import { useChat } from '../common/ChatContext';
+
 /**
  * Login component.
  *
@@ -24,6 +26,7 @@ import { useGlobal } from '../common/GlobalContext';
  */
 const Login = ({ navigation, route }: { navigation: any; route: any }) => {
   const { firstLaunch } = useGlobal();
+  const { updateLoggedIn } = useChat();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,8 +52,10 @@ const Login = ({ navigation, route }: { navigation: any; route: any }) => {
       try {
         await loginReq(username, password);
         if (firstLaunch) {
+          updateLoggedIn(true);
           navigation.navigate('Instruction');
         } else {
+          updateLoggedIn(true);
           navigation.navigate('Home');
         }
       } catch (error) {

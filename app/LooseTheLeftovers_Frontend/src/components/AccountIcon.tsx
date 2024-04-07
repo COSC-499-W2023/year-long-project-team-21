@@ -1,14 +1,15 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { type AllIconProps } from '../common/Types';
 
 /**
  * Icon component.
  *
- * A clickable homeicon component that be used in various parts of the application including tab.
- * Will take you to the account screen
+ * A clickable AccountIcon component that be used in various parts of the application including tab.
+ * Will take you to the Profile screen.
  *
  * @component
  * @param {IconProps} props - The props for the Icon component.
@@ -19,34 +20,27 @@ import { type AllIconProps } from '../common/Types';
  * @example
  */
 
-//creates the parameters we're sending
+// Creates the parameters we're sending
 type RootStackParamList = {
   Profile: { name: string };
 };
 
-//uses all icon prop for the interface
-const AccountIcon: React.FC<AllIconProps> = ({ size = 28 }) => {
-  //creates a navigation hook
+// Uses all icon prop for the interface
+const AccountIcon: React.FC<AllIconProps> = ({ size = 32 }) => {
+  // Creates a navigation hook
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Profile'>>();
 
-  //link to image
-  const image = '../assets/account.png';
-
-  //navigates to instruction and sends parameters
-  const goToHomeScreen = () => {
+  // Navigates to Profile and sends parameters
+  const goToProfileScreen = () => {
     navigation.navigate('Profile', { name: 'AccountIcon' });
   };
 
-  //call this to display and icon image. No need to input anything to the component, will automatically
-  //set the image size and navigation. Yhis is Good for reusability.
+  // Call this to display and icon image. No need to input anything to the component, will automatically
+  // set the image size and navigation
   return (
-    <TouchableOpacity onPress={goToHomeScreen} testID={'AccountIconTest'}>
-      <Image
-        source={require(image)}
-        style={[{ width: size, height: size }]}
-        resizeMode="contain"
-      />
+    <TouchableOpacity onPress={goToProfileScreen} testID={'AccountIconTest'}>
+      <Icon name='account-circle' size={size} style={[{ color: 'white' }]} />
     </TouchableOpacity>
   );
 };

@@ -4,28 +4,29 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import globalscreenstyles from '../common/global_ScreenStyles';
 import { global } from '../common/global_styles';
+import { SecureAPIReq } from '../../src/common/NetworkRequest';
+import { adEndpoint, usersAds } from '../common/API';
+import { useChat } from '../common/ChatContext';
 import {
   removeUserSession,
   retrieveUserSession,
 } from '../../src/common/EncryptedSession';
-import { SecureAPIReq } from '../../src/common/NetworkRequest';
-import { adEndpoint, usersAds } from '../common/API';
-import profileStyles from '../styles/profileStyles';
-import generatePostListStyles from '../styles/postListStyles';
 
+import generatePostListStyles from '../styles/postListStyles';
+import profileStyles from '../styles/profileStyles';
+import PostListRenderer from '../components/PostListRenderer';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
 import AccountIcon from '../components/AccountIcon';
 import HomeIcon from '../components/HomeIcon';
 import CreateAdIcon from '../components/CreateAdIcon';
 import MessageIcon from '../components/MessageIcon';
-import Logo from '../components/Logo';
 import UserInfo from '../components/UserInfo';
-import Button from '../components/Button';
+import Icon from '../components/Icon';
 import Ratings from '../components/Ratings';
 import Texts from '../components/Text';
-import Icon from '../components/Icon';
-import PostListRenderer from '../components/PostListRenderer';
+import Button from '../components/Button';
+import Logo from '../components/Logo';
 
 const Profile = ({ navigation }: { navigation: any }) => {
   const screenWidth = Dimensions.get('window').width;
@@ -38,6 +39,8 @@ const Profile = ({ navigation }: { navigation: any }) => {
     undefined,
   );
   const [key, setKey] = useState(Math.random());
+  const [data, setData] = useState('');
+  const { updateLoggedIn } = useChat();
 
   /**
    * Handles button press event to log out the user.
@@ -52,6 +55,7 @@ const Profile = ({ navigation }: { navigation: any }) => {
       if (session) {
         // Remove the user session
         await removeUserSession();
+        updateLoggedIn(false);
         navigation.navigate('Login');
       } else {
         throw new Error('No active user session found');

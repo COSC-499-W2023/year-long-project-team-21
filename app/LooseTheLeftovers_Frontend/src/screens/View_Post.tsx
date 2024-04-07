@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   StyleProp,
@@ -8,8 +8,18 @@ import {
   ActivityIndicator,
   Modal,
 } from 'react-native';
-import globalscreenstyles from '../common/global_ScreenStyles';
 import { Card, Title } from 'react-native-paper';
+import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
+
+import generateViewPostStyles from '../styles/view_postStyles';
+import globalscreenstyles from '../common/global_ScreenStyles';
+import { global } from '../common/global_styles';
+import { retrieveUserSession } from '../common/EncryptedSession';
+import { djangoConfig, SecureAPIReq } from '../common/NetworkRequest';
+import { BASE_URL, adEndpoint } from '../common/API';
+import { AdDataProps } from '../common/Types';
+import ChatService from '../common/ChatService';
 import {
   renderPostImage,
   render_Card_Back,
@@ -17,8 +27,7 @@ import {
   render_Icons,
   assignColor,
 } from '../common/postUtils';
-import { global } from '../common/global_styles';
-import generateViewPostStyles from '../styles/view_postStyles';
+
 import Button from '../components/Button';
 import TabBarTop from '../components/TabBarTop';
 import TabBarBottom from '../components/TabBarBottom';
@@ -26,13 +35,7 @@ import CreateAdIcon from '../components/CreateAdIcon';
 import Ratings from '../components/Ratings';
 import HomeIcon from '../components/HomeIcon';
 import AccountIcon from '../components/AccountIcon';
-import { djangoConfig, SecureAPIReq } from '../common/NetworkRequest';
-import { BASE_URL, adEndpoint, usersAds } from '../common/API';
-import axios from 'axios';
-import { AdDataProps } from '../common/Types';
 import GoBackIcon from '../components/GoBackIcon';
-import LinearGradient from 'react-native-linear-gradient';
-import { retrieveUserSession } from '../common/EncryptedSession';
 
 /**
  * React component for viewing a post.
@@ -44,8 +47,6 @@ import { retrieveUserSession } from '../common/EncryptedSession';
  * @returns {JSX.Element} A JSX Element representing the View_Post component.
  */
 const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
-  // retrieve endpoint and postId from Post.tsx
-  const { postId, endpoint } = route.params;
   interface data {
     category: '';
     description: '';
@@ -69,6 +70,8 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     ratings: 0,
     count: 0,
   });
+  // Retrieve endpoint and postId from Post.tsx
+  const { postId, endpoint } = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const card_color_dict = assignColor(adData.color);
   const styles = generateViewPostStyles(card_color_dict);
@@ -76,15 +79,15 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
   const [showGlutenFreeIcon, setShowGlutenFreeIcon] = useState(false);
   const [showVeganIcon, setShowVeganIcon] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState(null);
-  const [posterId, setPosterId] = useState('');
+  const [user_id, setUserId] = useState('');
+  const your_id = useRef(null);
 
   // Get current user id
   useEffect(() => {
     const getSessionAndSetUserId = async () => {
       const session = await retrieveUserSession();
       if (session && session.user_id) {
-        setCurrentUserId(session.user_id);
+        your_id.current = session.user_id;
       }
     };
     getSessionAndSetUserId();
@@ -154,7 +157,7 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       data.username = user_details.data.username;
       return data;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return undefined;
     }
   };
@@ -167,9 +170,9 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
         data.image = BASE_URL + data.image;
         setAdData(data);
         setIsLoading(false);
-        setPosterId(data.user_id);
+        setUserId(data.user_id);
       } else {
-        // exit or show a screen
+        // Exit or show a screen
         console.log('error retrieving payload');
       }
     };
@@ -184,7 +187,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @returns {JSX.Element} The rendered front card component.
    */
   const render_Card_Front = (style: StyleProp<ViewStyle>) => {
-    console.log(adData.category);
 
     /**
      * Renders the message button component.
@@ -197,8 +199,10 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       return (
         <View style={styles.message_button}>
           <Button
-            title="Message"
-            onPress={handlePressMessage}
+            title="message"
+            onPress={() => {
+              handlePressMessage()
+            }}
             borderRadius={0.05 * Dimensions.get('window').width}
             backgroundcolor={card_color_dict.middleColor}
             borderColor={card_color_dict.middleColor}
@@ -206,14 +210,6 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
           />
         </View>
       );
-    };
-
-    const handlePressMessage = () => {
-      navigation.navigate('Chat', {
-        adId: postId,
-        username: adData.username,
-        title: adData.title,
-      });
     };
 
     /**
@@ -259,7 +255,13 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
      * @returns {JSX.Element} The rendered button component.
      */
     const renderButton = () => {
-      return IsPrevPageProfile() ? renderDeleteButton() : renderMessageButton();
+      if (IsPrevPageProfile()) {
+        return renderDeleteButton();
+      } else if (your_id.current == user_id) {
+        return null;
+      } else {
+        return renderMessageButton();
+      }
     };
 
     return (
@@ -343,25 +345,18 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
    * @returns {void}
    */
   const deletePost = async () => {
-    console.log('post delete request starts...');
     setIsVisible(true);
     try {
       const deleteAds: string = adEndpoint;
-      console.log(deleteAds);
-      console.log(postId);
       const req: any = await SecureAPIReq.createInstance();
       const payload: any = await req.delete(deleteAds, {
         ad_id: postId,
       });
-      console.log(payload.status);
       if (payload.status == 200) {
-        console.log('deletion completed!');
         navigation.navigate('DoneDelete');
       }
     } catch (error) {
-      console.log(error);
-    } finally {
-      console.log('post delete request ends...');
+      console.error(error);
     }
   };
 
@@ -369,9 +364,33 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
     return <ActivityIndicator size="large" />;
   }
 
+  const handlePressMessage = async () => {
+    try {
+      const response = await ChatService.checkHistory(user_id, postId);
+
+      if (response) {
+        navigation.navigate('Chat', {
+          user_id: user_id,
+          ad_id: postId,
+          new_chat: false,
+          your_id: your_id.current,
+        });
+      } else {
+        navigation.navigate('Chat', {
+          user_id: user_id,
+          ad_id: postId,
+          new_chat: true,
+          your_id: your_id.current,
+        });
+      }
+    } catch (error) {
+      console.error('View_Post: Error sending message:', error);
+    }
+  };
+
   return (
     <View style={globalscreenstyles.container}>
-      <TabBarTop LeftIcon={<GoBackIcon></GoBackIcon>}></TabBarTop>
+      <TabBarTop LeftIcon={<GoBackIcon />} />
       <View style={globalscreenstyles.middle}>
         <View style={styles.image_container}>
           {renderPostImage(styles.image, adData.image, 400)}
@@ -384,9 +403,10 @@ const View_Post = ({ navigation, route }: { navigation: any; route: any }) => {
       </View>
       {renderDeleteConfimation()}
       <TabBarBottom
-        LeftIcon={<HomeIcon></HomeIcon>}
-        MiddleIcon={<CreateAdIcon></CreateAdIcon>}
-        RightIcon={<AccountIcon></AccountIcon>}></TabBarBottom>
+        LeftIcon={<HomeIcon />}
+        MiddleIcon={<CreateAdIcon />}
+        RightIcon={<AccountIcon />}
+      />
     </View>
   );
 };
