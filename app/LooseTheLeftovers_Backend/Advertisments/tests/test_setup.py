@@ -121,6 +121,13 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
             category="gluten-free",
             expiry=datetime.now() + timedelta(days=3),
         )
+        self.ad_6 = Advertisment.objects.create(
+            user_id=self.user_1.id,
+            title="Good food",
+            description="Some leftovers",
+            category="None",
+            expiry=datetime.now() + timedelta(days=3),
+        )
 
         # create 5 test AdvertismentImages
         self.image_1 = AdvertismentImage.objects.create(
@@ -141,6 +148,10 @@ class TestSetUpRetrieveAdvertisment(APITestCase):
         )
         self.image_5 = AdvertismentImage.objects.create(
             ad_id=self.ad_5,
+            image="app/LooseTheLeftovers_Backend/media/images/12345.PNG",
+        )
+        self.image_6 = AdvertismentImage.objects.create(
+            ad_id=self.ad_6,
             image="app/LooseTheLeftovers_Backend/media/images/12345.PNG",
         )
 
@@ -181,7 +192,7 @@ class TestSetupLocationAds(APITestCase):
             title="Apples",
             description="Some apples",
             category="vegan",
-            expiry="2024-01-25T12:30:00.000000Z",
+            expiry=datetime.now() + timedelta(days=7),
             # lake country
             location=Point(-119.397873, 50.088470),
         )
@@ -190,7 +201,7 @@ class TestSetupLocationAds(APITestCase):
             title="Bananas",
             description="Some bananas",
             category="vegan",
-            expiry="2024-02-25T12:30:00.000000Z",
+            expiry=datetime.now() + timedelta(days=7),
             # carr's landing
             location=Point(-119.463767, 50.113186),
         )
@@ -199,7 +210,7 @@ class TestSetupLocationAds(APITestCase):
             title="Pasta",
             description="Vegetarian pasta",
             category="Vegetarian",
-            expiry="2024-01-25T12:30:00.000000Z",
+            expiry=datetime.now() + timedelta(days=7),
             # middle of wood lake
             location=Point(-119.382956, 50.096514),
         )
