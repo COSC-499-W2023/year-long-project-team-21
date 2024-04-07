@@ -58,8 +58,6 @@ class MessageHandler(APIView):
             Response: Response object with the messages as json. Messages will be sorted from newest to oldest
 
         """
-        print(Message.objects.model._meta.db_table)
-
         # Manually authenticate user
         permission = IsAuthenticated()
         if not permission.has_permission(request, self):
@@ -240,7 +238,12 @@ def get_last_message_per_conversation(request):
         D.get('user_id').append(user_id)
         D.get('ad_id').append(ad_id)
     
-    df = pl.DataFrame._from_dict(D)
+    # polars changed this method recently, adding try/catch just in case
+    try:
+        df = pl.DataFrame._from_dict(D)
+    except:    
+        df = pl.from_dict(D)
+        
     df = df.unique()
 
     # get username, msg, time_sent for last message in each conversation
@@ -258,7 +261,7 @@ def get_last_message_per_conversation(request):
             (Q(receiver_id=user) & Q(sender_id=request_user) & Q(ad_id=ad_id)) | (Q(receiver_id=request_user) & Q(sender_id=user) & Q(ad_id=ad_id))
         ).last()
         # append as dictionary to list
-        last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent, "ad_id": last_message.ad_id})
+        last_msg_list.append({"user_id": user, "username": username, "msg": last_message.msg, "time_sent": last_message.time_sent, "ad_id": last_message.ad_id.id})
     
     try:
         # put result into pages
