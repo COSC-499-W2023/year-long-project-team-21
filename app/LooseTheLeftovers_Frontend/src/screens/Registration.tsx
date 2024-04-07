@@ -6,7 +6,6 @@ import axios from 'axios';
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength';
 import LinearGradient from 'react-native-linear-gradient';
-import Logo from '../components/Logo';
 import Texts from '../components/Text';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -37,6 +36,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
   const [usernameLengthError, setUsernameLengthError] = useState(false);
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [apiRequestErrorMessage, setApiRequestErrorMessage] = useState('');
   const [credentialFilledInError, setCredentialsFilledInError] =
     useState(false);
   const [apiRequestError, setApiRequestError] = useState(false);
@@ -132,7 +132,19 @@ const Registration = ({ navigation }: { navigation: any }) => {
       } catch (error: any) {
         //red text error produced by requesting error
         setApiRequestError(true);
-        console.log(error);
+
+        const apiError: any = error;
+
+        console.log(apiError.response?.data);
+        //this recevieves error message
+        const errors = apiError.response?.data;
+
+        //this parses the error message
+        const extractedValues = Object.values(errors).flat();
+        const errorMessages = extractedValues.join(' ');
+
+        //this sends the error message to be displayed
+        setApiRequestErrorMessage(errorMessages);
       }
     }
   };
@@ -231,7 +243,7 @@ const Registration = ({ navigation }: { navigation: any }) => {
         {/* When the apiRquestError is true, the red text tells following. */}
         {apiRequestError && (
           <Text style={{ color: global.error, fontSize: 15 }}>
-            Request error, unable to process.
+            {apiRequestErrorMessage || 'Request error, unable to process.'}
           </Text>
         )}
         {/* When the passwordMatchError is false, the red text tells password strength. */}
