@@ -22,12 +22,12 @@ our last pull requests, and then focused on creating the induvidual report and v
 - None
 
 ## Project board
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/fd7195cb-d649-49da-9cd7-4d4933482f72)
 
 
 
 ## Burn Up Chart
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/fcd31a73-b362-4f25-b336-2ff5e6b3d290)
 
 
 
