@@ -1,21 +1,21 @@
 # Sten Korver Personal Weekly Log
-11/27 to 12/03
+
+04/01 to 04/07
 
 Username: Rev-Rok
 
 ### My Features For This Week:
 
-* Participate team meetings
-* Updated ER diagram for design milestone
-* Backend/database written content for design milestone
-* Store images for ads on backend
-
+* Participate team meeting to create team list of features
+* Code reviews
+* Backend bugfix
+  * Fix messages get ads
+* Final report
+  
 ### Completed Features For This Week:
-
-* Updated ER diagram for design milestone
-* Backend/database written content for design milestone
-* Helped finish the architecture diagram
+* Backend bugfix
+* Code reviews
+* Final report
 
 ### Types of Tasks Worked On:
-![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/b3722929-b018-442f-b471-56d726c38eb5)
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/112997109/a644448e-1e14-4223-a8aa-e6b07aaf96ac)

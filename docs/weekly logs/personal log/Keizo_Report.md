@@ -1,22 +1,21 @@
 # Keizo Kato Personal Weekly Log
 
-11/27 to 12/03
+3/31 to 4/6
 
 Username: Keizo410
 
 ## My Features For This Week
 
-- Recoding Location service
+- write final report
 
 ## Completed Features For This Week
 
-- Finishing location service class implementation. 
+- write final report
+- reviewing bunch of leftover branches
 
 ## Features in progress
 
--  Restructuring registration component. 
 
 ## Types of Tasks Worked On
 
-![スクリーンショット 2023-12-03 192620](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/629bd055-edd1-4e35-a317-9cd203f79eb0)
-
+![image](https://github.com/COSC-499-W2023/year-long-project-team-21/assets/90278067/f7490751-7625-4baa-b211-f0a3ee4be00b)
