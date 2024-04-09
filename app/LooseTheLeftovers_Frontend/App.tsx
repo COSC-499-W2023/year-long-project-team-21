@@ -1,19 +1,29 @@
-
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import Login from './src/screens/Login';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator';
-// import styles from './src/styles/appStyles';
+import { navigationRef } from './src/navigation/NavigationService';
+import { ChatProvider } from './src/common/ChatContext';
+import { GlobalProvider } from './src/common/GlobalContext';
 
-const Stack = createNativeStackNavigator();
-
+const LoadingScreenColor = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#2e2e2e',
+  },
+};
 const App = () => {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <GlobalProvider>
+      <NavigationContainer
+        theme={LoadingScreenColor}
+        ref={navigationRef}
+        data-testid="navigation-container">
+        <ChatProvider>
+          <AppNavigator />
+        </ChatProvider>
+      </NavigationContainer>
+    </GlobalProvider>
   );
 };
 

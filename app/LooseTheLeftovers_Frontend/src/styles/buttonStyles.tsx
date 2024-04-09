@@ -2,15 +2,16 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   buttonText: {
-    fontSize: 25,
+    textAlign: 'center',
   },
   button: {
-    padding: 4,
-    borderRadius: 5,
-    backgroundColor: 'gray',
-  },
-  space: {
-    height: 10,
+    //borderWidth: 2,
+    margin: 10,
+    borderRadius: 40,
+    height: 65,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3
   },
 });
 

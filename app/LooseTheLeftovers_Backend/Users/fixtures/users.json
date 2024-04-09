@@ -1,0 +1,66 @@
+[
+    {
+        "model": "Users.customuser",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$SQSPfnukQuXVlVHRdeYWpa$ybFUnQfIn5BNLwjaGCqatOMFLlyLM0yAUlPEA9Vo2e0=",
+            "last_login": "2024-01-31T01:30:20.540Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "admin@mail.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-31T01:30:18.100Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },    
+    {
+        "model": "Users.CustomUser",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$SQSPfnukQuXVlVHRdeYWpa$ybFUnQfIn5BNLwjaGCqatOMFLlyLM0yAUlPEA9Vo2e0=",
+            "last_login": "2024-01-31T01:30:20.540Z",
+            "username": "John",
+            "first_name": "Smith",
+            "last_name": "",
+            "email": "admin@mail.com",
+            "date_joined": "2024-01-31T01:30:18.100Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "Users.CustomUser",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$SQSPfnukQuXVlVHRdeYWpa$ybFUnQfIn5BNLwjaGCqatOMFLlyLM0yAUlPEA9Vo2e0=",
+            "last_login": "2024-01-31T01:30:20.540Z",
+            "username": "Jane",
+            "first_name": "Doe",
+            "last_name": "",
+            "email": "admin@mail.com",
+            "date_joined": "2024-01-31T01:30:18.100Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "Users.CustomUser",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$SQSPfnukQuXVlVHRdeYWpa$ybFUnQfIn5BNLwjaGCqatOMFLlyLM0yAUlPEA9Vo2e0=",
+            "last_login": "2024-01-31T01:30:20.540Z",
+            "username": "staff",
+            "first_name": "",
+            "last_name": "",
+            "email": "staff@mail.com",
+            "is_staff": true,
+            "date_joined": "2024-01-31T01:30:18.100Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

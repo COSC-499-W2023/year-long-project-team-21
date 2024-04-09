@@ -17,8 +17,62 @@ This post request must contain the following parameters
 
 - email
 - username
-- paassword
-- verify_passowrd
+- password
+- verify_password
+
+## GET Users
+
+It is possible to retrieve a list of users and an individual user.
+
+Simply send an authenticated GET request to `/users/` to retrieve a list of all the current users. The fields that you get are: 
+- username 
+- id 
+- email
+
+Functionality is also included to recieve an individual user. Attatch a user_id to the end of the URI to request an individual user. If the user does not exist, a 500 error
+will be produced.
+
+If your request is not authenticated, you will recieve a 401.
+
+## Update Users
+
+It is possible to use a PUT request to update the user profile or the user password.
+
+To update the user profile, send an authenticated PUT request to `/users/` and include these fields in the body of
+the request as JSON:
+- email
+- first_name
+- last_name
+- longitude
+- latitude
+
+To update a user's password, send an authenticated PUT request to `/users/` and include these fields in the body of
+the request as JSON:
+- old_password
+- new_password
+- confirm_password
+
+The backend will check if old_password matches the user's current password. If false a HTTP_401_UNAUTHORIZED 
+response is returned and "detail" will be filled in the response containing "Incorrect password entered".
+
+If new_password and confirm_password do not match, the backend will return a HTTP_400_BAD_REQUEST response and 
+"detail" will be filled in the response containing "Passwords must match"
+
+Note the backend differentiates between the two different PUT requests by checking if 'new_password' field is
+supplied.
+
+## Password Reset 
+
+credentials. 
+username: losetheleftovers@gmail.com
+password: StrongSystemPassword1337!
+
+In setting up your own gmail for this, there are important steps you must follow. 
+    - 1) create a new account 
+    - 2) enable 2FA. This is needed for the SMTP server to work (sending emails, bassically). Google does not allow apps like this one to use their servier without a code. 
+    - 3) Follow these instructions in making an app password: https://support.google.com/accounts/answer/185833?hl=en
+    - 3) ext: I had to search for "App Passwords" in the top left hand corner... 
+    - 4) Use the generated string in place of "EMAIL_HOST_PASSWORD" in settings.py
 
 ### Overview
 
